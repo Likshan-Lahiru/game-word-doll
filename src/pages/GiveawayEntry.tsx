@@ -5,6 +5,7 @@ import { WordollCard } from '../components/GameCards/WordollCard'
 import { LockPickrCard } from '../components/GameCards/LockPickrCard'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
+import {StatusBar} from "../components/StatusBar.tsx";
 export function GiveawayEntry() {
   const navigate = useNavigate()
   const {spinBalance } = useGlobalContext()
@@ -91,39 +92,20 @@ export function GiveawayEntry() {
   }
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
-        {/* Header */}
-        <div className="p-4 flex justify-between items-center">
-          <button
-              className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center"
-              onClick={() => navigate('/')}
-          >
-            <img
-                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                alt="Back"
-                className="w-6 h-6"
-            />
-          </button>
-          <div className="flex-1 max-w-md mx-auto px-4">
-            <BalanceSelector
-                onSelect={(type) => console.log(`Selected: ${type}`)}
-            />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <div className="bg-black rounded-full px-3 py-1 flex items-center">
+        <div className="relative p-4">
+          <div className="flex items-center">
+            <button
+                className="w-10 h-10 rounded-full bg-[#2A3042] flex items-center justify-center mr-3"
+                onClick={() => navigate('/giveaway-entry')}
+            >
               <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
-                  alt="Heart"
-                  className="w-4 h-4"
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                  alt="Back"
+                  className="w-5 h-5"
               />
-              <span className="ml-1">0</span>
-            </div>
-            <div className="bg-black rounded-full px-3 py-1 flex items-center">
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
-                  alt="Diamond"
-                  className="w-4 h-4"
-              />
-              <span className="ml-1">0</span>
+            </button>
+            <div className="flex-1">
+              <StatusBar isMobile={true}/>
             </div>
           </div>
         </div>
@@ -142,12 +124,12 @@ export function GiveawayEntry() {
               <div
                   className={`${isMobile ? 'w-[48%]' : 'w-[220px]'} ${isMobile ? 'h-[250px]' : 'h-[380px]'}`}
               >
-                <CustomWordollCard />
+                <CustomWordollCard/>
               </div>
               <div
                   className={`${isMobile ? 'w-[48%]' : 'w-[220px]'} ${isMobile ? 'h-[250px]' : 'h-[380px]'}`}
               >
-                <CustomLockPickrCard />
+                <CustomLockPickrCard/>
               </div>
             </div>
           </div>
@@ -163,7 +145,7 @@ export function GiveawayEntry() {
           </div>
         </div>
         {/* Bottom Navigation */}
-        <BottomNavigation />
+        <BottomNavigation/>
       </div>
   )
 }

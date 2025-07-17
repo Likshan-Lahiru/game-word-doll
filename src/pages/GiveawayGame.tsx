@@ -92,9 +92,7 @@ export function GiveawayGame() {
   if (isMobile) {
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1E2532] text-white">
-          {/* Top bar with status and back button side by side */}
           <div className="relative p-4">
-            {/* Status bar with back button on the same line */}
             <div className="flex items-center">
               <button
                   className="w-10 h-10 rounded-full bg-[#2A3042] flex items-center justify-center mr-3"
