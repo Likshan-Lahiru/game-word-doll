@@ -96,7 +96,7 @@ export function GiveawayEntry() {
           <div className="flex items-center">
             <button
                 className="w-10 h-10 rounded-full bg-[#2A3042] flex items-center justify-center mr-3"
-                onClick={() => navigate('/giveaway-entry')}
+                onClick={() => navigate('/')}
             >
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
