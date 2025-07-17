@@ -1,6 +1,5 @@
 import  { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BalanceSelector } from '../components/BalanceSelector'
 import { WordollCard } from '../components/GameCards/WordollCard'
 import { LockPickrCard } from '../components/GameCards/LockPickrCard'
 import { BottomNavigation } from '../components/BottomNavigation'
