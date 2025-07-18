@@ -23,9 +23,9 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
     // Mobile view based on the provided image
     if (isMobile) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A202C]/95">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]/95">
                 <div className="flex flex-col items-center">
-                    <div className="bg-[#2D3748] rounded-2xl p-6 text-center text-white w-[320px]">
+                    <div className="bg-[#374151] rounded-2xl p-6 text-center text-white w-[320px]">
                         <h2 className="text-2xl font-bold mb-6">You Win</h2>
                         <div className="flex items-center justify-center text-4xl font-bold mb-6">
                             <img
@@ -36,7 +36,7 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
                             <span>{reward.toLocaleString()}</span>
                         </div>
                         <p className="text-2xl font-bold mb-8">GREAT !!!</p>
-                        <p className="mb-4">Sign Up to Get</p>
+                        <p className="text-2xl mb-4 font-bold">Sign Up to Get</p>
                         <div className="flex items-center justify-center text-4xl font-bold mb-2">
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -77,7 +77,7 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
     }
     // Desktop view - unchanged
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A202C]/95">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]/95">
             <div className="w-full max-w-md mx-auto">
                 <div className="bg-[#374151] rounded-xl p-8 text-center text-white">
                     <h2 className="text-1xl font-bold mb-6">You Win</h2>
@@ -90,7 +90,7 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
                         <span>{reward.toLocaleString()}</span>
                     </div>
                     <p className="text-1xl font-bold mb-8">GREAT !!!</p>
-                    <p className="mb-4 font-bold">Sign Up to Get</p>
+                    <p className="text-2xl mb-4 font-bold">Sign Up to Get</p>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6">
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
