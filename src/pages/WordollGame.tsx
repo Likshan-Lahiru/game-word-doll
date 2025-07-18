@@ -31,9 +31,9 @@ function getLetterStatuses(
   return statuses
 }
 export function WordollGame() {
-  const navigate = useNavigate()
+  useNavigate();
   const [targetWord, setTargetWord] = useState('')
-  const [selectedLetters, setSelectedLetters] = useState<string[]>([])
+  const [, setSelectedLetters] = useState<string[]>([])
   const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
   const [currentAttempt, setCurrentAttempt] = useState<string[]>(
       Array(5).fill(''),
@@ -315,12 +315,12 @@ export function WordollGame() {
                 {mobileKeyboard.map((row, rowIndex) => (
                     <div
                         key={rowIndex}
-                        className={`flex justify-center mb-2 ${rowIndex === 1 ? 'px-6' : ''}`}
+                        className={`flex justify-center mb-1 ${rowIndex === 1 ? 'px-4' : ''}`}
                     >
                       {row.map((key, keyIndex) => (
                           <button
                               key={`${rowIndex}-${keyIndex}`}
-                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[40px]'} h-[55px] ${rowIndex === 1 ? 'm-[3px]' : 'm-1'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-sm flex items-center justify-center shadow-md transition-colors`}
+                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[50px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-sm flex items-center justify-center shadow-md transition-colors`}
                               onClick={() => handleMobileKeyPress(key)}
                           >
                             {key === 'Backspace' ? (
