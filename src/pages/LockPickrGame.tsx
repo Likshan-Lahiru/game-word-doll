@@ -2,8 +2,11 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { VirtualKeyboard } from '../components/VirtualKeyboard'
 import { CountdownModal } from '../components/CountdownModal'
+import {WinModal} from "../components/GameModals/WinModal.tsx";
+import {LoseModal} from "../components/GameModals/LoseModal.tsx";
+
 export function LockPickrGame() {
-  const navigate = useNavigate()
+  useNavigate();
   const [targetCode, setTargetCode] = useState<number[]>([])
   const [currentAttempt, setCurrentAttempt] = useState<number[]>([])
   const [lastAttempt, setLastAttempt] = useState<number[] | null>(null)
@@ -17,6 +20,8 @@ export function LockPickrGame() {
   const [gameStarted, setGameStarted] = useState(false)
   const [, setIdleTime] = useState(0)
   const lastActivityRef = useRef(Date.now())
+  const [showWinModal, setShowWinModal] = useState(false)
+  const [showLoseModal, setShowLoseModal] = useState(false)
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -75,14 +80,14 @@ export function LockPickrGame() {
       // If idle for more than 10 seconds, start decreasing timer faster
       if (idleSeconds > 10) {
         setTimer((prevTimer) => Math.max(0, prevTimer - 2)) // Decrease by 2 seconds
-        // If timer is very low, navigate to lose page
+        // If timer is very low, show lose modal
         if (timer <= 5) {
-          navigate('/lock-pickr-lose')
+          setShowLoseModal(true)
         }
       }
     }, 1000)
     return () => clearInterval(idleInterval)
-  }, [gameStarted, timer, navigate])
+  }, [gameStarted, timer])
   // Keyboard input handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -114,14 +119,14 @@ export function LockPickrGame() {
   useEffect(() => {
     if (!gameStarted) return
     if (timer <= 0) {
-      navigate('/lock-pickr-lose')
+      setShowLoseModal(true)
       return
     }
     const countdown = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1)
     }, 1000)
     return () => clearInterval(countdown)
-  }, [timer, navigate, gameStarted])
+  }, [timer, gameStarted])
   // Format time as MM:SS
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
@@ -148,7 +153,7 @@ export function LockPickrGame() {
         (num, index) => num === targetCode[index],
     )
     if (isCorrect) {
-      navigate('/lock-pickr-win')
+      setShowWinModal(true)
       return
     }
     // Clear current attempt for next try
@@ -158,7 +163,7 @@ export function LockPickrGame() {
     if (inputRef.current) {
       inputRef.current.focus()
     }
-  }, [currentAttempt, targetCode, navigate])
+  }, [currentAttempt, targetCode])
   // Handle countdown completion
   const handleCountdownComplete = () => {
     setShowCountdown(false)
@@ -303,6 +308,22 @@ export function LockPickrGame() {
         <CountdownModal
             isOpen={showCountdown}
             onCountdownComplete={handleCountdownComplete}
+        />
+
+        {/* Win Modal */}
+        <WinModal
+            isOpen={showWinModal}
+            onClose={() => setShowWinModal(false)}
+            reward={15000}
+            gameType="lockpickr"
+        />
+
+        {/* Lose Modal */}
+        <LoseModal
+            isOpen={showLoseModal}
+            onClose={() => setShowLoseModal(false)}
+            penalty={2000}
+            gameType="lockpickr"
         />
       </div>
   )

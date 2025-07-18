@@ -1,0 +1,131 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useGlobalContext } from '../../context/GlobalContext'
+type WinModalProps = {
+    isOpen: boolean
+    onClose: () => void
+    reward: number
+    gameType: 'wordoll' | 'lockpickr'
+}
+export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
+    const navigate = useNavigate()
+    const { addCoins } = useGlobalContext()
+    const isMobile = window.innerWidth <= 768
+    if (!isOpen) return null
+    const handleSignUp = () => {
+        navigate('/signup')
+    }
+    const handleNoThanks = () => {
+        // Add the reward before navigating
+        addCoins(reward)
+        onClose()
+        navigate('/')
+    }
+    // Mobile view based on the provided image
+    if (isMobile) {
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A202C]/95">
+                <div className="flex flex-col items-center">
+                    <div className="bg-[#2D3748] rounded-2xl p-6 text-center text-white w-[320px]">
+                        <h2 className="text-2xl font-bold mb-6">You Win</h2>
+                        <div className="flex items-center justify-center text-4xl font-bold mb-6">
+                            <img
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                                alt="Coins"
+                                className="w-8 h-8 mr-2"
+                            />
+                            <span>{reward.toLocaleString()}</span>
+                        </div>
+                        <p className="text-2xl font-bold mb-8">GREAT !!!</p>
+                        <p className="mb-4">Sign Up to Get</p>
+                        <div className="flex items-center justify-center text-4xl font-bold mb-2">
+                            <img
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                                alt="Coins"
+                                className="w-8 h-8 mr-2"
+                            />
+                            <span>5,000,000</span>
+                        </div>
+                        <p className="text-2xl mb-6">FREE</p>
+                        <button
+                            className="w-full bg-[#4299E1] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full mb-6"
+                            onClick={handleSignUp}
+                        >
+                            Sign Up Now
+                        </button>
+                        <p className="mb-4">and</p>
+                        <p className="flex items-center justify-center mb-4">
+                            Win
+                            <img
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                                alt="Coins"
+                                className="w-6 h-6 "
+                            />
+                            Gems
+                        </p>
+                    </div>
+                    <div className="mt-6">
+                        <button
+                            className="bg-[#4A5568] hover:bg-[#2D3748] text-white font-bold py-3 px-12 rounded-full"
+                            onClick={handleNoThanks}
+                        >
+                            No, Thanks
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    // Desktop view - unchanged
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A202C]/95">
+            <div className="w-full max-w-md mx-auto">
+                <div className="bg-[#374151] rounded-xl p-8 text-center text-white">
+                    <h2 className="text-1xl font-bold mb-6">You Win</h2>
+                    <div className="flex items-center justify-center text-3xl font-bold mb-6">
+                        <img
+                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                            alt="Coins"
+                            className="w-8 h-8 mr-2"
+                        />
+                        <span>{reward.toLocaleString()}</span>
+                    </div>
+                    <p className="text-1xl font-bold mb-8">GREAT !!!</p>
+                    <p className="mb-4 ">Sign Up to Get</p>
+                    <div className="flex items-center justify-center text-3xl font-bold mb-6">
+                        <img
+                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                            alt="Coins"
+                            className="w-8 h-8 mr-2"
+                        />
+                        <span>5,000,000 FREE</span>
+                    </div>
+                    <button
+                        className="w-60 bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl mb-6"
+                        onClick={handleSignUp}
+                    >
+                        Sign Up Now
+                    </button>
+                    <p className="mb-4">and</p>
+                    <p className="flex items-center justify-center mb-8">
+                        Win
+                        <img
+                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                            alt="Coins"
+                            className="w-6 h-6 "
+                        />
+                        Gems
+                    </p>
+                </div>
+                <div className="mt-4 flex justify-center">
+                    <button
+                        className="bg-[#4A5568] hover:bg-[#2D3748] text-white font-bold py-3 px-8 rounded-full"
+                        onClick={handleNoThanks}
+                    >
+                        No, Thanks
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
