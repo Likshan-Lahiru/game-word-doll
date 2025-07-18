@@ -47,25 +47,25 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
                         </div>
                         <p className="text-2xl mb-6">FREE</p>
                         <button
-                            className="w-full bg-[#4299E1] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full mb-6"
+                            className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-2xl mb-6"
                             onClick={handleSignUp}
                         >
                             Sign Up Now
                         </button>
                         <p className="mb-4">and</p>
                         <p className="flex items-center justify-center mb-4">
-                            Win
+                            <span className="mr-2">Win</span>
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
                                 alt="Coins"
-                                className="w-6 h-6 "
+                                className="w-6 h-6"
                             />
-                            Gems
+                            <span className="ml-2">Gems</span>
                         </p>
                     </div>
                     <div className="mt-6">
                         <button
-                            className="bg-[#4A5568] hover:bg-[#2D3748] text-white font-bold py-3 px-12 rounded-full"
+                            className="bg-[#374151] hover:bg-[#2D3748] text-white font-bold py-3 px-12 rounded-2xl"
                             onClick={handleNoThanks}
                         >
                             No, Thanks
@@ -90,7 +90,7 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
                         <span>{reward.toLocaleString()}</span>
                     </div>
                     <p className="text-1xl font-bold mb-8">GREAT !!!</p>
-                    <p className="mb-4 ">Sign Up to Get</p>
+                    <p className="mb-4 font-bold">Sign Up to Get</p>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6">
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -100,25 +100,25 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
                         <span>5,000,000 FREE</span>
                     </div>
                     <button
-                        className="w-60 bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl mb-6"
+                        className="w-60 bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-2xl mb-6"
                         onClick={handleSignUp}
                     >
                         Sign Up Now
                     </button>
                     <p className="mb-4">and</p>
-                    <p className="flex items-center justify-center mb-8">
-                        Win
+                    <p className="flex items-center justify-center mb-4">
+                        <span className="mr-2">Win</span>
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
                             alt="Coins"
-                            className="w-6 h-6 "
+                            className="w-6 h-6"
                         />
-                        Gems
+                        <span className="ml-2">Gems</span>
                     </p>
                 </div>
                 <div className="mt-4 flex justify-center">
                     <button
-                        className="bg-[#4A5568] hover:bg-[#2D3748] text-white font-bold py-3 px-8 rounded-full"
+                        className="bg-[#374151] hover:bg-[#2D3748] text-white font-bold py-3 px-8 rounded-2xl"
                         onClick={handleNoThanks}
                     >
                         No, Thanks
