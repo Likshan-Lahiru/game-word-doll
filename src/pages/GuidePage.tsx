@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 export function GuidePage() {
@@ -39,7 +39,7 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-yellow-400">
+                        <h3 className="text-lg sm:text-xl font-bold text-white">
                             Gold Coins
                         </h3>
                     </div>
@@ -59,11 +59,11 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-amber-400">
+                        <h3 className="text-lg sm:text-xl font-bold text-white">
                             Entries
                         </h3>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-300">
+                    <p className="text-sm sm:text-base text-white">
                         Entries are special passes that let you join paid rooms and compete
                         in skill-based games for a chance to win Gems.
                     </p>
@@ -78,11 +78,11 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-purple-400">
+                        <h3 className="text-lg sm:text-xl font-bold text-white">
                             Gems
                         </h3>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-300">
+                    <p className="text-sm sm:text-base text-white">
                         Gems are a premium reward. If you collect enough Gems, you can
                         redeem and transfer them as funds to your bank account.
                     </p>
@@ -97,11 +97,11 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-blue-400">
+                        <h3 className="text-lg sm:text-xl font-bold text-white">
                             Vouchers
                         </h3>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-300">
+                    <p className="text-sm sm:text-base text-white">
                         Earn Vouchers by playing skill-based games. Vouchers let you spin
                         the Giveaway Spin for bonus prizes and gems.
                     </p>
@@ -116,11 +116,11 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-green-400">
+                        <h3 className="text-lg sm:text-xl font-bold text-white">
                             Lucky Score
                         </h3>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-300">
+                    <p className="text-sm sm:text-base text-white">
                         Your Lucky Score is visible in your account section. The more you
                         share your personalized game link, the higher your Lucky Score goes,
                         boosting your chances to win in Giveaway spins. (Note: The Lucky
