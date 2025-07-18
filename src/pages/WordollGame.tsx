@@ -31,9 +31,9 @@ function getLetterStatuses(
   return statuses
 }
 export function WordollGame() {
-  useNavigate();
+  const navigate = useNavigate()
   const [targetWord, setTargetWord] = useState('')
-  const [, setSelectedLetters] = useState<string[]>([])
+  const [selectedLetters, setSelectedLetters] = useState<string[]>([])
   const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
   const [currentAttempt, setCurrentAttempt] = useState<string[]>(
       Array(5).fill(''),
@@ -178,12 +178,12 @@ export function WordollGame() {
       status: 'correct' | 'wrong-position' | 'incorrect' | null,
   ) => {
     let bgColor = 'bg-gray-700'
-    if (status === 'correct') bgColor = 'bg-green-500'
-    else if (status === 'wrong-position') bgColor = 'bg-yellow-400'
+    if (status === 'correct') bgColor = 'bg-[#22C55E]'
+    else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]'
     return (
         <div
             key={index}
-            className={`w-14 h-14 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl shadow-md`}
+            className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-lg shadow-md`}
         >
           {letter}
         </div>
@@ -201,17 +201,15 @@ export function WordollGame() {
           className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
           ref={gameContainerRef}
       >
-        <div className="text-center mb-8 mt-16">
-          <p className="text-gray-400">Timer</p>
+        <div className="text-center mb-36 mt-20">
+          <p className="text-white">Timer</p>
           <p className="text-3xl font-bold">{formatTime(timer)}</p>
         </div>
-
         {feedback && (
             <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
               {feedback}
             </div>
         )}
-
         {isMobile && (
             <input
                 ref={inputRef}
@@ -225,28 +223,8 @@ export function WordollGame() {
                 spellCheck="false"
             />
         )}
-
-        <div
-            className="flex justify-center mb-8"
-            onClick={() => inputRef.current?.focus()}
-        >
-          <div className="grid grid-cols-5 gap-2">
-            {Array.from({
-              length: 5,
-            }).map((_, index) => (
-                <div
-                    key={index}
-                    className={`w-10 h-10 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-green-500' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-lg shadow-md ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                    onClick={() => handleLetterClick(index)}
-                >
-                  {currentAttempt[index]}
-                </div>
-            ))}
-          </div>
-        </div>
-
         {lastAttempt && (
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-8 ">
               <div className="grid grid-cols-5 gap-2">
                 {lastAttempt.map((letter, index) =>
                     renderLetterTile(
@@ -258,11 +236,27 @@ export function WordollGame() {
               </div>
             </div>
         )}
-
-        <div className="text-center my-6">
+        <div
+            className="flex justify-center mb-8 "
+            onClick={() => inputRef.current?.focus()}
+        >
+          <div className="grid grid-cols-5 gap-2">
+            {Array.from({
+              length: 5,
+            }).map((_, index) => (
+                <div
+                    key={index}
+                    className={`w-14 h-14 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-xl shadow-md ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                    onClick={() => handleLetterClick(index)}
+                >
+                  {currentAttempt[index]}
+                </div>
+            ))}
+          </div>
+        </div>
+        <div className="text-center my-1  ">
           <p className="text-xl font-medium">{attempts} x attempt</p>
         </div>
-
         {isMobile && (
             <div className="bg-gray-700 rounded-xl px-6 py-2 text-center mt-2 mb-4 mx-auto w-[300px]">
               <div className="flex items-center justify-center h-10">
@@ -276,7 +270,6 @@ export function WordollGame() {
               <p className="text-sm text-gray-300">win</p>
             </div>
         )}
-
         {!isMobile && (
             <>
               <div className="mt-4 mb-4">
@@ -317,7 +310,7 @@ export function WordollGame() {
                 />
               </div>
 
-              <div className="bg-gray-700 rounded-xl px-6 py-4 text-center mt-6 mb-4 mx-auto w-[320px]">
+              <div className="bg-gray-700 rounded-xl  text-center mt-2 mb-4 mx-auto w-[320px] h-15">
                 <div className="flex items-center justify-center h-10">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -326,16 +319,14 @@ export function WordollGame() {
                   />
                   <span className="text-xl font-semibold text-white">10,000</span>
                 </div>
-                <p className="text-sm text-gray-300">win</p>
+                <p className="text-sm text-white font-semibold">win</p>
               </div>
             </>
         )}
-
         <CountdownModal
             isOpen={showCountdown}
             onCountdownComplete={handleCountdownComplete}
         />
-
         {/* Win Modal */}
         <WinModal
             isOpen={showWinModal}
@@ -343,7 +334,6 @@ export function WordollGame() {
             reward={10000}
             gameType="wordoll"
         />
-
         {/* Lose Modal */}
         <LoseModal
             isOpen={showLoseModal}

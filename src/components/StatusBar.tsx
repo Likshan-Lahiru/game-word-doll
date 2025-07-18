@@ -1,4 +1,3 @@
-import React from 'react'
 import { BalanceSelector } from './BalanceSelector'
 
 export function StatusBar({ isMobile }: { isMobile?: boolean }) {

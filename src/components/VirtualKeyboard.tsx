@@ -183,7 +183,7 @@ export function VirtualKeyboard({
                 {row.map((key, keyIndex) => (
                     <button
                         key={`${rowIndex}-${keyIndex}`}
-                        className={`${key.width || 'w-12'} h-14 m-1 rounded-md bg-gray-600 hover:bg-gray-500 text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
+                        className={`${key.width || 'w-12'} h-14 m-1 rounded-md bg-[#67768f] hover:bg-gray-500 text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
                         onClick={() => handleKeyClick(key)}
                     >
                       {key.label || key.value}
