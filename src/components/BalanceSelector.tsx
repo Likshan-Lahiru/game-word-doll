@@ -15,9 +15,9 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
     return (
         <div className="w-full max-w-md mx-auto">
             <div className="relative h-10 sm:h-12 md:h-14 lg:h-16 bg-gray-900 rounded-full border-2 border-gray-800 overflow-hidden">
-                {/* Highlight for selected side */}
+
                 <div
-                    className={`absolute top-0 bottom-0 w-1/2 transition-all duration-300 ease-in-out rounded-full ${selected === 'coin' ? 'left-0' : 'left-1/2 bg-green-500/20'}`}
+                    className={`absolute top-0 bottom-0 w-1/2 transition-all duration-300 ease-in-out rounded-full ${selected === 'coin' ? 'left-0' : 'left-1/2 '}`}
                     style={
                         selected === 'coin'
                             ? {
@@ -28,9 +28,9 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                             }
                     }
                 />
-                {/* Container for both sides */}
+
                 <div className="absolute inset-0 flex">
-                    {/* Coin side */}
+
                     <div
                         className={`flex-1 flex items-center justify-between px-2 sm:px-3 md:px-4 lg:px-6 cursor-pointer ${selected === 'coin' ? 'opacity-100' : 'opacity-70'}`}
                         onClick={() => handleSelect('coin')}
@@ -52,7 +52,7 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                             }
                         />
                     </div>
-                    {/* Ticket side */}
+
                     <div
                         className={`flex-1 flex items-center justify-between px-2 sm:px-3 md:px-4 lg:px-6 cursor-pointer ${selected === 'ticket' ? 'opacity-100' : 'opacity-70'}`}
                         onClick={() => handleSelect('ticket')}
@@ -71,8 +71,8 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                             }
                         />
                         <span className="text-white font-bold text-xs sm:text-sm md:text-base lg:text-lg">
-              {ticketBalance}
-            </span>
+                         {ticketBalance}
+                        </span>
                     </div>
                 </div>
             </div>
