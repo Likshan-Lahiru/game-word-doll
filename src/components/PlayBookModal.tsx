@@ -1,4 +1,4 @@
-
+import React from 'react'
 import { XIcon } from 'lucide-react'
 interface PlayBookModalProps {
   isOpen: boolean
@@ -27,11 +27,11 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                         className="w-8 h-8"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-yellow-400">
+                  <h3 className="text-xl font-bold text-white">
                     Gold Coins
                   </h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-white">
                   Gold Coins are your main in-game currency. Use them to play any
                   of our games! You can get more Gold Coins by buying them in the
                   store, winning them in Wordoll and Lockpickr, or from giveaways.
@@ -47,9 +47,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                         className="w-8 h-8"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-400">Vouchers</h3>
+                  <h3 className="text-xl font-bold text-white">Vouchers</h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-white">
                   Earn Vouchers by playing Lockpickr and Wordoll. Vouchers let you
                   spin the Giveaway Spin for bonus prizes and gems!
                 </p>
@@ -64,9 +64,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                         className="w-8 h-8"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-amber-400">Entries</h3>
+                  <h3 className="text-xl font-bold text-white">Entries</h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-white">
                   Entries are special passes that let you join paid rooms and
                   compete in skill-based games for a chance to win Gems.
                 </p>
@@ -81,11 +81,11 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                         className="w-8 h-8"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-green-400">
+                  <h3 className="text-xl font-bold text-white">
                     Lucky Meter
                   </h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-white">
                   Your Lucky Meter is visible in your account section. The more
                   you share your personalized game link, the higher your Lucky
                   Meter goes, boosting your chances to win in lucky draws and
@@ -103,9 +103,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                         className="w-8 h-8"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-purple-400">Gems</h3>
+                  <h3 className="text-xl font-bold text-white">Gems</h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-white">
                   Gems are a premium reward. If you collect enough Gems, you can
                   redeem and transfer them as funds to your bank account.
                 </p>
