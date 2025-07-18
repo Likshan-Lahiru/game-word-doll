@@ -13,7 +13,7 @@ export function GameCardGrid() {
                 {/* Online status for mobile view - positioned above the cards */}
                 <div className="flex items-center space-x-3 mb-4">
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span className="text-sm">1,568 Online</span>
+                    <span className="text-sm font-medium">1,568 Online</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3 mb-3">
                     {/* Ensure Wordoll is first (top-left) */}
@@ -26,9 +26,9 @@ export function GameCardGrid() {
             </div>
         )
     }
-    // Return original desktop version
+
     return (
-        <div className="flex-1 flex justify-center items-center p-4 game-card-grid">
+        <div className="flex-1 flex justify-center items-center pt-0 game-card-grid">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl w-full">
                 <WordollCard />
                 <LockPickrCard />

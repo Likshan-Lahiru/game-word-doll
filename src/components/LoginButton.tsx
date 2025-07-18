@@ -1,14 +1,25 @@
 import { useNavigate } from 'react-router-dom'
+
 export function LoginButton() {
     const navigate = useNavigate()
     const isMobile = window.innerWidth <= 768
+
     return (
-        <div className={`w-full flex justify-center ${isMobile ? 'py-2' : 'py-6'}`}>
+        <div className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-20 pt-4'}`}>
             <button
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold text-xl py-3 px-16 rounded-full mx-auto transition-colors"
                 onClick={() => navigate('/login')}
+                style={{
+                    backgroundColor: '#2D7FF0',
+                    color: 'white',
+                    fontSize: isMobile ? '14px' : '18px',
+                    padding: isMobile ? '16px 40px' : '16px 40px',
+                    borderRadius: '9999px',
+                    width: isMobile ? '240px' : '240px',
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: 600, // ← Valid: 100 to 900
+                }}
             >
-                {isMobile ? 'LOG IN' : 'Log in'}
+                LOG IN
             </button>
         </div>
     )

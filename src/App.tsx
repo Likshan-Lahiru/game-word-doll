@@ -29,7 +29,7 @@ export function App() {
   return (
       <GlobalProvider children={undefined}>
         <BrowserRouter>
-          <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+          <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white overflow-hidden">
             <Routes>
               <Route
                   path="/"

@@ -43,7 +43,7 @@ export function UserProfilePage() {
     }
   }
   return (
-      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white pt-10">
         <div className="flex-1 flex flex-col items-center justify-start p-4">
           <div
               className={`w-full max-w-3xl ${isMobile ? 'bg-transparent' : 'bg-[#374151]'} rounded-2xl overflow-hidden`}

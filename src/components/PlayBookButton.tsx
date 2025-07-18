@@ -14,7 +14,7 @@ export function PlayBookButton() {
     }
     return (
         <>
-            <div className="fixed right-4 bottom-24 z-10">
+            <div className="fixed right-12 bottom-24 z-10">
                 <button
                     className="flex flex-col items-center justify-center bg-[#374151] rounded-2xl p-4 w-24 h-24"
                     onClick={handleClick}

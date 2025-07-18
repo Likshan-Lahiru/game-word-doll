@@ -13,7 +13,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
     if (isMobile) {
         return (
             <div
-                className="rounded-xl overflow-hidden flex flex-col h-[270px] relative cursor-pointer"
+                className="rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer"
                 onClick={handlePlayClick}
             >
                 {/* Full image background */}
@@ -25,8 +25,8 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                     />
                 </div>
                 {/* Title at the bottom */}
-                <div className="mt-auto py-3 px-4 text-center relative z-10">
-                    <h3 className="text-2xl font-bold text-white">Wordoll</h3>
+                <div className="mt-auto pb-6 px-4 text-center relative z-10">
+                    <h3 className="text-xl font-bold text-white">Wordoll</h3>
                 </div>
             </div>
         )
@@ -44,7 +44,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
             {/* Dark overlay for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
             {/* Title */}
-            <h3 className="text-3xl font-bold text-center text-white relative z-10 mt-6">
+            <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Wordoll
             </h3>
             {/* Spacer to push button to bottom */}
@@ -52,7 +52,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
             {/* Play button */}
             <div className="p-4 flex justify-center mb-6 relative z-10">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-3 px-16 text-white font-bold text-xl border border-blue-400"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-2 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
                 >
                     PLAY

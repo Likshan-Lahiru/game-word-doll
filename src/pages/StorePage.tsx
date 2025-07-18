@@ -159,7 +159,7 @@ export function StorePage() {
   }
   // Desktop view
   return (
-      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+      <div className="flex flex-col w-full  bg-[#1F2937] text-white">
         {/* Top balance bar */}
         <div className="p-4">
           <BalanceSelector
@@ -275,7 +275,7 @@ export function StorePage() {
               ))}
             </div>
             {/* Footer text */}
-            <div className="text-center mt-8">
+            <div className="text-center mt-8 pt-16">
               <p className="text-gray-400">
                 Free to play. NO PURCHASE NECESSARY.
               </p>
