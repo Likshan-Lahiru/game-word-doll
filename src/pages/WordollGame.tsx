@@ -31,7 +31,7 @@ function getLetterStatuses(
   return statuses
 }
 export function WordollGame() {
-  useNavigate();
+  useNavigate()
   const [targetWord, setTargetWord] = useState('')
   const [, setSelectedLetters] = useState<string[]>([])
   const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
@@ -128,12 +128,16 @@ export function WordollGame() {
       setFeedback('Please enter 5 letters')
       return
     }
+    // Store the current attempt for display
     setLastAttempt([...currentAttempt])
+    // Check if the guess matches the target word
     if (guess === targetWord) {
       setShowWinModal(true)
       return
     }
+    // Get statuses for each letter (correct, wrong position, incorrect)
     const statuses = getLetterStatuses(currentAttempt, targetWord)
+    // Update locked positions and current attempt
     const newLocks = [...lockedPositions]
     const newAttempt = [...currentAttempt]
     statuses.forEach((status, index) => {
@@ -146,8 +150,13 @@ export function WordollGame() {
     setLockedPositions(newLocks)
     setCurrentAttempt(newAttempt)
     setAttempts((prev) => prev - 1)
+    // Check if out of attempts
+    if (attempts <= 1) {
+      setShowLoseModal(true)
+      return
+    }
     setFeedback('')
-  }, [currentAttempt, targetWord, lockedPositions])
+  }, [currentAttempt, targetWord, lockedPositions, attempts])
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remaining = seconds % 60
@@ -197,7 +206,7 @@ export function WordollGame() {
     }
   }
   const handleMobileKeyPress = (key: string) => {
-    if (key === 'Enter') {
+    if (key === 'ENTER') {
       checkGuess()
     } else if (key === 'Backspace') {
       let lastFilled = -1
