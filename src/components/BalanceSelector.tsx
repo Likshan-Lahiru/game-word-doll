@@ -14,7 +14,7 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
     }
     return (
         <div className="w-full max-w-md mx-auto ">
-            <div className="relative h-10 sm:h-12 md:h-14 lg:h-16 bg-gray-900 rounded-full border-2 border-gray-800 overflow-hidden ">
+            <div className="relative h-10 sm:h-12 md:h-14 lg:h-16 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ">
 
                 <div
                     className={`absolute top-0 bottom-0 w-1/2 transition-all duration-300 ease-in-out rounded-full ${selected === 'coin' ? 'left-0' : 'left-1/2 '}`}
