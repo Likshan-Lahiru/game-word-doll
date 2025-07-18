@@ -196,12 +196,49 @@ export function WordollGame() {
       setCurrentAttempt(newAttempt)
     }
   }
+  const handleMobileKeyPress = (key: string) => {
+    if (key === 'Enter') {
+      checkGuess()
+    } else if (key === 'Backspace') {
+      let lastFilled = -1
+      for (let i = 4; i >= 0; i--) {
+        if (!lockedPositions[i] && currentAttempt[i]) {
+          lastFilled = i
+          break
+        }
+      }
+      if (lastFilled !== -1) {
+        const newAttempt = [...currentAttempt]
+        newAttempt[lastFilled] = ''
+        setCurrentAttempt(newAttempt)
+      }
+    } else if (/^[A-Z]$/.test(key)) {
+      let nextPos = -1
+      for (let i = 0; i < 5; i++) {
+        if (!lockedPositions[i] && !currentAttempt[i]) {
+          nextPos = i
+          break
+        }
+      }
+      if (nextPos !== -1) {
+        const newAttempt = [...currentAttempt]
+        newAttempt[nextPos] = key
+        setCurrentAttempt(newAttempt)
+      }
+    }
+  }
+  // Mobile keyboard layout
+  const mobileKeyboard = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
+  ]
   return (
       <div
           className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
           ref={gameContainerRef}
       >
-        <div className="text-center mb-36 mt-20">
+        <div className="text-center mb-24 mt-20">
           <p className="text-white">Timer</p>
           <p className="text-3xl font-bold">{formatTime(timer)}</p>
         </div>
@@ -246,7 +283,7 @@ export function WordollGame() {
             }).map((_, index) => (
                 <div
                     key={index}
-                    className={`w-14 h-14 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-xl shadow-md ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                    className={`w-14 h-12 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-xl shadow-md ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                     onClick={() => handleLetterClick(index)}
                 >
                   {currentAttempt[index]}
@@ -254,22 +291,66 @@ export function WordollGame() {
             ))}
           </div>
         </div>
-        <div className="text-center my-1  ">
+        <div className="text-center my-1">
           <p className="text-xl font-medium">{attempts} x attempt</p>
         </div>
+        {/* Mobile view with keyboard and reward display */}
         {isMobile && (
-            <div className="bg-gray-700 rounded-xl px-6 py-2 text-center mt-2 mb-4 mx-auto w-[300px]">
-              <div className="flex items-center justify-center h-10">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
-                    alt="Coins"
-                    className="w-5 h-5 mr-2"
-                />
-                <span className="text-lg font-semibold text-white">10,000</span>
+            <>
+              {/* Reward display above keyboard in mobile view */}
+              <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
+                <div className="flex items-center justify-center">
+                  <img
+                      src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                      alt="Coins"
+                      className="w-6 h-6 mr-2"
+                  />
+                  <span className="text-lg font-bold text-white">10,000</span>
+                </div>
+                <p className="text-white text-lg font-bold">win</p>
               </div>
-              <p className="text-sm text-gray-300">win</p>
-            </div>
+
+              {/* Mobile virtual keyboard */}
+              <div className="w-full max-w-md mx-auto">
+                {mobileKeyboard.map((row, rowIndex) => (
+                    <div
+                        key={rowIndex}
+                        className={`flex justify-center mb-2 ${rowIndex === 1 ? 'px-6' : ''}`}
+                    >
+                      {row.map((key, keyIndex) => (
+                          <button
+                              key={`${rowIndex}-${keyIndex}`}
+                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[40px]'} h-[55px] ${rowIndex === 1 ? 'm-[3px]' : 'm-1'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-sm flex items-center justify-center shadow-md transition-colors`}
+                              onClick={() => handleMobileKeyPress(key)}
+                          >
+                            {key === 'Backspace' ? (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                  <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+                                  />
+                                </svg>
+                            ) : key === 'ENTER' ? (
+                                <span className="text-xs">ENTER</span>
+                            ) : (
+                                key
+                            )}
+                          </button>
+                      ))}
+                    </div>
+                ))}
+              </div>
+            </>
         )}
+        {/* Desktop view - unchanged */}
         {!isMobile && (
             <>
               <div className="mt-4 mb-4">
@@ -309,8 +390,7 @@ export function WordollGame() {
                     className="md:block"
                 />
               </div>
-
-              <div className="bg-gray-700 rounded-xl  text-center mt-2 mb-4 mx-auto w-[320px] h-15">
+              <div className="bg-gray-700 rounded-xl text-center mt-2 mb-4 mx-auto w-[320px] h-15">
                 <div className="flex items-center justify-center h-10">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
