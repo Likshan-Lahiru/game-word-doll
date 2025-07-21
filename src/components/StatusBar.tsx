@@ -17,7 +17,7 @@ export function StatusBar({
                         />
                     </div>
                     <div className="flex justify-center space-x-3 mb-2">
-                        <div className="w-36 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
+                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             {/*outline outline-1 outline-[#374151]*/}
                             <div className="w-7 h-18 flex items-center justify-center">
                                 <img
@@ -28,7 +28,7 @@ export function StatusBar({
                             </div>
                             <span className="ml-1">0</span>
                         </div>
-                        <div className="w-36 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
+                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             {/*outline outline-1 outline-[#374151]*/}
                             <div className="w-8 h-4 flex items-center justify-center">
                                 <img

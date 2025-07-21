@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { StatusBar } from '../components/StatusBar'
@@ -91,7 +91,7 @@ export function GiveawayGame() {
   ]
   if (isMobile) {
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1E2532] text-white">
+        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
           <div className="relative p-4">
             <div className="flex items-center">
               <button
@@ -142,7 +142,7 @@ export function GiveawayGame() {
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
                 alt="Back"
-                className="w-6 h-6"
+                className="w-8 h-8"
             />
           </button>
           {/* Balance Selector */}
@@ -152,29 +152,35 @@ export function GiveawayGame() {
             />
           </div>
           {/* Heart and Diamond */}
-          <div className="flex flex-col space-y-1">
-            <div className="bg-black rounded-full px-3 py-1 flex items-center">
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
-                  alt="Heart"
-                  className="w-4 h-4"
-              />
-              <span className="ml-1">0</span>
+          <div className="flex flex-col space-y-1 mt-5">
+            <div
+                className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-6 outline outline-2 outline-[#374151] mt-2">
+              <div className="w-5 h-7 flex items-center justify-center">
+                <img
+                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                    alt="Heart"
+                    className="w-14 h-28 object-contain"
+                />
+              </div>
+              <span className="ml-1 font-Inter font-semibold">0</span>
             </div>
-            <div className="bg-black rounded-full px-3 py-1 flex items-center">
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
-                  alt="Diamond"
-                  className="w-4 h-4"
-              />
-              <span className="ml-1">0</span>
+            <div
+                className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-3 outline outline-2 outline-[#374151]">
+              <div className="w-8 h-8 flex items-center justify-center">
+                <img
+                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
+                    alt="Diamond"
+                    className="w-14 h-28 object-contain"
+                />
+              </div>
+              <span className="ml-1 font-Inter font-semibold">0</span>
             </div>
           </div>
         </div>
         {/* Main Content */}
-        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-8">
-          <h2 className="text-xl font-medium text-center mb-8">
-            Select any to start the game
+        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">
+          <h2 className="text-xl font-['DM_Sans'] font-medium text-center mr-96 pr-96 mb-8">
+            Select a prize to win!
           </h2>
 
           {/* Prize Cards Row */}
@@ -190,7 +196,7 @@ export function GiveawayGame() {
           </div>
         </div>
         {/* Bottom Navigation */}
-        <BottomNavigation />
+        <BottomNavigation/>
       </div>
   )
 }

@@ -13,32 +13,32 @@ type PrizeCardProps = {
 export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
     if (isMobile) {
         return (
-            <div className="bg-white rounded-xl p-3 text-black flex items-center">
+            <div className="bg-white h-32 rounded-xl p-3 text-black flex items-center">
                 <img
                     src={prize.image}
                     alt={`${prize.coinAmount} Coins`}
-                    className="w-16 h-16"
+                    className="w-28 h-28 pl-4 mr-1  "
                 />
                 <div className="ml-3 flex-1 text-center">
-                    <p className="font-bold text-base">
+                    <p className="font-semibold text-base font-['DM_Sans']">
                         GC {prize.coinAmount.toLocaleString()}
                     </p>
-                    <p className="text-xs">+</p>
-                    <p className="text-sm">{prize.spinAmount} x Spin</p>
+                    <p className="text-sm font-semibold font-['DM_Sans']">+</p>
+                    <p className="text-sm font-semibold font-['DM_Sans']">{prize.spinAmount} x Spin</p>
                 </div>
                 <div className="flex flex-col items-end">
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center mb-2 text-lg pr-8">
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                             alt="Coins"
-                            className="w-4 h-4 mr-1"
+                            className="w-6 h-6 mr-1"
                         />
-                        <span className="font-medium text-sm">
+                        <span className="font-semibold font-['DM_Sans']">
               {prize.cost.toLocaleString()}
             </span>
                     </div>
                     <button
-                        className="bg-green-500 hover:bg-green-600 text-white py-1.5 px-5 rounded-full font-medium text-sm"
+                        className="bg-[#56CA5A] w-36 hover:bg-green-600 text-white py-1.5 px-5 rounded-full font-medium text-sm"
                         onClick={onEnter}
                     >
                         Let's Go!
@@ -48,31 +48,31 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
         )
     }
     return (
-        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[190px] h-[400px]">
+        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[470px]">
 
             <img
                 src={prize.image}
                 alt={`${prize.coinAmount} Coins`}
-                className="w-16 h-16 mb-3"
+                className="w-28 h-28 mb-3"
             />
-            <p className="font-bold text-lg mb-1">
+            <p className="font-bold text-xl mt-10 mb-1">
                 GC {prize.coinAmount.toLocaleString()}
             </p>
-            <p className="text-center mb-1">+</p>
-            <p className="mb-4">{prize.spinAmount} x Spin</p>
-            <div className="flex items-center mb-3">
+            <p className="text-center mb-1 text-xl font-semibold font-['DM_Sans']">+</p>
+            <p className="mb-4 font-['DM_Sans'] font-bold text-xl">{prize.spinAmount} x Spin</p>
+            <div className="flex items-center mb-3 mt-10">
                 <img
                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                     alt="Coins"
-                    className="w-5 h-5 mr-2"
+                    className="w-8 h-8 mr-2"
                 />
-                <span className="font-medium">{prize.cost.toLocaleString()}</span>
+                <span className="text-[#170F49] font-['DM_Sans'] font-bold text-xl">{prize.cost.toLocaleString()}</span>
             </div>
             <button
-                className="bg-green-500 hover:bg-green-600 text-white py-2 w-full rounded-full font-medium mt-auto"
+                className="bg-[#56CA5A] text-xl font-bold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-full h-14 rounded-full  mt-2"
                 onClick={onEnter}
             >
-                ENTER
+                Let's Go!
             </button>
         </div>
     )
