@@ -50,10 +50,10 @@ export function ChangePasswordModal({
   }
   if (!isOpen) return null
   return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/90">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
         <div
             ref={modalRef}
-            className="bg-[#2A3042] rounded-lg p-6 shadow-xl w-full max-w-md mx-4"
+            className="bg-[#374151] rounded-lg p-6 shadow-xl w-full max-w-md mx-4"
         >
           <h2 className="text-xl font-bold text-center mb-4">Change Password</h2>
           <p className="text-gray-400 text-center text-sm mb-6">
@@ -70,7 +70,7 @@ export function ChangePasswordModal({
                 <input
                     type={showOldPassword ? 'text' : 'password'}
                     placeholder="Old Password"
-                    className="w-full px-4 py-3 bg-white text-gray-800 rounded-full focus:outline-none"
+                    className="w-full px-4 py-3 bg-white text-gray-800 rounded-xl font-semibold focus:outline-none"
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
                     required
@@ -93,7 +93,7 @@ export function ChangePasswordModal({
                 <input
                     type={showNewPassword ? 'text' : 'password'}
                     placeholder="New Password"
-                    className="w-full px-4 py-3 bg-white text-gray-800 rounded-full focus:outline-none"
+                    className="w-full px-4 py-3 bg-white text-gray-800 font-extrabold	 rounded-xl focus:outline-none"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
@@ -116,7 +116,7 @@ export function ChangePasswordModal({
                 <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm New Password"
-                    className="w-full px-4 py-3 bg-white text-gray-800 rounded-full focus:outline-none"
+                    className="w-full px-4 py-3 bg-white font-extrabold	 text-gray-800 rounded-xl focus:outline-none"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
@@ -136,7 +136,7 @@ export function ChangePasswordModal({
             </div>
             <button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full transition-colors"
+                className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-extrabold	 py-3 px-4 rounded-xl transition-colors"
             >
               Update Password
             </button>

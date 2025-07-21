@@ -1,5 +1,4 @@
-import React from 'react'
-import  { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LogOutIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 type AccountTabProps = {
@@ -26,30 +25,35 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
   return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold mb-6">Account</h2>
-        <div className="space-y-4">
-          <div className ="">
-            <label className="block text-sm text-gray-400 mb-1">User Name</label>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-white"
-            />
+        <div className="space-y-6">
+          {/* User Name and Email Address on the same line */}
+          <div className="flex flex-wrap gap-4">
+            <div className="flex-1 min-w-[200px]">
+              <label className="block text-sm  mb-1">
+                User Name
+              </label>
+              <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-white"
+              />
+            </div>
+            <div className="flex-1 min-w-[200px]">
+              <label className="block text-sm  mb-1">
+                Email Address
+              </label>
+              <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-gray-100"
+              />
+            </div>
           </div>
+          {/* Country on its own line */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">
-              Email Address
-            </label>
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-gray-100"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Country</label>
+            <label className="block text-sm  mb-1">Country</label>
             <div className="relative">
               <select
                   value={country}
@@ -80,22 +84,26 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               </div>
             </div>
           </div>
-          <button
-              onClick={onChangePassword}
-              className=" text-left hover:underline mt-2"
-          >
-            Change Password
-          </button>
+          {/* Change Password button on its own line */}
+          <div>
+            <button
+                onClick={onChangePassword}
+                className="text-white hover:text-blue-400 font-medium"
+            >
+              Change Password
+            </button>
+          </div>
         </div>
+        {/* Logout and Save buttons on the same line (already like this) */}
         <div className="flex justify-between items-center mt-8">
           <button
               onClick={handleLogout}
-              className="flex items-center text-red-500 hover:text-red-400"
+              className="flex items-center text-[#FF3838] hover:text-red-400"
           >
             <LogOutIcon className="w-5 h-5 mr-2" />
             Log out
           </button>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full">
+          <button className="bg-[#2D7FF0] hover:bg-blue-600 text-white px-6 py-2 rounded-full">
             Save
           </button>
         </div>

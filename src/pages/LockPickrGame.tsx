@@ -323,11 +323,11 @@ export function LockPickrGame() {
           {/* Mobile number pad */}
           <div className="w-full max-w-md mx-auto">
             {/* Row 1: 1-2-3 */}
-            <div className="flex justify-between mb-3">
+            <div className="flex justify-between mb-2">
               {[1, 2, 3].map((num) => (
                   <button
                       key={num}
-                      className="w-[30%] h-16 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
                       onClick={() => handleMobileKeyPress(num.toString())}
                   >
                     {num}
@@ -335,11 +335,11 @@ export function LockPickrGame() {
               ))}
             </div>
             {/* Row 2: 4-5-6 */}
-            <div className="flex justify-between mb-3">
+            <div className="flex justify-between mb-2">
               {[4, 5, 6].map((num) => (
                   <button
                       key={num}
-                      className="w-[30%] h-16 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
                       onClick={() => handleMobileKeyPress(num.toString())}
                   >
                     {num}
@@ -347,11 +347,11 @@ export function LockPickrGame() {
               ))}
             </div>
             {/* Row 3: 7-8-9 */}
-            <div className="flex justify-between mb-3">
+            <div className="flex justify-between mb-2">
               {[7, 8, 9].map((num) => (
                   <button
                       key={num}
-                      className="w-[30%] h-16 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
                       onClick={() => handleMobileKeyPress(num.toString())}
                   >
                     {num}
@@ -361,19 +361,19 @@ export function LockPickrGame() {
             {/* Row 4: ENTER-0-Backspace */}
             <div className="flex justify-between">
               <button
-                  className="w-[30%] h-16 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-xl font-bold"
+                  className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-xl font-bold"
                   onClick={() => handleMobileKeyPress('ENTER')}
               >
                 ENTER
               </button>
               <button
-                  className="w-[30%] h-16 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                  className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
                   onClick={() => handleMobileKeyPress('0')}
               >
                 0
               </button>
               <button
-                  className="w-[30%] h-16 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center"
+                  className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center"
                   onClick={() => handleMobileKeyPress('Backspace')}
               >
                 <img

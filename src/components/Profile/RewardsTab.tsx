@@ -14,7 +14,7 @@ export function RewardsTab() {
       reward: 10,
       current: 10,
       total: 10,
-      collected: true,
+      collected: false,
     },
     {
       label: 'Invite & sign up 35 friends',
@@ -39,14 +39,14 @@ export function RewardsTab() {
           <h3 className={`${isMobile ? 'text-sm' : 'text-base'} mb-3`}>
             Lucky Score
           </h3>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ">
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwNqJAKVjMEoXyCFdqfR7v/Lucky_Meter.png"
                 alt="Lucky Clover"
                 className="w-10 h-10"
             />
             <div className="flex-1">
-              <div className="relative w-full h-2 bg-gray-600 rounded-full overflow-hidden">
+              <div className="relative  h-5 bg-gray-600  overflow-hidden border-[6px] border-gray-800 rounded-full  ">
                 <div
                     className="absolute h-full bg-green-500 rounded-full"
                     style={{
@@ -64,17 +64,17 @@ export function RewardsTab() {
               <div key={index} className={isMobile ? 'flex flex-col' : ''}>
                 {isMobile && (
                     <div className="flex justify-between mb-1">
-                <span className="text-gray-300 text-xs">
+                <span className="text-gray-300 text-xs pt-2">
                   {item.current} / {item.total}
                 </span>
-                      <div className="flex items-center gap-1">
-                        <span className="text-sm">{item.label}</span>
+                      <div className="flex items-center gap-1 ">
+                        <span className="text-sm ">{item.label}</span>
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"
                             alt="Voucher"
-                            className="w-4 h-4"
+                            className="w-8 h-8"
                         />
-                        <span className="text-blue-400 text-xs">× {item.reward}</span>
+                        <span className=" text-xs pr-10">× {item.reward}</span>
                       </div>
                     </div>
                 )}
@@ -85,17 +85,17 @@ export function RewardsTab() {
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"
                             alt="Voucher"
-                            className="w-5 h-5"
+                            className="w-14 h-14"
                         />
-                        <span className="text-blue-400">× {item.reward}</span>
+                        <span className="pr-44 font-bold">× {item.reward}</span>
                       </div>
                     </div>
                 )}
                 <div className="flex items-center gap-3">
                   <div className="relative flex-grow">
-                    <div className="w-full h-2 bg-gray-600 rounded-full overflow-hidden">
+                    <div className="w-full h-5 bg-gray-600  overflow-hidden  border-[6px] border-gray-800 rounded-full">
                       <div
-                          className="h-full bg-blue-500 rounded-full"
+                          className="h-full bg-[#21B9F0] rounded-full"
                           style={{
                             width: `${(item.current / item.total) * 100}%`,
                           }}
@@ -141,7 +141,7 @@ export function RewardsTab() {
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"
                 alt="Voucher"
-                className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} inline mx-1`}
+                className={`${isMobile ? 'w-10 h-10' : 'w-14 h-14'} inline mx-1`}
             />{' '}
             vouchers.
           </p>
