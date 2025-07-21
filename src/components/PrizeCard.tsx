@@ -17,7 +17,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                 <img
                     src={prize.image}
                     alt={`${prize.coinAmount} Coins`}
-                    className="w-28 h-28 pl-4 mr-1  "
+                    className="w-24 h-24 pl-2   "
                 />
                 <div className="ml-3 flex-1 text-center">
                     <p className="font-semibold text-base font-['DM_Sans']">
@@ -33,12 +33,12 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                             alt="Coins"
                             className="w-6 h-6 mr-1"
                         />
-                        <span className="font-semibold font-['DM_Sans']">
+                        <span className="font-semibold text-lg font-['DM_Sans']">
               {prize.cost.toLocaleString()}
             </span>
                     </div>
                     <button
-                        className="bg-[#56CA5A] w-36 hover:bg-green-600 text-white py-1.5 px-5 rounded-full font-medium text-sm"
+                        className="bg-[#56CA5A] w-32 hover:bg-green-600 text-white py-1.5 px-5 rounded-full font-medium text-sm"
                         onClick={onEnter}
                     >
                         Let's Go!
