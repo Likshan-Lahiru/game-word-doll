@@ -38,7 +38,7 @@ export function RedeemPage() {
   // Mobile view
   if (isMobile) {
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+        <div className="flex flex-col w-full min-h-screen bg-[#374151] text-white">
           {/* Store title */}
           <h1 className="text-2xl font-bold text-center my-4">Store</h1>
           {/* Tabs */}
@@ -149,11 +149,12 @@ export function RedeemPage() {
               >
                 Add Bank Account
               </button>
+
             </div>
           </div>
           {/* Note */}
           <div className="px-6 mb-20">
-            <p className="text-gray-400 text-xs text-center">
+            <p className="text-white text-xs text-center">
               Note : 0.25% + $0.25 per payout
             </p>
           </div>
@@ -214,7 +215,7 @@ export function RedeemPage() {
   }
   // Desktop view
   return (
-      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+      <div className="flex flex-col w-full  bg-[#1F2937] text-white">
         {/* Top balance bar */}
         <div className="p-4">
           <BalanceSelector
@@ -295,7 +296,7 @@ export function RedeemPage() {
               <div className="flex-1 flex justify-end">
                 <button
                     onClick={handleRedeemNow}
-                    className="bg-[#4299e1] hover:bg-blue-600 text-white py-2 px-10 rounded-full font-medium"
+                    className="bg-[#2D7FF0] hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
                 >
                   Redeem Now
                 </button>
@@ -312,14 +313,14 @@ export function RedeemPage() {
               <div className="flex-1 flex justify-end">
                 <button
                     onClick={handleAddBankAccount}
-                    className="bg-[#4299e1] hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
+                    className="bg-[#2D7FF0] hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
                 >
                   Add Bank Account
                 </button>
               </div>
             </div>
             <ul className="list-disc pl-5 mt-16">
-              <li className="text-gray-400">Note : 0.25% + $0.25 per payout</li>
+              <li className="text-white">Note : 0.25% + $0.25 per payout</li>
             </ul>
           </div>
         </div>

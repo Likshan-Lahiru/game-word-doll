@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { LogOutIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+
 type AccountTabProps = {
   onChangePassword: () => void
 }
+
 export function AccountTab({ onChangePassword }: AccountTabProps) {
   const navigate = useNavigate()
   const [username, setUsername] = useState('Gina_Blake')
   const [email, setEmail] = useState('example@example.com')
   const [country, setCountry] = useState('Australia')
   const [, setIsMobile] = useState(false)
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
@@ -18,10 +21,12 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
   const handleLogout = () => {
     // Handle logout logic here
     navigate('/login')
   }
+
   return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold mb-6">Account</h2>
@@ -29,9 +34,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
           {/* User Name and Email Address on the same line */}
           <div className="flex flex-wrap gap-4">
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-sm  mb-1">
-                User Name
-              </label>
+              <label className="block text-sm mb-1">User Name</label>
               <input
                   type="text"
                   value={username}
@@ -40,9 +43,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               />
             </div>
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-sm  mb-1">
-                Email Address
-              </label>
+              <label className="block text-sm mb-1">Email Address</label>
               <input
                   type="email"
                   value={email}
@@ -51,9 +52,11 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               />
             </div>
           </div>
-          {/* Country on its own line */}
-          <div>
-            <label className="block text-sm  mb-1">Country</label>
+
+          {/* Country on its own line with smaller width */}
+          {/* Country with responsive width */}
+          <div className="w-full sm:w-[40%] min-w-[180px]">
+            <label className="block text-sm mb-1">Country</label>
             <div className="relative">
               <select
                   value={country}
@@ -84,7 +87,9 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               </div>
             </div>
           </div>
-          {/* Change Password button on its own line */}
+
+
+          {/* Change Password button */}
           <div>
             <button
                 onClick={onChangePassword}
@@ -94,7 +99,8 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
             </button>
           </div>
         </div>
-        {/* Logout and Save buttons on the same line (already like this) */}
+
+        {/* Logout and Save buttons */}
         <div className="flex justify-between items-center mt-8">
           <button
               onClick={handleLogout}
