@@ -1,13 +1,13 @@
-import  { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { WordollCard } from '../components/GameCards/WordollCard'
 import { LockPickrCard } from '../components/GameCards/LockPickrCard'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
-import {StatusBar} from "../components/StatusBar.tsx";
+import { StatusBar } from '../components/StatusBar'
 export function GiveawayEntry() {
   const navigate = useNavigate()
-  const {spinBalance } = useGlobalContext()
+  const { spinBalance } = useGlobalContext()
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
     const handleResize = () => {
@@ -103,8 +103,8 @@ export function GiveawayEntry() {
                   className="w-5 h-5"
               />
             </button>
-            <div className="flex-1">
-              <StatusBar isMobile={true}/>
+            <div className="flex-1 pl-44">
+              <StatusBar hideOnlineCount={true} isMobile={isMobile} />
             </div>
           </div>
         </div>
@@ -123,12 +123,12 @@ export function GiveawayEntry() {
               <div
                   className={`${isMobile ? 'w-[48%]' : 'w-[220px]'} ${isMobile ? 'h-[250px]' : 'h-[380px]'}`}
               >
-                <CustomWordollCard/>
+                <CustomWordollCard />
               </div>
               <div
                   className={`${isMobile ? 'w-[48%]' : 'w-[220px]'} ${isMobile ? 'h-[250px]' : 'h-[380px]'}`}
               >
-                <CustomLockPickrCard/>
+                <CustomLockPickrCard />
               </div>
             </div>
           </div>
@@ -144,7 +144,7 @@ export function GiveawayEntry() {
           </div>
         </div>
         {/* Bottom Navigation */}
-        <BottomNavigation/>
+        <BottomNavigation />
       </div>
   )
 }

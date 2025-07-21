@@ -52,6 +52,7 @@ export function StorePage() {
           'https://i.ibb.co/TMcsVBBr/4-store.png', // Treasure chest
     },
   ]
+
   const handleBuy = (packageItem: any) => {
     // In a real app, this would process payment
     // For now, just add the coins to the balance
@@ -209,7 +210,7 @@ export function StorePage() {
                   <div key={pkg.id} className="relative w-[250px]">
                     {pkg.bestValue && (
                         <div
-                            className="absolute -top-6 left-0 right-0 py-2 text-center font-bold text-white text-xl rounded-t-xl z-10"
+                            className="absolute -top-9 left-0 right-0 py-2 text-center font-bold text-white text-xl rounded-t-xl z-10"
                             style={{
                               background: 'linear-gradient(90deg, #A7F432, #50C878)',
                             }}

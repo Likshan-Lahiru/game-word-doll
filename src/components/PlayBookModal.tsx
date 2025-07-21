@@ -1,4 +1,4 @@
-import { XIcon } from 'lucide-react'
+/*import { XIcon } from 'lucide-react'
 interface PlayBookModalProps {
   isOpen: boolean
   onClose: () => void
@@ -7,7 +7,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
   if (!isOpen) return null
   return (
       <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div className="bg-[#1F2937] rounded-2xl w-full max-w-3xl overflow-hidden">
+        <div className="bg-[#1F2937] rounded-2xl w-full max-w-4xl max-h-2xl overflow-hidden">
           <div className="relative p-6">
             <button
                 onClick={onClose}
@@ -16,7 +16,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
               <XIcon size={24} />
             </button>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Gold Coins Section */}
+              {/!* Gold Coins Section *!/}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full p-1">
@@ -36,7 +36,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                   store, winning them in Wordoll and Lockpickr, or from giveaways.
                 </p>
               </div>
-              {/* Vouchers Section */}
+              {/!* Vouchers Section *!/}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full p-1">
@@ -53,7 +53,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                   spin the Giveaway Spin for bonus prizes and gems!
                 </p>
               </div>
-              {/* Entries Section */}
+              {/!* Entries Section *!/}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full p-1">
@@ -70,7 +70,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                   compete in skill-based games for a chance to win Gems.
                 </p>
               </div>
-              {/* Lucky Meter Section */}
+              {/!* Lucky Meter Section *!/}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full p-1">
@@ -92,7 +92,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                   skill-based games.)
                 </p>
               </div>
-              {/* Gems Section */}
+              {/!* Gems Section *!/}
               <div className="space-y-2 md:col-span-2">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full p-1">
@@ -108,6 +108,133 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                   Gems are a premium reward. If you collect enough Gems, you can
                   redeem and transfer them as funds to your bank account.
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  )
+}*/
+import React from 'react'
+import { XIcon } from 'lucide-react'
+interface PlayBookModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
+export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
+  if (!isOpen) return null
+  return (
+      <div className="fixed inset-0 bg-[#1F2937E5]/70 flex items-center justify-center z-50 p-4">
+        <div className="bg-[#374151] rounded-2xl w-full max-w-4xl  overflow-hidden">
+          <div className="relative p-8">
+            <button
+                onClick={onClose}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white"
+            >
+              <XIcon size={24} />
+            </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* LEFT COLUMN */}
+              <div className="space-y-8">
+                {/* Gold Coins Section */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1">
+                    <div className="rounded-full p-1">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/vD9N9vM2M65c4oq3nT2jFf/Gold_Coins.png"
+                          alt="Gold Coins"
+                          className="w-5 h-5"
+                      />
+                    </div>
+                    <h3 className="text font-bold text-white">
+                      Gold Coins
+                    </h3>
+                  </div>
+                  <p className="text-white">
+                    Gold Coins are your main in-game currency. Use them to play any
+                    of our games! You can get more Gold Coins by buying them in the
+                    store, winning them in Wordoll and Lockpickr, or from giveaways.
+                  </p>
+                </div>
+                {/* Entries Section */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1">
+                    <div className="rounded-full p-1">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
+                          alt="Entries"
+                          className="w-7 h-7"
+                      />
+                    </div>
+                    <h3 className=" font-bold text-white">Entries</h3>
+                  </div>
+                  <p className="text-white">
+                    Entries are special passes that let you join paid rooms and compete in skill-based games
+                    for a chance to win Gems.
+                  </p>
+                </div>
+                {/* Gems Section */}
+                <div className="space-y-1 md:col-span-2">
+                  <div className="flex items-center gap-1">
+                    <div className="rounded-full p-1">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLaoa9Q2SuXLLGphZCDzFr/Gems.png"
+                          alt="Gems"
+                          className="w-6 h-6"
+                      />
+                    </div>
+                    <h3 className=" font-bold text-white">Gems</h3>
+                  </div>
+                  <p className="text-white">
+                    Gems are a premium reward. If you collect enough Gems, you can
+                    redeem and transfer them as funds to your bank account.
+                  </p>
+                </div>
+              </div>
+              {/* RIGHT COLUMN */}
+              <div className="space-y-8">
+                {/* Vouchers Section */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1">
+                    <div className="rounded-full p-1">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/3YTVbiE1DuPqiMrrdaLvve/Vouchers.png"
+                          alt="Vouchers"
+                          className="w-8 h-8"
+                      />
+                    </div>
+                    <h3 className=" font-bold text-white">
+                      Vouchers
+                    </h3>
+                  </div>
+                  <p className="text-white">
+                    Earn Vouchers by playing skill-based games. Vouchers let you
+                    spin the Giveaway Spin for bonus prizes and gems!
+                  </p>
+                </div>
+                {/* Lucky Score Section */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1">
+                    <div className="rounded-full p-1">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/nsm9dStD4yr2m3TCXP3A67/Lucky_Meter.png"
+                          alt="Lucky Meter"
+                          className="w-9 h-9"
+                      />
+                    </div>
+                    <h3 className=" font-bold text-white">
+                      Lucky Meter
+                    </h3>
+                  </div>
+                  <p className="text-white">
+                    Your Lucky Meter is visible in your account section. The more
+                    you share your personalized game link, the higher your Lucky
+                    Meter goes, boosting your chances to win in lucky draws and
+                    spins! (Note: The Lucky Meter doesn't affect outcomes in
+                    skill-based games.)
+                  </p>
+                </div>
+
               </div>
             </div>
           </div>

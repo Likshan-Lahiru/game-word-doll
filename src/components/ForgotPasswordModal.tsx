@@ -58,21 +58,21 @@ export function ForgotPasswordModal({
                     id={`code-${index}`}
                     type="text"
                     maxLength={1}
-                    className="w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-xl font-bold bg-white rounded-md focus:outline-none text-gray-800"
+                    className="w-10 h-12 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-bold bg-white rounded-md focus:outline-none text-gray-800"
                     value={digit}
                     onChange={(e) => handleCodeChange(index, e.target.value)}
                 />
             ))}
           </div>
           <button
-              className="w-full bg-[#4299e1] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-full transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
+              className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-full transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
               onClick={handleVerifyCode}
           >
             Verify
           </button>
           <button
               type="button"
-              className="w-full text-center text-[#4299e1] hover:underline py-2 text-xs sm:text-sm"
+              className="w-full text-center  hover:underline py-2 text-xs sm:text-sm"
               onClick={handleResendCode}
           >
             Resend code

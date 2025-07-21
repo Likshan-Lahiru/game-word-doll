@@ -95,7 +95,7 @@ export function ResetPasswordModal({
             </div>
             <button
                 type="submit"
-                className="w-full bg-[#4299e1] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-full transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
+                className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-full transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
             >
               Reset
             </button>

@@ -17,6 +17,7 @@ import { StorePage } from './pages/StorePage'
 import { RedeemPage } from './pages/RedeemPage'
 import { GuidePage } from './pages/GuidePage'
 import { GlobalProvider } from './context/GlobalContext'
+import {HomePage} from "./pages/HomePage.tsx";
 export function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
@@ -29,21 +30,10 @@ export function App() {
   return (
       <GlobalProvider children={undefined}>
         <BrowserRouter>
-          <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white overflow-hidden">
+          <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white ">
             <Routes>
-              <Route
-                  path="/"
-                  element={
-                    <>
-                      <StatusBar isMobile={isMobile} />
-                      {!isMobile && <WinningStatus />}
-                      <GameCardGrid />
-                      {!isMobile && <LoginButton />}
-                      <BottomNavigation />
-                      {!isMobile && <PlayBookButton />}
-                    </>
-                  }
-              />
+              <Route path="/" element={<HomePage isMobile={isMobile} />} />
+
               <Route path="/wordoll-game" element={<WordollGame />} />
               <Route path="/giveaway-game" element={<GiveawayGame />} />
               <Route path="/giveaway-entry" element={<GiveawayEntry />} />

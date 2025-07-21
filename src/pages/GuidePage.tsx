@@ -22,13 +22,13 @@ export function GuidePage() {
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
                         alt="Back"
-                        className="w-4 h-4 sm:w-6 sm:h-6"
+                        className="w-8 h-8 sm:w-6 sm:h-6"
                     />
                 </button>
-                <h1 className="text-xl sm:text-2xl font-bold">Guide</h1>
+                <h1 className="text-2xl sm:text-2xl font-bold font-['DM_Sans']">Guide</h1>
             </div>
             {/* Main Content - Scrollable container */}
-            <div className="flex-1 px-3 py-4 sm:p-6 space-y-5 sm:space-y-8 overflow-y-auto">
+            <div className="flex-1 px-10 py-4 sm:p-6 space-y-5 sm:space-y-8 overflow-y-auto">
                 {/* Gold Coins Section */}
                 <div className="space-y-1 sm:space-y-2">
                     <div className="flex items-center gap-2 sm:gap-3">
@@ -39,7 +39,7 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white">
+                        <h3 className="text-base sm:text-xl font-bold text-white">
                             Gold Coins
                         </h3>
                     </div>
@@ -56,10 +56,10 @@ export function GuidePage() {
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/pghjseEomEmEhcxZ1KTDRe/Entries.png"
                                 alt="Entries"
-                                className="w-6 h-6 sm:w-8 sm:h-8"
+                                className="w-8 h-8 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white">
+                        <h3 className="text-base sm:text-xl font-bold text-white">
                             Entries
                         </h3>
                     </div>
@@ -78,7 +78,7 @@ export function GuidePage() {
                                 className="w-6 h-6 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white">
+                        <h3 className="text-base sm:text-xl font-bold text-white">
                             Gems
                         </h3>
                     </div>
@@ -94,10 +94,10 @@ export function GuidePage() {
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/3YTVbiE1DuPqiMrrdaLvve/Vouchers.png"
                                 alt="Vouchers"
-                                className="w-6 h-6 sm:w-8 sm:h-8"
+                                className="w-8 h-8 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white">
+                        <h3 className="text-base sm:text-xl font-bold text-white">
                             Vouchers
                         </h3>
                     </div>
@@ -113,10 +113,10 @@ export function GuidePage() {
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/nsm9dStD4yr2m3TCXP3A67/Lucky_Meter.png"
                                 alt="Lucky Score"
-                                className="w-6 h-6 sm:w-8 sm:h-8"
+                                className="w-8 h-8 sm:w-8 sm:h-8"
                             />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white">
+                        <h3 className="text-base sm:text-xl font-bold text-white">
                             Lucky Score
                         </h3>
                     </div>

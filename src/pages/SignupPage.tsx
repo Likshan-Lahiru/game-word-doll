@@ -23,7 +23,7 @@ export function SignupPage() {
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
                 alt="Back"
-                className="w-5 h-5"
+                className="w-8 h-8"
             />
           </button>
         </div>
@@ -33,7 +33,7 @@ export function SignupPage() {
               <input
                   type="text"
                   placeholder="User Name"
-                  className="w-full px-4 py-3 bg-[#374151] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 bg-[#374151] rounded-xl  focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -41,7 +41,7 @@ export function SignupPage() {
               <input
                   type="email"
                   placeholder="Email"
-                  className="w-full px-4 py-3 bg-[#374151] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 bg-[#374151] rounded-xl  focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -50,7 +50,7 @@ export function SignupPage() {
                 <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
-                    className="w-full px-4 py-3 bg-[#374151] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 bg-[#374151] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -70,24 +70,28 @@ export function SignupPage() {
               <input
                   type="text"
                   placeholder="Country"
-                  className="w-full px-4 py-3 bg-[#374151] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 bg-[#374151] rounded-xl  focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                   required
               />
-              <div className="bg-[#374151] rounded-md p-4 text-center">
+              <div className="bg-[#374151] rounded-xl  p-4 text-center">
                 <h3 className="font-bold mb-2">Sign Up Bonus</h3>
                 <p className="mb-1">Get</p>
                 <div className="flex items-center justify-center mb-1">
-                  <span className="bg-yellow-500 rounded-full w-5 h-5 inline-block mr-2"></span>
+                  <img
+                      src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                        alt="Gold Coins"
+                      className="w-5 h-5 object-contain"
+                  />
                   <span className="font-bold">15,000,000</span>
                 </div>
-                <p className="mb-2">FREE</p>
-                <p>Gold Coins to Play!</p>
+                <p className="mb-2 font-bold">FREE</p>
+                <p className="mb-2 font-bold">Gold Coins to Play!</p>
               </div>
               <button
                   type="submit"
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-md transition-colors"
+                  className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-2xl text-white font-bold py-3 px-4 rounded-xl  transition-colors"
               >
                 Sign Up
               </button>

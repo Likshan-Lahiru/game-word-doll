@@ -183,10 +183,18 @@ export function VirtualKeyboard({
                 {row.map((key, keyIndex) => (
                     <button
                         key={`${rowIndex}-${keyIndex}`}
-                        className={`${key.width || 'w-12'} h-14 m-1 rounded-md bg-[#67768f] hover:bg-gray-500 text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
+                        className={`${key.width || 'w-12'} h-16 m-1 rounded-md bg-[#67768F] hover:bg-gray-500 text-white font-bold text-xl flex items-center justify-center shadow-md transition-colors`}
                         onClick={() => handleKeyClick(key)}
                     >
-                      {key.label || key.value}
+                      {key.action === 'backspace' ? (
+                          <img
+                              src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                              alt="Backspace"
+                              className="h-9 w-11"
+                          />
+                      ) : (
+                          key.label || key.value
+                      )}
                     </button>
                 ))}
               </div>
@@ -208,7 +216,7 @@ export function VirtualKeyboard({
                 {row.map((key, keyIndex) => (
                     <button
                         key={`${rowIndex}-${keyIndex}`}
-                        className={`flex-1 h-16 mx-1.5 rounded-md bg-slate-600 hover:bg-slate-500 text-white font-bold text-2xl flex items-center justify-center shadow-md transition-colors`}
+                        className={`flex-1 h-16 mx-1.5 rounded-md bg-[#67768F] hover:bg-slate-500 text-white font-bold text-xl flex items-center justify-center shadow-md transition-colors`}
                         onClick={() => handleKeyClick(key)}
                     >
                       {key.action === 'backspace' ? (

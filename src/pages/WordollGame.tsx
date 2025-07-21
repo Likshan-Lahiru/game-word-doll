@@ -271,7 +271,7 @@ export function WordollGame() {
         )}
         {lastAttempt && (
             <div className="flex justify-center mb-8 ">
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
                 {lastAttempt.map((letter, index) =>
                     renderLetterTile(
                         letter,
@@ -292,7 +292,7 @@ export function WordollGame() {
             }).map((_, index) => (
                 <div
                     key={index}
-                    className={`w-14 h-12 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-xl shadow-md ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                    className={`w-14 h-14 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                     onClick={() => handleLetterClick(index)}
                 >
                   {currentAttempt[index]}
@@ -301,7 +301,7 @@ export function WordollGame() {
           </div>
         </div>
         <div className="text-center my-1">
-          <p className="text-xl font-medium">{attempts} x attempt</p>
+          <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
         </div>
         {/* Mobile view with keyboard and reward display */}
         {isMobile && (
@@ -329,24 +329,15 @@ export function WordollGame() {
                       {row.map((key, keyIndex) => (
                           <button
                               key={`${rowIndex}-${keyIndex}`}
-                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[50px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-sm flex items-center justify-center shadow-md transition-colors`}
+                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
                               onClick={() => handleMobileKeyPress(key)}
                           >
                             {key === 'Backspace' ? (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                  <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
-                                  />
-                                </svg>
+                                <img
+                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                    alt="Backspace"
+                                    className="h-8 w-8"
+                                />
                             ) : key === 'ENTER' ? (
                                 <span className="text-xs">ENTER</span>
                             ) : (
@@ -408,7 +399,7 @@ export function WordollGame() {
                   />
                   <span className="text-xl font-semibold text-white">10,000</span>
                 </div>
-                <p className="text-sm text-white font-semibold">win</p>
+                <p className="text-lg text-white font-semibold">win</p>
               </div>
             </>
         )}

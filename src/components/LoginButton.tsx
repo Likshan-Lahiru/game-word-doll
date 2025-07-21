@@ -5,7 +5,7 @@ export function LoginButton() {
     const isMobile = window.innerWidth <= 768
 
     return (
-        <div className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-20 pt-4'}`}>
+        <div className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-16 pt-4'}`}>
             <button
                 onClick={() => navigate('/login')}
                 style={{
@@ -16,7 +16,7 @@ export function LoginButton() {
                     borderRadius: '9999px',
                     width: isMobile ? '240px' : '240px',
                     fontFamily: 'Inter, sans-serif',
-                    fontWeight: 600, // ← Valid: 100 to 900
+                    fontWeight: 600,
                 }}
             >
                 LOG IN

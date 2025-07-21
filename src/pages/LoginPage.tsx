@@ -71,7 +71,7 @@ export function LoginPage() {
               <div className="flex justify-end">
                 <button
                     type="button"
-                    className="text-[#4299e1] text-xs sm:text-sm hover:underline"
+                    className="text-[#006CB9] text-xs sm:text-sm hover:underline"
                     onClick={handleForgotPassword}
                 >
                   Forgot Password?
@@ -79,16 +79,16 @@ export function LoginPage() {
               </div>
               <button
                   type="submit"
-                  className="w-full bg-[#4299e1] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                  className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
               >
                 Log in
               </button>
             </form>
             <div className="mt-6 text-center">
-              <p className="text-gray-400 text-xs sm:text-sm">
+              <p className="text-white text-lg sm:text-sm">
                 Don't have an account?{' '}
                 <button
-                    className="text-[#4299e1] hover:underline"
+                    className="text-[#006CB9] font-bold hover:underline"
                     onClick={() => navigate('/signup')}
                 >
                   Sign up
