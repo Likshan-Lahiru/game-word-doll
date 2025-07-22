@@ -65,7 +65,7 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-Inter font-semibold">0</span>
+                            <span className="ml-1 text-lg font-Inter font-semibold">0</span>
                         </div>
                         <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-3 outline outline-2 outline-[#374151]">
                             <div className="w-8 h-8 flex items-center justify-center">
@@ -75,7 +75,7 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-Inter font-semibold">0</span>
+                            <span className="ml-1 text-lg font-Inter font-semibold">0</span>
                         </div>
                     </div>
                 </>
