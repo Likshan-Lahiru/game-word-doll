@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import CoinVoucherToggle from "../components/test.tsx";
 export function SignupPage() {
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
@@ -15,6 +16,7 @@ export function SignupPage() {
   }
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+
         <div className="p-4">
           <button
               className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center"

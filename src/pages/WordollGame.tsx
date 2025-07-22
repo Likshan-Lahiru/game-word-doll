@@ -312,7 +312,7 @@ export function WordollGame() {
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                       alt="Coins"
-                      className="w-6 h-6 mr-2"
+                      className="5 h-5 mr-1"
                   />
                   <span className="text-lg font-bold text-white">10,000</span>
                 </div>
@@ -395,7 +395,7 @@ export function WordollGame() {
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                       alt="Coins"
-                      className="w-6 h-6 mr-2"
+                      className="w-5 h-5 mr-2"
                   />
                   <span className="text-xl font-semibold text-white">10,000</span>
                 </div>

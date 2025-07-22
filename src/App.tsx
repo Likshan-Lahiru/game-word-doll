@@ -18,6 +18,7 @@ import { RedeemPage } from './pages/RedeemPage'
 import { GuidePage } from './pages/GuidePage'
 import { GlobalProvider } from './context/GlobalContext'
 import {HomePage} from "./pages/HomePage.tsx";
+import {SpinPage} from "./pages/SpinPage.tsx";
 export function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
@@ -44,6 +45,7 @@ export function App() {
               <Route path="/store" element={<StorePage />} />
               <Route path="/redeem" element={<RedeemPage />} />
               <Route path="/guide" element={<GuidePage />} />
+              <Route path="/spin" element={<SpinPage />} />
             </Routes>
           </div>
         </BrowserRouter>

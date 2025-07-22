@@ -151,9 +151,8 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     </h3>
                   </div>
                   <p className="text-white">
-                    Gold Coins are your main in-game currency. Use them to play any
-                    of our games! You can get more Gold Coins by buying them in the
-                    store, winning them in Wordoll and Lockpickr, or from giveaways.
+                    Gold Coins are your main in-game currency. Use them to play any of our games.
+                    You can get more Gold Coins by buying them in the store or winning them from games.
                   </p>
                 </div>
                 {/* Entries Section */}
@@ -169,8 +168,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <h3 className=" font-bold text-white">Entries</h3>
                   </div>
                   <p className="text-white">
-                    Entries are special passes that let you join paid rooms and compete in skill-based games
-                    for a chance to win Gems.
+                    Entries are special passes that let you join paid
+                    rooms and compete in skill-based games for a
+                    chance to win Gems.
                   </p>
                 </div>
                 {/* Gems Section */}
@@ -186,8 +186,8 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <h3 className=" font-bold text-white">Gems</h3>
                   </div>
                   <p className="text-white">
-                    Gems are a premium reward. If you collect enough Gems, you can
-                    redeem and transfer them as funds to your bank account.
+                    Gems are a premium reward. If you collect enough Gems,
+                    you can redeem and transfer them as funds to your bank account.
                   </p>
                 </div>
               </div>
@@ -208,8 +208,8 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     </h3>
                   </div>
                   <p className="text-white">
-                    Earn Vouchers by playing skill-based games. Vouchers let you
-                    spin the Giveaway Spin for bonus prizes and gems!
+                    Earn Vouchers by playing skill-based games.
+                    Vouchers let you spin the Giveaway Spin for bonus prizes and gems!
                   </p>
                 </div>
                 {/* Lucky Score Section */}
@@ -218,20 +218,18 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <div className="rounded-full p-1">
                       <img
                           src="https://uploadthingy.s3.us-west-1.amazonaws.com/nsm9dStD4yr2m3TCXP3A67/Lucky_Meter.png"
-                          alt="Lucky Meter"
+                          alt="Lucky Score"
                           className="w-9 h-9"
                       />
                     </div>
                     <h3 className=" font-bold text-white">
-                      Lucky Meter
+                      Lucky Score
                     </h3>
                   </div>
                   <p className="text-white">
-                    Your Lucky Meter is visible in your account section. The more
-                    you share your personalized game link, the higher your Lucky
-                    Meter goes, boosting your chances to win in lucky draws and
-                    spins! (Note: The Lucky Meter doesn't affect outcomes in
-                    skill-based games.)
+                    Your Lucky Score is visible in your account section. The more you share your personalized game link,
+                    the higher your Lucky Score goes, boosting your chances to win in Giveaway spins.
+                    (Note: The Lucky Score doesn’t affect outcomes in skill-based games.)
                   </p>
                 </div>
 
