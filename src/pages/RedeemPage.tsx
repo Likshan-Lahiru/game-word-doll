@@ -38,7 +38,7 @@ export function RedeemPage() {
   // Mobile view
   if (isMobile) {
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#374151] text-white">
+        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
           {/* Store title */}
           <h1 className="text-2xl font-bold text-center my-4">Store</h1>
           {/* Tabs */}
