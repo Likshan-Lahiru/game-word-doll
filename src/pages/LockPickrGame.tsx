@@ -565,16 +565,16 @@ export function LockPickrGame() {
             </button>
           </div>
           <br />
-          <div className="bg-[#374151] rounded-xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
+          <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
             <div className="flex items-center justify-center pt-2 h-10">
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                   alt="Coins"
                   className="w-5 h-5 mr-2"
               />
-              <span className="text-lg font-['Inter']  font-semibold text-white">10,000</span>
+              <span className="text-xl font-['Inter']  font-semibold text-white">10,000</span>
             </div>
-            <p className="text-lg pl-6  text-white font-semibold">win</p>
+            <p className="text-xl pl-6  text-white font-semibold">win</p>
           </div>
         </div>
         {/* Countdown Modal */}
