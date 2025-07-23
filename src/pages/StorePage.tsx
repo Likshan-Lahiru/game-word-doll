@@ -498,7 +498,7 @@ export function StorePage() {
           </div>
           {/* Right content area */}
           <div className="flex-1 bg-[#374151] rounded-xl p-6">
-            <h2 className="text-xl mb-6">GC Package</h2>
+            <h2 className="text font-medium mb-6">GC Package</h2>
             {/* Package cards - updated to be responsive with min/max width */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               {packages.map((pkg) => (
@@ -508,7 +508,7 @@ export function StorePage() {
                   >
                     {pkg.bestValue && (
                         <div
-                            className="absolute -top-6 left-0 right-0 py-2 text-center font-bold text-white text-xl rounded-t-xl z-10"
+                            className="absolute -top-10 h-12 left-0 right-0 py-2 text-center font-bold text-white text-xl rounded-t-2xl z-10"
                             style={{
                               background: 'linear-gradient(90deg, #A7F432, #50C878)',
                             }}
@@ -517,7 +517,7 @@ export function StorePage() {
                         </div>
                     )}
                     <div
-                        className={`rounded-xl overflow-hidden flex flex-col h-[450px] ${pkg.bestValue ? 'pt-0 border-2 border-[#8CDF4F]' : ''}`}
+                        className={`rounded-xl overflow-hidden flex flex-col h-[440px] ${pkg.bestValue ? 'pt-0 border-2 border-[#8CDF4F]' : ''}`}
                         style={{
                           background: 'white',
                         }}
