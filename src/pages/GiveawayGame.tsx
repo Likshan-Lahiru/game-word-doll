@@ -17,7 +17,7 @@ export function GiveawayGame() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
   const handleEnterGame = () => {
-    navigate('/wordoll-game')
+    navigate('/spin-wordoll-game')
   }
   // Prize data array
   const prizes: PrizeData[] = [

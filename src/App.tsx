@@ -19,6 +19,7 @@ import { GuidePage } from './pages/GuidePage'
 import { GlobalProvider } from './context/GlobalContext'
 import {HomePage} from "./pages/HomePage.tsx";
 import {SpinPage} from "./pages/SpinPage.tsx";
+import {SpinWordollGame} from "./pages/spinWordollGame.tsx";
 export function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
@@ -36,6 +37,7 @@ export function App() {
               <Route path="/" element={<HomePage isMobile={isMobile} />} />
 
               <Route path="/wordoll-game" element={<WordollGame />} />
+              <Route path="/spin-wordoll-game" element={<SpinWordollGame />} />
               <Route path="/giveaway-game" element={<GiveawayGame />} />
               <Route path="/giveaway-entry" element={<GiveawayEntry />} />
               <Route path="/lock-pickr-game" element={<LockPickrGame />} />
