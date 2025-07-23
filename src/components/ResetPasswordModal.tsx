@@ -33,12 +33,12 @@ export function ResetPasswordModal({
   }
   if (!isOpen) return null
   return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1E2432]/90">
-        <div className="bg-[#353A47] rounded-lg p-5 sm:p-8 shadow-xl w-full max-w-md mx-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
+        <div className="bg-[#374151] rounded-lg p-5 sm:p-8 shadow-xl w-full max-w-md mx-4">
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">
             Password Reset
           </h2>
-          <p className="text-gray-400 text-center text-xs sm:text-sm mb-4 sm:mb-6">
+          <p className="text-[#FFFFFF80]/50 font-['Inter'] text-center text-xl sm:text-sm mb-4 sm:mb-6">
             Enter a new password below to reset your password.
           </p>
           {error && (
@@ -52,7 +52,7 @@ export function ResetPasswordModal({
                 <input
                     type={showNewPassword ? 'text' : 'password'}
                     placeholder="New Password"
-                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-full focus:outline-none text-gray-800 text-sm sm:text-base"
+                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-2xl focus:outline-none text-gray-800 text-sm sm:text-base"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
@@ -75,7 +75,7 @@ export function ResetPasswordModal({
                 <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm Password"
-                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-full focus:outline-none text-gray-800 text-sm sm:text-base"
+                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-2xl focus:outline-none text-gray-800 text-sm sm:text-base"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
@@ -95,13 +95,13 @@ export function ResetPasswordModal({
             </div>
             <button
                 type="submit"
-                className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-full transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
+                className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
             >
               Reset
             </button>
             <button
                 type="button"
-                className="w-full bg-white text-gray-800 font-bold py-2 sm:py-3 px-4 rounded-full transition-colors text-sm sm:text-base"
+                className="w-full bg-white text-gray-800 font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors text-sm sm:text-base"
                 onClick={onClose}
             >
               Cancel

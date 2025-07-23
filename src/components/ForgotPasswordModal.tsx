@@ -41,15 +41,15 @@ export function ForgotPasswordModal({
   }
   if (!isOpen) return null
   return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1E2432]/90">
-        <div className="bg-[#353A47] rounded-lg p-5 sm:p-8 shadow-xl w-full max-w-md mx-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
+        <div className="bg-[#374151] font-['Inter']  rounded-lg p-5 sm:p-8 shadow-xl w-full max-w-md mx-4">
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">
             Password Reset
           </h2>
-          <p className="text-gray-400 text-center text-xs sm:text-sm mb-4 sm:mb-6">
+          <p className="text-gray-400 font-['Inter'] text-center text-xs sm:text-sm mb-4 sm:mb-6">
             Please enter the 6 digits code that was sent to
             <br />
-            <span className="text-white">{email}</span>
+            <span className="font-['Inter'] text-white">{email}</span>
           </p>
           <div className="flex justify-center space-x-1 sm:space-x-2 mb-4 sm:mb-6">
             {verificationCode.map((digit, index) => (
@@ -65,14 +65,14 @@ export function ForgotPasswordModal({
             ))}
           </div>
           <button
-              className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-full transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
+              className=" w-72 ml-10 bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
               onClick={handleVerifyCode}
           >
             Verify
           </button>
           <button
               type="button"
-              className="w-full text-center  hover:underline py-2 text-xs sm:text-sm"
+              className="w-full text-center  hover:underline py-2 text-xs sm:text-sm font-['Inter']"
               onClick={handleResendCode}
           >
             Resend code
