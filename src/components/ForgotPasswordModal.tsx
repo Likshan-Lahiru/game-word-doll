@@ -49,7 +49,7 @@ export function ForgotPasswordModal({
           <p className="text-gray-400 font-['Inter'] text-center text-xs sm:text-sm mb-4 sm:mb-6">
             Please enter the 6 digits code that was sent to
             <br />
-            <span className="font-['Inter'] text-white">{email}</span>
+            <span className="font-['Inter'] text-gray-50">{email}</span>
           </p>
           <div className="flex justify-center space-x-1 sm:space-x-2 mb-4 sm:mb-6">
             {verificationCode.map((digit, index) => (
