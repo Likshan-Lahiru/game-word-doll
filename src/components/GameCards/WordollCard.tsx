@@ -46,7 +46,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 />
             </div>
             {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
+            {/*<div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>*/}
             {/* x3 indicator in top right corner */}
             <div className="absolute top-4 right-6 text-white text-2xl font-semibold z-10">
                 x 3
@@ -60,7 +60,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
             {/* Play button */}
             <div className="p-4 flex justify-center mb-6 relative z-10">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-2 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
                 >
                     PLAY

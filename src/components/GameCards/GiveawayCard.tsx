@@ -40,7 +40,7 @@ export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
                 />
             </div>
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
+            {/*<div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>*/}
             {/* Title */}
             <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Fortune Spin
@@ -50,7 +50,7 @@ export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
             {/* Play button */}
             <div className="p-4 flex justify-center mb-6 relative z-10">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-2 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
                 >
                     PLAY

@@ -414,7 +414,7 @@ export function LockPickrGame() {
           tabIndex={0}
       >
         {/* Timer */}
-        <div className="text-center mb-12 mt-8">
+        <div className="text-center mb-16 mt-8">
           <p className="text-white">Timer</p>
           <p className="text-3xl font-bold">{formatTime(timer)}</p>
         </div>
@@ -504,11 +504,11 @@ export function LockPickrGame() {
         {/* Desktop number pad */}
         <div className="w-full max-w-md mx-auto mb-10">
           {/* Row 1: 1-2-3 */}
-          <div className="flex justify-center gap-4 mb-4">
+          <div className="flex justify-center gap-2 mb-2">
             {[1, 2, 3].map((num) => (
                 <button
                     key={num}
-                    className="w-[140px] h-[70px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress(num.toString())}
                 >
                   {num}
@@ -516,11 +516,11 @@ export function LockPickrGame() {
             ))}
           </div>
           {/* Row 2: 4-5-6 */}
-          <div className="flex justify-center gap-4 mb-4">
+          <div className="flex justify-center gap-2 mb-2">
             {[4, 5, 6].map((num) => (
                 <button
                     key={num}
-                    className="w-[140px] h-[70px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress(num.toString())}
                 >
                   {num}
@@ -528,11 +528,11 @@ export function LockPickrGame() {
             ))}
           </div>
           {/* Row 3: 7-8-9 */}
-          <div className="flex justify-center gap-4 mb-4">
+          <div className="flex justify-center gap-2 mb-2">
             {[7, 8, 9].map((num) => (
                 <button
                     key={num}
-                    className="w-[140px] h-[70px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress(num.toString())}
                 >
                   {num}
@@ -540,21 +540,21 @@ export function LockPickrGame() {
             ))}
           </div>
           {/* Row 4: ENTER-0-Backspace */}
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-2">
             <button
-                className="w-[140px] h-[70px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
+                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
                 onClick={() => handleDesktopKeyPress('ENTER')}
             >
               ENTER
             </button>
             <button
-                className="w-[140px] h-[70px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                 onClick={() => handleDesktopKeyPress('0')}
             >
               0
             </button>
             <button
-                className="w-[140px] h-[70px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
+                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
                 onClick={() => handleDesktopKeyPress('Backspace')}
             >
               <img
@@ -565,16 +565,16 @@ export function LockPickrGame() {
             </button>
           </div>
           <br />
-          <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
-            <div className="flex items-center justify-center">
+          <div className="bg-[#374151] rounded-xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
+            <div className="flex items-center justify-center pt-2 h-10">
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                   alt="Coins"
-                  className="w-6 h-6 mr-2"
+                  className="w-5 h-5 mr-2"
               />
-              <span className="text-lg font-bold text-white">10,000</span>
+              <span className="text-lg font-['Inter']  font-semibold text-white">10,000</span>
             </div>
-            <p className="text-white text-lg font-bold">win</p>
+            <p className="text-lg pl-6  text-white font-semibold">win</p>
           </div>
         </div>
         {/* Countdown Modal */}

@@ -324,7 +324,7 @@ export function WordollGame() {
                 {mobileKeyboard.map((row, rowIndex) => (
                     <div
                         key={rowIndex}
-                        className={`flex justify-center mb-1 ${rowIndex === 1 ? 'px-4' : ''}`}
+                        className={`flex justify-center mb-0.5 ${rowIndex === 1 ? 'px-4' : ''}`}
                     >
                       {row.map((key, keyIndex) => (
                           <button
@@ -390,16 +390,16 @@ export function WordollGame() {
                     className="md:block"
                 />
               </div>
-              <div className="bg-gray-700 rounded-xl text-center mt-2 mb-4 mx-auto w-[320px] h-15">
-                <div className="flex items-center justify-center h-10">
+              <div className="bg-[#374151] rounded-xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
+                <div className="flex items-center justify-center pt-2 h-10">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                       alt="Coins"
                       className="w-5 h-5 mr-2"
                   />
-                  <span className="text-xl font-semibold text-white">10,000</span>
+                  <span className="text-lg font-['Inter']  font-semibold text-white">10,000</span>
                 </div>
-                <p className="text-lg text-white font-semibold">win</p>
+                <p className="text-lg pl-6  text-white font-semibold">win</p>
               </div>
             </>
         )}
