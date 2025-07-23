@@ -179,7 +179,7 @@ export function VirtualKeyboard({
     return (
         <div className={`w-full max-w-3xl mx-auto p-2 ${className}`}>
           {layout.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex justify-center mb-2">
+              <div key={rowIndex} className="flex justify-center mb-0.5">
                 {row.map((key, keyIndex) => (
                     <button
                         key={`${rowIndex}-${keyIndex}`}
