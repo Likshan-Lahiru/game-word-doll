@@ -13,7 +13,7 @@ type PrizeCardProps = {
 export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
     if (isMobile) {
         return (
-            <div className="bg-white h-32 rounded-xl p-3 text-black flex items-center">
+            <div className="bg-white h-32 rounded-xl p-3 text-black flex items-center font-['DM_Sans']">
                 <img
                     src={prize.image}
                     alt={`${prize.coinAmount} Coins`}
@@ -48,7 +48,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
         )
     }
     return (
-        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[470px]">
+        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[470px] font-['DM_Sans']">
 
             <img
                 src={prize.image}
@@ -69,7 +69,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                 <span className="text-[#170F49] font-['DM_Sans'] font-bold text-xl">{prize.cost.toLocaleString()}</span>
             </div>
             <button
-                className="bg-[#56CA5A] text-xl font-bold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-full h-14 rounded-full  mt-2"
+                className="bg-[#56CA5A] text-xl font-bold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-44 h-12 rounded-full  mt-2"
                 onClick={onEnter}
             >
                 Let's Go!

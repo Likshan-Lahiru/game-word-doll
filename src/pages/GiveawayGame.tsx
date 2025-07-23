@@ -91,23 +91,23 @@ export function GiveawayGame() {
   ]
   if (isMobile) {
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
-          <div className="relative p-4">
-            <div className="flex items-center">
-              <button
-                  className="w-10 h-10 rounded-full bg-[#2A3042] flex items-center justify-center mr-3"
-                  onClick={() => navigate('/giveaway-entry')}
-              >
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                    alt="Back"
-                    className="w-5 h-5"
-                />
-              </button>
-              <div className="flex-1">
-                <StatusBar isMobile={true} />
-              </div>
-            </div>
+        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
+          <div className="absolute top-14 left-4 z-10">
+            <button
+                className="w-12 h-12 rounded-full flex items-center justify-center"
+                onClick={() => navigate('/')}
+            >
+              <img
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                  alt="Back"
+                  className="w-8 h-8"
+              />
+            </button>
+          </div>
+
+          {/* Status Bar */}
+          <div className="md:pl-52">
+            <StatusBar isMobile={isMobile} hideOnlineCount={true}/>
           </div>
           {/* Main Content */}
           <div className="flex-1 flex flex-col px-3 pt-1">
@@ -127,14 +127,14 @@ export function GiveawayGame() {
             </div>
           </div>
           {/* Bottom Navigation */}
-          <BottomNavigation />
+          <BottomNavigation/>
         </div>
     )
   }
   return (
-      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
         {/* Status Bar */}
-        <div className="p-4 flex justify-between items-center">
+        {/*<div className="p-4 flex justify-between items-center">
           <button
               className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center"
               onClick={() => navigate('/giveaway-entry')}
@@ -145,13 +145,13 @@ export function GiveawayGame() {
                 className="w-8 h-8"
             />
           </button>
-          {/* Balance Selector */}
+           Balance Selector
           <div className="flex-1 max-w-md mx-auto px-4">
             <BalanceSelector
                 onSelect={(type) => console.log(`Selected: ${type}`)}
             />
           </div>
-          {/* Heart and Diamond */}
+           Heart and Diamond
           <div className="flex flex-col space-y-1 mt-5">
             <div
                 className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-6 outline outline-2 outline-[#374151] mt-2">
@@ -176,6 +176,23 @@ export function GiveawayGame() {
               <span className="ml-1 font-Inter font-semibold">0</span>
             </div>
           </div>
+        </div>*/}
+        <div className="absolute top-8 left-6 z-10">
+          <button
+              className="w-14 h-14 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-10 h-10"
+            />
+          </button>
+        </div>
+
+        {/* Status Bar */}
+        <div className="md:pl-52">
+          <StatusBar isMobile={isMobile} hideOnlineCount={true}/>
         </div>
         {/* Main Content */}
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">
