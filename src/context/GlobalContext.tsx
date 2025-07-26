@@ -1,46 +1,61 @@
 import React, { useState, createContext, useContext } from 'react'
 type GlobalContextType = {
-  coinBalance: number
-  ticketBalance: number
-  spinBalance: number
-  setCoinBalance: (balance: number) => void
-  setTicketBalance: (balance: number) => void
-  setSpinBalance: (balance: number) => void
-  addCoins: (amount: number) => void
-  addSpins: (amount: number) => void
+    coinBalance: number
+    ticketBalance: number
+    spinBalance: number
+    isAuthenticated: boolean
+    setCoinBalance: (balance: number) => void
+    setTicketBalance: (balance: number) => void
+    setSpinBalance: (balance: number) => void
+    addCoins: (amount: number) => void
+    addSpins: (amount: number) => void
+    setIsAuthenticated: (value: boolean) => void
+    login: () => void
+    logout: () => void
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
-  const [coinBalance, setCoinBalance] = useState(50000)
-  const [ticketBalance, setTicketBalance] = useState(15)
-  const [spinBalance, setSpinBalance] = useState(0)
-  const addCoins = (amount: number) => {
-    setCoinBalance((prev) => prev + amount)
-  }
-  const addSpins = (amount: number) => {
-    setSpinBalance((prev) => prev + amount)
-  }
-  return (
-      <GlobalContext.Provider
-          value={{
-            coinBalance,
-            ticketBalance,
-            spinBalance,
-            setCoinBalance,
-            setTicketBalance,
-            setSpinBalance,
-            addCoins,
-            addSpins,
-          }}
-      >
-        {children}
-      </GlobalContext.Provider>
-  )
+    const [coinBalance, setCoinBalance] = useState(50000)
+    const [ticketBalance, setTicketBalance] = useState(15)
+    const [spinBalance, setSpinBalance] = useState(0)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const addCoins = (amount: number) => {
+        setCoinBalance((prev) => prev + amount)
+    }
+    const addSpins = (amount: number) => {
+        setSpinBalance((prev) => prev + amount)
+    }
+    const login = () => {
+        setIsAuthenticated(true)
+    }
+    const logout = () => {
+        setIsAuthenticated(false)
+    }
+    return (
+        <GlobalContext.Provider
+            value={{
+                coinBalance,
+                ticketBalance,
+                spinBalance,
+                isAuthenticated,
+                setCoinBalance,
+                setTicketBalance,
+                setSpinBalance,
+                setIsAuthenticated,
+                addCoins,
+                addSpins,
+                login,
+                logout,
+            }}
+        >
+            {children}
+        </GlobalContext.Provider>
+    )
 }
 export function useGlobalContext() {
-  const context = useContext(GlobalContext)
-  if (context === undefined) {
-    throw new Error('useGlobalContext must be used within a GlobalProvider')
-  }
-  return context
+    const context = useContext(GlobalContext)
+    if (context === undefined) {
+        throw new Error('useGlobalContext must be used within a GlobalProvider')
+    }
+    return context
 }

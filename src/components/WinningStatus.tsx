@@ -1,3 +1,4 @@
+import React from 'react'
 export function WinningStatus() {
     return (
         <div className=" text-center">

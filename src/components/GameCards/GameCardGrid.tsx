@@ -4,9 +4,11 @@ import { LockPickrCard } from './LockPickrCard'
 import { GiveawayCard } from './GiveawayCard'
 import { PlayBookCard } from './PlayBookCard'
 import { LoginButton } from '../LoginButton'
+import { useGlobalContext } from '../../context/GlobalContext'
 export function GameCardGrid() {
     // Check if mobile
     const isMobile = window.innerWidth <= 768
+    const { isAuthenticated } = useGlobalContext()
     if (isMobile) {
         return (
             <div className="flex-1 px-4 pb-10 game-card-grid">
@@ -22,11 +24,10 @@ export function GameCardGrid() {
                     <GiveawayCard isMobile={true} />
                     <PlayBookCard isMobile={true} />
                 </div>
-                <LoginButton />
+                {!isAuthenticated && <LoginButton />}
             </div>
         )
     }
-
     return (
         <div className="flex-1 flex justify-center items-center pt-0 game-card-grid">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl w-full">

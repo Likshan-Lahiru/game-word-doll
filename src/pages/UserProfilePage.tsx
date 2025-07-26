@@ -1,5 +1,4 @@
-import React from 'react'
-import  { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProfileTabs } from '../components/Profile/ProfileTabs'
 import { AccountTab } from '../components/Profile/AccountTab'
@@ -8,8 +7,10 @@ import { PrivacyTab } from '../components/Profile/PrivacyTab'
 import { HelpTab } from '../components/Profile/HelpTab'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { ChangePasswordModal } from '../components/Profile/ChangePasswordModal'
+import { useGlobalContext } from '../context/GlobalContext'
 export function UserProfilePage() {
-  useNavigate();
+  const navigate = useNavigate()
+  const { isAuthenticated } = useGlobalContext()
   const [activeTab, setActiveTab] = useState('account')
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
   const [isMobile, setIsMobile] = useState(false)

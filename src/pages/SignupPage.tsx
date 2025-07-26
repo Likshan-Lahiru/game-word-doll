@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
-import CoinVoucherToggle from "../components/test.tsx";
+import { useGlobalContext } from '../context/GlobalContext'
 export function SignupPage() {
   const navigate = useNavigate()
+  const { login } = useGlobalContext()
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -13,10 +14,13 @@ export function SignupPage() {
     e.preventDefault()
     // Handle signup logic here
     console.log('Signup with:', username, email, password, country)
+    // Simulate successful signup and login
+    login()
+    // Redirect to home page after signup
+    navigate('/')
   }
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
-
         <div className="p-4">
           <button
               className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center"
@@ -84,7 +88,7 @@ export function SignupPage() {
                 <div className="flex items-center justify-center mb-1">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
-                        alt="Gold Coins"
+                      alt="Gold Coins"
                       className="w-5 h-5 object-contain"
                   />
                   <span className="font-bold text-xl">15,000,000</span>

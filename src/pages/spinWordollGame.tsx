@@ -4,6 +4,7 @@ import { VirtualKeyboard } from '../components/VirtualKeyboard'
 import { CountdownModal } from '../components/CountdownModal'
 import { WinModal } from '../components/GameModals/WinModal'
 import { LoseModal } from '../components/GameModals/LoseModal'
+
 const WORDS = ['HELLO', 'WORLD', 'REACT', 'GAMES', 'GUESS', 'BRAIN', 'SMART']
 function getLetterStatuses(
     guess: string[],

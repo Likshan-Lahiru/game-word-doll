@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { StatusBar } from '../components/StatusBar'
-import { BalanceSelector } from '../components/BalanceSelector'
 import { useGlobalContext } from '../context/GlobalContext'
 import { PrizeCard, PrizeData } from '../components/PrizeCard'
 export function GiveawayGame() {

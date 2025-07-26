@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { StatusBar } from './components/StatusBar'
-import { WinningStatus } from './components/WinningStatus'
-import { GameCardGrid } from './components/GameCards/GameCardGrid'
-import { BottomNavigation } from './components/BottomNavigation'
-import { PlayBookButton } from './components/PlayBookButton'
-import { LoginButton } from './components/LoginButton'
 import { WordollGame } from './pages/WordollGame'
 import { GiveawayGame } from './pages/GiveawayGame'
 import { GiveawayEntry } from './pages/GiveawayEntry'
@@ -17,9 +11,9 @@ import { StorePage } from './pages/StorePage'
 import { RedeemPage } from './pages/RedeemPage'
 import { GuidePage } from './pages/GuidePage'
 import { GlobalProvider } from './context/GlobalContext'
-import {HomePage} from "./pages/HomePage.tsx";
-import {SpinPage} from "./pages/SpinPage.tsx";
-import {SpinWordollGame} from "./pages/spinWordollGame.tsx";
+import { ProtectedRoute } from './components/ProtectedRoute'
+import { SpinPage } from './pages/SpinPage'
+import { HomePage } from './pages/HomePage'
 export function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   useEffect(() => {
@@ -35,17 +29,37 @@ export function App() {
           <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white ">
             <Routes>
               <Route path="/" element={<HomePage isMobile={isMobile} />} />
-
               <Route path="/wordoll-game" element={<WordollGame />} />
-              <Route path="/spin-wordoll-game" element={<SpinWordollGame />} />
+              <Route path="/spin-wordoll-game" element={<WordollGame />} />
               <Route path="/giveaway-game" element={<GiveawayGame />} />
               <Route path="/giveaway-entry" element={<GiveawayEntry />} />
               <Route path="/lock-pickr-game" element={<LockPickrGame />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
-              <Route path="/profile" element={<UserProfilePage />} />
-              <Route path="/store" element={<StorePage />} />
-              <Route path="/redeem" element={<RedeemPage />} />
+              <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <UserProfilePage />
+                    </ProtectedRoute>
+                  }
+              />
+              <Route
+                  path="/store"
+                  element={
+                    <ProtectedRoute>
+                      <StorePage />
+                    </ProtectedRoute>
+                  }
+              />
+              <Route
+                  path="/redeem"
+                  element={
+                    <ProtectedRoute>
+                      <RedeemPage />
+                    </ProtectedRoute>
+                  }
+              />
               <Route path="/guide" element={<GuidePage />} />
               <Route path="/spin" element={<SpinPage />} />
             </Routes>

@@ -10,6 +10,7 @@ type PrizeCardProps = {
     isMobile: boolean
     onEnter: () => void
 }
+import React from 'react'
 export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
     if (isMobile) {
         return (

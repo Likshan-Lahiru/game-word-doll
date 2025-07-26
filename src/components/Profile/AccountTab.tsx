@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { LogOutIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-
+import { useGlobalContext } from '../../context/GlobalContext'
 type AccountTabProps = {
   onChangePassword: () => void
 }
-
 export function AccountTab({ onChangePassword }: AccountTabProps) {
   const navigate = useNavigate()
+  const { logout } = useGlobalContext()
   const [username, setUsername] = useState('Gina_Blake')
   const [email, setEmail] = useState('example@example.com')
   const [country, setCountry] = useState('Australia')
   const [, setIsMobile] = useState(false)
-
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
@@ -21,12 +20,10 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
-
   const handleLogout = () => {
-    // Handle logout logic here
+    logout()
     navigate('/login')
   }
-
   return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold mb-6">Account</h2>
@@ -87,7 +84,6 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               </div>
             </div>
           </div>
-
 
           {/* Change Password button */}
           <div>
