@@ -35,7 +35,7 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                         <div className={`w-full h-full flex pr-20 items-center cursor-pointer ${isMobile ? 'pr-16' : 'pr-24'} ${selected === 'coin' ? 'border-2 border-[#FDF222] rounded-full' : ''}`}
                              onClick={() => handleSelect('coin')}
                         >
-                            <p className={`w-full text-right cursor-pointer ${selected === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
+                            <p className={`w-full font-inter text-right cursor-pointer ${selected === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
                                 onClick={() => handleSelect('coin')}
                             >50,000</p>
                         </div>
@@ -44,7 +44,7 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                         <div className={`w-full h-full flex items-center cursor-pointer ${isMobile ? 'pl-14' : 'pl-20'} ${selected === 'ticket' ? 'border-2 border-green-600 rounded-full' : ''}`}
                              onClick={() => handleSelect('ticket')}
                         >
-                            <p className={`w-full text-left pl-2 cursor-pointer ${selected === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
+                            <p className={`w-full font-inter text-left pl-2 cursor-pointer ${selected === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                onClick={() => handleSelect('ticket')}
                             >0</p>
                         </div>
