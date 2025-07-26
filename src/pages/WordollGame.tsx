@@ -4,6 +4,11 @@ import { VirtualKeyboard } from '../components/VirtualKeyboard'
 import { CountdownModal } from '../components/CountdownModal'
 import { WinModal } from '../components/GameModals/WinModal'
 import { LoseModal } from '../components/GameModals/LoseModal'
+import { NoAttemptsModal } from '../components/GameModals/NoAttemptsModal'
+import { AuthenticatedWinModal } from '../components/GameModals/AuthenticatedWinModal'
+import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLoseModal'
+import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
+import { useGlobalContext } from '../context/GlobalContext'
 const WORDS = ['HELLO', 'WORLD', 'REACT', 'GAMES', 'GUESS', 'BRAIN', 'SMART']
 function getLetterStatuses(
     guess: string[],
@@ -32,6 +37,7 @@ function getLetterStatuses(
 }
 export function WordollGame() {
   useNavigate()
+  const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
   const [targetWord, setTargetWord] = useState('')
   const [, setSelectedLetters] = useState<string[]>([])
   const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
@@ -51,6 +57,7 @@ export function WordollGame() {
   const gameContainerRef = useRef<HTMLDivElement>(null)
   const [showWinModal, setShowWinModal] = useState(false)
   const [showLoseModal, setShowLoseModal] = useState(false)
+  const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768)
     checkMobile()
@@ -128,16 +135,15 @@ export function WordollGame() {
       setFeedback('Please enter 5 letters')
       return
     }
-    // Store the current attempt for display
     setLastAttempt([...currentAttempt])
-    // Check if the guess matches the target word
     if (guess === targetWord) {
+      if (isAuthenticated) {
+        addCoins(winAmount)
+      }
       setShowWinModal(true)
       return
     }
-    // Get statuses for each letter (correct, wrong position, incorrect)
     const statuses = getLetterStatuses(currentAttempt, targetWord)
-    // Update locked positions and current attempt
     const newLocks = [...lockedPositions]
     const newAttempt = [...currentAttempt]
     statuses.forEach((status, index) => {
@@ -150,13 +156,20 @@ export function WordollGame() {
     setLockedPositions(newLocks)
     setCurrentAttempt(newAttempt)
     setAttempts((prev) => prev - 1)
-    // Check if out of attempts
     if (attempts <= 1) {
-      setShowLoseModal(true)
+      setShowNoAttemptsModal(true)
       return
     }
     setFeedback('')
-  }, [currentAttempt, targetWord, lockedPositions, attempts])
+  }, [
+    currentAttempt,
+    targetWord,
+    lockedPositions,
+    attempts,
+    isAuthenticated,
+    winAmount,
+    addCoins,
+  ])
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remaining = seconds % 60
@@ -236,7 +249,6 @@ export function WordollGame() {
       }
     }
   }
-  // Mobile keyboard layout
   const mobileKeyboard = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -303,10 +315,8 @@ export function WordollGame() {
         <div className="text-center my-1">
           <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
         </div>
-        {/* Mobile view with keyboard and reward display */}
         {isMobile && (
             <>
-              {/* Reward display above keyboard in mobile view */}
               <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
                 <div className="flex items-center justify-center">
                   <img
@@ -314,12 +324,13 @@ export function WordollGame() {
                       alt="Coins"
                       className="5 h-5 mr-1"
                   />
-                  <span className="text-lg font-bold text-white">10,000</span>
+                  <span className="text-lg font-bold text-white">
+                {winAmount.toLocaleString()}
+              </span>
                 </div>
                 <p className="text-white text-lg font-bold">win</p>
               </div>
 
-              {/* Mobile virtual keyboard */}
               <div className="w-full max-w-md mx-auto">
                 {mobileKeyboard.map((row, rowIndex) => (
                     <div
@@ -350,7 +361,6 @@ export function WordollGame() {
               </div>
             </>
         )}
-        {/* Desktop view - unchanged */}
         {!isMobile && (
             <>
               <div className="mt-4 mb-4">
@@ -397,9 +407,11 @@ export function WordollGame() {
                       alt="Coins"
                       className="w-5 h-5 mr-2"
                   />
-                  <span className="text-xl font-['Inter']  font-semibold text-white">10,000</span>
+                  <span className="text-xl font-['Inter'] font-semibold text-white">
+                {winAmount.toLocaleString()}
+              </span>
                 </div>
-                <p className="text-xl pl-6  text-white font-semibold">win</p>
+                <p className="text-xl pl-6 text-white font-semibold">win</p>
               </div>
             </>
         )}
@@ -407,20 +419,45 @@ export function WordollGame() {
             isOpen={showCountdown}
             onCountdownComplete={handleCountdownComplete}
         />
-        {/* Win Modal */}
-        <WinModal
-            isOpen={showWinModal}
-            onClose={() => setShowWinModal(false)}
-            reward={10000}
-            gameType="wordoll"
-        />
-        {/* Lose Modal */}
-        <LoseModal
-            isOpen={showLoseModal}
-            onClose={() => setShowLoseModal(false)}
-            penalty={1000}
-            gameType="wordoll"
-        />
+        {isAuthenticated ? (
+            <>
+              <AuthenticatedWinModal
+                  isOpen={showWinModal}
+                  onClose={() => setShowWinModal(false)}
+                  reward={winAmount}
+              />
+              <AuthenticatedLoseModal
+                  isOpen={showLoseModal}
+                  onClose={() => setShowLoseModal(false)}
+                  penalty={1000}
+              />
+              <AuthenticatedNoAttemptsModal
+                  isOpen={showNoAttemptsModal}
+                  onClose={() => setShowNoAttemptsModal(false)}
+                  penalty={1000}
+              />
+            </>
+        ) : (
+            <>
+              <WinModal
+                  isOpen={showWinModal}
+                  onClose={() => setShowWinModal(false)}
+                  reward={winAmount}
+                  gameType="wordoll"
+              />
+              <LoseModal
+                  isOpen={showLoseModal}
+                  onClose={() => setShowLoseModal(false)}
+                  penalty={1000}
+                  gameType="wordoll"
+              />
+              <NoAttemptsModal
+                  isOpen={showNoAttemptsModal}
+                  onClose={() => setShowNoAttemptsModal(false)}
+                  penalty={1000}
+              />
+            </>
+        )}
       </div>
   )
 }

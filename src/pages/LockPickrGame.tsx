@@ -5,8 +5,15 @@ import { BottomNavigation } from '../components/BottomNavigation'
 import { CountdownModal } from '../components/CountdownModal'
 import { WinModal } from '../components/GameModals/WinModal'
 import { LoseModal } from '../components/GameModals/LoseModal'
+import { NoAttemptsModal } from '../components/GameModals/NoAttemptsModal'
+import { AuthenticatedWinModal } from '../components/GameModals/AuthenticatedWinModal'
+import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLoseModal'
+import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
+import { useGlobalContext } from '../context/GlobalContext'
 export function LockPickrGame() {
   const navigate = useNavigate()
+  const globalContext = useGlobalContext()
+  const { betAmount, winAmount, isAuthenticated, addCoins } = globalContext
   const [targetCode, setTargetCode] = useState<number[]>([])
   const [currentAttempt, setCurrentAttempt] = useState<number[]>([])
   const [lastAttempt, setLastAttempt] = useState<number[] | null>(null)
@@ -22,6 +29,8 @@ export function LockPickrGame() {
   const lastActivityRef = useRef(Date.now())
   const [showWinModal, setShowWinModal] = useState(false)
   const [showLoseModal, setShowLoseModal] = useState(false)
+  const [attemptsLeft, setAttemptsLeft] = useState(50)
+  const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -153,7 +162,17 @@ export function LockPickrGame() {
         (num, index) => num === targetCode[index],
     )
     if (isCorrect) {
+      if (isAuthenticated) {
+        addCoins(winAmount) // Use the selected win amount
+      }
       setShowWinModal(true)
+      return
+    }
+    // Decrease attempts
+    setAttemptsLeft((prev) => prev - 1)
+    // Check if out of attempts
+    if (attemptsLeft <= 1) {
+      setShowNoAttemptsModal(true)
       return
     }
     // Clear current attempt for next try
@@ -163,7 +182,14 @@ export function LockPickrGame() {
     if (inputRef.current) {
       inputRef.current.focus()
     }
-  }, [currentAttempt, targetCode])
+  }, [
+    currentAttempt,
+    targetCode,
+    attemptsLeft,
+    isAuthenticated,
+    winAmount,
+    addCoins,
+  ])
   // Handle countdown completion
   const handleCountdownComplete = () => {
     setShowCountdown(false)
@@ -306,7 +332,9 @@ export function LockPickrGame() {
           </div>
           {/* Attempts count */}
           <div className="text-center mb-4">
-            <p className="text-xl font-medium font-[Inter]">50 x attempt</p>
+            <p className="text-xl font-medium font-[Inter]">
+              {attemptsLeft} x attempt
+            </p>
           </div>
           {/* Win bar */}
           <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
@@ -316,7 +344,9 @@ export function LockPickrGame() {
                   alt="Coins"
                   className="w-6 h-6 mr-2"
               />
-              <span className="text-lg font-bold text-white">10,000</span>
+              <span className="text-lg font-bold text-white">
+              {winAmount.toLocaleString()}
+            </span>
             </div>
             <p className="text-white text-lg font-bold">win</p>
           </div>
@@ -389,24 +419,50 @@ export function LockPickrGame() {
               isOpen={showCountdown}
               onCountdownComplete={handleCountdownComplete}
           />
-          {/* Win Modal */}
-          <WinModal
-              isOpen={showWinModal}
-              onClose={() => setShowWinModal(false)}
-              reward={15000}
-              gameType="lockpickr"
-          />
-          {/* Lose Modal */}
-          <LoseModal
-              isOpen={showLoseModal}
-              onClose={() => setShowLoseModal(false)}
-              penalty={2000}
-              gameType="lockpickr"
-          />
+          {/* Conditionally render different modals based on authentication status */}
+          {isAuthenticated ? (
+              <>
+                <AuthenticatedWinModal
+                    isOpen={showWinModal}
+                    onClose={() => setShowWinModal(false)}
+                    reward={winAmount}
+                />
+                <AuthenticatedLoseModal
+                    isOpen={showLoseModal}
+                    onClose={() => setShowLoseModal(false)}
+                    penalty={2000}
+                />
+                <AuthenticatedNoAttemptsModal
+                    isOpen={showNoAttemptsModal}
+                    onClose={() => setShowNoAttemptsModal(false)}
+                    penalty={2000}
+                />
+              </>
+          ) : (
+              <>
+                <WinModal
+                    isOpen={showWinModal}
+                    onClose={() => setShowWinModal(false)}
+                    reward={winAmount}
+                    gameType="lockpickr"
+                />
+                <LoseModal
+                    isOpen={showLoseModal}
+                    onClose={() => setShowLoseModal(false)}
+                    penalty={2000}
+                    gameType="lockpickr"
+                />
+                <NoAttemptsModal
+                    isOpen={showNoAttemptsModal}
+                    onClose={() => setShowNoAttemptsModal(false)}
+                    penalty={2000}
+                />
+              </>
+          )}
         </div>
     )
   }
-  // Desktop view - updated to match the screenshot
+  // Desktop view
   return (
       <div
           className="flex flex-col w-full min-h-screen bg-[#1E2532] text-white p-4"
@@ -499,7 +555,7 @@ export function LockPickrGame() {
         </div>
         {/* Attempts count */}
         <div className="text-center mb-8">
-          <p className="text-xl font-medium">50 x attempt</p>
+          <p className="text-xl font-medium">{attemptsLeft} x attempt</p>
         </div>
         {/* Desktop number pad */}
         <div className="w-full max-w-md mx-auto mb-10">
@@ -572,9 +628,11 @@ export function LockPickrGame() {
                   alt="Coins"
                   className="w-5 h-5 mr-2"
               />
-              <span className="text-xl font-['Inter']  font-semibold text-white">10,000</span>
+              <span className="text-xl font-['Inter'] font-semibold text-white">
+              {winAmount.toLocaleString()}
+            </span>
             </div>
-            <p className="text-xl pl-6  text-white font-semibold">win</p>
+            <p className="text-xl pl-6 text-white font-semibold">win</p>
           </div>
         </div>
         {/* Countdown Modal */}
@@ -582,20 +640,46 @@ export function LockPickrGame() {
             isOpen={showCountdown}
             onCountdownComplete={handleCountdownComplete}
         />
-        {/* Win Modal */}
-        <WinModal
-            isOpen={showWinModal}
-            onClose={() => setShowWinModal(false)}
-            reward={15000}
-            gameType="lockpickr"
-        />
-        {/* Lose Modal */}
-        <LoseModal
-            isOpen={showLoseModal}
-            onClose={() => setShowLoseModal(false)}
-            penalty={2000}
-            gameType="lockpickr"
-        />
+        {/* Conditionally render different modals based on authentication status */}
+        {isAuthenticated ? (
+            <>
+              <AuthenticatedWinModal
+                  isOpen={showWinModal}
+                  onClose={() => setShowWinModal(false)}
+                  reward={winAmount}
+              />
+              <AuthenticatedLoseModal
+                  isOpen={showLoseModal}
+                  onClose={() => setShowLoseModal(false)}
+                  penalty={2000}
+              />
+              <AuthenticatedNoAttemptsModal
+                  isOpen={showNoAttemptsModal}
+                  onClose={() => setShowNoAttemptsModal(false)}
+                  penalty={2000}
+              />
+            </>
+        ) : (
+            <>
+              <WinModal
+                  isOpen={showWinModal}
+                  onClose={() => setShowWinModal(false)}
+                  reward={winAmount}
+                  gameType="lockpickr"
+              />
+              <LoseModal
+                  isOpen={showLoseModal}
+                  onClose={() => setShowLoseModal(false)}
+                  penalty={2000}
+                  gameType="lockpickr"
+              />
+              <NoAttemptsModal
+                  isOpen={showNoAttemptsModal}
+                  onClose={() => setShowNoAttemptsModal(false)}
+                  penalty={2000}
+              />
+            </>
+        )}
       </div>
   )
 }

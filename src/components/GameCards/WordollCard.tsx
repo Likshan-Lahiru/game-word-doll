@@ -6,9 +6,17 @@ type WordollCardProps = {
 }
 export function WordollCard({ isMobile = false }: WordollCardProps) {
     const navigate = useNavigate()
-    useGlobalContext()
+    const { isAuthenticated } = useGlobalContext()
     const handlePlayClick = () => {
-        navigate('/wordoll-game')
+        if (isAuthenticated) {
+            navigate('/bet-selector', {
+                state: {
+                    gameType: 'wordoll',
+                },
+            })
+        } else {
+            navigate('/wordoll-game')
+        }
     }
     if (isMobile) {
         return (

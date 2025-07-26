@@ -1,15 +1,28 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useGlobalContext } from '../../context/GlobalContext'
 type LockPickrCardProps = {
     isMobile?: boolean
 }
 export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
     const navigate = useNavigate()
+    const { isAuthenticated } = useGlobalContext()
+    const handlePlayClick = () => {
+        if (isAuthenticated) {
+            navigate('/bet-selector', {
+                state: {
+                    gameType: 'lockpickr',
+                },
+            })
+        } else {
+            navigate('/lock-pickr-game')
+        }
+    }
     if (isMobile) {
         return (
             <div
                 className="rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer"
-                onClick={() => navigate('/lock-pickr-game')}
+                onClick={handlePlayClick}
             >
                 {/* Full image background */}
                 <div className="absolute inset-0">
@@ -48,12 +61,10 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
             <div className="p-4 flex justify-center mb-6 relative z-10">
                 <button
                     className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
-                    onClick={() => navigate('/lock-pickr-game')}
+                    onClick={handlePlayClick}
                 >
                     PLAY
                 </button>
-
-
             </div>
         </div>
     )
