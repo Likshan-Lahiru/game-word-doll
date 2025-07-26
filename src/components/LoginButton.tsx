@@ -1,11 +1,18 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { useGlobalContext } from '../context/GlobalContext'
 export function LoginButton() {
     const navigate = useNavigate()
+    const { isAuthenticated } = useGlobalContext()
     const isMobile = window.innerWidth <= 768
-
+    // Don't render the button if user is authenticated
+    if (isAuthenticated) {
+        return null
+    }
     return (
-        <div className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-16 pt-4'}`}>
+        <div
+            className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-16 pt-4'}`}
+        >
             <button
                 onClick={() => navigate('/login')}
                 style={{

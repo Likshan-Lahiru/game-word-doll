@@ -1,5 +1,6 @@
 import React from 'react'
 import { BalanceSelector } from './BalanceSelector'
+import { useGlobalContext } from '../context/GlobalContext'
 export function StatusBar({
                               isMobile,
                               hideOnlineCount,
@@ -7,8 +8,9 @@ export function StatusBar({
     isMobile?: boolean
     hideOnlineCount?: boolean
 }) {
+    const { isAuthenticated } = useGlobalContext()
     return (
-        <div className="p-2  sm:p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+        <div className="p-2 sm:p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
             {isMobile ? (
                 <>
                     <div className="w-full mb-2 ">
@@ -18,7 +20,6 @@ export function StatusBar({
                     </div>
                     <div className="flex justify-center space-x-3 mb-2">
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
-                            {/*outline outline-1 outline-[#374151]*/}
                             <div className="w-7 h-18 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
@@ -29,7 +30,6 @@ export function StatusBar({
                             <span className="ml-1">0</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
-                            {/*outline outline-1 outline-[#374151]*/}
                             <div className="w-8 h-4 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
@@ -43,7 +43,7 @@ export function StatusBar({
                 </>
             ) : (
                 <>
-                    {!hideOnlineCount && (
+                    {!hideOnlineCount && !isAuthenticated && (
                         <div className="flex items-center space-x-3">
                             <div className="w-3 h-3 rounded-full bg-[#42E242]"></div>
                             <span className="text-lg font-Inter font-semibold">
@@ -51,7 +51,9 @@ export function StatusBar({
               </span>
                         </div>
                     )}
-                    <div className="flex-1 max-w-md mx-auto px-4">
+                    <div
+                        className={`flex-1 max-w-md mx-auto ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
+                    >
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
                         />

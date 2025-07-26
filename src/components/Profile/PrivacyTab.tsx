@@ -1,3 +1,4 @@
+import React from 'react'
 export function PrivacyTab() {
     return (
         <div className="space-y-6 w-11/12">

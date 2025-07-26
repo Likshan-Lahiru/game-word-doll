@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { ForgotPasswordModal } from '../components/ForgotPasswordModal'
 import { ResetPasswordModal } from '../components/ResetPasswordModal'
+import { useGlobalContext } from '../context/GlobalContext'
 export function LoginPage() {
   const navigate = useNavigate()
+  const { login } = useGlobalContext()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -15,6 +17,10 @@ export function LoginPage() {
     e.preventDefault()
     // Handle login logic here
     console.log('Login with:', email, password)
+    // Simulate successful login
+    login()
+    // Redirect to home page after login
+    navigate('/')
   }
   const handleForgotPassword = () => {
     setVerificationEmail(email || 'acd@gmail.com') // Use entered email or default
