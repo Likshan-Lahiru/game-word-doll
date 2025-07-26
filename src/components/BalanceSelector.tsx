@@ -35,7 +35,7 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                         className={`flex-1 flex items-center justify-between px-2 sm:px-3 md:px-4 lg:px-6 cursor-pointer ${selected === 'coin' ? 'opacity-100' : 'opacity-70'}`}
                         onClick={() => handleSelect('coin')}
                     >
-            <span className="text-[#FDF222] font-bold text-xs sm:text-sm md:text-base lg:text-1xl font-Inter">
+            <span className="text-[#FDF222] font-bold text-xs sm:text-sm md:text-base lg:text-1xl font-Inter md:ml-16 lg:ml-14 sm:ml-28">
               {coinBalance.toLocaleString()}
             </span>
                         <img
@@ -70,7 +70,7 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                                     : {}
                             }
                         />
-                        <span className="text-white font-bold text-xs sm:text-sm md:text-base lg:text-1xl font-Inter">
+                        <span className="text-white font-bold text-xs sm:text-sm md:text-base lg:text-1xl font-Inter lg:mr-24 md:mr-24 sm:mr-40">
                          {ticketBalance}
                         </span>
                     </div>
