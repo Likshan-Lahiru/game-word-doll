@@ -18,7 +18,7 @@ export function PlayBookCard({ isMobile = false }: PlayBookCardProps) {
     return (
         <>
           <div
-              className="rounded-xl overflow-hidden bg-[#374151] flex flex-col h-[250px] relative cursor-pointer"
+              className={`${isMobile ? 'h-[280px]' : 'h-[250px]'} rounded-xl overflow-hidden bg-[#374151] flex flex-col h-[250px] relative cursor-pointer`}
               onClick={handleClick}
           >
             <div className="flex-1 flex flex-col items-center justify-center mt-8">

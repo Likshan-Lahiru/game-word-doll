@@ -13,7 +13,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
     if (isMobile) {
         return (
             <div
-                className="rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer"
+                className={`${isMobile ? 'h-[280px]' : 'h-[250px]'} rounded-xl overflow-hidden flex flex-col relative cursor-pointer`}
                 onClick={handlePlayClick}
             >
                 {/* Full image background */}

@@ -11,7 +11,7 @@ export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
     if (isMobile) {
         return (
             <div
-                className="rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer"
+                className={`${isMobile ? 'h-[280px]' : 'h-[250px]'} rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer`}
                 onClick={handlePlayClick}
             >
                 {/* Full image background */}
