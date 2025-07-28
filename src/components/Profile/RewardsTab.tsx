@@ -36,6 +36,7 @@ export function RewardsTab() {
     },
   ]
   const isMobile = window.innerWidth <= 768
+  const isSmallMobile = window.innerWidth <= 375
   return (
       <>
         <div className={"flex-col"}>
@@ -61,7 +62,7 @@ export function RewardsTab() {
                       { isMobile &&
                           <>
                             <div className={"px-0 h-7 mt-2"}>
-                                  <span className={`${fontInter} text-[10px] text-gray-300 min-w-[100px] text-left`}>
+                                  <span className={`${fontInter} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'} text-gray-300 min-w-[100px] text-left`}>
                                     {item.current} / {item.total}
                                   </span>
                             </div>
@@ -88,13 +89,13 @@ export function RewardsTab() {
                     <>
                       <div className={"flex-col pb-2"}>
                         <div className={"flex items-center justify-between h-7"}>
-                          <p className={`${isMobile ? 'px-1 text-[10px]' : 'px-3'} ${fontInter}`}>{item.label}</p>
-                          <div className={`flex items-center ${isMobile ? 'pr-2' : 'pr-5'}`}>
+                          <p className={`${isMobile ? 'px-1' : 'px-3'} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'} ${fontInter}`}>{item.label}</p>
+                          <div className={`flex items-center ${isMobile ? 'pr-2' : 'pr-5'} ${isSmallMobile && 'pr-0'}`}>
                             <img src={"https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"}
                                  alt={"ticket"}
                                  className={`w-8 h-8`}
                             />
-                            <p className={`${fontInter} ${isMobile ? 'text-[10px]' : ''}`}>x {item.reward}</p>
+                            <p className={`${fontInter} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'}`}>x {item.reward}</p>
                           </div>
                         </div>
                         <div className={"h-10"}>
@@ -117,14 +118,14 @@ export function RewardsTab() {
                       type="text"
                       value={referralLink}
                       readOnly
-                      className={`${fontInter} w-full px-4 py-3 bg-white text-black text-sm rounded-full flex items-center ${isMobile ? 'h-5' : 'h-[32px]' }`}
+                      className={`${fontInter} ${isSmallMobile && 'text-[9px]'} w-full px-4 py-3 bg-white text-black text-sm rounded-full flex items-center ${isMobile ? 'h-5' : 'h-[32px]' }`}
                   />
                 </div>
                 {!isMobile &&
                     <div>
                       <button
                           onClick={handleCopyLink}
-                          className={`${fontInter} hover:bg-blue-600 text-white px-5 py-3 text-[14px] bg-blue-500 rounded-full flex items-center ${isMobile ? 'h-5' : 'h-[32px] px-8'}`}
+                          className={`${fontInter} ${isSmallMobile && 'text-[9px]'} hover:bg-blue-600 text-white px-5 py-3 text-[14px] bg-blue-500 rounded-full flex items-center ${isMobile ? 'h-5' : 'h-[32px] px-8'}`}
                       >
                         {copySuccess ? 'Copied!' : 'Copy'}
                       </button>
@@ -153,7 +154,7 @@ export function RewardsTab() {
 
                           {/* Collect Button */}
                           <button
-                              className={`${fontInter} h-6 text-[14px] flex items-center px-4 py-1 rounded-full ${isMobile ? 'text-xs' : 'text-sm'} ${item.collected ? 'bg-gray-600 text-gray-300' : item.current === item.total ? 'bg-blue-500 text-white' : 'bg-gray-600 text-white'}`}
+                              className={`${fontInter} h-6 flex items-center px-4 py-1 rounded-full ${isMobile ? 'text-xs' : 'text-sm'} ${item.collected ? 'bg-gray-600 text-gray-300' : item.current === item.total ? 'bg-blue-500 text-white' : 'bg-gray-600 text-white'}`}
                               disabled={item.collected}
                           >
                             {item.collected ? 'collected' : 'collect'}
