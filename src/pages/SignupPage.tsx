@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
-import CoinVoucherToggle from "../components/test.tsx";
+
 export function SignupPage() {
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
@@ -29,6 +29,15 @@ export function SignupPage() {
             />
           </button>
         </div>
+
+        {/* Logo */}
+        <div className={"pb-10 flex justify-center"}>
+          <img src={"/cookycreanlogo3.png"}
+               alt="cooky cream logo"
+               className={"w-[217px] h-[120px]"}
+          />
+        </div>
+
         <div className="flex-1 flex items-center justify-center p-4">
           <div className="w-full max-w-md">
             <form onSubmit={handleSignup} className="space-y-4">
@@ -94,7 +103,7 @@ export function SignupPage() {
               </div>
               <button
                   type="submit"
-                  className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-3xl text-white font-bold py-3 px-4 rounded-xl  transition-colors"
+                  className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-2xl text-white font-bold py-3 px-4 rounded-xl  transition-colors"
               >
                 Sign Up
               </button>
