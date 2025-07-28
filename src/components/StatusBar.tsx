@@ -4,11 +4,13 @@ import { useGlobalContext } from '../context/GlobalContext'
 export function StatusBar({
                               isMobile,
                               hideOnlineCount,
+                              switchableBalanceSelector = false,
                           }: {
     isMobile?: boolean
     hideOnlineCount?: boolean
+    switchableBalanceSelector?: boolean
 }) {
-    const { isAuthenticated } = useGlobalContext()
+    const { isAuthenticated, gemBalance } = useGlobalContext()
     return (
         <div className="p-2 sm:p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
             {isMobile ? (
@@ -16,6 +18,7 @@ export function StatusBar({
                     <div className="w-full mb-2 ">
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
+                            switchable={switchableBalanceSelector}
                         />
                     </div>
                     <div className="flex justify-center space-x-3 mb-2">
@@ -27,7 +30,7 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1">0</span>
+                            <span className="ml-1">{gemBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             <div className="w-8 h-4 flex items-center justify-center">
@@ -56,6 +59,7 @@ export function StatusBar({
                     >
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
+                            switchable={switchableBalanceSelector}
                         />
                     </div>
                     <div className="flex flex-col space-y-1 mt-5">
@@ -77,7 +81,9 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 text-lg font-Inter font-semibold">0</span>
+                            <span className="ml-1 text-lg font-Inter font-semibold">
+                {gemBalance.toFixed(2)}
+              </span>
                         </div>
                     </div>
                 </>

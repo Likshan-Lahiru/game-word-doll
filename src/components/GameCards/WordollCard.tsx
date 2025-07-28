@@ -6,14 +6,24 @@ type WordollCardProps = {
 }
 export function WordollCard({ isMobile = false }: WordollCardProps) {
     const navigate = useNavigate()
-    const { isAuthenticated } = useGlobalContext()
+    const { isAuthenticated, selectedBalanceType } = useGlobalContext()
     const handlePlayClick = () => {
         if (isAuthenticated) {
-            navigate('/bet-selector', {
-                state: {
-                    gameType: 'wordoll',
-                },
-            })
+            if (selectedBalanceType === 'ticket') {
+                // Navigate to gem game mode if ticket is selected
+                navigate('/gem-game-mode', {
+                    state: {
+                        gameType: 'wordoll',
+                    },
+                })
+            } else {
+                // Navigate to bet selector for normal coin mode
+                navigate('/bet-selector', {
+                    state: {
+                        gameType: 'wordoll',
+                    },
+                })
+            }
         } else {
             navigate('/wordoll-game')
         }
@@ -53,8 +63,6 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                     className="w-full h-full object-cover"
                 />
             </div>
-            {/* Dark overlay for better text readability */}
-            {/*<div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>*/}
             {/* x3 indicator in top right corner */}
             <div className="absolute top-4 right-6 text-white text-2xl font-semibold z-10">
                 x 3

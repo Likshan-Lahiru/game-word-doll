@@ -11,8 +11,12 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
     const { isAuthenticated } = useGlobalContext()
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white overflow-hidden">
-            <StatusBar isMobile={isMobile} hideOnlineCount={isAuthenticated} />
-            {!isMobile && <WinningStatus />}
+            <StatusBar
+                isMobile={isMobile}
+                hideOnlineCount={isAuthenticated}
+                switchableBalanceSelector={true}
+            />
+            {!isMobile && !isAuthenticated && <WinningStatus />}
             <div className={`flex-1 ${isAuthenticated ? 'pt-4' : ''}`}>
                 <GameCardGrid />
             </div>
