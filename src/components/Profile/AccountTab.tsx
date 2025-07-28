@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LogOutIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
   const [username, setUsername] = useState('Gina_Blake')
   const [email, setEmail] = useState('example@example.com')
   const [country, setCountry] = useState('Australia')
-  const [, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -30,10 +30,10 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
   return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold mb-6">Account</h2>
-        <div className="space-y-6">
+        <div className={`${isMobile ? 'space-y-4' : 'space-y-6'}`}>
           {/* User Name and Email Address on the same line */}
           <div className="flex flex-wrap gap-4">
-            <div className="flex-1 min-w-[200px]">
+            <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : ''}`}>
               <label className="block text-sm mb-1">User Name</label>
               <input
                   type="text"
@@ -42,7 +42,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
                   className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-white"
               />
             </div>
-            <div className="flex-1 min-w-[200px]">
+            <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : ''}`}>
               <label className="block text-sm mb-1">Email Address</label>
               <input
                   type="email"
@@ -55,7 +55,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
 
           {/* Country on its own line with smaller width */}
           {/* Country with responsive width */}
-          <div className="w-full sm:w-[40%] min-w-[180px]">
+          <div className={`w-full sm:w-[40%] min-w-[180px] ${isMobile ? 'mb-4' : ''}`}>
             <label className="block text-sm mb-1">Country</label>
             <div className="relative">
               <select
@@ -93,7 +93,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
           <div>
             <button
                 onClick={onChangePassword}
-                className="text-white hover:text-blue-400 font-medium"
+                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : ''}`}
             >
               Change Password
             </button>
