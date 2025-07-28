@@ -90,7 +90,7 @@ export function CountdownModal({
             </div>
         ) : (
             // Desktop view - larger text and card size
-            <div className="bg-[#374151] rounded-2xl pt-16 p-16 shadow-xl h-3/6 w-5/12 text-center font-['DM_Sans']">
+            <div className="bg-[#374151] rounded-2xl pt-16 p-16 shadow-xl h-5/6 w-5/12 text-center font-['DM_Sans']">
               <p className="text-white text-3xl mb-6 font-['DM_Sans']">Starts in...</p>
               <div className="text-white text-8xl font-bold font-['DM_Sans']">{count}</div>
             </div>
