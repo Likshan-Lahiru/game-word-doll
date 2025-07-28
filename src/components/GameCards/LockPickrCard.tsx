@@ -6,14 +6,24 @@ type LockPickrCardProps = {
 }
 export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
     const navigate = useNavigate()
-    const { isAuthenticated } = useGlobalContext()
+    const { isAuthenticated, selectedBalanceType } = useGlobalContext()
     const handlePlayClick = () => {
         if (isAuthenticated) {
-            navigate('/bet-selector', {
-                state: {
-                    gameType: 'lockpickr',
-                },
-            })
+            if (selectedBalanceType === 'ticket') {
+                // Navigate to gem game mode if ticket is selected
+                navigate('/gem-game-mode', {
+                    state: {
+                        gameType: 'lockpickr',
+                    },
+                })
+            } else {
+                // Navigate to bet selector for normal coin mode
+                navigate('/bet-selector', {
+                    state: {
+                        gameType: 'lockpickr',
+                    },
+                })
+            }
         } else {
             navigate('/lock-pickr-game')
         }
@@ -49,8 +59,6 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
                     className="w-full h-full object-cover"
                 />
             </div>
-            {/* Dark overlay for better text readability */}
-            {/*<div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>*/}
             {/* Title */}
             <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Lock Pickr

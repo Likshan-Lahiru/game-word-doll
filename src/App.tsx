@@ -15,6 +15,9 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { SpinPage } from './pages/SpinPage'
 import { HomePage } from './pages/HomePage'
 import { BetSelectorPage } from './pages/BetSelectorPage'
+import { GemGameModePage } from './pages/GemGameModePage'
+import { GemWordollGame } from './pages/GemWordollGame'
+import { GemLockPickrGame } from './pages/GemLockPickrGame'
 export function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     useEffect(() => {
@@ -36,6 +39,9 @@ export function App() {
                         <Route path="/giveaway-entry" element={<GiveawayEntry />} />
                         <Route path="/lock-pickr-game" element={<LockPickrGame />} />
                         <Route path="/bet-selector" element={<BetSelectorPage />} />
+                        <Route path="/gem-game-mode" element={<GemGameModePage />} />
+                        <Route path="/gem-wordoll-game" element={<GemWordollGame />} />
+                        <Route path="/gem-lockpickr-game" element={<GemLockPickrGame />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/signup" element={<SignupPage />} />
                         <Route
