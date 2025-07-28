@@ -15,7 +15,7 @@ export function GameCardGrid() {
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                     <span className="text-sm font-bold">1,568 Online</span>
                 </div>
-                <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-6 mb-3">
                     {/* Ensure Wordoll is first (top-left) */}
                     <WordollCard isMobile={true} />
                     <LockPickrCard isMobile={true} />
