@@ -41,17 +41,17 @@ export function BalanceSelector({ onSelect }: BalanceSelectorProps) {
                         </div>
 
                         {/* Switch Ticket Bar */}
-                        <div className={`w-full h-full flex items-center cursor-pointer ${isMobile ? 'pl-14' : 'pl-20'} ${selected === 'ticket' ? 'border-2 border-green-600 rounded-full' : ''}`}
+                        <div className={`w-full h-full flex items-center cursor-pointer ${isMobile ? 'pl-14' : 'pl-20'} ${selected === 'ticket' ? 'border-2 border-[#42E242] rounded-full' : ''}`}
                              onClick={() => handleSelect('ticket')}
                         >
-                            <p className={`w-full font-inter text-left pl-2 cursor-pointer ${selected === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
+                            <p className={`w-full font-inter text-left pl-2 cursor-pointer ${selected === 'ticket' ? 'text-[#42E242]' : 'text-white'}`}
                                onClick={() => handleSelect('ticket')}
                             >0</p>
                         </div>
                     </div>
 
                     {/* Middle  Coin and Ticket Icons Bar */}
-                    <div className={`flex justify-between h-full absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 rounded-full border-2 ${isMobile ? 'w-1/4' : 'w-2/1'} ${selected === 'coin' ? 'border-[#FDF222] bg-[#FFC000]' : 'border-[#22C55E] bg-green-600'}`}>
+                    <div className={`flex justify-between h-full absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 rounded-full border-2 ${isMobile ? 'w-1/4' : 'w-2/1'} ${selected === 'coin' ? 'border-[#FDF222] bg-[#FFC000]' : 'border-[#42E242] bg-[#42E242]'}`}>
 
                         {/* Coin Icon */}
                         <div className="h-full w-full rounded-full">
