@@ -9,7 +9,7 @@ export function RedeemPage() {
   const [showTransferModal, setShowTransferModal] = useState(false)
   const [showCompletedModal, setShowCompletedModal] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [activeTab, setActiveTab] = useState('redeem')
+
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -19,61 +19,37 @@ export function RedeemPage() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
   // Mock data
   const availableGems = 77.4
   const totalGems = 107.25
+
   const handleRedeemNow = () => {
     setShowTransferModal(true)
   }
+
   const handleConfirmTransaction = () => {
     setShowTransferModal(false)
     setShowCompletedModal(true)
   }
+
   const handleDone = () => {
     setShowCompletedModal(false)
   }
+
   const handleAddBankAccount = () => {
     alert('Bank account setup would open here')
   }
+
   // Mobile view
   if (isMobile) {
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
-          {/* Store title */}
-          <h1 className="text-2xl font-bold text-center my-4">Store</h1>
-          {/* Tabs */}
-          <div className="flex px-6 mb-8">
-            <button
-                className={`flex-1 py-4 px-4 rounded-2xl flex items-center justify-center space-x-2 ${activeTab === 'coins' ? 'bg-blue-500' : 'bg-[#131520]'}`}
-                onClick={() => {
-                  setActiveTab('coins')
-                  navigate('/store')
-                }}
-            >
-              <span className="font-bold text-sm">Get Gold Coins</span>
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/tseH8zwDf6PgMMJLoCm3uz/gold-store.png"
-                  alt="Coins"
-                  className="w-7 h-7"
-              />
-            </button>
-            <div className="w-4"></div>
-            <button
-                className={`flex-1 py-4 px-4 rounded-2xl flex items-center justify-center space-x-2 ${activeTab === 'redeem' ? 'bg-blue-500' : 'bg-[#131520]'}`}
-                onClick={() => setActiveTab('redeem')}
-            >
-              <span className="font-bold text-sm">Redeem</span>
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
-                  alt="Redeem"
-                  className="w-7 h-7"
-              />
-            </button>
-          </div>
+        <>
           {/* Withdraw section */}
           <div className="px-6 mb-8">
             <h2 className="text-xl font-bold mb-5">Withdraw</h2>
             <div className="mb-4">
+
               {/* Updated to match the image more closely - colon closer to the number */}
               <div className="flex justify-between mb-2">
                 <span className="text-gray-300">Available Gems</span>
@@ -89,6 +65,7 @@ export function RedeemPage() {
               </span>
               </div>
             </div>
+
             {/* Bullet points */}
             <ul className="space-y-3 mb-8">
               <li className="flex items-start">
@@ -106,6 +83,7 @@ export function RedeemPage() {
               </span>
               </li>
             </ul>
+
             {/* Redeem input */}
             <div className="mb-4">
               <div className="flex items-center mb-3">
@@ -135,6 +113,7 @@ export function RedeemPage() {
               </div>
             </div>
           </div>
+
           {/* Setup Payment Method */}
           <div className="px-6 mb-8">
             <h2 className="text-xl font-bold mb-4">Setup Payment Method</h2>
@@ -151,12 +130,14 @@ export function RedeemPage() {
               </button>
             </div>
           </div>
+
           {/* Note */}
           <div className="px-6 mb-20">
             <p className="text-white text-xs text-center">
               Note : 0.25% + $0.25 per payout
             </p>
           </div>
+
           {/* Transfer Funds Modal */}
           {showTransferModal && (
               <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -182,6 +163,7 @@ export function RedeemPage() {
                 </div>
               </div>
           )}
+
           {/* Transaction Completed Modal */}
           {showCompletedModal && (
               <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -207,11 +189,10 @@ export function RedeemPage() {
                 </div>
               </div>
           )}
-          {/* Bottom navigation */}
-          <BottomNavigation />
-        </div>
+        </>
     )
   }
+
   // Desktop view
   return (
       <div className="flex flex-col w-full  bg-[#1F2937] text-white">
@@ -307,10 +288,10 @@ export function RedeemPage() {
               <p className="text-white ml-4">gems to cash ($1 per gem)</p>
 
             </div>
-            <div className="flex-1 flex justify-end">
+            <div className="flex-1 bg-red-400 flex justify-end">
               <button
                   onClick={handleRedeemNow}
-                  className="bg-[#2D7FF0] hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
+                  className="bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
               >
                 Redeem Now
               </button>
