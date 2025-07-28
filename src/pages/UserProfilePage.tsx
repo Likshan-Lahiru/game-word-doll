@@ -1,4 +1,3 @@
-import React from 'react'
 import  { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProfileTabs } from '../components/Profile/ProfileTabs'
@@ -44,7 +43,7 @@ export function UserProfilePage() {
     }
   }
   return (
-      <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white pt-10">
+      <div className={`flex flex-col w-full min-h-screen bg-[#1F2937] text-white pt-10 ${isMobile ? '' : 'mb-16'}`}>
         <div className="flex-1 flex flex-col items-center justify-start p-4">
           <div
               className={`w-full max-w-3xl ${isMobile ? 'bg-transparent' : 'bg-[#374151]'} rounded-2xl overflow-hidden`}
@@ -55,7 +54,7 @@ export function UserProfilePage() {
                 isMobile={isMobile}
             />
             <div
-                className={`${isMobile ? 'bg-[#374151] mt-4 rounded-xl' : ''} px-6 sm:px-10 py-8`}
+                className={`${isMobile ? 'bg-[#374151] mt-4 rounded-xl px-3' : 'px-6'} sm:px-10 py-8`}
             >
               {renderTabContent()}
             </div>
