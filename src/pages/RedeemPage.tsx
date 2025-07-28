@@ -1,10 +1,7 @@
 import  { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { CheckCircleIcon } from 'lucide-react'
-import { BottomNavigation } from '../components/BottomNavigation'
-import { BalanceSelector } from '../components/BalanceSelector'
+
 export function RedeemPage() {
-  const navigate = useNavigate()
   const [redeemAmount, setRedeemAmount] = useState(75)
   const [showTransferModal, setShowTransferModal] = useState(false)
   const [showCompletedModal, setShowCompletedModal] = useState(false)
@@ -195,62 +192,11 @@ export function RedeemPage() {
 
   // Desktop view
   return (
-      <div className="flex flex-col w-full  bg-[#1F2937] text-white">
-        {/* Top balance bar */}
-        <div className="p-4">
-          <BalanceSelector
-              onSelect={(type) => console.log(`Selected: ${type}`)}
-          />
-        </div>
-        {/* Main content */}
-        <div className="flex flex-1 px-20 pb-8 font-['Inter']">
-          {/* Left sidebar */}
-          <div className="w-72 bg-[#374151] rounded-xl p-6 mr-8">
-            <h1 className="text-2xl font-bold mb-8">Store</h1>
-            <button
-                className="w-full bg-[#1F2937] hover:bg-gray-700 text-white py-4 px-5 rounded-xl mb-4 flex items-center"
-                onClick={() => navigate('/store')}
-            >
-            <span className="flex-1 text-left ml-2 font-medium font-['Inter']">
-              Get Gold Coins
-            </span>
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/tseH8zwDf6PgMMJLoCm3uz/gold-store.png"
-                    alt="Coins"
-                    className="w-10 h-10"
-                />
-              </div>
-            </button>
-            <button
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 px-5 rounded-xl flex items-center"
-                onClick={() => {}}
-            >
-              <span className="flex-1 text-left ml-2 font-medium font-['Inter']">Redeem</span>
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
-                    alt="Redeem"
-                    className="w-10 h-10"
-                />
-              </div>
-            </button>
-          </div>
+      <>
           {/* Right content area - Updated to match the image exactly */}
           <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter']">
             <h2 className="text-2xl font-medium mb-6 font-['Inter']">Withdraw</h2>
-            {/*<div className="space-y-4 mb-10">
-              <div className="flex">
-                <p className="text-white">Available Gems</p>
-                <p className="flex-1 mx-1">:</p>
-                <p className="font-medium flex-1 mx-1">{availableGems.toFixed(2)}</p>
-              </div>
-              <div className="flex">
-                <p className="text-white">Total Gems</p>
-                <p className="flex-1 mx-1">:</p>
-                <p className="font-medium">{totalGems.toFixed(2)}</p>
-              </div>
-            </div>*/}
+
             <div className="space-y-4 mb-10">
               <div className="flex items-center gap-x-2">
                 <p className="text-white">Available Gems</p>
@@ -274,8 +220,10 @@ export function RedeemPage() {
                 A minimum 100 Gems required to process a redeem.
               </li>
             </ul>
-            <div className="flex items-center mb-0.5">
-              <p className="text-white text-lg mr-4 font-['Inter']">Redeem</p>
+
+            <div className="flex max-[958px]:flex-col max-[958px]:space-y-2 max-[958px]:items-start items-center mb-0.5 space-x-4">
+              <p className="text-white text-lg font-['Inter']">Redeem</p>
+
               <div className="bg-white rounded-md px-4 py-2 flex items-center">
                 <input
                     type="number"
@@ -283,29 +231,32 @@ export function RedeemPage() {
                     onChange={(e) => setRedeemAmount(Number(e.target.value))}
                     className="bg-transparent w-16 outline-none text-black text-lg"
                 />
-                <span className="text-gray-500 ml-1 font-['Inter']">({`$${redeemAmount}`})</span>
+                <span className="text-gray-500 ml-1 font-['Inter']">({redeemAmount})</span>
               </div>
-              <p className="text-white ml-4">gems to cash ($1 per gem)</p>
 
+              <p className="text-white">gems to cash ($1 per gem)</p>
             </div>
-            <div className="flex-1 bg-red-400 flex justify-end">
+
+            <div className="flex-1 flex justify-end">
               <button
                   onClick={handleRedeemNow}
-                  className="bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
+                  className="md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
               >
                 Redeem Now
               </button>
             </div>
+
             <h2 className="text-2xl font-medium mt-12 mb-6">
               Setup Payment Method
             </h2>
+
             <div className="flex items-center mb-12">
               <p className="text-gray-300">
                 Setup your payment method by entering your bank account details to
                 receive funds.
               </p>
-
             </div>
+
             <div className="flex-1 flex justify-end">
               <button
                   onClick={handleAddBankAccount}
@@ -314,11 +265,12 @@ export function RedeemPage() {
                 Add Bank Account
               </button>
             </div>
+
             <ul className="list-disc pl-5 mt-16">
               <li className="text-white">Note : 0.25% + $0.25 per payout</li>
             </ul>
           </div>
-        </div>
+
         {/* Transfer Funds Modal */}
         {showTransferModal && (
             <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -344,6 +296,7 @@ export function RedeemPage() {
               </div>
             </div>
         )}
+
         {/* Transaction Completed Modal */}
         {showCompletedModal && (
             <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
@@ -369,7 +322,6 @@ export function RedeemPage() {
               </div>
             </div>
         )}
-        <BottomNavigation />
-      </div>
+      </>
   )
 }
