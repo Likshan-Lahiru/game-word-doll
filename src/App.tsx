@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { WordollGame } from './pages/WordollGame'
 import { GiveawayGame } from './pages/GiveawayGame'
 import { GiveawayEntry } from './pages/GiveawayEntry'
+import { GiveawayWordollGame } from './pages/GiveawayWordollGame'
+import { GiveawayLockPickrGame } from './pages/GiveawayLockPickrGame'
 import { LockPickrGame } from './pages/LockPickrGame'
 import { LoginPage } from './pages/LoginPage'
 import { SignupPage } from './pages/SignupPage'
@@ -37,6 +39,14 @@ export function App() {
                         <Route path="/spin-wordoll-game" element={<WordollGame />} />
                         <Route path="/giveaway-game" element={<GiveawayGame />} />
                         <Route path="/giveaway-entry" element={<GiveawayEntry />} />
+                        <Route
+                            path="/giveaway-wordoll-game"
+                            element={<GiveawayWordollGame />}
+                        />
+                        <Route
+                            path="/giveaway-lockpickr-game"
+                            element={<GiveawayLockPickrGame />}
+                        />
                         <Route path="/lock-pickr-game" element={<LockPickrGame />} />
                         <Route path="/bet-selector" element={<BetSelectorPage />} />
                         <Route path="/gem-game-mode" element={<GemGameModePage />} />
