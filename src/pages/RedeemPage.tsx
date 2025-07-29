@@ -195,7 +195,7 @@ export function RedeemPage() {
       <>
           {/* Right content area - Updated to match the image exactly */}
           <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter']">
-            <h2 className="text-2xl font-medium mb-6 font-['Inter']">Withdraw</h2>
+            <h2 className="text-2xl font-medium mb-6 font-['Inter']">Redeem</h2>
 
             <div className="space-y-4 mb-10">
               <div className="flex items-center gap-x-2">
