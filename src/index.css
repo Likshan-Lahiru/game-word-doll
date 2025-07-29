@@ -1,3 +1,14 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.gradient-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(90deg, rgba(167, 244, 50, 0.2), rgba(80, 200, 120, 0.2));
+    pointer-events: none;
+    z-index: 0;
+}
+
