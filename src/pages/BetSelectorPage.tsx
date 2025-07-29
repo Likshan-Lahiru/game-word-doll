@@ -51,9 +51,6 @@ export function BetSelectorPage() {
             }
         }
     }
-    const handleBack = () => {
-        navigate('/')
-    }
     if (!isAuthenticated) {
         navigate(gameType === 'wordoll' ? '/wordoll-game' : '/lock-pickr-game')
         return null

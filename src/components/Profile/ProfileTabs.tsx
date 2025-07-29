@@ -11,7 +11,7 @@ export function ProfileTabs({
                             }: ProfileTabsProps) {
     return (
         <div
-            className={`${isMobile ? 'bg-[#0A0E1A] px-4 py-2 rounded-full' : 'bg-[#374151] flex justify-between p-4 rounded-t-xl px-20 pt-8'}`}
+            className={`${isMobile ? 'bg-[#0A0E1A] px-4 py-2 rounded-full mt-5 ml-2 mr-2' : 'bg-[#374151] flex justify-between p-4 rounded-t-xl px-20 pt-8'}`}
         >
             <div
                 className={`${isMobile ? 'flex w-full justify-between' : 'bg-[#1F2937] flex w-full justify-between gap-2 p-1 rounded-full'}`}
