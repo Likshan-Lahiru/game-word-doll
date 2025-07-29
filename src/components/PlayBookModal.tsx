@@ -249,8 +249,8 @@ interface PlayBookModalProps {
 export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
   if (!isOpen) return null
   return (
-      <div className="fixed inset-0 bg-[#1F2937E5]/70 flex items-center justify-center  z-50 p-4">
-        <div className="bg-[#374151]  pt-4 rounded-2xl h-4/6 w-full max-w-4xl  overflow-hidden">
+      <div className="fixed inset-0 bg-[#1F2937E5]/90 flex items-center justify-center   z-50 p-4">
+        <div className="bg-[#374151]  pt-4 rounded-2xl py-14  w-full max-w-4xl  overflow-hidden">
           <div className="relative p-8">
             <button
                 onClick={onClose}
