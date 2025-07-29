@@ -28,12 +28,12 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
   }
 
   return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-bold mb-6">Account</h2>
+      <div className="space-y-8">
+        <h2 className="text-xl font-bold mb-6 mt-10">Account</h2>
         <div className={`${isMobile ? 'space-y-4' : 'space-y-6'}`}>
           {/* User Name and Email Address on the same line */}
           <div className="flex flex-wrap gap-4">
-            <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : ''}`}>
+            <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : 'mb-4'}`}>
               <label className="block text-sm mb-1">User Name</label>
               <input
                   type="text"
@@ -93,7 +93,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
           <div>
             <button
                 onClick={onChangePassword}
-                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : ''}`}
+                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : 'mb-16'}`}
             >
               Change Password
             </button>
