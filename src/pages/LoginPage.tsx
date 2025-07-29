@@ -296,7 +296,7 @@ export function LoginPage() {
                 <input
                     type="email"
                     placeholder="Email"
-                    className="w-full font-semibold px-4 py-5 bg-[#374151] rounded-2xl focus:outline-none text-sm sm:text-base"
+                    className="w-full font-semibold px-4 py-4 bg-[#374151] rounded-2xl focus:outline-none text-sm sm:text-base"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -306,7 +306,7 @@ export function LoginPage() {
                 <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
-                    className="w-full font-semibold px-4 py-5 bg-[#374151] rounded-2xl focus:outline-none text-sm sm:text-base"
+                    className="w-full font-semibold px-4 py-4 bg-[#374151] rounded-2xl focus:outline-none text-sm sm:text-base"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -334,7 +334,7 @@ export function LoginPage() {
               </div>
               <button
                   type="submit"
-                  className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-4 px-4 rounded-2xl transition-colors text-3xl"
+                  className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-2xl transition-colors text-2xl"
               >
                 Log in
               </button>
