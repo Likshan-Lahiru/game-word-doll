@@ -190,7 +190,7 @@ export function GiveawayGame() {
         </div>
 
         {/* Status Bar */}
-        <div className="md:pl-52">
+        <div className="">
           <StatusBar isMobile={isMobile} hideOnlineCount={true}/>
         </div>
         {/* Main Content */}
