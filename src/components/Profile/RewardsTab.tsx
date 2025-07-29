@@ -351,9 +351,9 @@ export function RewardsTab() {
               Invite & sign up friends from your personal link to increase Lucky
               Score and get free{' '}
               <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
                   alt="Voucher"
-                  className={`${isMobile ? 'w-8 h-8' : 'w-10 h-10'} inline mx-1 p-0 m-0`}
+                  className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} inline mx-1 p-0 m-0`}
               />{' '}
                 vouchers.
             </p>
