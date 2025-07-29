@@ -730,7 +730,7 @@ export function StorePage() {
                             </p>
                             {pkg.bonus > 0 && (
                                 <div className="flex flex-col">
-                                  <span className="text-center text-xs font-semibold font-['DM_Sans']">+</span>
+                                  <span className="text-center mr-10 text-xs font-semibold font-['DM_Sans']">+</span>
                                   <div className="flex items-center">
                                     <img
                                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
