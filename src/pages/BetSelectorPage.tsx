@@ -71,6 +71,7 @@ export function BetSelectorPage() {
                         />
                     </button>
                 </div>
+
                 {/* Status Bar */}
                 <StatusBar isMobile={true} hideOnlineCount={true} />
                 {/* Main Content */}
@@ -154,7 +155,7 @@ export function BetSelectorPage() {
                 </button>
             </div>
             {/* Status Bar */}
-            <div className="md:pl-52">
+            <div className="">
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
