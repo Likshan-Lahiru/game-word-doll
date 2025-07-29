@@ -10,7 +10,7 @@ import { useGlobalContext } from '../context/GlobalContext'
 export function HomePage({ isMobile }: { isMobile: boolean }) {
     const { isAuthenticated } = useGlobalContext()
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white overflow-hidden">
+        <div className={`${isAuthenticated && 'mb-20'} flex flex-col w-full min-h-screen bg-[#1F2937] text-white overflow-hidden`}>
             <StatusBar
                 isMobile={isMobile}
                 hideOnlineCount={isAuthenticated}
