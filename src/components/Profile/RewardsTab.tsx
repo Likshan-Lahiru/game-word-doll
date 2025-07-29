@@ -89,13 +89,13 @@ export function RewardsTab() {
                     <>
                       <div className={"flex-col pb-2"}>
                         <div className={"flex items-center justify-between h-7"}>
-                          <p className={`${isMobile ? 'px-1' : 'px-3'} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'} ${fontInter}`}>{item.label}</p>
+                          <p className={`${isMobile ? 'px-1' : 'px-3 text-sm'} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'} ${fontInter}`}>{item.label}</p>
                           <div className={`flex items-center ${isMobile ? 'pr-2' : 'pr-5'} ${isSmallMobile && 'pr-0'}`}>
                             <img src={"https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"}
                                  alt={"ticket"}
                                  className={`w-8 h-8`}
                             />
-                            <p className={`${fontInter} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'}`}>x {item.reward}</p>
+                            <p className={`${fontInter} ${isMobile ? '' : 'text-sm'} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'}`}>x {item.reward}</p>
                           </div>
                         </div>
                         <div className={"h-10"}>
