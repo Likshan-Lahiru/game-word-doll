@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { StatusBar } from '../components/StatusBar'
 import { useGlobalContext } from '../context/GlobalContext'
 import { PrizeCard, PrizeData } from '../components/PrizeCard'
 export function GiveawayGame() {
   const navigate = useNavigate()
-  useGlobalContext()
+  const location = useLocation()
+  const { spinBalance, coinBalance, setCoinBalance } = useGlobalContext()
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  // Get the selected game from location state
+  const { selectedGame = 'wordoll' } =
+  (location.state as {
+    selectedGame?: string
+  }) || {}
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
@@ -15,8 +21,22 @@ export function GiveawayGame() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-  const handleEnterGame = () => {
-    navigate('/spin-wordoll-game')
+  const handleEnterGame = (prize: PrizeData) => {
+    // Check if user has enough coins
+    if (coinBalance < prize.cost) {
+      alert("You don't have enough coins to play for this prize!")
+      return
+    }
+    // Deduct the cost from user's coin balance
+    setCoinBalance(coinBalance - prize.cost)
+    // Store the selected prize in session storage
+    sessionStorage.setItem('selectedPrize', JSON.stringify(prize))
+    // Navigate to the appropriate game based on the selected game
+    if (selectedGame === 'wordoll') {
+      navigate('/giveaway-wordoll-game')
+    } else {
+      navigate('/giveaway-lockpickr-game')
+    }
   }
   // Prize data array
   const prizes: PrizeData[] = [
@@ -94,7 +114,7 @@ export function GiveawayGame() {
           <div className="absolute top-14 left-4 z-10">
             <button
                 className="w-12 h-12 rounded-full flex items-center justify-center"
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/giveaway-entry')}
             >
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
@@ -103,10 +123,9 @@ export function GiveawayGame() {
               />
             </button>
           </div>
-
           {/* Status Bar */}
           <div className="md:pl-52">
-            <StatusBar isMobile={isMobile} hideOnlineCount={true}/>
+            <StatusBar isMobile={isMobile} hideOnlineCount={true} />
           </div>
           {/* Main Content */}
           <div className="flex-1 flex flex-col px-3 pt-1">
@@ -120,66 +139,22 @@ export function GiveawayGame() {
                       key={prize.id}
                       prize={prize}
                       isMobile={true}
-                      onEnter={handleEnterGame}
+                      onEnter={() => handleEnterGame(prize)}
                   />
               ))}
             </div>
           </div>
           {/* Bottom Navigation */}
-          <BottomNavigation/>
+          <BottomNavigation />
         </div>
     )
   }
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
-        {/* Status Bar */}
-        {/*<div className="p-4 flex justify-between items-center">
-          <button
-              className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center"
-              onClick={() => navigate('/giveaway-entry')}
-          >
-            <img
-                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                alt="Back"
-                className="w-8 h-8"
-            />
-          </button>
-           Balance Selector
-          <div className="flex-1 max-w-md mx-auto px-4">
-            <BalanceSelector
-                onSelect={(type) => console.log(`Selected: ${type}`)}
-            />
-          </div>
-           Heart and Diamond
-          <div className="flex flex-col space-y-1 mt-5">
-            <div
-                className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-6 outline outline-2 outline-[#374151] mt-2">
-              <div className="w-5 h-7 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
-                    alt="Heart"
-                    className="w-14 h-28 object-contain"
-                />
-              </div>
-              <span className="ml-1 font-Inter font-semibold">0</span>
-            </div>
-            <div
-                className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-3 outline outline-2 outline-[#374151]">
-              <div className="w-8 h-8 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
-                    alt="Diamond"
-                    className="w-14 h-28 object-contain"
-                />
-              </div>
-              <span className="ml-1 font-Inter font-semibold">0</span>
-            </div>
-          </div>
-        </div>*/}
         <div className="absolute top-8 left-6 z-10">
           <button
               className="w-14 h-14 rounded-full flex items-center justify-center"
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/giveaway-entry')}
           >
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
@@ -188,17 +163,15 @@ export function GiveawayGame() {
             />
           </button>
         </div>
-
         {/* Status Bar */}
         <div className="">
-          <StatusBar isMobile={isMobile} hideOnlineCount={true}/>
+          <StatusBar isMobile={isMobile} hideOnlineCount={true} />
         </div>
         {/* Main Content */}
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">
           <h2 className="text-xl font-['DM_Sans'] font-medium text-center mr-96 pr-96 mb-8">
             Select a prize to win!
           </h2>
-
           {/* Prize Cards Row */}
           <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl mb-8">
             {desktopPrizes.map((prize) => (
@@ -206,13 +179,13 @@ export function GiveawayGame() {
                     key={prize.id}
                     prize={prize}
                     isMobile={false}
-                    onEnter={handleEnterGame}
+                    onEnter={() => handleEnterGame(prize)}
                 />
             ))}
           </div>
         </div>
         {/* Bottom Navigation */}
-        <BottomNavigation/>
+        <BottomNavigation />
       </div>
   )
 }
