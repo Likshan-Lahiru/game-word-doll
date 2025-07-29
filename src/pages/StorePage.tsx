@@ -712,7 +712,7 @@ export function StorePage() {
                         )}
                         <div
                             key={pkg.id}
-                            className={`${index === 2 ? 'top-7 mb-8' : ''} relative bg-white rounded-2xl p-4 flex items-center min-w-[280px] h-32 max-w-full w-full`}
+                            className={`${pkg.bestValue ? 'top-7 mb-8 gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''} relative bg-white rounded-2xl p-4 flex items-center min-w-[280px] h-32 max-w-full w-full`}
                         >
                           {/* Coin image */}
                           <div className="w-20 h-20 flex items-center justify-center">
@@ -850,7 +850,7 @@ export function StorePage() {
                     {packages.map((pkg) => (
                         <div
                             key={pkg.id}
-                            className="relative min-w-[122px] max-w-[300px] w-full mx-auto"
+                            className="relative min-w-[122px] max-w-[300px] w-full mx-auto "
                         >
                           {pkg.bestValue && (
                               <div
@@ -864,10 +864,11 @@ export function StorePage() {
                           )}
 
                           <div
-                              className={`rounded-xl overflow-hidden flex flex-col h-[440px] ${pkg.bestValue ? 'pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F] relative top-0' : ''}`}
-                              style={{
-                                background: 'white',
-                              }}
+                              className={`relative rounded-xl overflow-hidden flex flex-col h-[440px] bg-white ${
+                                  pkg.bestValue
+                                      ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]'
+                                      : ''
+                              }`}
                           >
                             {/* Coin image */}
                             <div className="flex justify-center items-center pt-10 pb-6">
