@@ -124,8 +124,8 @@ type AccountTabProps = {
 
 export function AccountTab({ onChangePassword }: AccountTabProps) {
   const navigate = useNavigate()
-  const [username, setUsername] = useState('Gina_Blake')
-  const [email, setEmail] = useState('example@example.com')
+  const [username, setUsername] = useState('Dinal_diske')
+  const [email, setEmail] = useState('ammatasiri@gmail.com')
   const [country, setCountry] = useState('Australia')
   const [isMobile, setIsMobile] = useState(false)
 
@@ -144,7 +144,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
   }
 
   return (
-      <div className="space-y-8">
+      <div className="space-y-8 px-10">
         <h2 className="text-xl font-bold mb-6 mt-10">Account</h2>
         <div className={`${isMobile ? 'space-y-4' : 'space-y-6'}`}>
           {/* User Name and Email Address on the same line */}
@@ -164,7 +164,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-gray-100"
+                  className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-gray-500"
               />
             </div>
           </div>
