@@ -395,6 +395,7 @@ export function RedeemPage() {
   )
 }
 */
+import React from 'react'
 import  { useEffect, useState } from 'react'
 import { CheckCircleIcon } from 'lucide-react'
 
@@ -441,21 +442,21 @@ export function RedeemPage() {
         <>
           {/* Withdraw section */}
           <div className="px-6 mb-8">
-            <h2 className="text-xl font-bold mb-5">Withdraw</h2>
+            <h2 className="text-xl font-bold mb-5">Redeem</h2>
             <div className="mb-4">
 
               {/* Updated to match the image more closely - colon closer to the number */}
               <div className="flex justify-between mb-2">
-                <span className="text-gray-300">Available Gems</span>
-                <span className="text-gray-300">
+                <span className="">Available Gems</span>
+                <span className="">
                 :{' '}
-                  <span className="font-medium">{availableGems.toFixed(2)}</span>
+                  <span className="mr-44 pr-2 font-medium">{availableGems.toFixed(2)}</span>
               </span>
               </div>
               <div className="flex justify-between mb-5">
-                <span className="text-gray-300">Total Gems</span>
-                <span className="text-gray-300">
-                : <span className="font-medium">{totalGems.toFixed(2)}</span>
+                <span className="">Total Gems</span>
+                <span className="">
+                : <span className="mr-44 font-medium">{totalGems.toFixed(2)}</span>
               </span>
               </div>
             </div>
@@ -463,16 +464,16 @@ export function RedeemPage() {
             {/* Bullet points */}
             <ul className="space-y-3 mb-8">
               <li className="flex items-start">
-                <span className="text-gray-400 mr-2">•</span>
-                <span className="text-gray-400 text-xs">
+                <span className=" mr-2">•</span>
+                <span className=" text-xs">
                 Total gems show your earnings to date, while available gems is
                 the amount you can withdraw now. Gems earned today will be added
                 to your available gems after 7 days.
               </span>
               </li>
               <li className="flex items-start">
-                <span className="text-gray-400 mr-2">•</span>
-                <span className="text-gray-400 text-xs">
+                <span className=" mr-2">•</span>
+                <span className=" text-xs">
                 A minimum 100 Gems required to process a redeem.
               </span>
               </li>
@@ -490,8 +491,8 @@ export function RedeemPage() {
                       className="bg-transparent w-16 outline-none text-black text-sm"
                   />
                 </div>
-                <p className="text-gray-600 text-sm">({`$${redeemAmount}`})</p>
-                <p className="text-gray-400 text-xs ml-2">
+                <p className=" text-sm">({`$${redeemAmount}`})</p>
+                <p className=" text-xs ml-2">
                   gems to cash
                   <br />
                   ($1 per gem)
@@ -511,7 +512,7 @@ export function RedeemPage() {
           {/* Setup Payment Method */}
           <div className="px-6 mb-8">
             <h2 className="text-xl font-bold mb-4">Setup Payment Method</h2>
-            <p className="text-gray-400 mb-6 text-center text-xs font-bold">
+            <p className=" mb-6 text-center text-xs font-bold">
               Setup your payment method by entering your bank account details to
               receive funds.
             </p>
@@ -527,7 +528,7 @@ export function RedeemPage() {
 
           {/* Note */}
           <div className="px-6 mb-20">
-            <p className="text-white text-xs text-center">
+            <p className="text-white font-light text-xs text-center">
               Note : 0.25% + $0.25 per payout
             </p>
           </div>
