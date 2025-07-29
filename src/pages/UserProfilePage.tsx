@@ -43,10 +43,10 @@ export function UserProfilePage() {
     }
   }
   return (
-      <div className={`flex flex-col w-full min-h-screen bg-[#1F2937] text-white pt-10 ${isMobile ? 'mb-20' : 'mb-16'}`}>
+      <div className={`flex flex-col w-full min-h-screen bg-[#1F2937] text-white ${isMobile ? 'mb-20 pt-3' : 'mb-16 pt-10'}`}>
         <div className="flex-1 flex flex-col items-center justify-start p-4">
           <div
-              className={`w-full max-w-3xl ${isMobile ? 'bg-transparent' : 'bg-[#374151]'} rounded-2xl overflow-hidden`}
+              className={`w-full max-w-3xl ${isMobile ? 'bg-transparent h-[680px]' : 'bg-[#374151] h-[720px]'} rounded-2xl overflow-hidden`}
           >
             <ProfileTabs
                 activeTab={activeTab}
