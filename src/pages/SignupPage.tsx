@@ -245,6 +245,7 @@ export function SignupPage() {
     // Redirect to home page after signup
     navigate('/')
   }
+
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1E2937] text-white">
         {/* Back button */}
