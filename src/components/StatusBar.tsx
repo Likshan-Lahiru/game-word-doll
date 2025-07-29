@@ -1,6 +1,7 @@
 import React from 'react'
 import { BalanceSelector } from './BalanceSelector'
 import { useGlobalContext } from '../context/GlobalContext'
+const isHomePage = location.pathname === '/'
 export function StatusBar({
                               isMobile,
                               hideOnlineCount,
@@ -47,7 +48,7 @@ export function StatusBar({
             ) : (
                 <>
                 <div className="flex items-center mr-52 space-x-3">
-                    {!isAuthenticated && (
+                    {isHomePage && !isAuthenticated && (
 
                         <div className="absolute top-10 left-4 z-10">
                             <img
