@@ -93,9 +93,9 @@ export function GuidePage() {
                     <div className="flex items-center gap-2 sm:gap-3">
                         <div className="rounded-full">
                             <img
-                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/3YTVbiE1DuPqiMrrdaLvve/Vouchers.png"
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
                                 alt="Vouchers"
-                                className="w-8 h-8 sm:w-8 sm:h-8"
+                                className="w-7 h-7 sm:w-8 sm:h-8"
                             />
                         </div>
                         <h3 className="text-base sm:text-xl font-bold text-white">
