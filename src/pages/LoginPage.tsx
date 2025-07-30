@@ -317,9 +317,9 @@ export function LoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                      <EyeOffIcon className="w-5 h-5 bg-transparent" />
+                      <img src={"/eye-off.png"} alt={"Eye Icon"} className={"w-5 h-5"}/>
                   ) : (
-                      <EyeIcon className="w-5 h-5" />
+                      <img src={"/Eye.png"} alt={"Eye Icon"} className={"w-5 h-5"}/>
                   )}
                 </button>
               </div>
