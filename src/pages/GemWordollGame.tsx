@@ -6,8 +6,6 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { UserWinGemModal } from '../components/GameModals/UserWinGemModal'
 import { TimeEndedGemModal } from '../components/GameModals/TimeEndedGemModal'
 import { NoAttemptsGemModal } from '../components/GameModals/NoAttemptsGemModal'
-
-
 const WORDS = ['HELLO', 'WORLD', 'REACT', 'GAMES', 'GUESS', 'BRAIN', 'SMART']
 function getLetterStatuses(
     guess: string[],
@@ -46,7 +44,7 @@ export function GemWordollGame() {
     }) || {}
     const [targetWord, setTargetWord] = useState('')
     const [, setSelectedLetters] = useState<string[]>([])
-    const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
+    const [lastAttempt, setLastAttempt] = useState<string[]>(Array(5).fill(''))
     const [currentAttempt, setCurrentAttempt] = useState<string[]>(
         Array(5).fill(''),
     )
@@ -294,12 +292,10 @@ export function GemWordollGame() {
                 </button>
             </div>
 
-            <div className="text-center mb-24 mt-20">
-                <p className="text-white">Timer</p>
-                <p className="text-3xl font-bold">{formatTime(timer)}</p>
+            <div className="text-center mb-28 mt-20">
+                <p className="text-white text-xs">Timer</p>
+                <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
-
-
 
             {feedback && (
                 <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
@@ -321,19 +317,19 @@ export function GemWordollGame() {
                 />
             )}
 
-            {lastAttempt && (
-                <div className="flex justify-center mb-8 ">
-                    <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
-                        {lastAttempt.map((letter, index) =>
-                            renderLetterTile(
-                                letter,
-                                index,
-                                getLetterStatuses(lastAttempt, targetWord)[index],
-                            ),
-                        )}
-                    </div>
+            {/* Last attempt display - Always shown */}
+            <div className="flex justify-center mb-8">
+                <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
+                    {lastAttempt.map((letter, index) => {
+                        // Only check status if there's an actual letter
+                        const hasActualLetter = letter !== ''
+                        const status = hasActualLetter
+                            ? getLetterStatuses(lastAttempt, targetWord)[index]
+                            : null
+                        return renderLetterTile(letter, index, status)
+                    })}
                 </div>
-            )}
+            </div>
 
             <div
                 className="flex justify-center mb-8 "
@@ -345,7 +341,7 @@ export function GemWordollGame() {
                     }).map((_, index) => (
                         <div
                             key={index}
-                            className={`w-14 h-14 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] && !gameCompleted ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                            className={`w-16 h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] && !gameCompleted ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                             onClick={() => handleLetterClick(index)}
                         >
                             {currentAttempt[index]}
@@ -360,8 +356,6 @@ export function GemWordollGame() {
 
             {isMobile && (
                 <>
-
-
                     <div className="w-full max-w-md mx-auto">
                         {mobileKeyboard.map((row, rowIndex) => (
                             <div
@@ -434,8 +428,6 @@ export function GemWordollGame() {
                             className="md:block"
                         />
                     </div>
-
-
                 </>
             )}
 

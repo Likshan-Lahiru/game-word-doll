@@ -272,9 +272,9 @@ export function WordollGame() {
             />
           </button>
         </div>
-        <div className="text-center mb-24 mt-20">
-          <p className="text-white">Timer</p>
-          <p className="text-3xl font-bold">{formatTime(timer)}</p>
+        <div className="text-center mb-24 mt-16">
+          <p className="text-white text-xs">Timer</p>
+          <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
 
         {feedback && (
@@ -477,7 +477,7 @@ export function WordollGame() {
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000} gameType={'wordoll'}          />
+                  penalty={1000} gameType={'wordoll'}/>
             </>
         )}
       </div>
