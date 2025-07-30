@@ -499,7 +499,7 @@ export function LockPickrGame() {
           </button>
         </div>
         {/* Timer */}
-        <div className="text-center mb-16 mt-8">
+        <div className="text-center mb-14 mt-16">
           <p className="text-white text-xs">Timer</p>
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
