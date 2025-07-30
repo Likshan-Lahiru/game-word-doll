@@ -255,13 +255,14 @@ export function WordollGame() {
   ]
   return (
       <div
-          className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
+          className="flex flex-col w-full  min-h-screen bg-[#1F2937] text-white p-4"
           ref={gameContainerRef}
       >
         <div className="text-center mb-24 mt-20">
           <p className="text-white">Timer</p>
           <p className="text-3xl font-bold">{formatTime(timer)}</p>
         </div>
+
         {feedback && (
             <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
               {feedback}
@@ -348,7 +349,7 @@ export function WordollGame() {
                       {row.map((key, keyIndex) => (
                           <button
                               key={`${rowIndex}-${keyIndex}`}
-                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
+                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[65px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
                               onClick={() => handleMobileKeyPress(key)}
                           >
                             {key === 'Backspace' ? (
