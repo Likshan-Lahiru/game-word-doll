@@ -481,7 +481,7 @@ export function RedeemPage() {
 
             {/* Redeem input */}
             <div className="mb-4">
-              <div className="flex items-center mb-3">
+              <div className={`flex items-center mb-3 justify-center`}>
                 <p className="mr-2 text-sm">Redeem</p>
                 <div className="w-24 bg-white rounded-md px-4 py-2 flex justify-between mx-2">
                   <input
