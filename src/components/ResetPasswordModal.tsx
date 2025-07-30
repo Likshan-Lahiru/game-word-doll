@@ -35,7 +35,7 @@ export function ResetPasswordModal({
   if (!isOpen) return null
   return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
-        <div className="bg-[#374151] rounded-lg p-5 sm:p-8 shadow-xl w-full max-w-md mx-4">
+        <div className="bg-[#374151] rounded-lg p-5 sm:pt-10 sm:pb-24 sm:pr-20 sm:pl-20 shadow-xl w-full max-w-lg mx-4">
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">
             Password Reset
           </h2>
@@ -48,7 +48,7 @@ export function ResetPasswordModal({
               </div>
           )}
           <form onSubmit={handleResetPassword}>
-            <div className="relative mb-3 sm:mb-4">
+            <div className="relative mb-2 sm:mb-2">
               <div className="relative">
                 <input
                     type={showNewPassword ? 'text' : 'password'}
@@ -64,9 +64,11 @@ export function ResetPasswordModal({
                     onClick={() => setShowNewPassword(!showNewPassword)}
                 >
                   {showNewPassword ? (
-                      <EyeOffIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <img src={"/Eye.png"} alt={"Eye Icon"} className={"w-5 h-5"}/>
+                      // <EyeOffIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   ) : (
-                      <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <img src={"/eye-off.png"} alt={"Eye Icon"} className={"w-5 h-5"}/>
+                      // <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   )}
                 </button>
               </div>
@@ -87,9 +89,9 @@ export function ResetPasswordModal({
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                      <EyeOffIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <img src={"/Eye.png"} alt={"Eye Icon"} className={"w-5 h-5"}/>
                   ) : (
-                      <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <img src={"/eye-off.png"} alt={"Eye Icon"} className={"w-5 h-5"}/>
                   )}
                 </button>
               </div>
