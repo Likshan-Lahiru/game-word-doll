@@ -800,7 +800,7 @@ export function StorePage() {
         <div className="flex flex-1 pl-16 pr-5 pb-8">
 
           {/* Left sidebar */}
-          <div className={`${activeTabDesktop === 'redeem' ? 'mt-16 w-[440px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
+          <div className={`${activeTabDesktop === 'redeem' ? 'mt-16 w-[468px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
             <h1 className="text-2xl font-bold mb-8">Store</h1>
             <button
                 className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-4 flex items-center`}
