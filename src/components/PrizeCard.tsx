@@ -21,11 +21,11 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                     className="w-24 h-24 pl-2   "
                 />
                 <div className="ml-3 flex-1 text-center">
-                    <p className="font-semibold text-base font-['DM_Sans']">
+                    <p className="font-medium text-base font-['DM_Sans']">
                         GC {prize.coinAmount.toLocaleString()}
                     </p>
-                    <p className="text-sm font-semibold font-['DM_Sans']">+</p>
-                    <p className="text-sm font-semibold font-['DM_Sans']">{prize.spinAmount} x Spin</p>
+                    <p className="text-sm font-medium font-['DM_Sans']">+</p>
+                    <p className="text-sm font-medium font-['DM_Sans']">{prize.spinAmount} x Spin</p>
                 </div>
                 <div className="flex flex-col items-end">
                     <div className="flex items-center mb-2 text-lg pr-8">
@@ -34,7 +34,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                             alt="Coins"
                             className="w-6 h-6 mr-1"
                         />
-                        <span className="font-semibold text-lg font-['DM_Sans']">
+                        <span className="font-medium text-lg font-['DM_Sans']">
               {prize.cost.toLocaleString()}
             </span>
                     </div>
@@ -56,21 +56,21 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                 alt={`${prize.coinAmount} Coins`}
                 className="w-28 h-28 mb-3"
             />
-            <p className="font-bold text-xl mt-10 mb-1">
+            <p className="font-medium text-xl mt-10 mb-1">
                 GC {prize.coinAmount.toLocaleString()}
             </p>
-            <p className="text-center mb-1 text-xl font-semibold font-['DM_Sans']">+</p>
-            <p className="mb-4 font-['DM_Sans'] font-bold text-xl">{prize.spinAmount} x Spin</p>
+            <p className="text-center mb-1 text-xl font-medium font-['DM_Sans']">+</p>
+            <p className="mb-4 font-['DM_Sans'] font-medium text-xl">{prize.spinAmount} x Spin</p>
             <div className="flex items-center mb-3 mt-10">
                 <img
                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                     alt="Coins"
                     className="w-8 h-8 mr-2"
                 />
-                <span className="text-[#170F49] font-['DM_Sans'] font-bold text-xl">{prize.cost.toLocaleString()}</span>
+                <span className="text-[#170F49] font-['DM_Sans'] font-medium text-xl">{prize.cost.toLocaleString()}</span>
             </div>
             <button
-                className="bg-[#56CA5A] text-xl font-bold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-44 h-12 rounded-full  mt-2"
+                className="bg-[#56CA5A] text-xl font-semibold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-44 h-12 rounded-full  mt-2"
                 onClick={onEnter}
             >
                 Let's Go!
