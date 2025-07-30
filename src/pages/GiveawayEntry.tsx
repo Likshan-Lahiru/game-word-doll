@@ -9,6 +9,7 @@ export function GiveawayEntry() {
     const { spinBalance } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
+
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -16,6 +17,7 @@ export function GiveawayEntry() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
         navigate('/giveaway-game', {
@@ -24,6 +26,7 @@ export function GiveawayEntry() {
             },
         })
     }
+
     const CustomWordollCard = () => {
         if (isMobile) {
             return (
@@ -44,6 +47,7 @@ export function GiveawayEntry() {
                 </div>
             )
         }
+
         return (
             <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
@@ -68,6 +72,7 @@ export function GiveawayEntry() {
             </div>
         )
     }
+
     const CustomLockPickrCard = () => {
         if (isMobile) {
             return (
@@ -88,6 +93,7 @@ export function GiveawayEntry() {
                 </div>
             )
         }
+
         return (
             <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
@@ -112,6 +118,7 @@ export function GiveawayEntry() {
             </div>
         )
     }
+
     return (
         <div className="relative font-['DM Sans']">
             {/* Back button */}
@@ -132,10 +139,10 @@ export function GiveawayEntry() {
                 <StatusBar  isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
-            <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
-                <div className="flex-1 flex flex-col pt-8">
+            <div className="flex flex-col w-full bg-[#1F2937] text-white">
+                <div className="flex flex-col pt-3">
                     {/* Title */}
-                    <h2 className="text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4">
+                    <h2 className={`${isMobile ? 'pb-4' : 'pb-10'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
                         Play any game to enter the Fortune Spin
                     </h2>
                     {/* Game Cards */}
