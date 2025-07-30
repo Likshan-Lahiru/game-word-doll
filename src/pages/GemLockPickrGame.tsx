@@ -245,14 +245,14 @@ export function GemLockPickrGame() {
 
                 {/* Timer */}
                 <div className="text-center mb-24 mt-20">
-                    <p className="text-gray-400">Timer</p>
-                    <p className="text-4xl font-bold">{formatTime(timer)}</p>
+                    <p className="text-xs">Timer</p>
+                    <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
 
                 {/* Feedback message */}
                 {feedback && (
                     <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                        {feedback}
+                    {feedback}
                     </div>
                 )}
 
@@ -472,9 +472,9 @@ export function GemLockPickrGame() {
             </div>
 
             {/* Timer */}
-            <div className="text-center mb-16 mt-8">
-                <p className="text-white">Timer</p>
-                <p className="text-3xl font-bold">{formatTime(timer)}</p>
+            <div className="text-center mb-28 mt-16">
+                <p className="text-white text-xs">Timer</p>
+                <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
 
             {/* Feedback message */}
@@ -540,7 +540,7 @@ export function GemLockPickrGame() {
                             currentAttempt[index] !== undefined
                                 ? getNumberStatus(currentAttempt[index], index)
                                 : null
-                        let bgColor = 'bg-[#2A3141]'
+                        let bgColor = 'bg-[#374151]'
                         if (currentAttempt[index] !== undefined) {
                             if (status === 'correct') {
                                 bgColor = 'bg-[#22C55E]'
