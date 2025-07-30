@@ -762,10 +762,10 @@ export function StorePage() {
 
                 {/*Footer text */}
                 <div className="text-center px-4 mb-20">
-                  <p className="text-white text-s font-['DM_Sans']">
+                  <p className="text-white text-xs text-s font-['DM_Sans']">
                     free to play. NO PURCHASE NECESSARY.
                   </p>
-                  <p className="text-white text-xs mt-1 font-['DM_Sans']">
+                  <p className="text-white  text-[8px] mt-1 font-['DM_Sans']">
                     Your credit card will be securely billed one time without any
                     recurring charges or obligations.
                   </p>
