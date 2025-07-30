@@ -246,6 +246,19 @@ export function LockPickrGame() {
             ref={gameContainerRef}
             tabIndex={0}
         >
+          {/* Back button */}
+          <div className="absolute top-12 left-4 z-10">
+            <button
+                className="w-12 h-12 rounded-full flex items-center justify-center"
+                onClick={() => navigate('/')}
+            >
+              <img
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                  alt="Back"
+                  className="w-8 h-8"
+              />
+            </button>
+          </div>
           {/* Timer */}
           <div className="text-center mb-24 mt-20">
             <p className="text-gray-400">Timer</p>
@@ -469,6 +482,19 @@ export function LockPickrGame() {
           ref={gameContainerRef}
           tabIndex={0}
       >
+        {/* Back button */}
+        <div className="absolute top-12 left-4 z-10">
+          <button
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-8 h-8"
+            />
+          </button>
+        </div>
         {/* Timer */}
         <div className="text-center mb-16 mt-8">
           <p className="text-white">Timer</p>

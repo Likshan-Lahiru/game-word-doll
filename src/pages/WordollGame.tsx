@@ -36,7 +36,7 @@ function getLetterStatuses(
   return statuses
 }
 export function WordollGame() {
-  useNavigate()
+  const navigate = useNavigate()
   const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
   const [targetWord, setTargetWord] = useState('')
   const [, setSelectedLetters] = useState<string[]>([])
@@ -258,6 +258,19 @@ export function WordollGame() {
           className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
           ref={gameContainerRef}
       >
+        {/* Back button */}
+        <div className="absolute top-12 left-4 z-10">
+          <button
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-8 h-8"
+            />
+          </button>
+        </div>
         <div className="text-center mb-24 mt-20">
           <p className="text-white">Timer</p>
           <p className="text-3xl font-bold">{formatTime(timer)}</p>
