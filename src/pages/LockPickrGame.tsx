@@ -524,7 +524,7 @@ export function LockPickrGame() {
         />
         {/* Last attempt display - Always shown */}
         <div className="flex justify-center mb-7 mt-16">
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-5 gap-2">
             {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
                 (num, index) => {
                   const status =
@@ -554,7 +554,7 @@ export function LockPickrGame() {
             className="flex justify-center mb-10"
             onClick={() => inputRef.current?.focus()}
         >
-          <div className="grid grid-cols-5 gap-4">
+          <div className="grid grid-cols-5 gap-2">
             {Array.from({
               length: 5,
             }).map((_, index) => {

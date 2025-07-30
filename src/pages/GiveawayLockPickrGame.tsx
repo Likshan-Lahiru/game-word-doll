@@ -282,7 +282,7 @@ export function GiveawayLockPickrGame() {
                                 currentAttempt[index] !== undefined && lastAttempt
                                     ? getNumberStatus(currentAttempt[index], index)
                                     : null
-                            let bgColor = 'bg-[#2A3141]'
+                            let bgColor = 'bg-[#374151]'
                             if (currentAttempt[index] !== undefined) {
                                 if (status === 'correct') {
                                     bgColor = 'bg-[#22C55E]'
@@ -450,9 +450,9 @@ export function GiveawayLockPickrGame() {
                 </button>
             </div>
             {/* Timer */}
-            <div className="text-center mb-16 mt-8">
-                <p className="text-white">Timer</p>
-                <p className="text-3xl font-bold">{formatTime(timer)}</p>
+            <div className="text-center mb-28 mt-16">
+                <p className="text-white text-xs">Timer</p>
+                <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
             {/* Feedback message */}
             {feedback && (
@@ -474,8 +474,8 @@ export function GiveawayLockPickrGame() {
                 autoCapitalize="off"
             />
             {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-10">
-                <div className="grid grid-cols-5 gap-4">
+            <div className="flex justify-center mb-8">
+                <div className="grid grid-cols-5 gap-2">
                     {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
                         (num, index) => {
                             const status =
@@ -505,7 +505,7 @@ export function GiveawayLockPickrGame() {
                 className="flex justify-center mb-12"
                 onClick={() => inputRef.current?.focus()}
             >
-                <div className="grid grid-cols-5 gap-4">
+                <div className="grid grid-cols-5 gap-2">
                     {Array.from({
                         length: 5,
                     }).map((_, index) => {
@@ -513,7 +513,7 @@ export function GiveawayLockPickrGame() {
                             currentAttempt[index] !== undefined
                                 ? getNumberStatus(currentAttempt[index], index)
                                 : null
-                        let bgColor = 'bg-[#2A3141]'
+                        let bgColor = 'bg-[#374151]'
                         if (currentAttempt[index] !== undefined) {
                             if (status === 'correct') {
                                 bgColor = 'bg-[#22C55E]'
