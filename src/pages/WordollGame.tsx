@@ -325,7 +325,7 @@ export function WordollGame() {
         </div>
         {isMobile && (
             <>
-              <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
+              <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[340px] h-[65px]">
                 <div className="flex items-center justify-center">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
