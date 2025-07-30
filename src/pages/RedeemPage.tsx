@@ -483,18 +483,19 @@ export function RedeemPage() {
             <div className="mb-4">
               <div className="flex items-center mb-3">
                 <p className="mr-2 text-sm">Redeem</p>
-                <div className="w-24 bg-white rounded-md px-4 py-2 flex justify-between mx-2">
+                <div className="bg-white rounded-md px-4 py-2 flex items-center">
                   <input
                       type="number"
                       value={redeemAmount}
                       onChange={(e) => setRedeemAmount(Number(e.target.value))}
-                      className="bg-transparent w-16 outline-none text-black text-sm"
+                      className="bg-transparent w-16 outline-none text-black text-lg"
                   />
+                  <span className="text-gray-500 ml-1 font-['Inter']">({redeemAmount})</span>
                 </div>
-                <p className=" text-sm">({`$${redeemAmount}`})</p>
+
                 <p className=" text-xs ml-2">
                   gems to cash
-                  <br />
+                  <br/>
                   ($1 per gem)
                 </p>
               </div>
