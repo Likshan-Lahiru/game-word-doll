@@ -491,7 +491,7 @@ export function RedeemPage() {
                       className="bg-transparent w-16 outline-none text-black text-sm"
                   />
                 </div>
-                <p className=" text-sm">({`$${redeemAmount}`})</p>
+                <p className=" text-sm">(${redeemAmount})</p>
                 <p className=" text-xs ml-2">
                   gems to cash
                   <br />
@@ -629,7 +629,7 @@ export function RedeemPage() {
                   onChange={(e) => setRedeemAmount(Number(e.target.value))}
                   className="bg-transparent w-16 outline-none text-black text-lg"
               />
-              <span className="text-gray-500 ml-1 font-['Inter']">({redeemAmount})</span>
+              <span className="ml-1 font-['Inter'] text-black">(${redeemAmount})</span>
             </div>
 
             <p className="text-white">gems to cash ($1 per gem)</p>
