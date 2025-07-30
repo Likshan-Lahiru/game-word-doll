@@ -404,6 +404,7 @@ export function GiveawayWordollGame() {
                     </div>
                 </>
             )}
+
             <CountdownModal
                 isOpen={showCountdown}
                 onCountdownComplete={handleCountdownComplete}

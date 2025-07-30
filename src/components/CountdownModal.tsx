@@ -81,7 +81,7 @@ export function CountdownModal({
   }, [isOpen, onCountdownComplete])
   if (!isOpen) return null
   return (
-      <div className="fixed inset-0 pb-56 z-50 flex items-center justify-center bg-[#1F2937E5]/80 font-['DM_Sans']">
+      <div className="fixed inset-0 pb-28 z-50 flex items-center justify-center bg-[#1F2937E5]/80 font-['DM_Sans']">
         {isMobile ? (
             // Mobile view
             <div className="bg-[#374151] rounded-2xl p-16 shadow-xl w-80  text-center font-['DM_Sans']">
@@ -90,7 +90,7 @@ export function CountdownModal({
             </div>
         ) : (
             // Desktop view - larger text and card size
-            <div className="bg-[#374151] rounded-2xl pt-16 p-16 shadow-xl h-3/6 w-5/12 text-center font-['DM_Sans']">
+            <div className="bg-[#374151] rounded-2xl pt-20 p-16 shadow-xl h-3/6 w-5/12 text-center font-['DM_Sans']">
               <p className="text-white text-3xl mb-6 font-['DM_Sans']">Starts in...</p>
               <div className="text-white text-8xl font-bold font-['DM_Sans']">{count}</div>
             </div>
