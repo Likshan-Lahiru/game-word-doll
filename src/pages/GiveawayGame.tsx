@@ -78,7 +78,7 @@ export function GiveawayGame() {
     {
       id: 1,
       coinAmount: 50000,
-      spinAmount: 1,
+      spinAmount: 2,
       cost: 1000,
       image:
           'https://uploadthingy.s3.us-west-1.amazonaws.com/5sNDV16zKDrZv4WE8wxPR4/prizez-coins-1.png',
@@ -86,7 +86,7 @@ export function GiveawayGame() {
     {
       id: 2,
       coinAmount: 300000,
-      spinAmount: 3,
+      spinAmount: 5,
       cost: 5000,
       image:
           'https://uploadthingy.s3.us-west-1.amazonaws.com/xhwr6vr8mJJCTeAgmtWgrD/prizez-coins-2.png',
@@ -94,7 +94,7 @@ export function GiveawayGame() {
     {
       id: 3,
       coinAmount: 1500000,
-      spinAmount: 10,
+      spinAmount: 16,
       cost: 20000,
       image:
           'https://uploadthingy.s3.us-west-1.amazonaws.com/6vJnKJ8AUVGEnXgBRiWAH9/prizez-coins-3.png',
@@ -102,7 +102,7 @@ export function GiveawayGame() {
     {
       id: 4,
       coinAmount: 8000000,
-      spinAmount: 25,
+      spinAmount: 75,
       cost: 90000,
       image:
           'https://uploadthingy.s3.us-west-1.amazonaws.com/ofQaY3MrbupDhcPiD5MFSJ/prizez-coins-4.png',
@@ -133,7 +133,7 @@ export function GiveawayGame() {
               Select a prize to win !
             </h2>
             {/* Prize Cards */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-1 mb-8">
               {prizes.map((prize) => (
                   <PrizeCard
                       key={prize.id}

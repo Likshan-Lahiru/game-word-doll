@@ -85,7 +85,7 @@ export function VirtualKeyboard({
     [
       {
         value: 'ENTER',
-        width: 'w-24',
+        width: 'w-16',
         action: 'enter',
       },
       {
@@ -111,7 +111,7 @@ export function VirtualKeyboard({
       },
       {
         value: '⌫',
-        width: 'w-24',
+        width: 'w-16',
         action: 'backspace',
       },
     ],
@@ -179,11 +179,11 @@ export function VirtualKeyboard({
     return (
         <div className={`w-full max-w-3xl mx-auto p-2 ${className}`}>
           {layout.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex justify-center mb-0.5">
+              <div key={rowIndex} className="flex justify-center gap-1 mb-1">
                 {row.map((key, keyIndex) => (
                     <button
                         key={`${rowIndex}-${keyIndex}`}
-                        className={`${key.width || 'w-12'} h-16 m-1 rounded-md bg-[#67768F] hover:bg-gray-500 text-white font-bold text-xl flex items-center justify-center shadow-md transition-colors`}
+                        className={`${key.width || 'w-11'} h-16 m-px rounded-md bg-[#67768F] hover:bg-gray-500 text-white font-bold text-xl flex items-center justify-center shadow-md transition-colors`}
                         onClick={() => handleKeyClick(key)}
                     >
                       {key.action === 'backspace' ? (
@@ -192,6 +192,8 @@ export function VirtualKeyboard({
                               alt="Backspace"
                               className="h-9 w-11"
                           />
+                      ) : key.value === 'ENTER' ? (
+                          <span className="text-sm">ENTER</span>
                       ) : (
                           key.label || key.value
                       )}

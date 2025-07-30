@@ -13,7 +13,7 @@ export function GiveawayLockPickrGame() {
     const { spinBalance, setSpinBalance, isAuthenticated } = useGlobalContext()
     const [targetCode, setTargetCode] = useState<number[]>([])
     const [currentAttempt, setCurrentAttempt] = useState<number[]>([])
-    const [lastAttempt, setLastAttempt] = useState<number[] | null>(null)
+    const [lastAttempt, setLastAttempt] = useState<number[]>([]) // Initialize as empty array instead of null
     const [timer, setTimer] = useState(900) // 15 minutes in seconds
     const [feedback, setFeedback] = useState<string>('')
     const [isInputFocused, setIsInputFocused] = useState(false)
@@ -242,12 +242,15 @@ export function GiveawayLockPickrGame() {
                     autoCorrect="off"
                     autoCapitalize="off"
                 />
-                {/* Last attempt display - Now shown first */}
-                {lastAttempt && (
-                    <div className="flex justify-center mb-6">
-                        <div className="grid grid-cols-5 gap-2">
-                            {lastAttempt.map((num, index) => {
-                                const status = getNumberStatus(num, index)
+                {/* Last attempt display - Always shown */}
+                <div className="flex justify-center mb-6">
+                    <div className="grid grid-cols-5 gap-2">
+                        {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                            (num, index) => {
+                                const status =
+                                    lastAttempt.length > 0
+                                        ? getNumberStatus(num as number, index)
+                                        : null
                                 let bgColor = 'bg-[#374151]'
                                 if (status === 'correct') {
                                     bgColor = 'bg-[#22C55E]'
@@ -259,13 +262,13 @@ export function GiveawayLockPickrGame() {
                                         key={index}
                                         className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
                                     >
-                                        {num}
+                                        {typeof num === 'number' ? num : ''}
                                     </div>
                                 )
-                            })}
-                        </div>
+                            },
+                        )}
                     </div>
-                )}
+                </div>
                 {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
                 <div
                     className="flex justify-center mb-6"
@@ -302,7 +305,6 @@ export function GiveawayLockPickrGame() {
                         })}
                     </div>
                 </div>
-
 
                 {/* Mobile number pad */}
                 <div className="w-full max-w-md mx-auto">
@@ -471,12 +473,15 @@ export function GiveawayLockPickrGame() {
                 autoCorrect="off"
                 autoCapitalize="off"
             />
-            {/* Last attempt display - Now shown first */}
-            {lastAttempt && (
-                <div className="flex justify-center mb-10">
-                    <div className="grid grid-cols-5 gap-4">
-                        {lastAttempt.map((num, index) => {
-                            const status = getNumberStatus(num, index)
+            {/* Last attempt display - Always shown */}
+            <div className="flex justify-center mb-10">
+                <div className="grid grid-cols-5 gap-4">
+                    {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                        (num, index) => {
+                            const status =
+                                lastAttempt.length > 0
+                                    ? getNumberStatus(num as number, index)
+                                    : null
                             let bgColor = 'bg-[#374151]'
                             if (status === 'correct') {
                                 bgColor = 'bg-[#22C55E]'
@@ -488,13 +493,13 @@ export function GiveawayLockPickrGame() {
                                     key={index}
                                     className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
                                 >
-                                    {num}
+                                    {typeof num === 'number' ? num : ''}
                                 </div>
                             )
-                        })}
-                    </div>
+                        },
+                    )}
                 </div>
-            )}
+            </div>
             {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
             <div
                 className="flex justify-center mb-12"
@@ -596,7 +601,6 @@ export function GiveawayLockPickrGame() {
                     </button>
                 </div>
                 <br />
-
             </div>
             {/* Countdown Modal */}
             <CountdownModal

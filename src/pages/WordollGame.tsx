@@ -36,7 +36,8 @@ function getLetterStatuses(
   return statuses
 }
 export function WordollGame() {
-  useNavigate()
+  const navigate = useNavigate()
+
   const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
   const [targetWord, setTargetWord] = useState('')
   const [, setSelectedLetters] = useState<string[]>([])
@@ -255,13 +256,27 @@ export function WordollGame() {
   ]
   return (
       <div
-          className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
+          className="flex flex-col w-full  min-h-screen bg-[#1F2937] text-white p-4"
           ref={gameContainerRef}
       >
+        {/* Back button */}
+        <div className="absolute top-12 left-4 z-10">
+          <button
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-8 h-8"
+            />
+          </button>
+        </div>
         <div className="text-center mb-24 mt-20">
           <p className="text-white">Timer</p>
           <p className="text-3xl font-bold">{formatTime(timer)}</p>
         </div>
+
         {feedback && (
             <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
               {feedback}
@@ -312,7 +327,7 @@ export function WordollGame() {
             }).map((_, index) => (
                 <div
                     key={index}
-                    className={`w-14 h-14 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                    className={`w-16 h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                     onClick={() => handleLetterClick(index)}
                 >
                   {currentAttempt[index]}
@@ -325,7 +340,7 @@ export function WordollGame() {
         </div>
         {isMobile && (
             <>
-              <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
+              <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[340px] h-[65px]">
                 <div className="flex items-center justify-center">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -348,7 +363,7 @@ export function WordollGame() {
                       {row.map((key, keyIndex) => (
                           <button
                               key={`${rowIndex}-${keyIndex}`}
-                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
+                              className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[65px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
                               onClick={() => handleMobileKeyPress(key)}
                           >
                             {key === 'Backspace' ? (
@@ -462,8 +477,7 @@ export function WordollGame() {
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000}
-              />
+                  penalty={1000} gameType={'wordoll'}          />
             </>
         )}
       </div>

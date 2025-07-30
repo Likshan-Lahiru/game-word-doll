@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { CountdownModal } from '../components/CountdownModal'
 import { useGlobalContext } from '../context/GlobalContext'
-
 import { TimeEndedGemModal } from '../components/GameModals/TimeEndedGemModal'
 import { NoAttemptsGemModal } from '../components/GameModals/NoAttemptsGemModal'
-import {UserWinGemModal} from "../components/GameModals/UserWinGemModal.tsx";
+import { UserWinGemModal } from '../components/GameModals/UserWinGemModal'
 export function GemLockPickrGame() {
     const navigate = useNavigate()
     const location = useLocation()
@@ -18,7 +17,7 @@ export function GemLockPickrGame() {
     }) || {}
     const [targetCode, setTargetCode] = useState<number[]>([])
     const [currentAttempt, setCurrentAttempt] = useState<number[]>([])
-    const [lastAttempt, setLastAttempt] = useState<number[] | null>(null)
+    const [lastAttempt, setLastAttempt] = useState<number[]>([]) // Initialize as empty array instead of null
     const [timer, setTimer] = useState(300) // 5 minutes in seconds
     const [feedback, setFeedback] = useState<string>('')
     const [isInputFocused, setIsInputFocused] = useState(false)
@@ -250,8 +249,6 @@ export function GemLockPickrGame() {
                     <p className="text-4xl font-bold">{formatTime(timer)}</p>
                 </div>
 
-
-
                 {/* Feedback message */}
                 {feedback && (
                     <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
@@ -274,12 +271,15 @@ export function GemLockPickrGame() {
                     disabled={gameCompleted}
                 />
 
-                {/* Last attempt display - Now shown first */}
-                {lastAttempt && (
-                    <div className="flex justify-center mb-6">
-                        <div className="grid grid-cols-5 gap-2">
-                            {lastAttempt.map((num, index) => {
-                                const status = getNumberStatus(num, index)
+                {/* Last attempt display - Always shown */}
+                <div className="flex justify-center mb-6">
+                    <div className="grid grid-cols-5 gap-2">
+                        {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                            (num, index) => {
+                                const status =
+                                    lastAttempt.length > 0
+                                        ? getNumberStatus(num as number, index)
+                                        : null
                                 let bgColor = 'bg-[#374151]'
                                 if (status === 'correct') {
                                     bgColor = 'bg-[#22C55E]'
@@ -291,13 +291,13 @@ export function GemLockPickrGame() {
                                         key={index}
                                         className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
                                     >
-                                        {num}
+                                        {typeof num === 'number' ? num : ''}
                                     </div>
                                 )
-                            })}
-                        </div>
+                            },
+                        )}
                     </div>
-                )}
+                </div>
 
                 {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
                 <div
@@ -342,8 +342,6 @@ export function GemLockPickrGame() {
                         {attemptsLeft} x attempt
                     </p>
                 </div>
-
-
 
                 {/* Mobile number pad */}
                 <div className="w-full max-w-md mx-auto">
@@ -479,8 +477,6 @@ export function GemLockPickrGame() {
                 <p className="text-3xl font-bold">{formatTime(timer)}</p>
             </div>
 
-
-
             {/* Feedback message */}
             {feedback && (
                 <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
@@ -503,12 +499,15 @@ export function GemLockPickrGame() {
                 disabled={gameCompleted}
             />
 
-            {/* Last attempt display - Now shown first */}
-            {lastAttempt && (
-                <div className="flex justify-center mb-10">
-                    <div className="grid grid-cols-5 gap-4">
-                        {lastAttempt.map((num, index) => {
-                            const status = getNumberStatus(num, index)
+            {/* Last attempt display - Always shown */}
+            <div className="flex justify-center mb-10">
+                <div className="grid grid-cols-5 gap-4">
+                    {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                        (num, index) => {
+                            const status =
+                                lastAttempt.length > 0
+                                    ? getNumberStatus(num as number, index)
+                                    : null
                             let bgColor = 'bg-[#374151]'
                             if (status === 'correct') {
                                 bgColor = 'bg-[#22C55E]'
@@ -520,13 +519,13 @@ export function GemLockPickrGame() {
                                     key={index}
                                     className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
                                 >
-                                    {num}
+                                    {typeof num === 'number' ? num : ''}
                                 </div>
                             )
-                        })}
-                    </div>
+                        },
+                    )}
                 </div>
-            )}
+            </div>
 
             {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
             <div
@@ -644,7 +643,6 @@ export function GemLockPickrGame() {
                 </div>
 
                 <br />
-
             </div>
 
             {/* Countdown Modal */}

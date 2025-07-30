@@ -16,7 +16,7 @@ export function LockPickrGame() {
   const { betAmount, winAmount, isAuthenticated, addCoins } = globalContext
   const [targetCode, setTargetCode] = useState<number[]>([])
   const [currentAttempt, setCurrentAttempt] = useState<number[]>([])
-  const [lastAttempt, setLastAttempt] = useState<number[] | null>(null)
+  const [lastAttempt, setLastAttempt] = useState<number[]>([]) // Initialize as empty array instead of null
   const [timer, setTimer] = useState(300) // 5 minutes in seconds
   const [feedback, setFeedback] = useState<string>('')
   const [isInputFocused, setIsInputFocused] = useState(false)
@@ -246,10 +246,23 @@ export function LockPickrGame() {
             ref={gameContainerRef}
             tabIndex={0}
         >
+          {/* Back button */}
+          <div className="absolute top-12 left-4 z-10">
+            <button
+                className="w-12 h-12 rounded-full flex items-center justify-center"
+                onClick={() => navigate('/')}
+            >
+              <img
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                  alt="Back"
+                  className="w-8 h-8"
+              />
+            </button>
+          </div>
           {/* Timer */}
           <div className="text-center mb-24 mt-20">
-            <p className="text-gray-400">Timer</p>
-            <p className="text-4xl font-bold">{formatTime(timer)}</p>
+            <p className="text-xs">Timer</p>
+            <p className="text-2xl font-bold">{formatTime(timer)}</p>
           </div>
           {/* Feedback message */}
           {feedback && (
@@ -270,12 +283,15 @@ export function LockPickrGame() {
               autoCorrect="off"
               autoCapitalize="off"
           />
-          {/* Last attempt display - Now shown first */}
-          {lastAttempt && (
-              <div className="flex justify-center mb-6">
-                <div className="grid grid-cols-5 gap-2">
-                  {lastAttempt.map((num, index) => {
-                    const status = getNumberStatus(num, index)
+          {/* Last attempt display - Always shown */}
+          <div className="flex justify-center mb-6">
+            <div className="grid grid-cols-5 gap-2">
+              {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                  (num, index) => {
+                    const status =
+                        lastAttempt.length > 0
+                            ? getNumberStatus(num as number, index)
+                            : null
                     let bgColor = 'bg-[#374151]'
                     if (status === 'correct') {
                       bgColor = 'bg-[#22C55E]'
@@ -287,14 +303,14 @@ export function LockPickrGame() {
                             key={index}
                             className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
                         >
-                          {num}
+                          {typeof num === 'number' ? num : ''}
                         </div>
                     )
-                  })}
-                </div>
-              </div>
-          )}
-          {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
+                  },
+              )}
+            </div>
+          </div>
+          {/* Current attempt - Always shown */}
           <div
               className="flex justify-center mb-6"
               onClick={() => inputRef.current?.focus()}
@@ -307,7 +323,7 @@ export function LockPickrGame() {
                     currentAttempt[index] !== undefined && lastAttempt
                         ? getNumberStatus(currentAttempt[index], index)
                         : null
-                let bgColor = 'bg-[#2A3141]'
+                let bgColor = 'bg-[#374151]'
                 if (currentAttempt[index] !== undefined) {
                   if (status === 'correct') {
                     bgColor = 'bg-[#22C55E]'
@@ -469,10 +485,23 @@ export function LockPickrGame() {
           ref={gameContainerRef}
           tabIndex={0}
       >
+        {/* Back button */}
+        <div className="absolute top-12 left-4 z-10">
+          <button
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-8 h-8"
+            />
+          </button>
+        </div>
         {/* Timer */}
         <div className="text-center mb-16 mt-8">
-          <p className="text-white">Timer</p>
-          <p className="text-3xl font-bold">{formatTime(timer)}</p>
+          <p className="text-white text-xs">Timer</p>
+          <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
         {/* Feedback message */}
         {feedback && (
@@ -493,12 +522,15 @@ export function LockPickrGame() {
             autoCorrect="off"
             autoCapitalize="off"
         />
-        {/* Last attempt display - Now shown first */}
-        {lastAttempt && (
-            <div className="flex justify-center mb-10">
-              <div className="grid grid-cols-5 gap-4">
-                {lastAttempt.map((num, index) => {
-                  const status = getNumberStatus(num, index)
+        {/* Last attempt display - Always shown */}
+        <div className="flex justify-center mb-7 mt-16">
+          <div className="grid grid-cols-5 gap-4">
+            {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                (num, index) => {
+                  const status =
+                      lastAttempt.length > 0
+                          ? getNumberStatus(num as number, index)
+                          : null
                   let bgColor = 'bg-[#374151]'
                   if (status === 'correct') {
                     bgColor = 'bg-[#22C55E]'
@@ -510,16 +542,16 @@ export function LockPickrGame() {
                           key={index}
                           className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
                       >
-                        {num}
+                        {typeof num === 'number' ? num : ''}
                       </div>
                   )
-                })}
-              </div>
-            </div>
-        )}
-        {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
+                },
+            )}
+          </div>
+        </div>
+        {/* Current attempt - Always shown */}
         <div
-            className="flex justify-center mb-12"
+            className="flex justify-center mb-10"
             onClick={() => inputRef.current?.focus()}
         >
           <div className="grid grid-cols-5 gap-4">
@@ -530,7 +562,7 @@ export function LockPickrGame() {
                   currentAttempt[index] !== undefined
                       ? getNumberStatus(currentAttempt[index], index)
                       : null
-              let bgColor = 'bg-[#2A3141]'
+              let bgColor = 'bg-[#374151]'
               if (currentAttempt[index] !== undefined) {
                 if (status === 'correct') {
                   bgColor = 'bg-[#22C55E]'
@@ -554,7 +586,7 @@ export function LockPickrGame() {
           </div>
         </div>
         {/* Attempts count */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-5">
           <p className="text-xl font-medium">{attemptsLeft} x attempt</p>
         </div>
         {/* Desktop number pad */}
