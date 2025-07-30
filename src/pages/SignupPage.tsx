@@ -251,16 +251,16 @@ export function SignupPage() {
         {/* Back button */}
         <div className="absolute top-6 left-6">
 
-            <button
-                className="w-12 h-12 rounded-full flex items-center justify-center"
-                onClick={() => navigate('/login')}
-            >
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                  alt="Back"
-                  className="w-8 h-8"
-              />
-            </button>
+          <button
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/login')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-8 h-8"
+            />
+          </button>
 
         </div>
         <div className="flex-1 flex flex-col items-center justify-center p-4">
@@ -277,7 +277,7 @@ export function SignupPage() {
               <input
                   type="text"
                   placeholder="User Name"
-                  className="w-full px-4 py-3 bg-[#353A47] rounded-xl text-white focus:outline-none"
+                  className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -285,7 +285,7 @@ export function SignupPage() {
               <input
                   type="email"
                   placeholder="Email"
-                  className="w-full px-4 py-3 bg-[#353A47] rounded-xl text-white focus:outline-none"
+                  className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -294,7 +294,7 @@ export function SignupPage() {
                 <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
-                    className="w-full px-4 py-3 bg-[#353A47] rounded-xl text-white focus:outline-none"
+                    className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -314,28 +314,28 @@ export function SignupPage() {
               <input
                   type="text"
                   placeholder="Country"
-                  className="w-full px-4 py-3 bg-[#353A47] rounded-xl text-white focus:outline-none"
+                  className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                   required
               />
-              <div className="bg-[#353A47] rounded-xl p-4 text-center">
-                <h3 className="font-bold mb-1">Sign Up Bonus</h3>
-                <p className="mb-1">Get</p>
+              <div className="bg-[#374151] rounded-xl p-4 text-center">
+                <h3 className="font-inter font-bold mb-1">Sign Up Bonus</h3>
+                <p className="mb-3 font-inter">Get</p>
                 <div className="flex items-center justify-center mb-1">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
                       alt="Gold Coins"
                       className="w-5 h-5 object-contain mr-1"
                   />
-                  <span className="font-bold">15,000,000</span>
+                  <span className="font-bold font-inter">15,000,000</span>
                 </div>
-                <p className="mb-1 font-bold">FREE</p>
-                <p className="mb-1">Gold Coins to Play!</p>
+                <p className="mb-3 font-bold font-inter">FREE</p>
+                <p className="mb-1 font-inter">Gold Coins to Play!</p>
               </div>
               <button
                   type="submit"
-                  className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-colors text-lg"
+                  className="font-inter w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-colors text-2xl"
               >
                 Sign Up
               </button>
@@ -345,4 +345,3 @@ export function SignupPage() {
       </div>
   )
 }
-
