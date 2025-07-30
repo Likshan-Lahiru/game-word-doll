@@ -132,7 +132,6 @@ export function WordollGame() {
   const checkGuess = useCallback(() => {
     const guess = currentAttempt.join('')
     if (guess.length < 5 || currentAttempt.includes('')) {
-      setFeedback('Please enter 5 letters')
       return
     }
     setLastAttempt([...currentAttempt])
@@ -281,19 +280,28 @@ export function WordollGame() {
                 spellCheck="false"
             />
         )}
-        {lastAttempt && (
-            <div className="flex justify-center mb-8 ">
-              <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
-                {lastAttempt.map((letter, index) =>
+        <div className="flex justify-center mb-8">
+          <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
+            {lastAttempt
+                ? lastAttempt.map((letter, index) =>
                     renderLetterTile(
                         letter,
                         index,
                         getLetterStatuses(lastAttempt, targetWord)[index],
                     ),
-                )}
-              </div>
-            </div>
-        )}
+                )
+                : Array(5)
+                    .fill('')
+                    .map((_, index) => (
+                        <div
+                            key={index}
+                            className="w-10 h-10 flex items-center justify-center bg-[#374151] rounded-md text-white font-bold text-lg shadow-md"
+                        >
+                          {/* Empty tile */}
+                        </div>
+                    ))}
+          </div>
+        </div>
         <div
             className="flex justify-center mb-8 "
             onClick={() => inputRef.current?.focus()}
