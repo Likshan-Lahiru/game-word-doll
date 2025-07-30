@@ -1,7 +1,7 @@
 import React from 'react'
 export function WinningStatus() {
     return (
-        <div className=" text-center">
+        <div className=" text-center mb-10">
             <p className="font-['DM_Sans'] text-lg font-medium">You Won</p>
             <p className="flex items-center justify-center pt-5 gap-1">
                 <span className="font-medium  mr-1 font-['DM_Sans'] text-lg">FREE</span>
