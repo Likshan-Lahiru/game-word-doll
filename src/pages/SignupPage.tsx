@@ -320,18 +320,18 @@ export function SignupPage() {
                   required
               />
               <div className="bg-[#374151] rounded-xl p-4 text-center">
-                <h3 className="font-inter font-bold mb-1">Sign Up Bonus</h3>
-                <p className="mb-3 font-inter">Get</p>
-                <div className="flex items-center justify-center mb-1">
+                <h3 className="font-inter font-bold mb-0">Sign Up Bonus</h3>
+                <p className="mb-4 font-bold font-inter">Get</p>
+                <div className="flex items-center justify-center mb-0">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
                       alt="Gold Coins"
                       className="w-5 h-5 object-contain mr-1"
                   />
-                  <span className="font-bold font-inter">15,000,000</span>
+                  <span className="font-bold font-inter">5,000,000</span>
                 </div>
-                <p className="mb-3 font-bold font-inter">FREE</p>
-                <p className="mb-1 font-inter">Gold Coins to Play!</p>
+                <p className="mb-4 font-bold font-inter">FREE</p>
+                <p className="mb-1 font-bold font-inter">Gold Coins to Play!</p>
               </div>
               <button
                   type="submit"
