@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import  { useState } from 'react'
 type ForgotPasswordModalProps = {
   isOpen: boolean
@@ -19,6 +19,18 @@ export function ForgotPasswordModal({
     '',
     '',
   ])
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const handleCodeChange = (index: number, value: string) => {
     if (value.length <= 1) {
       const newCode = [...verificationCode]
@@ -67,7 +79,7 @@ export function ForgotPasswordModal({
           </div>
           <div className={"flex flex-col items-center"}>
             <button
-                className=" w-72 bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
+                className={`${isMobile && 'w-[210px]'} w-72 bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors mb-2 sm:mb-3 text-sm sm:text-base`}
                 onClick={handleVerifyCode}
             >
               Verify
