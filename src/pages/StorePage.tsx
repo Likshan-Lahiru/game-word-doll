@@ -691,7 +691,7 @@ export function StorePage() {
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
                   alt="Redeem"
-                  className="w-8 h-8"
+                  className="w-9 h-9"
               />
             </button>
           </div>
@@ -736,7 +736,7 @@ export function StorePage() {
                                     <img
                                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
                                         alt="Ticket"
-                                        className="w-7 h-7 mr-1"
+                                        className="w-7 h-7 mr-1 bg-[#0CC242] rounded-full p-[2px]"
                                     />
                                     <span className="font-['DM_Sans'] text-xs font-semibold">
                           × {pkg.bonus} free
