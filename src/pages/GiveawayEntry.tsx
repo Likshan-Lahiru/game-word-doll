@@ -122,7 +122,7 @@ export function GiveawayEntry() {
     return (
         <div className="relative font-['DM Sans']">
             {/* Back button */}
-            <div className="absolute top-4 left-4 z-10">
+            <div className="absolute top-4 left-2 z-10">
                 <button
                     className="w-12 h-12 rounded-full flex items-center justify-center"
                     onClick={() => navigate('/')}
@@ -142,7 +142,7 @@ export function GiveawayEntry() {
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
                 <div className="flex flex-col pt-1">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-4' : 'pb-5'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
+                    <h2 className={`${isMobile ? 'pb-3' : 'pb-5'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
                         Play any game to enter the Fortune Spin
                     </h2>
                     {/* Game Cards */}

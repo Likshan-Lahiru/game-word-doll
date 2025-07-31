@@ -71,7 +71,7 @@ export function BetSelectorPage() {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
                 {/* Back button */}
-                <div className="absolute top-4 left-4 z-10">
+                <div className="absolute top-12 left-2 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
                         onClick={() => navigate('/')}
@@ -141,6 +141,7 @@ export function BetSelectorPage() {
                                 <button
                                     className="bg-[#3B82F6] hover:bg-blue-600 text-white py-3 px-16 rounded-xl font-semibold text-2xl font-[Inter]"
                                     onClick={handlePlay}
+                                    disabled={!isAuthenticated && limitPlay === 0}
                                 >
                                     Play
                                 </button>
