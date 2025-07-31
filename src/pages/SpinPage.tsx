@@ -125,7 +125,7 @@ export function SpinPage() {
     if (isMobile) {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1A202C] text-white">
-                <div className="absolute top-12 left-4 z-10">
+                <div className="absolute top-4 left-4 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
                         onClick={() => navigate('/')}
@@ -201,7 +201,7 @@ export function SpinPage() {
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
             {/* Back button and status bar */}
             <div className="relative p-4">
-                <div className="flex items-center">
+                <div className="flex items-center absolute top-4 left-4">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
                         onClick={() => navigate('/giveaway-entry')}
