@@ -785,7 +785,7 @@ export function StorePage() {
 
   // Desktop view
   return (
-      <div className={`flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 `}>
+      <div className={`flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 mt-5 `}>
 
         {/* Top balance bar */}
         <div className="p-4">
@@ -797,10 +797,10 @@ export function StorePage() {
         </div>
 
         {/* Main content */}
-        <div className="flex flex-1 pl-16 pr-5 pb-8">
+        <div className="flex flex-1 pt-5 pl-16 pr-5 pb-8">
 
           {/* Left sidebar */}
-          <div className={`${activeTabDesktop === 'redeem' ? 'mt-16 w-[467px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
+          <div className={`${activeTabDesktop === 'redeem' ? 'mt-14 w-[467px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
             <h1 className="text-2xl font-bold mb-8">Store</h1>
             <button
                 className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-4 flex items-center`}
@@ -945,7 +945,7 @@ export function StorePage() {
               :
 
               // Redeem Section
-              <div className={`${activeTabDesktop === 'redeem' ? 'mt-16' : ''}`}>
+              <div className={`${activeTabDesktop === 'redeem' ? 'mt-14' : ''}`}>
                 <RedeemPage/>
               </div>
           }
