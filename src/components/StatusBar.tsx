@@ -24,8 +24,8 @@ export function StatusBar({
                             switchable={switchableBalanceSelector}
                         />
                     </div>
-                    <div className="flex justify-center space-x-3 mb-2">
-                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-2 ">
+                    <div className="flex justify-center space-x-3 mb-0">
+                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-0 ">
                             <div className="w-7 h-18 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
