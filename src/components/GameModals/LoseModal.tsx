@@ -85,9 +85,9 @@ export function LoseModal({
     // Desktop view - unchanged
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']">
-            <div className="w-full max-w-md mx-auto">
+            <div className="w-full max-w-lg mx-auto">
                 <div className="bg-[#3F4C5F] rounded-xl p-8 text-center text-white">
-                    <h2 className="text-xl font-bold mb-8">Timer Ended !</h2>
+                    <h2 className="text-2xl font-bold mb-8">Timer Ended !</h2>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6">
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -96,8 +96,8 @@ export function LoseModal({
                         />
                         <span className="text-[#FE5C5C]">-{penalty.toLocaleString()}</span>
                     </div>
-                    <p className="text-xl font-bold mb-8">Don't Worry</p>
-                    <p className="text-xl mb-6 font-bold ">Sign Up to Get</p>
+                    <p className="text-2xl font-bold mb-8">Don't Worry</p>
+                    <p className="text-2xl mb-6 font-bold ">Sign Up to Get</p>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6">
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -114,13 +114,13 @@ export function LoseModal({
                     </button>
                     <p className="mb-4 text-white font-bold">and</p>
                     <p className="flex items-center justify-center mb-4">
-                        <span className="mr-2 text-white font-bold">Win</span>
+                        <span className="mr-2 text-xl text-white font-bold">Win</span>
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
                             alt="Coins"
                             className="w-6 h-6"
                         />
-                        <span className="ml-2 text-white font-bold">Gems</span>
+                        <span className="ml-2 text-xl text-white font-bold">Gems</span>
                     </p>
                 </div>
                 <div className="mt-4 flex justify-center">
