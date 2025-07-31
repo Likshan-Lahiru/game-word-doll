@@ -53,10 +53,10 @@ export function BetSelectorPage() {
             setWinAmount(option.win)
             if (gameType === 'wordoll') {
 
-                if (limitPlay != 0) {
+                if (limitPlay != 0 && !isAuthenticated) {
                     navigate('/wordoll-game')
                 } else {
-                    alert("Sorry, Your 3 free chances is over!")
+                    navigate('/wordoll-game')
                 }
             } else {
                 navigate('/lock-pickr-game')
