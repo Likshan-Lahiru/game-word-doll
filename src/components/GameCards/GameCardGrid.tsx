@@ -13,12 +13,12 @@ export function GameCardGrid() {
         return (
             <div className="flex-1 px-4 pb-10 game-card-grid">
                 {/* Online status for mobile view - positioned above the cards */}
-                {!isAuthenticated && (
+                {/*{!isAuthenticated && (*/}
                     <div className="flex items-center space-x-3 mb-4">
                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
                         <span className="text-sm font-bold">1,568 Online</span>
                     </div>
-                )}
+                {/*)}*/}
                 <div className="grid grid-cols-2 gap-3 mb-3">
                     {/* Ensure Wordoll is first (top-left) */}
                     <WordollCard isMobile={true} />
