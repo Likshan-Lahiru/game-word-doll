@@ -606,7 +606,7 @@ export function StorePage() {
   const [activeTab, setActiveTab] = useState('coins')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
-
+  const {ticketBalance, setTicketBalance} = useGlobalContext();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -655,8 +655,9 @@ export function StorePage() {
   const handleBuy = (packageItem: any) => {
     // In a real app, this would process payment
     // For now, just add the coins to the balance
+    setTicketBalance(ticketBalance + packageItem.bonus);
     addCoins(packageItem.coins)
-    alert(`Purchased ${packageItem.coins.toLocaleString()} Gold Coins!`)
+    alert(`Purchased ${packageItem.coins.toLocaleString()} Gold Coins and ${packageItem.bonus}`)
   }
 
   // Mobile view
