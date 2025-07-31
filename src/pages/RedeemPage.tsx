@@ -675,7 +675,7 @@ export function RedeemPage() {
               <div className="bg-gray-800 rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
                 <h2 className="text-xl font-bold mb-4">Redeem funds?</h2>
                 <p className="mb-12">
-                  Do you want to transfer ${redeemAmount} to your bank account?
+                  Do you want to redeem ${redeemAmount} to your bank account?
                 </p>
                 <div className="flex space-x-4">
                   <button
