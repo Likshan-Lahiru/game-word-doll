@@ -244,7 +244,6 @@ export function LockPickrGame() {
       }
     }
   }
-
   // Handle countdown completion
   const handleCountdownComplete = () => {
     setShowCountdown(false)
@@ -378,7 +377,7 @@ export function LockPickrGame() {
           <input
               ref={inputRef}
               type="tel"
-              inputMode="numeric"
+              inputMode="none"
               pattern="[0-9]*"
               value={currentAttempt.filter((n) => n !== undefined).join('')}
               onChange={handleInputChange}
@@ -386,6 +385,7 @@ export function LockPickrGame() {
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
+              readOnly
           />
           {/* Last attempt display - Always shown */}
           <div className="flex justify-center mb-6">
@@ -596,7 +596,7 @@ export function LockPickrGame() {
         <input
             ref={inputRef}
             type="tel"
-            inputMode="numeric"
+            inputMode="none"
             pattern="[0-9]*"
             value={currentAttempt.filter((n) => n !== undefined).join('')}
             onChange={handleInputChange}
@@ -604,6 +604,7 @@ export function LockPickrGame() {
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
+            readOnly
         />
         {/* Last attempt display - Always shown */}
         <div className="flex justify-center mb-7 mt-16">
@@ -717,7 +718,7 @@ export function LockPickrGame() {
               />
             </button>
           </div>
-          <br/>
+          <br />
           <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
             <div className="flex items-center justify-center pt-2 h-10">
               <img
