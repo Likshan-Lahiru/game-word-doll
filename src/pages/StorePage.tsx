@@ -606,7 +606,7 @@ export function StorePage() {
   const [activeTab, setActiveTab] = useState('coins')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
-
+  const {ticketBalance, setTicketBalance} = useGlobalContext();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -655,8 +655,9 @@ export function StorePage() {
   const handleBuy = (packageItem: any) => {
     // In a real app, this would process payment
     // For now, just add the coins to the balance
+    setTicketBalance(ticketBalance + packageItem.bonus);
     addCoins(packageItem.coins)
-    alert(`Purchased ${packageItem.coins.toLocaleString()} Gold Coins!`)
+    alert(`Purchased ${packageItem.coins.toLocaleString()} Gold Coins and ${packageItem.bonus}`)
   }
 
   // Mobile view
@@ -785,7 +786,7 @@ export function StorePage() {
 
   // Desktop view
   return (
-      <div className={`flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 `}>
+      <div className={`flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 mt-5 `}>
 
         {/* Top balance bar */}
         <div className="p-4">
@@ -797,10 +798,10 @@ export function StorePage() {
         </div>
 
         {/* Main content */}
-        <div className="flex flex-1 pl-16 pr-5 pb-8">
+        <div className="flex flex-1 pt-5 pl-16 pr-5 pb-8">
 
           {/* Left sidebar */}
-          <div className={`${activeTabDesktop === 'redeem' ? 'mt-16 w-[440px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
+          <div className={`${activeTabDesktop === 'redeem' ? 'mt-14 w-[467px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
             <h1 className="text-2xl font-bold mb-8">Store</h1>
             <button
                 className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-4 flex items-center`}
@@ -831,7 +832,7 @@ export function StorePage() {
                 <img
                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
                     alt="Redeem"
-                    className="w-10 h-10"
+                    className="w-12 h-12"
                 />
               </div>
             </button>
@@ -843,7 +844,7 @@ export function StorePage() {
               <>
                 {/* Right content area */}
                 <div className={`flex-1 bg-[#374151] rounded-xl p-6 `}>
-                  <h2 className="text font-medium mb-6">GC Package</h2>
+                  <h2 className="text font-medium mb-6 font-['DM Sans']">GC Package</h2>
 
                   {/* Package cards - updated to be responsive with min/max width */}
                   <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-4 mb-8`}>
@@ -882,7 +883,7 @@ export function StorePage() {
                             {/* Package content - with consistent alignment */}
                             <div className="flex-1 flex flex-col text-center px-4">
                               {/* GC amount */}
-                              <p className="font-bold text-xl text-black mb-2">
+                              <p className="font-bold text-xl text-black mb-2 font-['DM Sans']">
                                 GC {pkg.coins.toLocaleString()}
                               </p>
 
@@ -891,14 +892,14 @@ export function StorePage() {
                                 {
                                   pkg.bonus > 0 ? (
                                       <>
-                                        <p className="text-black">+</p>
+                                        <p className="text-black text-xl">+</p>
                                         <div className="flex items-center justify-center mt-1">
                                           <img
                                               src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
                                               alt="Ticket"
-                                              className="w-6 h-6 mr-1"
+                                              className="w-8 h-8 mr-1 bg-[#0CC242] rounded-full p-[2px]"
                                           />
-                                          <span className="text-black font-bold">
+                                          <span className="text-black text-xl font-bold font-['DM Sans']">
                                             × {pkg.bonus} free
                                           </span>
                                         </div>
@@ -909,13 +910,14 @@ export function StorePage() {
                                 }
                               </div>
 
-                              {/* Price */}
-                              <p className="font-bold text-xl text-black my-4">
-                                ${pkg.price}
-                              </p>
-
                               {/* Buy button - always at the same position */}
                               <div className="mt-auto mb-8 px-4">
+
+                                {/* Price */}
+                                <p className="font-bold text-xl text-black my-4 font-['DM Sans']">
+                                  ${pkg.price}
+                                </p>
+
                                 <button
                                     onClick={() => handleBuy(pkg)}
                                     className="w-full bg-[#56CA5A] hover:bg-[#4BB850] text-white py-3 rounded-full font-bold"
@@ -944,7 +946,7 @@ export function StorePage() {
               :
 
               // Redeem Section
-              <div className={`${activeTabDesktop === 'redeem' ? 'mt-16' : ''}`}>
+              <div className={`${activeTabDesktop === 'redeem' ? 'mt-14' : ''}`}>
                 <RedeemPage/>
               </div>
           }

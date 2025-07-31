@@ -32,16 +32,16 @@ export function BalanceSelector({
     }
     return (
         <>
-            <div className="w-full max-w-md mx-auto">
+            <div className="w-full max-w-lg mx-auto">
                 {/* Main Bar */}
                 <div
-                    className={`relative ${isMobile ? 'h-10' : 'h-10'} h-10 sm:h-12 md:h-14 lg:h-16 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ${switchable ? 'cursor-pointer' : ''}`}
+                    className={`relative ${isMobile ? 'h-10' : 'h-10'} h-10 sm:h-12 md:h-14 lg:h-14 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ${switchable ? 'cursor-pointer' : ''}`}
                 >
                     {/* Switch Coin Bar and Ticket Bar */}
                     <div className="w-full h-full flex items-center justify-center">
                         {/* Switch Coin Bar */}
                         <div
-                            className={`w-full h-full flex pr-20 items-center ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pr-16' : 'pr-24'} ${selectedBalanceType === 'coin' ? 'border-2 border-[#FDF222] rounded-full' : ''}`}
+                            className={`w-full h-full flex pr-20 items-center border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pr-16' : 'pr-20'} ${selectedBalanceType === 'coin' ? 'border-[#FDF222] rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('coin')}
                         >
                             <p
@@ -53,7 +53,7 @@ export function BalanceSelector({
                         </div>
                         {/* Switch Ticket Bar */}
                         <div
-                            className={`w-full h-full flex items-center ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pl-14' : 'pl-20'} ${selectedBalanceType === 'ticket' ? 'border-2 border-green-600 rounded-full' : ''}`}
+                            className={`w-full h-full flex items-center border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pl-14' : 'pl-20'} ${selectedBalanceType === 'ticket' ? 'border-green-600 rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('ticket')}
                         >
                             <p

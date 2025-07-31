@@ -7,7 +7,10 @@ type WordollCardProps = {
 export function WordollCard({ isMobile = false }: WordollCardProps) {
     const navigate = useNavigate()
     const { isAuthenticated, selectedBalanceType } = useGlobalContext()
+    const { limitPlay, setLimitPlay } = useGlobalContext()
+
     const handlePlayClick = () => {
+
         if (isAuthenticated) {
             if (selectedBalanceType === 'ticket') {
                 // Navigate to gem game mode if ticket is selected
@@ -25,9 +28,14 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 })
             }
         } else {
-            navigate('/wordoll-game')
+            navigate('/bet-selector', {
+                state: {
+                    gameType: 'wordoll',
+                },
+            })
         }
     }
+
     if (isMobile) {
         return (
             <div
@@ -43,9 +51,11 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                     />
                 </div>
                 {/* x3 indicator in top right corner */}
-                <div className="absolute top-2 right-4 text-white text-3xl  z-10">
-                    x 3
-                </div>
+                { !isAuthenticated &&
+                    <div className="absolute top-2 right-4 text-white text-3xl z-10">
+                        x 3
+                    </div>
+                }
                 {/* Title at the bottom */}
                 <div className="mt-auto pb-6 px-4 text-center relative z-10">
                     <h3 className="text-xl font-bold text-white">Wordoll</h3>
@@ -64,9 +74,11 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 />
             </div>
             {/* x3 indicator in top right corner */}
-            <div className="absolute top-4 right-6 text-white text-2xl font-semibold z-10">
-                x 3
-            </div>
+            { !isAuthenticated &&
+                <div className="absolute top-2 right-6 text-white text-2xl font-semibold z-10">
+                    x 3
+                </div>
+            }
             {/* Title */}
             <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Wordoll
@@ -78,6 +90,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 <button
                     className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
+                    disabled={!isAuthenticated && limitPlay === 0}
                 >
                     PLAY
                 </button>

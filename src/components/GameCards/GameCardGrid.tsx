@@ -32,7 +32,7 @@ export function GameCardGrid() {
     }
     return (
         <div
-            className={`flex-1 flex justify-center items-center ${isAuthenticated ? 'pt-4' : 'pt-0'} game-card-grid`}
+            className={`flex-1 ${isMobile ? '' : 'mb-36'} flex justify-center items-center ${isAuthenticated ? 'pt-4 pb-4' : 'pt-0'} game-card-grid`}
         >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl w-full">
                 <WordollCard />

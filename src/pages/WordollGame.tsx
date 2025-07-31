@@ -260,7 +260,7 @@ export function WordollGame() {
           ref={gameContainerRef}
       >
         {/* Back button */}
-        <div className="absolute top-12 left-4 z-10">
+        <div className="absolute top-4 left-4 z-10">
           <button
               className="w-12 h-12 rounded-full flex items-center justify-center"
               onClick={() => navigate('/')}
@@ -423,7 +423,7 @@ export function WordollGame() {
                     className="md:block"
                 />
               </div>
-              <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
+              <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-[76px] space-y-0">
                 <div className="flex items-center justify-center pt-2 h-10">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -434,7 +434,7 @@ export function WordollGame() {
                 {winAmount.toLocaleString()}
               </span>
                 </div>
-                <p className="text-xl pl-6 text-white font-semibold">win</p>
+                <p className="text-xl pl-6 text-white font-inter font-semibold">win</p>
               </div>
             </>
         )}

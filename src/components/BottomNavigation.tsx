@@ -63,7 +63,7 @@ export function BottomNavigation() {
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/5TYpcFyrcJzsUYy6fN4qGy/cart.png"
                 alt="Store"
-                className={`${isMobile ? 'w-8 h-8' : 'w-8 h-8'} cursor-pointer`}
+                className={`${isMobile ? 'w-8 h-8' : 'w-10 h-10'} cursor-pointer`}
                 onClick={navigateToStore}
             />
             {isStorePage && (
@@ -76,7 +76,7 @@ export function BottomNavigation() {
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/u2SMKm6BLewCDq32THirmz/console.png"
                 alt="Games"
-                className={`${isMobile ? 'w-8 h-8' : 'w-8 h-8'} cursor-pointer`}
+                className={`${isMobile ? 'w-8 h-8' : 'w-10 h-10'} cursor-pointer`}
                 onClick={navigateToGames}
             />
             {isGamesPage && (
@@ -89,7 +89,7 @@ export function BottomNavigation() {
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/aJbWV6wgBpeJUuKUnTAtPB/user.png"
                 alt="Profile"
-                className={`${isMobile ? 'w-8 h-8' : 'w-8 h-8'} cursor-pointer`}
+                className={`${isMobile ? 'w-8 h-8' : 'w-10 h-10'} cursor-pointer`}
                 onClick={navigateToProfile}
             />
             {isProfilePage && (

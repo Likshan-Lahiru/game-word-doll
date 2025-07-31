@@ -7,8 +7,10 @@ export function BetSelectorPage() {
     const location = useLocation()
     const { setBetAmount, setWinAmount, isAuthenticated, coinBalance } =
         useGlobalContext()
+    let { limitPlay, setLimitPlay } = useGlobalContext()
     const [selectedBet, setSelectedBet] = useState<number>(1000)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
     // Extract gameType from the URL state
     const { gameType } = location.state as {
         gameType: 'wordoll' | 'lockpickr'
@@ -20,6 +22,7 @@ export function BetSelectorPage() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
     const betOptions = [
         {
             bet: 200,
@@ -41,25 +44,34 @@ export function BetSelectorPage() {
     }
     const handlePlay = () => {
         const option = betOptions.find((opt) => opt.bet === selectedBet)
+        if (!isAuthenticated && limitPlay > 0) {
+            setLimitPlay(prev => prev - 1);
+        }
+
         if (option) {
             setBetAmount(option.bet)
             setWinAmount(option.win)
             if (gameType === 'wordoll') {
-                navigate('/wordoll-game')
+
+                if (limitPlay != 0 && !isAuthenticated) {
+                    navigate('/wordoll-game')
+                } else {
+                    navigate('/wordoll-game')
+                }
             } else {
                 navigate('/lock-pickr-game')
             }
         }
     }
-    if (!isAuthenticated) {
-        navigate(gameType === 'wordoll' ? '/wordoll-game' : '/lock-pickr-game')
-        return null
-    }
+    // if (!isAuthenticated) {
+    //     navigate(gameType === 'wordoll' ? '/wordoll-game' : '/lock-pickr-game')
+    //     return null
+    // }
     if (isMobile) {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
                 {/* Back button */}
-                <div className="absolute top-12 left-4 z-10">
+                <div className="absolute top-12 left-2 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
                         onClick={() => navigate('/')}
@@ -129,6 +141,7 @@ export function BetSelectorPage() {
                                 <button
                                     className="bg-[#3B82F6] hover:bg-blue-600 text-white py-3 px-16 rounded-xl font-semibold text-2xl font-[Inter]"
                                     onClick={handlePlay}
+                                    disabled={!isAuthenticated && limitPlay === 0}
                                 >
                                     Play
                                 </button>
@@ -142,7 +155,7 @@ export function BetSelectorPage() {
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
             {/* Back button */}
-            <div className="absolute top-12 left-4 z-10">
+            <div className="absolute top-4 left-4 z-10">
                 <button
                     className="w-12 h-12 rounded-full flex items-center justify-center"
                     onClick={() => navigate('/')}
