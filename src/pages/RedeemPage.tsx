@@ -481,7 +481,7 @@ export function RedeemPage() {
 
             {/* Redeem input */}
             <div className="mb-4">
-              <div className="flex items-center mb-3">
+              <div className={`flex items-center mb-3 justify-center`}>
                 <p className="mr-2 text-sm">Redeem</p>
                 <div className="bg-white rounded-md px-4 py-2 flex items-center">
                   <input
@@ -490,9 +490,8 @@ export function RedeemPage() {
                       onChange={(e) => setRedeemAmount(Number(e.target.value))}
                       className="bg-transparent w-16 outline-none text-black text-lg"
                   />
-                  <span className="text-gray-500 ml-1 font-['Inter']">({redeemAmount})</span>
+                  <span className="ml-1 font-['Inter'] text-black">(${redeemAmount})</span>
                 </div>
-
                 <p className=" text-xs ml-2">
                   gems to cash
                   <br/>
@@ -593,7 +592,7 @@ export function RedeemPage() {
   return (
       <>
         {/* Right content area - Updated to match the image exactly */}
-        <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter']">
+        <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter'] pr-24 pl-10">
           <h2 className="text-2xl font-medium mb-6 font-['Inter']">Redeem</h2>
 
           <div className="space-y-4 mb-10">
@@ -630,7 +629,7 @@ export function RedeemPage() {
                   onChange={(e) => setRedeemAmount(Number(e.target.value))}
                   className="bg-transparent w-16 outline-none text-black text-lg"
               />
-              <span className="text-gray-500 ml-1 font-['Inter']">({redeemAmount})</span>
+              <span className="ml-1 font-['Inter'] text-black">(${redeemAmount})</span>
             </div>
 
             <p className="text-white">gems to cash ($1 per gem)</p>
