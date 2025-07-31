@@ -165,7 +165,7 @@ export function GiveawayGame() {
         </div>
         {/* Status Bar */}
         <div className="">
-          <StatusBar isMobile={isMobile} hideOnlineCount={true} />
+          <StatusBar isMobile={isMobile} hideOnlineCount={true} switchableBalanceSelector={true}/>
         </div>
         {/* Main Content */}
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">

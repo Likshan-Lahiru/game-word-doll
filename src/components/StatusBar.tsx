@@ -25,7 +25,7 @@ export function StatusBar({
                         />
                     </div>
                     <div className="flex justify-center space-x-3 mb-2">
-                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
+                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-2 ">
                             <div className="w-7 h-18 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
@@ -33,7 +33,7 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1">{gemBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{gemBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             <div className="w-8 h-4 flex items-center justify-center">
@@ -43,7 +43,7 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1">0</span>
+                            <span className="ml-1 font-bold">0</span>
                         </div>
                     </div>
                 </>
@@ -69,7 +69,7 @@ export function StatusBar({
                         />
                     </div>
                     <div className="flex flex-col space-y-1 mt-5">
-                        <div className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-6 outline outline-2 outline-[#374151] mt-2">
+                        <div className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-6 outline outline-2 outline-[#374151] mt-2 mb-2">
                             <div className="w-5 h-7 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
@@ -77,7 +77,7 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 text-lg font-Inter font-semibold">0</span>
+                            <span className="ml-1 text-lg font-Inter font-bold">0</span>
                         </div>
                         <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-3 outline outline-2 outline-[#374151]">
                             <div className="w-8 h-8 flex items-center justify-center">
@@ -87,9 +87,9 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 text-lg font-Inter font-semibold">
-                {gemBalance.toFixed(2)}
-              </span>
+                            <span className="ml-1 text-lg font-Inter font-bold">
+                                {gemBalance.toFixed(2)}
+                            </span>
                         </div>
                     </div>
                 </>

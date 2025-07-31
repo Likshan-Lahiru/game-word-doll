@@ -35,7 +35,7 @@ export function BalanceSelector({
             <div className="w-full max-w-md mx-auto">
                 {/* Main Bar */}
                 <div
-                    className={`relative h-10 sm:h-12 md:h-14 lg:h-16 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ${switchable ? 'cursor-pointer' : ''}`}
+                    className={`relative ${isMobile ? 'h-10' : 'h-10'} h-10 sm:h-12 md:h-14 lg:h-16 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ${switchable ? 'cursor-pointer' : ''}`}
                 >
                     {/* Switch Coin Bar and Ticket Bar */}
                     <div className="w-full h-full flex items-center justify-center">
@@ -45,7 +45,7 @@ export function BalanceSelector({
                             onClick={() => handleSelect('coin')}
                         >
                             <p
-                                className={`w-full text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
+                                className={`w-full font-inter text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
                                 onClick={() => handleSelect('coin')}
                             >
                                 {coinBalance.toLocaleString()}
@@ -57,7 +57,7 @@ export function BalanceSelector({
                             onClick={() => handleSelect('ticket')}
                         >
                             <p
-                                className={`w-full text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
+                                className={`w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
                                 {ticketBalance}

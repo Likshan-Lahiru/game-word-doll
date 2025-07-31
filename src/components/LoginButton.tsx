@@ -11,7 +11,7 @@ export function LoginButton() {
     }
     return (
         <div
-            className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-16 pt-4'}`}
+            className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-16 pt-8'}`}
         >
             <button
                 onClick={() => navigate('/login')}
