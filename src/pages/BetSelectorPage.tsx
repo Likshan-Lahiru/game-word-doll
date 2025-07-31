@@ -51,10 +51,10 @@ export function BetSelectorPage() {
             }
         }
     }
-    if (!isAuthenticated) {
-        navigate(gameType === 'wordoll' ? '/wordoll-game' : '/lock-pickr-game')
-        return null
-    }
+    // if (!isAuthenticated) {
+    //     navigate(gameType === 'wordoll' ? '/wordoll-game' : '/lock-pickr-game')
+    //     return null
+    // }
     if (isMobile) {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
