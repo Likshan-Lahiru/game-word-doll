@@ -488,7 +488,7 @@ export function RedeemPage() {
                       type="number"
                       value={redeemAmount}
                       onChange={(e) => setRedeemAmount(Number(e.target.value))}
-                      className="bg-transparent w-16 outline-none text-black text-lg"
+                      className="bg-transparent w-16 outline-none text-black text-md"
                   />
                   <span className="ml-1 font-['Inter'] text-black">(${redeemAmount})</span>
                 </div>
