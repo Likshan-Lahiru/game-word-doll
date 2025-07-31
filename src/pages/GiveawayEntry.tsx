@@ -140,9 +140,9 @@ export function GiveawayEntry() {
             </div>
             {/* Main Content */}
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
-                <div className="flex flex-col pt-3">
+                <div className="flex flex-col pt-1">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-4' : 'pb-10'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
+                    <h2 className={`${isMobile ? 'pb-4' : 'pb-5'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
                         Play any game to enter the Fortune Spin
                     </h2>
                     {/* Game Cards */}
