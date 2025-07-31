@@ -446,18 +446,18 @@ export function RedeemPage() {
             <div className="mb-4">
 
               {/* Updated to match the image more closely - colon closer to the number */}
-              <div className="flex justify-between mb-2">
-                <span className="">Available Gems</span>
-                <span className="">
-                :{' '}
-                  <span className="mr-44 pr-2 font-medium">{availableGems.toFixed(2)}</span>
-              </span>
+              <div className="flex justify-start mb-2">
+                <p className={"mr-2 w-32"}>Available Gems </p>
+                <p className={""}>{" : "}{availableGems.toFixed(2)}</p>
+                {/*<span className="">Available Gems</span>*/}
+                {/*<span className="">:{' '}<span className="pr-2 text-left bg-amber-300 font-medium">{availableGems.toFixed(2)}</span></span>*/}
               </div>
-              <div className="flex justify-between mb-5">
-                <span className="">Total Gems</span>
-                <span className="">
-                : <span className="mr-44 font-medium">{totalGems.toFixed(2)}</span>
-              </span>
+              <div className="flex justify-start mb-5">
+                <p className="mr-2 w-32">Total Gems</p>
+                <p className="">{" : "}{totalGems.toFixed(2)}</p>
+              {/*  <span className="">*/}
+              {/*  : <span className="mr-44 font-medium">{totalGems.toFixed(2)}</span>*/}
+              {/*</span>*/}
               </div>
             </div>
 
