@@ -15,9 +15,11 @@ export function LockPickrGame() {
   const globalContext = useGlobalContext()
   const { betAmount, winAmount, isAuthenticated, addCoins } = globalContext
   const [targetCode, setTargetCode] = useState<number[]>([])
-  const [currentAttempt, setCurrentAttempt] = useState<number[]>([])
-  const [lastAttempt, setLastAttempt] = useState<number[]>([]) // Initialize as empty array instead of null
-  const [timer, setTimer] = useState(300) // 5 minutes in seconds
+  const [currentAttempt, setCurrentAttempt] = useState<(number | undefined)[]>(
+      Array(5).fill(undefined),
+  )
+  const [lastAttempt, setLastAttempt] = useState<number[]>([])
+  const [timer, setTimer] = useState(300)
   const [feedback, setFeedback] = useState<string>('')
   const [isInputFocused, setIsInputFocused] = useState(false)
   const gameContainerRef = useRef<HTMLDivElement>(null)
@@ -31,6 +33,66 @@ export function LockPickrGame() {
   const [showLoseModal, setShowLoseModal] = useState(false)
   const [attemptsLeft, setAttemptsLeft] = useState(50)
   const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
+  const [lockedPositions, setLockedPositions] = useState<boolean[]>(
+      Array(5).fill(false),
+  )
+  // Define checkGuess before any useEffect that depends on it
+  const checkGuess = useCallback(() => {
+    // Check if we have a complete attempt (all 5 positions filled)
+    const hasEmptyPositions = currentAttempt.some((num) => num === undefined)
+    if (hasEmptyPositions) {
+      setFeedback('Invalid Number')
+      return
+    }
+    // Store current attempt as the last attempt
+    setLastAttempt(currentAttempt.map((n) => (n !== undefined ? n : 0)))
+    // Check if the guess matches the target code
+    const isCorrect = currentAttempt.every(
+        (num, index) => num === targetCode[index],
+    )
+    if (isCorrect) {
+      if (isAuthenticated) {
+        addCoins(winAmount) // Use the selected win amount
+      }
+      setShowWinModal(true)
+      return
+    }
+    // Update locked positions for correct numbers
+    const newLocks = [...lockedPositions]
+    const newAttempt = [...currentAttempt]
+    currentAttempt.forEach((num, index) => {
+      if (num === targetCode[index]) {
+        newLocks[index] = true
+        // Keep the correct number in the new attempt
+        newAttempt[index] = num
+      } else {
+        // Clear incorrect positions
+        newAttempt[index] = undefined
+      }
+    })
+    setLockedPositions(newLocks)
+    setCurrentAttempt(newAttempt)
+    // Decrease attempts
+    setAttemptsLeft((prev) => prev - 1)
+    // Check if out of attempts
+    if (attemptsLeft <= 1) {
+      setShowNoAttemptsModal(true)
+      return
+    }
+    setFeedback('')
+    // Focus the input for next attempt
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [
+    currentAttempt,
+    targetCode,
+    attemptsLeft,
+    isAuthenticated,
+    winAmount,
+    addCoins,
+    lockedPositions,
+  ])
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -104,14 +166,34 @@ export function LockPickrGame() {
       // Handle number input (0-9)
       if (/^[0-9]$/.test(e.key)) {
         const number = parseInt(e.key, 10)
-        if (currentAttempt.length < 5) {
-          setCurrentAttempt((prev) => [...prev, number])
+        // Find the leftmost empty non-locked position
+        let nextPos = -1
+        for (let i = 0; i < 5; i++) {
+          if (!lockedPositions[i] && currentAttempt[i] === undefined) {
+            nextPos = i
+            break
+          }
+        }
+        if (nextPos !== -1) {
+          const newAttempt = [...currentAttempt]
+          newAttempt[nextPos] = number
+          setCurrentAttempt(newAttempt)
         }
       }
       // Handle backspace
       else if (e.key === 'Backspace') {
-        if (currentAttempt.length > 0) {
-          setCurrentAttempt((prev) => prev.slice(0, -1))
+        // Find the rightmost filled non-locked position
+        let lastFilled = -1
+        for (let i = 4; i >= 0; i--) {
+          if (!lockedPositions[i] && currentAttempt[i] !== undefined) {
+            lastFilled = i
+            break
+          }
+        }
+        if (lastFilled !== -1) {
+          const newAttempt = [...currentAttempt]
+          newAttempt[lastFilled] = undefined
+          setCurrentAttempt(newAttempt)
         }
       }
       // Handle enter key
@@ -123,7 +205,7 @@ export function LockPickrGame() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [currentAttempt, gameStarted])
+  }, [currentAttempt, gameStarted, lockedPositions, checkGuess])
   // Timer countdown - only start after countdown completes
   useEffect(() => {
     if (!gameStarted) return
@@ -144,52 +226,25 @@ export function LockPickrGame() {
   }
   // Handle input change for mobile keyboard
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '')
-    if (value.length <= 5) {
-      setCurrentAttempt(value.split('').map((num) => parseInt(num, 10)))
+    // Skip processing if the input is coming from the keyboard event listener
+    // This prevents duplicate entries when typing on a physical keyboard
+    if (e.nativeEvent.inputType === 'insertText') {
+      const value = e.target.value.replace(/[^0-9]/g, '')
+      if (value.length <= 5) {
+        const newAttempt = [...currentAttempt]
+        let valueIndex = 0
+        // Fill in non-locked positions with input values
+        for (let i = 0; i < 5 && valueIndex < value.length; i++) {
+          if (!lockedPositions[i]) {
+            newAttempt[i] = parseInt(value[valueIndex], 10)
+            valueIndex++
+          }
+        }
+        setCurrentAttempt(newAttempt)
+      }
     }
   }
-  // Check if the guess is correct
-  const checkGuess = useCallback(() => {
-    if (currentAttempt.length < 5) {
-      setFeedback('Invalid Number')
-      return
-    }
-    // Store current attempt as the last attempt
-    setLastAttempt([...currentAttempt])
-    // Check if the guess matches the target code
-    const isCorrect = currentAttempt.every(
-        (num, index) => num === targetCode[index],
-    )
-    if (isCorrect) {
-      if (isAuthenticated) {
-        addCoins(winAmount) // Use the selected win amount
-      }
-      setShowWinModal(true)
-      return
-    }
-    // Decrease attempts
-    setAttemptsLeft((prev) => prev - 1)
-    // Check if out of attempts
-    if (attemptsLeft <= 1) {
-      setShowNoAttemptsModal(true)
-      return
-    }
-    // Clear current attempt for next try
-    setCurrentAttempt([])
-    setFeedback('')
-    // Focus the input for next attempt
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [
-    currentAttempt,
-    targetCode,
-    attemptsLeft,
-    isAuthenticated,
-    winAmount,
-    addCoins,
-  ])
+
   // Handle countdown completion
   const handleCountdownComplete = () => {
     setShowCountdown(false)
@@ -200,26 +255,59 @@ export function LockPickrGame() {
   }
   // Get number status (correct, wrong position, incorrect)
   const getNumberStatus = (num: number, index: number) => {
+    // If the number is in the correct position, always return 'correct'
     if (targetCode[index] === num) {
       return 'correct' // Correct number in correct position
-    } else if (targetCode.includes(num)) {
-      return 'wrong-position' // Correct number in wrong position
-    } else {
-      return 'incorrect' // Incorrect number
     }
+    // Check if the number exists elsewhere in the target code
+    // But we need to count occurrences to avoid marking too many as 'wrong-position'
+    const targetOccurrences = targetCode.filter((n) => n === num).length
+    const correctPositions = lastAttempt.filter(
+        (n, i) => n === num && targetCode[i] === num,
+    ).length
+    const previousOccurrences = lastAttempt
+        .slice(0, index)
+        .filter((n) => n === num).length
+    if (
+        targetOccurrences > correctPositions + previousOccurrences &&
+        targetCode.includes(num)
+    ) {
+      return 'wrong-position' // Correct number in wrong position
+    }
+    return 'incorrect' // Incorrect number
   }
   // Handle mobile number pad key press
   const handleMobileKeyPress = (key: string) => {
     if (key === 'ENTER') {
       checkGuess()
     } else if (key === 'Backspace') {
-      if (currentAttempt.length > 0) {
-        setCurrentAttempt((prev) => prev.slice(0, -1))
+      // Find the rightmost filled non-locked position
+      let lastFilled = -1
+      for (let i = 4; i >= 0; i--) {
+        if (!lockedPositions[i] && currentAttempt[i] !== undefined) {
+          lastFilled = i
+          break
+        }
+      }
+      if (lastFilled !== -1) {
+        const newAttempt = [...currentAttempt]
+        newAttempt[lastFilled] = undefined
+        setCurrentAttempt(newAttempt)
       }
     } else if (/^[0-9]$/.test(key)) {
       const number = parseInt(key, 10)
-      if (currentAttempt.length < 5) {
-        setCurrentAttempt((prev) => [...prev, number])
+      // Find the leftmost empty non-locked position
+      let nextPos = -1
+      for (let i = 0; i < 5; i++) {
+        if (!lockedPositions[i] && currentAttempt[i] === undefined) {
+          nextPos = i
+          break
+        }
+      }
+      if (nextPos !== -1) {
+        const newAttempt = [...currentAttempt]
+        newAttempt[nextPos] = number
+        setCurrentAttempt(newAttempt)
       }
     }
   }
@@ -228,13 +316,33 @@ export function LockPickrGame() {
     if (key === 'ENTER') {
       checkGuess()
     } else if (key === 'Backspace') {
-      if (currentAttempt.length > 0) {
-        setCurrentAttempt((prev) => prev.slice(0, -1))
+      // Find the rightmost filled non-locked position
+      let lastFilled = -1
+      for (let i = 4; i >= 0; i--) {
+        if (!lockedPositions[i] && currentAttempt[i] !== undefined) {
+          lastFilled = i
+          break
+        }
+      }
+      if (lastFilled !== -1) {
+        const newAttempt = [...currentAttempt]
+        newAttempt[lastFilled] = undefined
+        setCurrentAttempt(newAttempt)
       }
     } else if (/^[0-9]$/.test(key)) {
       const number = parseInt(key, 10)
-      if (currentAttempt.length < 5) {
-        setCurrentAttempt((prev) => [...prev, number])
+      // Find the leftmost empty non-locked position
+      let nextPos = -1
+      for (let i = 0; i < 5; i++) {
+        if (!lockedPositions[i] && currentAttempt[i] === undefined) {
+          nextPos = i
+          break
+        }
+      }
+      if (nextPos !== -1) {
+        const newAttempt = [...currentAttempt]
+        newAttempt[nextPos] = number
+        setCurrentAttempt(newAttempt)
       }
     }
   }
@@ -247,7 +355,7 @@ export function LockPickrGame() {
             tabIndex={0}
         >
           {/* Back button */}
-          <div className="absolute top-12 left-4 z-10">
+          <div className="absolute top-4 left-4 z-10">
             <button
                 className="w-12 h-12 rounded-full flex items-center justify-center"
                 onClick={() => navigate('/')}
@@ -265,18 +373,14 @@ export function LockPickrGame() {
             <p className="text-2xl font-bold">{formatTime(timer)}</p>
           </div>
           {/* Feedback message */}
-          {feedback && (
-              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                {feedback}
-              </div>
-          )}
+
           {/* Hidden input for keyboard */}
           <input
               ref={inputRef}
               type="tel"
               inputMode="numeric"
               pattern="[0-9]*"
-              value={currentAttempt.join('')}
+              value={currentAttempt.filter((n) => n !== undefined).join('')}
               onChange={handleInputChange}
               className="opacity-0 h-0 w-0 absolute"
               autoComplete="off"
@@ -310,7 +414,7 @@ export function LockPickrGame() {
               )}
             </div>
           </div>
-          {/* Current attempt - Always shown */}
+          {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
           <div
               className="flex justify-center mb-6"
               onClick={() => inputRef.current?.focus()}
@@ -318,32 +422,16 @@ export function LockPickrGame() {
             <div className="grid grid-cols-5 gap-2">
               {Array.from({
                 length: 5,
-              }).map((_, index) => {
-                const status =
-                    currentAttempt[index] !== undefined && lastAttempt
-                        ? getNumberStatus(currentAttempt[index], index)
-                        : null
-                let bgColor = 'bg-[#374151]'
-                if (currentAttempt[index] !== undefined) {
-                  if (status === 'correct') {
-                    bgColor = 'bg-[#22C55E]'
-                  } else if (status === 'wrong-position') {
-                    bgColor = 'bg-[#C5BD22]'
-                  } else {
-                    bgColor = 'bg-[#374151]'
-                  }
-                }
-                return (
-                    <div
-                        key={index}
-                        className={`w-14 h-14 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
-                    >
-                      {currentAttempt[index] !== undefined
-                          ? currentAttempt[index]
-                          : ''}
-                    </div>
-                )
-              })}
+              }).map((_, index) => (
+                  <div
+                      key={index}
+                      className={`w-14 h-14 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-xl`}
+                  >
+                    {currentAttempt[index] !== undefined
+                        ? currentAttempt[index]
+                        : ''}
+                  </div>
+              ))}
             </div>
           </div>
           {/* Attempts count */}
@@ -486,7 +574,7 @@ export function LockPickrGame() {
           tabIndex={0}
       >
         {/* Back button */}
-        <div className="absolute top-12 left-4 z-10">
+        <div className="absolute top-4 left-4 z-10">
           <button
               className="w-12 h-12 rounded-full flex items-center justify-center"
               onClick={() => navigate('/')}
@@ -503,19 +591,14 @@ export function LockPickrGame() {
           <p className="text-white text-xs">Timer</p>
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
-        {/* Feedback message */}
-        {feedback && (
-            <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-              <p className="text-white text-lg">{feedback}</p>
-            </div>
-        )}
+
         {/* Hidden input for keyboard */}
         <input
             ref={inputRef}
             type="tel"
             inputMode="numeric"
             pattern="[0-9]*"
-            value={currentAttempt.join('')}
+            value={currentAttempt.filter((n) => n !== undefined).join('')}
             onChange={handleInputChange}
             className="opacity-0 h-0 w-0 absolute"
             autoComplete="off"
@@ -549,7 +632,7 @@ export function LockPickrGame() {
             )}
           </div>
         </div>
-        {/* Current attempt - Always shown */}
+        {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
         <div
             className="flex justify-center mb-10"
             onClick={() => inputRef.current?.focus()}
@@ -557,32 +640,14 @@ export function LockPickrGame() {
           <div className="grid grid-cols-5 gap-2">
             {Array.from({
               length: 5,
-            }).map((_, index) => {
-              const status =
-                  currentAttempt[index] !== undefined
-                      ? getNumberStatus(currentAttempt[index], index)
-                      : null
-              let bgColor = 'bg-[#374151]'
-              if (currentAttempt[index] !== undefined) {
-                if (status === 'correct') {
-                  bgColor = 'bg-[#22C55E]'
-                } else if (status === 'wrong-position') {
-                  bgColor = 'bg-[#C5BD22]'
-                } else {
-                  bgColor = 'bg-[#374151]'
-                }
-              }
-              return (
-                  <div
-                      key={index}
-                      className={`w-16 h-16 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
-                  >
-                    {currentAttempt[index] !== undefined
-                        ? currentAttempt[index]
-                        : ''}
-                  </div>
-              )
-            })}
+            }).map((_, index) => (
+                <div
+                    key={index}
+                    className={`w-16 h-16 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md`}
+                >
+                  {currentAttempt[index] !== undefined ? currentAttempt[index] : ''}
+                </div>
+            ))}
           </div>
         </div>
         {/* Attempts count */}
@@ -652,7 +717,7 @@ export function LockPickrGame() {
               />
             </button>
           </div>
-          <br />
+          <br/>
           <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
             <div className="flex items-center justify-center pt-2 h-10">
               <img
