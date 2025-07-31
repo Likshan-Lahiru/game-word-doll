@@ -21,6 +21,9 @@ type GlobalContextType = {
     setSelectedBalanceType: (type: 'coin' | 'ticket') => void
     login: () => void
     logout: () => void
+
+    limitPlay: number
+    setLimitPlay: React.Dispatch<React.SetStateAction<number>>
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
@@ -31,6 +34,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [betAmount, setBetAmount] = useState(1000)
     const [winAmount, setWinAmount] = useState(10000)
+    const [limitPlay, setLimitPlay] = useState<number>(3)
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
@@ -49,9 +53,11 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const logout = () => {
         setIsAuthenticated(false)
     }
+
     return (
         <GlobalContext.Provider
             value={{
+                limitPlay,
                 coinBalance,
                 ticketBalance,
                 spinBalance,
@@ -60,6 +66,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 betAmount,
                 winAmount,
                 selectedBalanceType,
+                setLimitPlay,
                 setCoinBalance,
                 setTicketBalance,
                 setSpinBalance,

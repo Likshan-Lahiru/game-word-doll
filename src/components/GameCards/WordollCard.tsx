@@ -7,6 +7,7 @@ type WordollCardProps = {
 export function WordollCard({ isMobile = false }: WordollCardProps) {
     const navigate = useNavigate()
     const { isAuthenticated, selectedBalanceType } = useGlobalContext()
+    const { limitPlay, setLimitPlay } = useGlobalContext()
 
     const handlePlayClick = () => {
 
@@ -89,6 +90,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 <button
                     className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
+                    disabled={!isAuthenticated && limitPlay === 0}
                 >
                     PLAY
                 </button>

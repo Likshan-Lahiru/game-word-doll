@@ -7,8 +7,10 @@ export function BetSelectorPage() {
     const location = useLocation()
     const { setBetAmount, setWinAmount, isAuthenticated, coinBalance } =
         useGlobalContext()
+    let { limitPlay, setLimitPlay } = useGlobalContext()
     const [selectedBet, setSelectedBet] = useState<number>(1000)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
     // Extract gameType from the URL state
     const { gameType } = location.state as {
         gameType: 'wordoll' | 'lockpickr'
@@ -20,6 +22,7 @@ export function BetSelectorPage() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
     const betOptions = [
         {
             bet: 200,
@@ -41,11 +44,20 @@ export function BetSelectorPage() {
     }
     const handlePlay = () => {
         const option = betOptions.find((opt) => opt.bet === selectedBet)
+        if (!isAuthenticated && limitPlay > 0) {
+            setLimitPlay(prev => prev - 1);
+        }
+
         if (option) {
             setBetAmount(option.bet)
             setWinAmount(option.win)
             if (gameType === 'wordoll') {
-                navigate('/wordoll-game')
+
+                if (limitPlay != 0) {
+                    navigate('/wordoll-game')
+                } else {
+                    alert("Sorry, Your 3 free chances is over!")
+                }
             } else {
                 navigate('/lock-pickr-game')
             }
