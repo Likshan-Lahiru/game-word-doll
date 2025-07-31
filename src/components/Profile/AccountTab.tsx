@@ -145,7 +145,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
 
   return (
       <div className="space-y-8 px-10">
-        <h2 className="text-xl font-bold mb-6 mt-10">Account</h2>
+        <h2 className="text-xl font-bold mb-6 mt-14">Account</h2>
         <div className={`${isMobile ? 'space-y-4' : 'space-y-6'}`}>
           {/* User Name and Email Address on the same line */}
           <div className="flex flex-wrap gap-4">
@@ -209,7 +209,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
           <div>
             <button
                 onClick={onChangePassword}
-                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : 'mb-16'}`}
+                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : 'mb-28'}`}
             >
               Change Password
             </button>
