@@ -25,7 +25,11 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
                 })
             }
         } else {
-            navigate('/lock-pickr-game')
+            navigate('/bet-selector', {
+                state: {
+                    gameType: 'lockpickr',
+                },
+            })
         }
     }
     if (isMobile) {
