@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {XIcon} from "lucide-react";
+import {useNavigate} from "react-router-dom";
 type InfoProps = {
   isOpen: boolean
   onClose: () => void
@@ -7,6 +8,7 @@ type InfoProps = {
 export function InfoModal({isOpen, onClose}: InfoProps) {
 
   const [isMobile, setIsMobile] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     // Handle window resize for responsive design
@@ -20,6 +22,12 @@ export function InfoModal({isOpen, onClose}: InfoProps) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const handleClose = () => {
+    onClose();
+
+    navigate('/giveaway-game')
+  }
+
   if (!isOpen) return null
 
   return (
@@ -29,7 +37,7 @@ export function InfoModal({isOpen, onClose}: InfoProps) {
               {/* Close Button */}
               <div className={"flex justify-end pr-5"}>
                 <button
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="text-gray-400 hover:text-white pb-10"
                 >
                   <XIcon size={24} />
