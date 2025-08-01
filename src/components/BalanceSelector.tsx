@@ -41,11 +41,11 @@ export function BalanceSelector({
                     <div className="w-full h-full flex items-center justify-center">
                             {/* Switch Coin Bar */}
                         <div
-                            className={`w-full h-full flex items-center justify-end border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pr-14' : 'lg:pr-[60px] md:pr-[48px] sm:pr-[68px]'} ${selectedBalanceType === 'coin' ? 'border-[#FDF222] rounded-full' : 'border-[#374151] rounded-full'}`}
+                            className={`w-full h-full flex items-center justify-end border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? '' : 'lg:pr-[60px] md:pr-[48px] sm:pr-[68px]'} ${selectedBalanceType === 'coin' ? 'border-[#FDF222] rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('coin')}
                         >
                             <p
-                                className={`${isMobile && 'text-sm'} min-w-[139px] w-full font-inter pl-1 text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
+                                className={`${isMobile && 'text-[11px] pr-10'} min-w-[139px] w-full font-inter pl-1 text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
                                 onClick={() => handleSelect('coin')}
                             >
                                 {/*{coinBalance.toLocaleString()}*/}
@@ -54,11 +54,11 @@ export function BalanceSelector({
                         </div>
                         {/* Switch Ticket Bar */}
                         <div
-                            className={`w-full h-full flex items-center justify-start border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pl-10' : 'pl-16'} ${selectedBalanceType === 'ticket' ? 'border-green-600 rounded-full' : 'border-[#374151] rounded-full'}`}
+                            className={`w-full h-full flex items-center justify-start border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pl-5' : 'pl-16'} ${selectedBalanceType === 'ticket' ? 'border-green-600 rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('ticket')}
                         >
                             <p
-                                className={`${isMobile && 'text-sm'} min-w-[139px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
+                                className={`${isMobile && 'text-[11px] pl-[35px]'} min-w-[110px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
                                 {/*{ticketBalance}*/}
