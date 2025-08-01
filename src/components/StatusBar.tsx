@@ -51,7 +51,7 @@ export function StatusBar({
                 <>
                     <div className="flex items-center mr-52 space-x-3">
                         {isHomePage && !isAuthenticated && (
-                            <div className="absolute top-10 left-4 z-10">
+                            <div className="absolute top-6 left-7 z-10">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uYsqLmRkx6f1zBGRqMZA6G/cookycreanlogo3.png"
                                     alt="Cooky Cream Logo"
@@ -61,7 +61,7 @@ export function StatusBar({
                         )}
                     </div>
                     <div
-                        className={`flex-1 max-w-lg mx-auto mt-5 ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
+                        className={`flex-1 max-w-2xl mx-auto mt-5 ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
                     >
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
