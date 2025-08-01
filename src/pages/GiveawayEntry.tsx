@@ -3,13 +3,15 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
+import {InfoModal} from "../components/InfoModal.tsx";
 
 export function GiveawayEntry() {
     const navigate = useNavigate()
     const location = useLocation()
-    const { spinBalance, selectedBalanceType } = useGlobalContext()
+    const { spinBalance, selectedBalanceType, ticketBalance } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
+    const [openInfoModal, setOpenInfoModal] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -26,6 +28,21 @@ export function GiveawayEntry() {
                 selectedGame: gameType,
             },
         })
+    }
+
+    const handleSpin = () => {
+        console.log("ticket type : ", selectedBalanceType);
+        if (selectedBalanceType === 'ticket') {
+            if (ticketBalance === 0) {
+                console.log("ticket balance : ", ticketBalance);
+                setOpenInfoModal(true);
+            } else {
+                setOpenInfoModal(false);
+                //TODO: navigate to spin
+            }
+        } else  {
+            navigate('/spin')
+        }
     }
 
     const GrandWin = () => {
@@ -220,8 +237,8 @@ export function GiveawayEntry() {
                     <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-10 xl:mt-10 mb-20">
                         <button
                             className={`${spinBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
-                            onClick={() => navigate('/spin')}
-                            disabled={spinBalance <= 0}
+                            onClick={handleSpin}
+                            disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
                         >
                             { selectedBalanceType === 'ticket' ?
                                 'SPIN NOW' : `SPIN NOW (${spinBalance} x Spin)`
@@ -233,6 +250,7 @@ export function GiveawayEntry() {
                 {/* Bottom Navigation */}
                 <BottomNavigation />
             </div>
+            <InfoModal isOpen={openInfoModal} onClose={() => setOpenInfoModal(false)} />
         </div>
     )
 }
