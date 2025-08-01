@@ -4,11 +4,13 @@ import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
 import {InfoModal} from "../components/InfoModal.tsx";
+import {Simulate} from "react-dom/test-utils";
+import volumeChange = Simulate.volumeChange;
 
 export function GiveawayEntry() {
     const navigate = useNavigate()
     const location = useLocation()
-    const { spinBalance, selectedBalanceType, ticketBalance } = useGlobalContext()
+    const { spinBalance, selectedBalanceType, voucherBalance } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
     const [openInfoModal, setOpenInfoModal] = useState(false)
@@ -31,10 +33,8 @@ export function GiveawayEntry() {
     }
 
     const handleSpin = () => {
-        console.log("ticket type : ", selectedBalanceType);
         if (selectedBalanceType === 'ticket') {
-            if (ticketBalance === 0) {
-                console.log("ticket balance : ", ticketBalance);
+            if (voucherBalance === 0) {
                 setOpenInfoModal(true);
             } else {
                 setOpenInfoModal(false);
