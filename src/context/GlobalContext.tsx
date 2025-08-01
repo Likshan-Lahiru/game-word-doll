@@ -30,7 +30,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [coinBalance, setCoinBalance] = useState(50000)
     const [ticketBalance, setTicketBalance] = useState(0)
     const [spinBalance, setSpinBalance] = useState(0)
-    const [gemBalance, setGemBalance] = useState(15.2)
+    const [gemBalance, setGemBalance] = useState(0)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [betAmount, setBetAmount] = useState(1000)
     const [winAmount, setWinAmount] = useState(10000)
