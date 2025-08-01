@@ -8,13 +8,14 @@ export function InfoModal({isOpen, onClose}: InfoProps) {
 
   const [isMobile, setIsMobile] = useState(false)
 
-  console.log("modal inside ", isOpen)
-
   useEffect(() => {
     // Handle window resize for responsive design
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
     }
+
+    handleResize();
+
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -22,8 +23,8 @@ export function InfoModal({isOpen, onClose}: InfoProps) {
   if (!isOpen) return null
 
   return (
-      <div className="fixed inset-0 pb-20 z-50 flex items-center justify-center bg-[#1F2937E5]/80">
-            <div className="bg-[#374151] pb-20 pt-5 rounded-2xl max-w-lg">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/80">
+            <div className={`${isMobile ? 'max-w-sm' : 'max-w-lg'} bg-[#374151] pb-20 pt-5 rounded-2xl`}>
 
               {/* Close Button */}
               <div className={"flex justify-end pr-5"}>
@@ -36,8 +37,8 @@ export function InfoModal({isOpen, onClose}: InfoProps) {
               </div>
 
               {/* Description */}
-              <div className={"pr-20 pl-20 "}>
-                <p className={`leading-6 ${isMobile ? 'text-xs ml-[10px] mr-[10px]' : 'text-[17px] pr-10'} text-center font-inter px-2  mt-4`}>
+              <div className={`${isMobile ? 'pr-16 pl-16 ' : 'pr-20 pl-20 '}`}>
+                <p className={`${isMobile ? 'text-md ml-[10px] mr-[10px] leading-4' : 'leading-6 text-[17px] pr-10'} text-center font-inter px-2 mt-4`}>
                   You don’t have enough{' '}
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
