@@ -48,8 +48,8 @@ export function BalanceSelector({
                                 className={`${isMobile && 'text-[11px] pr-10'} min-w-[139px] w-full font-inter pl-1 text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
                                 onClick={() => handleSelect('coin')}
                             >
-                                {/*{coinBalance.toLocaleString()}*/}
-                                500,000,000,000,0
+                                {coinBalance.toLocaleString()}
+                                {/*500,000,000,000,0*/}
                             </p>
                         </div>
                         {/* Switch Ticket Bar */}
@@ -61,8 +61,8 @@ export function BalanceSelector({
                                 className={`${isMobile && 'text-[11px] pl-[35px]'} min-w-[110px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
-                                {/*{ticketBalance}*/}
-                                500,000,000,000,0
+                                {ticketBalance}
+                                {/*500,000,000,000,0*/}
                             </p>
                         </div>
                     </div>
