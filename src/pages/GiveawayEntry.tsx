@@ -31,7 +31,9 @@ export function GiveawayEntry() {
     const GrandWin = () => {
         return(
             <>
-                <div className={"flex-col flex items-center justify-center gap-y-5"}>
+                <div className={`flex-col flex items-center justify-center gap-y-5
+                    ${isMobile && 'mt-10'}
+                `}>
                     <p className={"font-semibold text-[20px] font-[DM Sans]"}>GRAND WIN</p>
                     <div className={"flex items-center"}>
                         <p className={"font-semibold pr-2 text-[20px] font-[DM Sans]"}>Win</p>
@@ -169,44 +171,50 @@ export function GiveawayEntry() {
                     </h2>
 
                     <div className={"flex justify-center"}>
-                    {/* Left Side - Grand Win After Entries Select */}
-                    { selectedBalanceType === 'ticket' && !isMobile &&
-                        <GrandWin/>
-                    }
+                        {/* Left Side - Grand Win After Entries Select */}
+                        { selectedBalanceType === 'ticket' && !isMobile &&
+                            <GrandWin/>
+                        }
 
 
-                    {/* Game Cards */}
-                    <div className={`px-4 sm:h-[450px] 
-                        ${isMobile ? 'w-full' : 'mr-20 ml-20'}`
-                    }
-                    >
-                        <div
-                            className={`flex justify-center ${isMobile ? 'gap-3' : 'gap-4'} w-full max-w-2xl mx-auto`}
+                        {/* Game Cards */}
+                        <div className={`px-4 sm:h-[450px] 
+                            ${isMobile ? 'w-full' : 'mr-20 ml-20'}`
+                        }
                         >
-                            {/* WordollCard */}
                             <div
-                                className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                className={`flex justify-center ${isMobile ? 'gap-3' : 'gap-4'} w-full max-w-2xl mx-auto`}
                             >
-                                <CustomWordollCard />
-                            </div>
+                                {/* WordollCard */}
+                                <div
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                >
+                                    <CustomWordollCard />
+                                </div>
 
-                            {/* LockPickerCard */}
-                            <div
-                                className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
-                            >
-                                <CustomLockPickrCard />
+                                {/* LockPickerCard */}
+                                <div
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                >
+                                    <CustomLockPickrCard />
+                                </div>
                             </div>
                         </div>
+
+                        {/* Right Side - Grand Win After Entries Select */}
+                        { selectedBalanceType === 'ticket' && !isMobile &&
+                            <>
+                                <GrandWin/>
+                            </>
+                        }
                     </div>
 
-                    {/* Right Side - Grand Win After Entries Select */}
-                    { selectedBalanceType === 'ticket' && !isMobile &&
+                    {/* Mobile - Grand Win After Entries Select */}
+                    { selectedBalanceType === 'ticket' && isMobile &&
                         <>
                             <GrandWin/>
                         </>
                     }
-
-                    </div>
 
                     {/* Spin Button */}
                     <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-10 xl:mt-10 mb-20">
