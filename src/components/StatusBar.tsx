@@ -61,7 +61,7 @@ export function StatusBar({
                         )}
                     </div>
                     <div
-                        className={`flex-1 max-w-2xl mx-auto mt-5 ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
+                        className={`flex-1 max-w-xl mx-auto mt-5 ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
                     >
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
