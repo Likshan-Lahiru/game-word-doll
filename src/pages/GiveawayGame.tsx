@@ -217,15 +217,15 @@ export function GiveawayGame() {
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
 
         {/* Back Button */}
-        <div className="absolute top-8 left-6 z-10">
+        <div className="absolute top-4 left-4 z-10">
           <button
-              className="w-14 h-14 rounded-full flex items-center justify-center"
+              className="w-12 h-12 rounded-full flex items-center justify-center"
               onClick={() => navigate('/giveaway-entry')}
           >
             <img
                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
                 alt="Back"
-                className="w-10 h-10"
+                className="w-8 h-8"
             />
           </button>
         </div>
@@ -237,9 +237,11 @@ export function GiveawayGame() {
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">
-          <h2 className="text-xl font-['DM_Sans'] font-medium text-center mr-96 pr-96 mb-8">
-            { selectedBalanceType === 'coin' ? 'Select a prize to win!' : 'Select a prize to win! (One-time, single enter only per 24h)                                   '}
-          </h2>
+          <div className={"w-full max-w-5xl pl-7"}>
+            <h2 className="text-xl font-['DM_Sans'] font-medium text-left mb-8">
+              { selectedBalanceType === 'coin' ? 'Select a prize to win!' : 'Select a prize to win! (One-time, single enter only per 24h)                                   '}
+            </h2>
+          </div>
 
           {/* Prize Cards Row */}
           <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl mb-8">

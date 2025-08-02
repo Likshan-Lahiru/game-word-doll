@@ -25,11 +25,19 @@ export function GiveawayEntry() {
 
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
-        navigate('/giveaway-game', {
-            state: {
-                selectedGame: gameType,
-            },
-        })
+        if (voucherBalance >= 2 && selectedBalanceType === 'ticket') {
+            if (gameType === 'wordoll') {
+                navigate('/wordoll-game')
+            } else {
+                navigate('/lock-pickr-game')
+            }
+        } else {
+            navigate('/giveaway-game', {
+                state: {
+                    selectedGame: gameType,
+                },
+            })
+        }
     }
 
     const handleSpin = () => {
