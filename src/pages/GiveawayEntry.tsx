@@ -47,7 +47,7 @@ export function GiveawayEntry() {
                 setOpenInfoModal(true);
             } else {
                 setOpenInfoModal(false);
-                //TODO: navigate to spin
+                navigate('/spin')
             }
         } else  {
             navigate('/spin')
