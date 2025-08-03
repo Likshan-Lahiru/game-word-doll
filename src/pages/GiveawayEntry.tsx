@@ -10,7 +10,7 @@ import volumeChange = Simulate.volumeChange;
 export function GiveawayEntry() {
     const navigate = useNavigate()
     const location = useLocation()
-    const { spinBalance, selectedBalanceType, voucherBalance } = useGlobalContext()
+    const { isAuthenticated, spinBalance, selectedBalanceType, voucherBalance } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
     const [openInfoModal, setOpenInfoModal] = useState(false)
@@ -25,7 +25,8 @@ export function GiveawayEntry() {
 
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
-        if (voucherBalance >= 2 && selectedBalanceType === 'ticket') {
+        alert("isAuthenticated"+ isAuthenticated)
+        if (voucherBalance >= 2 && selectedBalanceType === 'ticket' && isAuthenticated) {
             if (gameType === 'wordoll') {
                 navigate('/wordoll-game')
             } else {
@@ -197,7 +198,7 @@ export function GiveawayEntry() {
 
                     <div className={"flex justify-center"}>
                         {/* Left Side - Grand Win After Entries Select */}
-                        { selectedBalanceType === 'ticket' && !isMobile &&
+                        { selectedBalanceType === 'ticket' && !isMobile && isAuthenticated &&
                             <GrandWin/>
                         }
 
@@ -227,7 +228,7 @@ export function GiveawayEntry() {
                         </div>
 
                         {/* Right Side - Grand Win After Entries Select */}
-                        { selectedBalanceType === 'ticket' && !isMobile &&
+                        { selectedBalanceType === 'ticket' && !isMobile &&  isAuthenticated &&
                             <>
                                 <GrandWin/>
                             </>
@@ -235,7 +236,7 @@ export function GiveawayEntry() {
                     </div>
 
                     {/* Mobile - Grand Win After Entries Select */}
-                    { selectedBalanceType === 'ticket' && isMobile &&
+                    { selectedBalanceType === 'ticket' && isMobile &&  isAuthenticated &&
                         <>
                             <GrandWin/>
                         </>
@@ -248,7 +249,7 @@ export function GiveawayEntry() {
                             onClick={handleSpin}
                             disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
                         >
-                            { selectedBalanceType === 'ticket' ?
+                            { selectedBalanceType === 'ticket' && isAuthenticated ?
                                 'SPIN NOW' : `SPIN NOW (${spinBalance} x Spin)`
                             }
                         </button>

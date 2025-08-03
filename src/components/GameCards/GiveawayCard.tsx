@@ -1,11 +1,22 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import {useGlobalContext} from "../../context/GlobalContext.tsx";
 type GiveawayCardProps = {
     isMobile?: boolean
 }
 export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
     const navigate = useNavigate()
+
+    const {selectedBalanceType, isAuthenticated} = useGlobalContext();
+
     const handlePlayClick = () => {
+        if (selectedBalanceType === 'ticket' && isAuthenticated || selectedBalanceType === 'coin') {
+            navigate('/giveaway-entry')
+        } else {
+            alert("Please Login First");
+            return
+        }
+
         navigate('/giveaway-entry')
     }
     if (isMobile) {
