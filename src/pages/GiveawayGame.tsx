@@ -8,7 +8,7 @@ import { PrizeCard, PrizeData} from '../components/PrizeCard'
 export function GiveawayGame() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { coinBalance, setCoinBalance, selectedBalanceType, ticketBalance, voucherBalance, setVoucherBalance, setTicketBalance } = useGlobalContext()
+  const { coinBalance, setCoinBalance, selectedBalanceType, ticketBalance, temporaryTicketBalance, temporaryVoucherBalance, temporaryCoinBalance, setTemporaryTicketBalance, setTemporaryVoucherBalance, setTemporaryCoinBalance } = useGlobalContext()
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   // Get the selected game from location state
   const { selectedGame = 'wordoll' } = (location.state as {
@@ -45,18 +45,19 @@ export function GiveawayGame() {
   }
 
   const handleEnterGameEntries = (entries: PrizeData) => {
-    // Check if user has enough coins
+    // Check if user has enough entries
     if (ticketBalance < entries.cost) {
       alert("You don't have enough entries to play for this prize!")
       return
     }
 
-    setVoucherBalance(voucherBalance + entries.spinAmount)
+    setTemporaryVoucherBalance(temporaryVoucherBalance + entries.spinAmount)
+    setTemporaryCoinBalance(temporaryCoinBalance + entries.coinAmount)
 
     // Deduct the cost from user's entries balance
-    setTicketBalance(ticketBalance - entries.cost)
-    // Store the selected prize in session storage
-    sessionStorage.setItem('selectedEntryPrize', JSON.stringify(entries))
+    setTemporaryTicketBalance(temporaryTicketBalance - entries.cost)
+
+    navigate('/wordoll-game')
   }
 
   // Prize data array
