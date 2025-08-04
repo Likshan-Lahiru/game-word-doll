@@ -55,7 +55,7 @@ export function GiveawayGame() {
     setTemporaryCoinBalance(temporaryCoinBalance + entries.coinAmount)
 
     // Deduct the cost from user's entries balance
-    setTemporaryTicketBalance(temporaryTicketBalance - entries.cost)
+    setTemporaryTicketBalance(entries.cost - temporaryTicketBalance)
 
     navigate('/wordoll-game')
   }
