@@ -24,26 +24,119 @@ const spinVoucherCountData = [
     }
 ]
 
-const flipCardsData = [
+const allCards = [
     {
         id: 1,
-        images: '',
-        type: 'fortuneCard',
-        selected: true,
+        label:'Fortune Cooky',
+        image: IMAGES.fortuneCooky,
+        desc: '',
+        type: 'imgTextCards',
+        selected: false,
     },
     {
         id: 2,
-        images: '',
-        type: 'badCooky',
+        label:'Bad Cooky',
+        image: IMAGES.badCooky,
+        desc: 'Oops! \n' + 'You got a bad cooky',
+        type: 'imgTextCards',
         selected: false,
     },
     {
         id: 3,
-        images: '',
-        type: 'freeFlip',
+        label:'Free Flip',
+        image: IMAGES.freeFlip,
+        desc: '',
+        type: 'free',
         selected: false,
-    }
+    },
+    {
+        id: 4,
+        label:'Out of Stock',
+        image: IMAGES.fortuneCooky,
+        desc: 'Today’s stock ran out',
+        type: 'imgTextCards',
+        selected: false,
+    },
+    {
+        id: 5,
+        label:'Cracked Cooky',
+        image: IMAGES.badCooky,
+        desc: 'Flipped too hard',
+        type: 'imgTextCards',
+        selected: false,
+    },
+    {
+        id: 6,
+        label:'Ants in the Jar',
+        image: IMAGES.freeFlip,
+        desc: 'The ants \n' + 'took your reward.',
+        type: 'imgTextCards',
+        selected: false,
+    },
 ]
+
+const allFlipCardData = [
+    [
+        {
+            id: 1,
+            images: IMAGES.fortuneCooky,
+            type: 'imgCard',
+            selected: true,
+        },
+        {
+            id: 2,
+            images: IMAGES.badCooky,
+            type: 'gem',
+            selected: false,
+        },
+        {
+            id: 3,
+            images: '',
+            type: 'coin',
+            selected: false,
+        }
+    ],
+    [
+        {
+            id: 1,
+            images: '',
+            type: 'coin',
+            selected: true,
+        },
+        {
+            id: 2,
+            images: '',
+            type: 'badCooky',
+            selected: false,
+        },
+        {
+            id: 3,
+            images: '',
+            type: 'gem',
+            selected: false,
+        }
+    ],
+    [
+        {
+            id: 1,
+            images: '',
+            type: 'coin',
+            selected: true,
+        },
+        {
+            id: 2,
+            images: '',
+            type: 'freeFlip',
+            selected: false,
+        },
+        {
+            id: 3,
+            images: '',
+            type: 'gem',
+            selected: false,
+        }
+    ]
+];
 
 export function FlipPage() {
     const navigate = useNavigate()
@@ -51,10 +144,21 @@ export function FlipPage() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     let [spinVoucherId, setSpinVoucherId] = useState(2)
     const [spinVoucherCount, setSpinVoucherCount] = useState(0.40)
-    const [selectedCardId, setSelectedCardId] = useState(
-        flipCardsData.find((card) => card.selected)?.id || 0
-    );
+    // const [selectedCardId, setSelectedCardId] = useState(
+    //     flipCardsData.find((card) => card.selected)?.id || 0
+    // );
     const [flippedCards, setFlippedCards] = useState<{ [id: number]: boolean }>({});
+
+
+    const [currentRowIndex, setCurrentRowIndex] = useState(0);
+    const [flipCardsData, setFlipCardsData] = useState(allFlipCardData[0]); // Start with row 0
+    // const [flippedCards, setFlippedCards] = useState<{ [id: number]: boolean }>({});
+    const [selectedCardId, setSelectedCardId] = useState(
+        allFlipCardData[0].find(card => card.selected)?.id || 0
+    );
+    const [hasFlipped, setHasFlipped] = useState(false); // To prevent multiple flips
+
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -86,25 +190,78 @@ export function FlipPage() {
         }
     }
 
-    const handleFlipAllCards = () => {
-        const updatedFlips: { [key: number]: boolean } = {};
+    // const handleFlipAllCards = () => {
+    //     const updatedFlips: { [key: number]: boolean } = {};
+    //
+    //     // Flip all cards immediately except the selected one
+    //     flipCardsData.forEach(item => {
+    //         if (item.id !== selectedCardId) {
+    //             updatedFlips[item.id] = true;
+    //         }
+    //     });
+    //     setFlippedCards(updatedFlips);
+    //
+    //     // Flip the selected card after 2 seconds
+    //     setTimeout(() => {
+    //         setFlippedCards(prev => ({
+    //             ...prev,
+    //             [selectedCardId]: true
+    //         }));
+    //     }, 2000);
+    // };
 
-        // Flip all cards immediately except the selected one
-        flipCardsData.forEach(item => {
-            if (item.id !== selectedCardId) {
-                updatedFlips[item.id] = true;
+    const handleFlipAllCards = async () => {
+        if (hasFlipped || currentRowIndex >= allFlipCardData.length) return;
+
+        const rowData = allFlipCardData[currentRowIndex];
+        setFlipCardsData(rowData);
+        setFlippedCards({});
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const selected = rowData.find(card => card.selected)?.id || 0;
+        setSelectedCardId(selected);
+
+        // Flip others immediately
+        const initialFlips: { [id: number]: boolean } = {};
+        rowData.forEach(item => {
+            if (item.id !== selected) {
+                initialFlips[item.id] = true;
             }
         });
-        setFlippedCards(updatedFlips);
+        setFlippedCards(initialFlips);
 
-        // Flip the selected card after 2 seconds
-        setTimeout(() => {
-            setFlippedCards(prev => ({
-                ...prev,
-                [selectedCardId]: true
-            }));
-        }, 2000);
+        // Flip selected after 2 seconds
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setFlippedCards(prev => ({
+            ...prev,
+            [selected]: true
+        }));
+
+        setHasFlipped(true); // Mark this row as flipped
     };
+
+    const handleNextRow = () => {
+        const nextIndex = currentRowIndex + 1;
+        if (nextIndex < allFlipCardData.length) {
+            const nextRow = allFlipCardData[nextIndex];
+
+            setCurrentRowIndex(nextIndex);
+            setFlipCardsData(nextRow);
+            setSelectedCardId(nextRow.find(card => card.selected)?.id || 0);
+            setHasFlipped(false);
+            setFlippedCards({});
+
+            // Wait a tick, then call handleFlipAllCards to flip the new row
+            setTimeout(() => {
+                handleFlipAllCards();
+            }, 100);
+        } else {
+            console.log("No more rows to flip.");
+        }
+    };
+
+
 
 
 
@@ -210,16 +367,14 @@ export function FlipPage() {
             {/* Flip Cards */}
             <div className={"flex justify-center items-center gap-x-3"}>
                 {flipCardsData.map((item) => (
-                    <>
-                        <FlipCard
-                            key={item.id}
-                            logo={IMAGES.logo}
-                            items={item}
-                            isSelected={selectedCardId === item.id}
-                            onSelect={() => setSelectedCardId(item.id)}
-                            isFlipped={flippedCards[item.id]}
-                        />
-                    </>
+                    <FlipCard
+                        key={item.id}
+                        logo={IMAGES.logo}
+                        items={allCards.find(card => card.id === item.id)}
+                        isSelected={selectedCardId === item.id}
+                        onSelect={() => setSelectedCardId(item.id)}
+                        isFlipped={flippedCards[item.id]}
+                    />
                 ))}
             </div>
 
@@ -244,8 +399,8 @@ export function FlipPage() {
                                     />
                                     <p className="font-bold text-2xl cursor-default text-center w-[60px]">
                                         {Number.isInteger(spinVoucherCount)
-                                        ? spinVoucherCount
-                                        : spinVoucherCount.toFixed(2)}
+                                            ? spinVoucherCount
+                                            : spinVoucherCount.toFixed(2)}
                                     </p>
                                 </div>
 
@@ -272,12 +427,21 @@ export function FlipPage() {
                         </>
                     )}
 
-                    <button
-                        className="w-full py-3 px-4 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-semibold text-3xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={handleFlipAllCards}
-                    >
-                        Flip
-                    </button>
+                    {currentRowIndex === 0 && !hasFlipped ? (
+                        <button
+                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={handleFlipAllCards}
+                        >
+                            Flip
+                        </button>
+                    ) : (
+                        <button
+                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors"
+                            onClick={handleNextRow}
+                        >
+                            Next
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
