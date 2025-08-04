@@ -2,6 +2,10 @@ import React, { useState, createContext, useContext } from 'react'
 type GlobalContextType = {
     coinBalance: number
     ticketBalance: number
+    voucherBalance: number
+    temporaryVoucherBalance: number,
+    temporaryTicketBalance: number,
+    temporaryCoinBalance: number,
     spinBalance: number
     gemBalance: number
     isAuthenticated: boolean
@@ -10,6 +14,10 @@ type GlobalContextType = {
     selectedBalanceType: 'coin' | 'ticket'
     setCoinBalance: (balance: number) => void
     setTicketBalance: (balance: number) => void
+    setVoucherBalance: (balance: number) => void
+    setTemporaryVoucherBalance: (balance: number) => void,
+    setTemporaryTicketBalance: (balance: number) => void,
+    setTemporaryCoinBalance: (balance: number) => void,
     setSpinBalance: (balance: number) => void
     setGemBalance: (balance: number) => void
     addCoins: (amount: number) => void
@@ -29,8 +37,12 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [coinBalance, setCoinBalance] = useState(50000)
     const [ticketBalance, setTicketBalance] = useState(0)
+    const [voucherBalance, setVoucherBalance] = useState(0)
+    const [temporaryVoucherBalance, setTemporaryVoucherBalance] = useState(0)
+    const [temporaryTicketBalance, setTemporaryTicketBalance] = useState(0)
+    const [temporaryCoinBalance, setTemporaryCoinBalance] = useState(0)
     const [spinBalance, setSpinBalance] = useState(0)
-    const [gemBalance, setGemBalance] = useState(15.2)
+    const [gemBalance, setGemBalance] = useState(0)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [betAmount, setBetAmount] = useState(1000)
     const [winAmount, setWinAmount] = useState(10000)
@@ -38,6 +50,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
+
     const addCoins = (amount: number) => {
         setCoinBalance((prev) => prev + amount)
     }
@@ -60,6 +73,10 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 limitPlay,
                 coinBalance,
                 ticketBalance,
+                voucherBalance,
+                temporaryVoucherBalance,
+                temporaryTicketBalance,
+                temporaryCoinBalance,
                 spinBalance,
                 gemBalance,
                 isAuthenticated,
@@ -69,6 +86,10 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 setLimitPlay,
                 setCoinBalance,
                 setTicketBalance,
+                setVoucherBalance,
+                setTemporaryVoucherBalance,
+                setTemporaryTicketBalance,
+                setTemporaryCoinBalance,
                 setSpinBalance,
                 setGemBalance,
                 setIsAuthenticated,

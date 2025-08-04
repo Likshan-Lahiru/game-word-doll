@@ -14,7 +14,7 @@ import { RedeemPage } from './pages/RedeemPage'
 import { GuidePage } from './pages/GuidePage'
 import { GlobalProvider } from './context/GlobalContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { SpinPage } from './pages/SpinPage'
+import { FlipPage } from './pages/FlipPage'
 import { HomePage } from './pages/HomePage'
 import { BetSelectorPage } from './pages/BetSelectorPage'
 import { GemGameModePage } from './pages/GemGameModePage'
@@ -79,7 +79,7 @@ export function App() {
                             }
                         />
                         <Route path="/guide" element={<GuidePage />} />
-                        <Route path="/spin" element={<SpinPage />} />
+                        <Route path="/spin" element={<FlipPage />} />
                     </Routes>
                 </div>
             </BrowserRouter>

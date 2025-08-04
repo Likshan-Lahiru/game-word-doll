@@ -48,7 +48,7 @@ export function WordollGame() {
   const [lockedPositions, setLockedPositions] = useState<boolean[]>(
       Array(5).fill(false),
   )
-  const [timer, setTimer] = useState(300)
+  const [timer, setTimer] = useState(0)
   const [feedback, setFeedback] = useState<string>('')
   const [isMobile, setIsMobile] = useState(false)
   const [showCountdown, setShowCountdown] = useState(true)
@@ -59,18 +59,29 @@ export function WordollGame() {
   const [showWinModal, setShowWinModal] = useState(false)
   const [showLoseModal, setShowLoseModal] = useState(false)
   const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
+  const {selectedBalanceType} = useGlobalContext();
+
   useEffect(() => {
+
+    if (selectedBalanceType === 'ticket') {
+      setTimer(900)
+    } else {
+      setTimer(300)
+    }
+
     const checkMobile = () => setIsMobile(window.innerWidth <= 768)
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
   useEffect(() => {
     const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)]
     setTargetWord(randomWord)
     const targetLetters = randomWord.split('')
     const allLetters = [...targetLetters]
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
     while (allLetters.length < 10) {
       const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)]
       if (!allLetters.includes(randomLetter)) {
@@ -79,23 +90,29 @@ export function WordollGame() {
     }
     setSelectedLetters(allLetters.sort(() => Math.random() - 0.5))
   }, [])
+
   useEffect(() => {
     if (gameStarted && !showCountdown && isMobile && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 300)
     }
   }, [gameStarted, showCountdown, isMobile])
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!gameStarted) return
       const key = e.key.toUpperCase()
+
       if (/^[A-Z]$/.test(key)) {
         let nextPos = -1
+
         for (let i = 0; i < 5; i++) {
+
           if (!lockedPositions[i] && !currentAttempt[i]) {
             nextPos = i
             break
           }
         }
+
         if (nextPos !== -1) {
           const newAttempt = [...currentAttempt]
           newAttempt[nextPos] = key
@@ -103,12 +120,14 @@ export function WordollGame() {
         }
       } else if (e.key === 'Backspace') {
         let lastFilled = -1
+
         for (let i = 4; i >= 0; i--) {
           if (!lockedPositions[i] && currentAttempt[i]) {
             lastFilled = i
             break
           }
         }
+
         if (lastFilled !== -1) {
           const newAttempt = [...currentAttempt]
           newAttempt[lastFilled] = ''
@@ -118,23 +137,29 @@ export function WordollGame() {
         checkGuess()
       }
     }
+
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentAttempt, gameStarted, lockedPositions])
+
   useEffect(() => {
     if (!gameStarted) return
+
     if (timer <= 0) {
       setShowLoseModal(true)
       return
     }
     const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000)
+
     return () => clearInterval(countdown)
   }, [timer, gameStarted])
+
   const checkGuess = useCallback(() => {
     const guess = currentAttempt.join('')
     if (guess.length < 5 || currentAttempt.includes('')) {
       return
     }
+
     setLastAttempt([...currentAttempt])
     if (guess === targetWord) {
       if (isAuthenticated) {
@@ -143,9 +168,11 @@ export function WordollGame() {
       setShowWinModal(true)
       return
     }
+
     const statuses = getLetterStatuses(currentAttempt, targetWord)
     const newLocks = [...lockedPositions]
     const newAttempt = [...currentAttempt]
+
     statuses.forEach((status, index) => {
       if (status === 'correct') {
         newLocks[index] = true
@@ -153,13 +180,16 @@ export function WordollGame() {
         newAttempt[index] = ''
       }
     })
+
     setLockedPositions(newLocks)
     setCurrentAttempt(newAttempt)
     setAttempts((prev) => prev - 1)
+
     if (attempts <= 1) {
       setShowNoAttemptsModal(true)
       return
     }
+
     setFeedback('')
   }, [
     currentAttempt,
@@ -170,11 +200,13 @@ export function WordollGame() {
     winAmount,
     addCoins,
   ])
+
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remaining = seconds % 60
     return `${minutes.toString().padStart(2, '0')}:${remaining.toString().padStart(2, '0')}`
   }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '')
     const newAttempt = [...currentAttempt]
@@ -187,6 +219,7 @@ export function WordollGame() {
     }
     setCurrentAttempt(newAttempt)
   }
+
   const handleCountdownComplete = () => {
     setShowCountdown(false)
     setGameStarted(true)
@@ -194,6 +227,7 @@ export function WordollGame() {
       inputRef.current.focus()
     }
   }
+
   const renderLetterTile = (
       letter: string,
       index: number,
