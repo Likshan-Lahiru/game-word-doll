@@ -4,8 +4,7 @@ import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
 import {InfoModal} from "../components/infoModal/InfoModal.tsx";
-import {Simulate} from "react-dom/test-utils";
-import volumeChange = Simulate.volumeChange;
+import {IMAGES} from "../constance/imagesLink.ts";
 
 export function GiveawayEntry() {
     const navigate = useNavigate()
@@ -42,16 +41,17 @@ export function GiveawayEntry() {
     }
 
     const handleSpin = () => {
-        if (selectedBalanceType === 'ticket') {
-            if (voucherBalance === 0) {
-                setOpenInfoModal(true);
-            } else {
-                setOpenInfoModal(false);
-                navigate('/spin')
-            }
-        } else  {
-            navigate('/spin')
-        }
+        navigate('/spin')
+        // if (selectedBalanceType === 'ticket') {
+        //     if (voucherBalance === 0) {
+        //         setOpenInfoModal(true);
+        //     } else {
+        //         setOpenInfoModal(false);
+        //         navigate('/spin')
+        //     }
+        // } else  {
+        //     navigate('/spin')
+        // }
     }
 
     const GrandWin = () => {
@@ -245,12 +245,29 @@ export function GiveawayEntry() {
                     {/* Spin Button */}
                     <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-10 xl:mt-10 mb-20">
                         <button
-                            className={`${spinBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
+                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
                             disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
                         >
                             { selectedBalanceType === 'ticket' && isAuthenticated ?
-                                'SPIN NOW' : `SPIN NOW (${spinBalance} x Spin)`
+                                <>
+                                    <div className={"h-[25px] flex items-center"}>
+                                        <p className={"flex items-center"}>FLIP NOW
+                                            {voucherBalance !== 0 &&
+                                            <>
+                                                (
+                                                <img
+                                                    src={IMAGES.voucher}
+                                                    alt={"voucher"}
+                                                    className={"w-6 h-6 mr-2 ml-2"}/>
+                                                <p>x {voucherBalance}  )</p>
+                                            </>
+                                        }
+                                        </p>
+                                    </div>
+                                </>
+                                :
+                                `SPIN NOW (${spinBalance} x Spin)`
                             }
                         </button>
                     </div>
