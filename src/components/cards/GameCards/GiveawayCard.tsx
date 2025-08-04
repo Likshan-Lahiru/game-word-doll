@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import {useGlobalContext} from "../../context/GlobalContext.tsx";
-import {IMAGES} from "../../constance/imagesLink.ts";
+import {useGlobalContext} from "../../../context/GlobalContext.tsx";
+import {IMAGES} from "../../../constance/imagesLink.ts";
 type GiveawayCardProps = {
     isMobile?: boolean
 }

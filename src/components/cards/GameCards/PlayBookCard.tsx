@@ -1,6 +1,6 @@
 import React from 'react'
 import  { useState } from 'react'
-import { PlayBookModal } from '../PlayBookModal'
+import { PlayBookModal } from '../../PlayBookModal.tsx'
 import { useNavigate } from 'react-router-dom'
 type PlayBookCardProps = {
   isMobile?: boolean
