@@ -4,4 +4,5 @@ export const IMAGES = {
     coin: 'https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png',
     fortuneCooky: '/fortuneCooky.png',
     ticket: 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png',
+    cookyFlip: '/CookyFlip.png',
 };
