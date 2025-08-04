@@ -2,12 +2,13 @@ import React from 'react'
 // src/pages/HomePage.tsx
 import { StatusBar } from '../components/StatusBar'
 import { WinningStatus } from '../components/WinningStatus'
-import { GameCardGrid } from '../components/cards/GameCards/GameCardGrid'
+
 import { BottomNavigation } from '../components/BottomNavigation'
 import { PlayBookButton } from '../components/PlayBookButton'
 import { LoginButton } from '../components/LoginButton'
 import { OnlineCountDisplay } from '../components/OnlineCountDisplay'
 import { useGlobalContext } from '../context/GlobalContext'
+import {GameCardGrid} from "../components/GameCards/GameCardGrid.tsx";
 export function HomePage({ isMobile }: { isMobile: boolean }) {
     const { isAuthenticated } = useGlobalContext()
     return (
