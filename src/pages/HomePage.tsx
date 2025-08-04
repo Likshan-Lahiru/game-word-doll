@@ -2,7 +2,7 @@ import React from 'react'
 // src/pages/HomePage.tsx
 import { StatusBar } from '../components/StatusBar'
 import { WinningStatus } from '../components/WinningStatus'
-import { GameCardGrid } from '../components/cards/GameCards/GameCardGrid'
+import { GameCardGrid } from '../components/GameCards/GameCardGrid'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { PlayBookButton } from '../components/PlayBookButton'
 import { LoginButton } from '../components/LoginButton'
