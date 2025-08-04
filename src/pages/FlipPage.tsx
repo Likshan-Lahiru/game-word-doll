@@ -54,6 +54,7 @@ export function FlipPage() {
     const [selectedCardId, setSelectedCardId] = useState(
         flipCardsData.find((card) => card.selected)?.id || 0
     );
+    const [flippedCards, setFlippedCards] = useState<{ [id: number]: boolean }>({});
 
     useEffect(() => {
         const handleResize = () => {
@@ -84,6 +85,28 @@ export function FlipPage() {
             }
         }
     }
+
+    const handleFlipAllCards = () => {
+        const updatedFlips: { [key: number]: boolean } = {};
+
+        // Flip all cards immediately except the selected one
+        flipCardsData.forEach(item => {
+            if (item.id !== selectedCardId) {
+                updatedFlips[item.id] = true;
+            }
+        });
+        setFlippedCards(updatedFlips);
+
+        // Flip the selected card after 2 seconds
+        setTimeout(() => {
+            setFlippedCards(prev => ({
+                ...prev,
+                [selectedCardId]: true
+            }));
+        }, 2000);
+    };
+
+
 
     // Mobile view based on the provided image
     if (isMobile) {
@@ -150,7 +173,7 @@ export function FlipPage() {
                     }
                     <button
                         className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => console.log("")}
+                        onClick={handleFlipAllCards}
                     >
                         Flip
                     </button>
@@ -194,6 +217,7 @@ export function FlipPage() {
                             items={item}
                             isSelected={selectedCardId === item.id}
                             onSelect={() => setSelectedCardId(item.id)}
+                            isFlipped={flippedCards[item.id]}
                         />
                     </>
                 ))}
@@ -250,7 +274,7 @@ export function FlipPage() {
 
                     <button
                         className="w-full py-3 px-4 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-semibold text-3xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => console.log("")}
+                        onClick={handleFlipAllCards}
                     >
                         Flip
                     </button>
