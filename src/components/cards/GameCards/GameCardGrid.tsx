@@ -1,10 +1,10 @@
 import React from 'react'
-import { WordollCard } from './WordollCard'
-import { LockPickrCard } from './LockPickrCard'
-import { GiveawayCard } from './GiveawayCard'
-import { PlayBookCard } from './PlayBookCard'
-import { LoginButton } from '../LoginButton'
-import { useGlobalContext } from '../../context/GlobalContext'
+import { WordollCard } from './WordollCard.tsx'
+import { LockPickrCard } from './LockPickrCard.tsx'
+import { GiveawayCard } from './GiveawayCard.tsx'
+import { PlayBookCard } from './PlayBookCard.tsx'
+import { LoginButton } from '../../LoginButton.tsx'
+import { useGlobalContext } from '../../../context/GlobalContext.tsx'
 export function GameCardGrid() {
     // Check if mobile
     const isMobile = window.innerWidth <= 768
