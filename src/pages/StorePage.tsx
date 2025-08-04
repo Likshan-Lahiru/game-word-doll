@@ -872,7 +872,7 @@ export function StorePage() {
                               }`}
                           >
                             {/* Coin image */}
-                            <div className="flex justify-center items-center pt-10 pb-6">
+                            <div className="flex justify-center items-center pt-16 pb-6">
                               <img
                                   src={pkg.image}
                                   alt="Coins"

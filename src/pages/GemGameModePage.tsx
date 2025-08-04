@@ -88,7 +88,7 @@ export function GemGameModePage() {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
                 {/* Back button */}
-                <div className="absolute top-4 left-4 z-10">
+                <div className="absolute top-12 left-4 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
                         onClick={() => navigate('/')}

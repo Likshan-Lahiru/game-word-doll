@@ -311,11 +311,7 @@ export function WordollGame() {
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
 
-        {feedback && (
-            <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-              {feedback}
-            </div>
-        )}
+
         {isMobile && (
             <input
                 ref={inputRef}
@@ -329,7 +325,7 @@ export function WordollGame() {
                 spellCheck="false"
             />
         )}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mt-5 mb-8">
           <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
             {lastAttempt
                 ? lastAttempt.map((letter, index) =>
@@ -369,7 +365,7 @@ export function WordollGame() {
             ))}
           </div>
         </div>
-        <div className="text-center my-1">
+        <div className="text-center mt-16 my-1">
           <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
         </div>
         {isMobile && (
