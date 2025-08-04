@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
-import {InfoModal} from "../components/InfoModal.tsx";
+import {InfoModal} from "../components/infoModal/InfoModal.tsx";
 import {Simulate} from "react-dom/test-utils";
 import volumeChange = Simulate.volumeChange;
 
@@ -25,7 +25,7 @@ export function GiveawayEntry() {
 
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
-        alert("isAuthenticated"+ isAuthenticated)
+
         if (voucherBalance >= 2 && selectedBalanceType === 'ticket' && isAuthenticated) {
             if (gameType === 'wordoll') {
                 navigate('/wordoll-game')
