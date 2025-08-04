@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGlobalContext } from '../../../context/GlobalContext.tsx'
+import { useGlobalContext } from '../../context/GlobalContext.tsx'
 type LockPickrCardProps = {
     isMobile?: boolean
 }
