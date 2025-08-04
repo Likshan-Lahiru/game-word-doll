@@ -3,6 +3,9 @@ type GlobalContextType = {
     coinBalance: number
     ticketBalance: number
     voucherBalance: number
+    temporaryVoucherBalance: number,
+    temporaryTicketBalance: number,
+    temporaryCoinBalance: number,
     spinBalance: number
     gemBalance: number
     isAuthenticated: boolean
@@ -12,6 +15,9 @@ type GlobalContextType = {
     setCoinBalance: (balance: number) => void
     setTicketBalance: (balance: number) => void
     setVoucherBalance: (balance: number) => void
+    setTemporaryVoucherBalance: (balance: number) => void,
+    setTemporaryTicketBalance: (balance: number) => void,
+    setTemporaryCoinBalance: (balance: number) => void,
     setSpinBalance: (balance: number) => void
     setGemBalance: (balance: number) => void
     addCoins: (amount: number) => void
@@ -30,8 +36,11 @@ type GlobalContextType = {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [coinBalance, setCoinBalance] = useState(50000)
-    const [ticketBalance, setTicketBalance] = useState(15)
+    const [ticketBalance, setTicketBalance] = useState(0)
     const [voucherBalance, setVoucherBalance] = useState(0)
+    const [temporaryVoucherBalance, setTemporaryVoucherBalance] = useState(0)
+    const [temporaryTicketBalance, setTemporaryTicketBalance] = useState(0)
+    const [temporaryCoinBalance, setTemporaryCoinBalance] = useState(0)
     const [spinBalance, setSpinBalance] = useState(0)
     const [gemBalance, setGemBalance] = useState(0)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -41,6 +50,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
+
     const addCoins = (amount: number) => {
         setCoinBalance((prev) => prev + amount)
     }
@@ -64,6 +74,9 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 coinBalance,
                 ticketBalance,
                 voucherBalance,
+                temporaryVoucherBalance,
+                temporaryTicketBalance,
+                temporaryCoinBalance,
                 spinBalance,
                 gemBalance,
                 isAuthenticated,
@@ -74,6 +87,9 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 setCoinBalance,
                 setTicketBalance,
                 setVoucherBalance,
+                setTemporaryVoucherBalance,
+                setTemporaryTicketBalance,
+                setTemporaryCoinBalance,
                 setSpinBalance,
                 setGemBalance,
                 setIsAuthenticated,
