@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { StatusBar } from '../components/StatusBar'
-import { useGlobalContext } from '../context/GlobalContext'
+import React, {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {StatusBar} from '../components/StatusBar'
+import {useGlobalContext} from '../context/GlobalContext'
 import {IMAGES} from "../constance/imagesLink.ts";
 import {FlipCard} from "../components/cards/flipCard/FlipCard.tsx";
 
@@ -24,117 +24,172 @@ const spinVoucherCountData = [
     }
 ]
 
-const allCards = [
-    {
-        id: 1,
-        label:'Fortune Cooky',
-        image: IMAGES.fortuneCooky,
-        desc: '',
-        type: 'imgTextCards',
-        selected: false,
-    },
-    {
-        id: 2,
-        label:'Bad Cooky',
-        image: IMAGES.badCooky,
-        desc: 'Oops! \n' + 'You got a bad cooky',
-        type: 'imgTextCards',
-        selected: false,
-    },
-    {
-        id: 3,
-        label:'Free Flip',
-        image: IMAGES.freeFlip,
-        desc: '',
-        type: 'free',
-        selected: false,
-    },
-    {
-        id: 4,
-        label:'Out of Stock',
-        image: IMAGES.fortuneCooky,
-        desc: 'Today’s stock ran out',
-        type: 'imgTextCards',
-        selected: false,
-    },
-    {
-        id: 5,
-        label:'Cracked Cooky',
-        image: IMAGES.badCooky,
-        desc: 'Flipped too hard',
-        type: 'imgTextCards',
-        selected: false,
-    },
-    {
-        id: 6,
-        label:'Ants in the Jar',
-        image: IMAGES.freeFlip,
-        desc: 'The ants \n' + 'took your reward.',
-        type: 'imgTextCards',
-        selected: false,
-    },
-]
 
-const allFlipCardData = [
+interface FlipCardData {
+    id: number;
+    name: string;
+    image: string;
+    desc: string;
+    type: string;
+    selected?: boolean;
+}
+
+const allFlipCardData: FlipCardData[][] = [
     [
         {
             id: 1,
-            images: IMAGES.fortuneCooky,
-            type: 'imgCard',
-            selected: true,
+            name:'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            type: 'winImg',
+            selected: false,
         },
         {
             id: 2,
-            images: IMAGES.badCooky,
-            type: 'gem',
+            name:'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            type: 'winImg',
             selected: false,
         },
         {
             id: 3,
-            images: '',
-            type: 'coin',
+            name:'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            type: 'winImg',
             selected: false,
-        }
+        },
     ],
     [
         {
             id: 1,
-            images: '',
-            type: 'coin',
-            selected: true,
+            name:'Bad Cooky',
+            image: IMAGES.badCooky,
+            desc: 'Oops! \n' + 'You got a bad cooky',
+            type: 'imgText',
+            selected: false,
         },
         {
             id: 2,
-            images: '',
-            type: 'badCooky',
+            name:'Bad Cooky',
+            image: IMAGES.badCooky,
+            desc: 'Oops! \n' + 'You got a bad cooky',
+            type: 'imgText',
             selected: false,
         },
         {
             id: 3,
-            images: '',
-            type: 'gem',
+            name:'Bad Cooky',
+            image: IMAGES.badCooky,
+            desc: 'Oops! \n' + 'You got a bad cooky',
+            type: 'imgText',
             selected: false,
-        }
+        },
     ],
     [
         {
             id: 1,
-            images: '',
-            type: 'coin',
-            selected: true,
+            name:'Free Flip',
+            image: IMAGES.freeFlip,
+            desc: '',
+            type: 'free',
+            selected: false,
         },
         {
             id: 2,
-            images: '',
-            type: 'freeFlip',
+            name:'Free Flip',
+            image: IMAGES.freeFlip,
+            desc: '',
+            type: 'free',
             selected: false,
         },
         {
             id: 3,
-            images: '',
-            type: 'gem',
+            name:'Free Flip',
+            image: IMAGES.freeFlip,
+            desc: '',
+            type: 'free',
             selected: false,
-        }
+        },
+    ],
+    [
+        {
+            id: 1,
+            name:'Out of Stock',
+            image: IMAGES.outOfStock,
+            desc: 'Today’s stock ran out',
+            type: 'imgText',
+            selected: false,
+        },
+        {
+            id: 2,
+            name:'Out of Stock',
+            image: IMAGES.outOfStock,
+            desc: 'Today’s stock ran out',
+            type: 'imgText',
+            selected: false,
+        },
+        {
+            id: 3,
+            name:'Out of Stock',
+            image: IMAGES.outOfStock,
+            desc: 'Today’s stock ran out',
+            type: 'imgText',
+            selected: false,
+        },
+    ],
+    [
+        {
+            id: 1,
+            name:'Cracked Cooky',
+            image: IMAGES.crackedCooky,
+            desc: 'Flipped too hard',
+            type: 'imgText',
+            selected: false,
+        },
+        {
+            id: 2,
+            name:'Cracked Cooky',
+            image: IMAGES.crackedCooky,
+            desc: 'Flipped too hard',
+            type: 'imgText',
+            selected: false,
+        },
+        {
+            id: 3,
+            name:'Cracked Cooky',
+            image: IMAGES.crackedCooky,
+            desc: 'Flipped too hard',
+            type: 'imgText',
+            selected: false,
+        },
+    ],
+    [
+        {
+            id: 1,
+            name:'Ants in the Jar',
+            image: IMAGES.antsInTheJar,
+            desc: 'The ants \n' + 'took your reward.',
+            type: 'imgTwoText',
+            selected: false,
+        },
+        {
+            id: 2,
+            name:'Ants in the Jar',
+            image: IMAGES.antsInTheJar,
+            desc: 'The ants \n' + 'took your reward.',
+            type: 'imgTwoText',
+            selected: false,
+        },
+        {
+            id: 3,
+            name:'Ants in the Jar',
+            image: IMAGES.antsInTheJar,
+            desc: 'The ants \n' + 'took your reward.',
+            type: 'imgTwoText',
+            selected: false,
+        },
     ]
 ];
 
@@ -144,22 +199,61 @@ export function FlipPage() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     let [spinVoucherId, setSpinVoucherId] = useState(2)
     const [spinVoucherCount, setSpinVoucherCount] = useState(0.40)
-    // const [selectedCardId, setSelectedCardId] = useState(
-    //     flipCardsData.find((card) => card.selected)?.id || 0
-    // );
     const [flippedCards, setFlippedCards] = useState<{ [id: number]: boolean }>({});
-
-
+    const [isFlippingSelectedCard, setIsFlippingSelectedCard] = useState(false);
     const [currentRowIndex, setCurrentRowIndex] = useState(0);
-    const [flipCardsData, setFlipCardsData] = useState(allFlipCardData[0]); // Start with row 0
-    // const [flippedCards, setFlippedCards] = useState<{ [id: number]: boolean }>({});
-    const [selectedCardId, setSelectedCardId] = useState(
-        allFlipCardData[0].find(card => card.selected)?.id || 0
-    );
     const [hasFlipped, setHasFlipped] = useState(false); // To prevent multiple flips
+    const [selectedFlipCards, setSelectedFlipCards] = useState(() => {
+        // on page load, pick random
+        const randomIndex = Math.floor(Math.random() * allFlipCardData.length);
+        return allFlipCardData[randomIndex];
+    });
+
+    const [selectedCardId, setSelectedCardId] = useState(
+        selectedFlipCards.find(card => card.selected)?.id || 0
+    );
+
+    useEffect(() => {
+        // Default 1st Card Selected
+        pickRandomSetWithFirstSelected();
+    }, []);
+
+    const pickRandomSetWithFirstSelected = () => {
+        const randomIndex = Math.floor(Math.random() * allFlipCardData.length);
+        const selectedSet = allFlipCardData[randomIndex].map((card, index) => ({
+            ...card,
+            selected: index === 0
+        }));
+        setSelectedFlipCards(selectedSet);
+        setSelectedCardId(selectedSet[0].id);
+    };
+
+    function getRandomCardFromOtherSets(excludeSet: typeof selectedFlipCards): any {
+        // Flatten all sets except the current one
+        const otherCards = allFlipCardData
+            .filter(set => set !== excludeSet)
+            .flat();
+
+        // Get a random card from other sets
+        const randomIndex = Math.floor(Math.random() * otherCards.length);
+        return otherCards[randomIndex];
+    }
 
 
+    // get random card of array
+    const getNewRandomSet = () => {
+        let newIndex: number;
+        let currentSet = selectedFlipCards;
 
+        // find new random that’s not same as current
+        do {
+            newIndex = Math.floor(Math.random() * allFlipCardData.length);
+        } while (allFlipCardData[newIndex] === currentSet);
+
+        setSelectedFlipCards(allFlipCardData[newIndex]);
+    };
+
+    // mobile screen
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -190,80 +284,76 @@ export function FlipPage() {
         }
     }
 
-    // const handleFlipAllCards = () => {
-    //     const updatedFlips: { [key: number]: boolean } = {};
-    //
-    //     // Flip all cards immediately except the selected one
-    //     flipCardsData.forEach(item => {
-    //         if (item.id !== selectedCardId) {
-    //             updatedFlips[item.id] = true;
-    //         }
-    //     });
-    //     setFlippedCards(updatedFlips);
-    //
-    //     // Flip the selected card after 2 seconds
-    //     setTimeout(() => {
-    //         setFlippedCards(prev => ({
-    //             ...prev,
-    //             [selectedCardId]: true
-    //         }));
-    //     }, 2000);
-    // };
-
+    // Cards Flip Logic
     const handleFlipAllCards = async () => {
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return;
 
-        const rowData = allFlipCardData[currentRowIndex];
-        setFlipCardsData(rowData);
-        setFlippedCards({});
+        if (!selectedCardId) {
+            alert('Please select a card before flipping.');
+            return;
+        }
 
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const selected = rowData.find(card => card.selected)?.id || 0;
-        setSelectedCardId(selected);
-
-        // Flip others immediately
-        const initialFlips: { [id: number]: boolean } = {};
-        rowData.forEach(item => {
-            if (item.id !== selected) {
-                initialFlips[item.id] = true;
+        // Replace only unselected cards with random cards from other sets
+        const updatedCards = selectedFlipCards.map(card => {
+            if (card.id === selectedCardId) {
+                return card;
+            } else {
+                const newCard = getRandomCardFromOtherSets(selectedFlipCards);
+                return {
+                    ...newCard,
+                    id: card.id, // Keep original card position
+                    selected: false
+                };
             }
         });
-        setFlippedCards(initialFlips);
 
-        // Flip selected after 2 seconds
+        setSelectedFlipCards(updatedCards);
+
+        // Flip unselected cards immediately
+        const immediateFlips: { [id: number]: boolean } = {};
+        updatedCards.forEach(card => {
+            if (card.id !== selectedCardId) {
+                immediateFlips[card.id] = true;
+            }
+        });
+
+        setFlippedCards(immediateFlips);
+        setIsFlippingSelectedCard(true);
+
+        // Flip selected card after delay
         await new Promise(resolve => setTimeout(resolve, 2000));
         setFlippedCards(prev => ({
             ...prev,
-            [selected]: true
+            [selectedCardId]: true
         }));
 
-        setHasFlipped(true); // Mark this row as flipped
+        setHasFlipped(true);
+        setIsFlippingSelectedCard(false);
     };
 
+    // Handle coming next cards
     const handleNextRow = () => {
-        const nextIndex = currentRowIndex + 1;
-        if (nextIndex < allFlipCardData.length) {
-            const nextRow = allFlipCardData[nextIndex];
+        setTimeout(() => {
+            getNewRandomSet();
+        }, 400)
 
-            setCurrentRowIndex(nextIndex);
-            setFlipCardsData(nextRow);
-            setSelectedCardId(nextRow.find(card => card.selected)?.id || 0);
-            setHasFlipped(false);
-            setFlippedCards({});
-
-            // Wait a tick, then call handleFlipAllCards to flip the new row
-            setTimeout(() => {
-                handleFlipAllCards();
-            }, 100);
-        } else {
-            console.log("No more rows to flip.");
-        }
+        setHasFlipped(false);
+        setFlippedCards({});
     };
 
+    // Selected card handle
+    const onSelect = (id: number) => {
+        // Block selection during delay and after flip
+        if (hasFlipped || isFlippingSelectedCard) return;
 
-
-
+        setSelectedCardId(id);
+        setSelectedFlipCards(prev =>
+            prev.map(card => ({
+                ...card,
+                selected: card.id === id
+            }))
+        );
+    };
 
     // Mobile view based on the provided image
     if (isMobile) {
@@ -366,13 +456,13 @@ export function FlipPage() {
 
             {/* Flip Cards */}
             <div className={"flex justify-center items-center gap-x-3"}>
-                {flipCardsData.map((item) => (
+                {selectedFlipCards.map((item) => (
                     <FlipCard
                         key={item.id}
                         logo={IMAGES.logo}
-                        items={allCards.find(card => card.id === item.id)}
+                        items={item}
                         isSelected={selectedCardId === item.id}
-                        onSelect={() => setSelectedCardId(item.id)}
+                        onSelect={() => onSelect(item.id)}
                         isFlipped={flippedCards[item.id]}
                     />
                 ))}
