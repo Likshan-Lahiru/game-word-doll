@@ -41,17 +41,16 @@ export function GiveawayEntry() {
     }
 
     const handleSpin = () => {
-        navigate('/spin')
-        // if (selectedBalanceType === 'ticket') {
-        //     if (voucherBalance === 0) {
-        //         setOpenInfoModal(true);
-        //     } else {
-        //         setOpenInfoModal(false);
-        //         navigate('/spin')
-        //     }
-        // } else  {
-        //     navigate('/spin')
-        // }
+        if (selectedBalanceType === 'ticket') {
+            if (voucherBalance === 0) {
+                setOpenInfoModal(true);
+            } else {
+                setOpenInfoModal(false);
+                navigate('/spin')
+            }
+        } else  {
+            navigate('/spin')
+        }
     }
 
     const GrandWin = () => {
@@ -260,7 +259,10 @@ export function GiveawayEntry() {
                                                     src={IMAGES.voucher}
                                                     alt={"voucher"}
                                                     className={"w-6 h-6 mr-2 ml-2"}/>
-                                                <p>x {voucherBalance}  )</p>
+                                                <p>x {Number.isInteger(voucherBalance) ?
+                                                    voucherBalance :
+                                                    voucherBalance.toFixed(2)
+                                                })</p>
                                             </>
                                         }
                                         </p>
