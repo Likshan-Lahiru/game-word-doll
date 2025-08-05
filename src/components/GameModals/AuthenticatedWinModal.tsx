@@ -51,11 +51,11 @@ export function AuthenticatedWinModal({
                 { selectedBalanceType === 'ticket' &&
                     <div className={"font-inter mb-20"}>
                         <h2 className={"mt-5"}>+</h2>
-                        <div className={"flex items-center"}>
+                        <div className={"flex items-center gap-x-2"}>
                             <img
                                 src={IMAGES.voucher}
                                 alt="Coins"
-                                className="w-12 h-16"
+                                className="w-8 h-8"
                             />
                             <span className="text-2xl font-medium text-[#FFFFFF]">x {temporaryVoucherBalance.toLocaleString()} free</span>
                         </div>
