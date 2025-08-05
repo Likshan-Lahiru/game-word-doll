@@ -208,10 +208,10 @@ export function FlipPage() {
         const randomIndex = Math.floor(Math.random() * allFlipCardData.length);
         return allFlipCardData[randomIndex];
     });
-
     const [selectedCardId, setSelectedCardId] = useState(
         selectedFlipCards.find(card => card.selected)?.id || 0
     );
+    const [slideInCards, setSlideInCards] = useState(false);
 
     useEffect(() => {
         // Default 1st Card Selected
@@ -238,7 +238,6 @@ export function FlipPage() {
         const randomIndex = Math.floor(Math.random() * otherCards.length);
         return otherCards[randomIndex];
     }
-
 
     // get random card of array
     const getNewRandomSet = () => {
@@ -332,14 +331,46 @@ export function FlipPage() {
     };
 
     // Handle coming next cards
-    const handleNextRow = () => {
-        setTimeout(() => {
-            getNewRandomSet();
-        }, 400)
+    const handleNextRow = async () => {
+        // 👉 Step 1: Flip all cards back to front
+        const flippedBack = selectedFlipCards.reduce((acc, card) => {
+            acc[card.id] = false; // false = front side
+            return acc;
+        }, {} as { [id: number]: boolean });
 
+        setFlippedCards(flippedBack);
+
+        // 👉 Step 2: Wait for flip animation to complete (~500ms)
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // 👉 Step 3: Start slide-in animation
+        setSlideInCards(true);
+
+        // 👉 Load new card set
+        const newIndex = Math.floor(Math.random() * allFlipCardData.length);
+        const newSet = allFlipCardData[newIndex].map((card, index) => ({
+            ...card,
+            selected: index === 0
+        }));
+
+        setSelectedFlipCards(newSet);
+        setSelectedCardId(newSet[0].id);
         setHasFlipped(false);
-        setFlippedCards({});
+
+        // 👉 Step 4: Reset flipped state (all front side)
+        const resetFlips = newSet.reduce((acc, card) => {
+            acc[card.id] = false;
+            return acc;
+        }, {} as { [id: number]: boolean });
+
+        setFlippedCards(resetFlips);
+
+        // 👉 Step 5: End animation
+        setTimeout(() => {
+            setSlideInCards(false);
+        }, 400);
     };
+
 
     // Selected card handle
     const onSelect = (id: number) => {
@@ -457,14 +488,19 @@ export function FlipPage() {
             {/* Flip Cards */}
             <div className={"flex justify-center items-center gap-x-3"}>
                 {selectedFlipCards.map((item) => (
-                    <FlipCard
+                    <div
                         key={item.id}
-                        logo={IMAGES.logo}
-                        items={item}
-                        isSelected={selectedCardId === item.id}
-                        onSelect={() => onSelect(item.id)}
-                        isFlipped={flippedCards[item.id]}
-                    />
+                        className={`transition-all duration-500 transform
+                                    ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
+                    >
+                        <FlipCard
+                            logo={IMAGES.logo}
+                            items={item}
+                            isSelected={selectedCardId === item.id}
+                            onSelect={() => onSelect(item.id)}
+                            isFlipped={flippedCards[item.id]}
+                        />
+                    </div>
                 ))}
             </div>
 
