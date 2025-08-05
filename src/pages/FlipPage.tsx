@@ -212,10 +212,20 @@ export function FlipPage() {
         selectedFlipCards.find(card => card.selected)?.id || 0
     );
     const [slideInCards, setSlideInCards] = useState(false);
+    const [isFreeCard, setIsFreeCard] = useState(false);
 
     useEffect(() => {
         // Default 1st Card Selected
         pickRandomSetWithFirstSelected();
+    }, []);
+
+    // mobile screen
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
     }, []);
 
     const pickRandomSetWithFirstSelected = () => {
@@ -238,28 +248,6 @@ export function FlipPage() {
         const randomIndex = Math.floor(Math.random() * otherCards.length);
         return otherCards[randomIndex];
     }
-
-    // get random card of array
-    // const getNewRandomSet = () => {
-    //     let newIndex: number;
-    //     let currentSet = selectedFlipCards;
-    //
-    //     // find new random that’s not same as current
-    //     do {
-    //         newIndex = Math.floor(Math.random() * allFlipCardData.length);
-    //     } while (allFlipCardData[newIndex] === currentSet);
-    //
-    //     setSelectedFlipCards(allFlipCardData[newIndex]);
-    // };
-
-    // mobile screen
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768)
-        }
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
 
     const handleSpinPlusMark = () => {
         if (spinVoucherId < spinVoucherCountData.length) {
@@ -334,11 +322,18 @@ export function FlipPage() {
         setIsFlippingSelectedCard(false);
 
         // Update Global Voucher Count
-        setVoucherBalance(vouchers - spinVoucherCount);
+        const selectedCard = selectedFlipCards.find(card => card.selected);
+        const isFree= selectedCard?.type === 'free';
+        setIsFreeCard(isFree);
+        if (!isFree) {
+            setIsFreeCard(false);
+            setVoucherBalance(vouchers - spinVoucherCount);
+        }
     };
 
     // Handle coming next cards
     const handleNextRow = async () => {
+        setIsFreeCard(false); // reset free button
         // Flip all cards back to front
         const flippedBack = selectedFlipCards.reduce((acc, card) => {
             acc[card.id] = false; // false = front side
@@ -516,34 +511,47 @@ export function FlipPage() {
                 <div className="flex items-center md:flex-row gap-4 mt-4 w-full max-w-3xl">
                     {selectedBalanceType === 'ticket' && (
                         <>
-                            <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
-                                <button
-                                    className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
-                                    onClick={handleSpinMinusMark}
-                                >
-                                    -
-                                </button>
+                            {isFreeCard ?
+                                <>
+                                    <button
+                                        className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={isFreeCard}
+                                    >
+                                        Free
+                                    </button>
+                                </>
+                                :
+                                <>
+                                    <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinMinusMark}
+                                        >
+                                            -
+                                        </button>
 
-                                <div className="flex justify-center items-center pr-3 overflow-hidden">
-                                    <img
-                                        src={IMAGES.voucher}
-                                        alt="voucher"
-                                        className="h-full max-h-[90px] w-auto object-contain"
-                                    />
-                                    <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                        {Number.isInteger(spinVoucherCount)
-                                            ? spinVoucherCount
-                                            : spinVoucherCount.toFixed(2)}
-                                    </p>
-                                </div>
+                                        <div className="flex justify-center items-center pr-3 overflow-hidden">
+                                            <img
+                                                src={IMAGES.voucher}
+                                                alt="voucher"
+                                                className="h-full max-h-[90px] w-auto object-contain"
+                                            />
+                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                                {Number.isInteger(spinVoucherCount)
+                                                    ? spinVoucherCount
+                                                    : spinVoucherCount.toFixed(2)}
+                                            </p>
+                                        </div>
 
-                                <button
-                                    className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
-                                    onClick={handleSpinPlusMark}
-                                >
-                                    +
-                                </button>
-                            </div>
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinPlusMark}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </>
+                            }
                         </>
                     )}
 
