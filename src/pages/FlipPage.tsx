@@ -289,7 +289,7 @@ export function FlipPage() {
 
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return;
         if (vouchers < spinVoucherCount) {
-            return alert("Please recharge your voucher balance!" + voucherBalance + "  " + spinVoucherCount);
+            return alert("Please recharge your voucher balance!");
         }
 
         if (!selectedCardId) {
