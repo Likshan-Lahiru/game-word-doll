@@ -195,7 +195,7 @@ const allFlipCardData: FlipCardData[][] = [
 
 export function FlipPage() {
     const navigate = useNavigate()
-    const { spinBalance, addSpins, addCoins, coinBalance, gemBalance, selectedBalanceType } = useGlobalContext()
+    const { selectedBalanceType, setVoucherBalance, voucherBalance } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     let [spinVoucherId, setSpinVoucherId] = useState(2)
     const [spinVoucherCount, setSpinVoucherCount] = useState(0.40)
@@ -240,17 +240,17 @@ export function FlipPage() {
     }
 
     // get random card of array
-    const getNewRandomSet = () => {
-        let newIndex: number;
-        let currentSet = selectedFlipCards;
-
-        // find new random that’s not same as current
-        do {
-            newIndex = Math.floor(Math.random() * allFlipCardData.length);
-        } while (allFlipCardData[newIndex] === currentSet);
-
-        setSelectedFlipCards(allFlipCardData[newIndex]);
-    };
+    // const getNewRandomSet = () => {
+    //     let newIndex: number;
+    //     let currentSet = selectedFlipCards;
+    //
+    //     // find new random that’s not same as current
+    //     do {
+    //         newIndex = Math.floor(Math.random() * allFlipCardData.length);
+    //     } while (allFlipCardData[newIndex] === currentSet);
+    //
+    //     setSelectedFlipCards(allFlipCardData[newIndex]);
+    // };
 
     // mobile screen
     useEffect(() => {
@@ -285,11 +285,15 @@ export function FlipPage() {
 
     // Cards Flip Logic
     const handleFlipAllCards = async () => {
+        const vouchers = parseFloat(voucherBalance.toFixed(2));
+
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return;
+        if (vouchers < spinVoucherCount) {
+            return alert("Please recharge your voucher balance!" + voucherBalance + "  " + spinVoucherCount);
+        }
 
         if (!selectedCardId) {
-            alert('Please select a card before flipping.');
-            return;
+            return alert('Please select a card before flipping.');
         }
 
         // Replace only unselected cards with random cards from other sets
@@ -328,11 +332,14 @@ export function FlipPage() {
 
         setHasFlipped(true);
         setIsFlippingSelectedCard(false);
+
+        // Update Global Voucher Count
+        setVoucherBalance(vouchers - spinVoucherCount);
     };
 
     // Handle coming next cards
     const handleNextRow = async () => {
-        // 👉 Step 1: Flip all cards back to front
+        // Flip all cards back to front
         const flippedBack = selectedFlipCards.reduce((acc, card) => {
             acc[card.id] = false; // false = front side
             return acc;
@@ -340,13 +347,13 @@ export function FlipPage() {
 
         setFlippedCards(flippedBack);
 
-        // 👉 Step 2: Wait for flip animation to complete (~500ms)
+        // Wait for flip animation to complete (~500ms)
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        // 👉 Step 3: Start slide-in animation
+        // Start slide-in animation
         setSlideInCards(true);
 
-        // 👉 Load new card set
+        // Load new card set
         const newIndex = Math.floor(Math.random() * allFlipCardData.length);
         const newSet = allFlipCardData[newIndex].map((card, index) => ({
             ...card,
@@ -357,7 +364,7 @@ export function FlipPage() {
         setSelectedCardId(newSet[0].id);
         setHasFlipped(false);
 
-        // 👉 Step 4: Reset flipped state (all front side)
+        // Reset flipped state (all front side)
         const resetFlips = newSet.reduce((acc, card) => {
             acc[card.id] = false;
             return acc;
@@ -365,7 +372,7 @@ export function FlipPage() {
 
         setFlippedCards(resetFlips);
 
-        // 👉 Step 5: End animation
+        // End animation
         setTimeout(() => {
             setSlideInCards(false);
         }, 400);
