@@ -41,6 +41,7 @@ export function LockPickrGame() {
   const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
       ('correct' | 'wrong-position' | 'incorrect')[]
   >([])
+
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -50,6 +51,7 @@ export function LockPickrGame() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
   // Initialize the game
   useEffect(() => {
     // Check if authenticated user is on cooldown
@@ -143,6 +145,7 @@ export function LockPickrGame() {
       setIsInputFocused(true)
     }
   }, [isAuthenticated])
+
   // Define checkGuess before any useEffect that depends on it
   const checkGuess = useCallback(async () => {
     // Check if we have a complete attempt (all positions filled)
@@ -266,6 +269,7 @@ export function LockPickrGame() {
     addCoins,
     winAmount,
   ])
+
   // Helper function to update UI based on API response
   const updateUIFromApiResponse = (response: any, attempt: number[]) => {
     // Create a status array for the last attempt
