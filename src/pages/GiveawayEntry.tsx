@@ -59,11 +59,11 @@ export function GiveawayEntry() {
                 <div className={`flex-col flex items-center justify-center gap-y-5
                     ${isMobile && 'mt-10'}
                 `}>
-                    <p className={"font-semibold text-[20px] font-[DM Sans]"}>GRAND WIN</p>
+                    <p className={"font-semibold text-[20px] font-[DM Sans] text-center"}>GRAND WIN</p>
                     <div className={"flex items-center"}>
                         <p className={"font-semibold pr-2 text-[20px] font-[DM Sans]"}>Win</p>
                         <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                            src={IMAGES.diamond}
                             alt="Heart"
                             className="w-6 h-6 pt-[2px] object-contain"
                         />
@@ -83,7 +83,7 @@ export function GiveawayEntry() {
                 >
                     <div className="absolute inset-0">
                         <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/wEfJPtYkYsjSUwUG9ivnUR/wordoll.png"
+                            src={IMAGES.wordoll}
                             alt="Wordoll"
                             className="w-full h-full object-cover"
                         />
@@ -99,7 +99,7 @@ export function GiveawayEntry() {
             <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/wEfJPtYkYsjSUwUG9ivnUR/wordoll.png"
+                        src={IMAGES.wordoll}
                         alt="Wordoll"
                         className="w-full h-full object-cover"
                     />
@@ -129,7 +129,7 @@ export function GiveawayEntry() {
                 >
                     <div className="absolute inset-0">
                         <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/i9wzJrxokDDqgwas4Cft5m/lockpickr.png"
+                            src={IMAGES.lockPicker}
                             alt="Lock Pickr"
                             className="w-full h-full object-cover"
                         />
@@ -145,7 +145,7 @@ export function GiveawayEntry() {
             <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/i9wzJrxokDDqgwas4Cft5m/lockpickr.png"
+                        src={IMAGES.lockPicker}
                         alt="Lock Pickr"
                         className="w-full h-full object-cover"
                     />
@@ -175,7 +175,7 @@ export function GiveawayEntry() {
                     onClick={() => navigate('/')}
                 >
                     <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                        src={IMAGES.backIcon}
                         alt="Back"
                         className="w-8 h-8"
                     />
@@ -198,13 +198,14 @@ export function GiveawayEntry() {
                     <div className={"flex justify-center"}>
                         {/* Left Side - Grand Win After Entries Select */}
                         { selectedBalanceType === 'ticket' && !isMobile && isAuthenticated &&
-                            <GrandWin/>
+                            <div className={"flex items-center justify-center lg:pr-10 lg:pl-10 md:pr-3 md:pl-3"}>
+                                <GrandWin/>
+                            </div>
                         }
 
-
                         {/* Game Cards */}
-                        <div className={`px-4 sm:h-[450px] 
-                            ${isMobile ? 'w-full' : 'mr-20 ml-20'}`
+                        <div className={`px-4 sm:h-[450px]
+                            ${isMobile ? 'w-full' : ''}`
                         }
                         >
                             <div
@@ -228,9 +229,9 @@ export function GiveawayEntry() {
 
                         {/* Right Side - Grand Win After Entries Select */}
                         { selectedBalanceType === 'ticket' && !isMobile &&  isAuthenticated &&
-                            <>
+                            <div className={"flex items-center justify-center lg:pr-10 lg:pl-10 md:pr-3 md:pl-3"}>
                                 <GrandWin/>
-                            </>
+                            </div>
                         }
                     </div>
 
