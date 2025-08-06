@@ -13,4 +13,7 @@ export const IMAGES = {
     outOfStock: '/outofstock.png',
     crackedCooky: '/crackedcook.png',
     antsInTheJar: '/ant.png',
+    backIcon: 'https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png',
+    lockPicker: 'https://uploadthingy.s3.us-west-1.amazonaws.com/i9wzJrxokDDqgwas4Cft5m/lockpickr.png',
+    wordoll: 'https://uploadthingy.s3.us-west-1.amazonaws.com/wEfJPtYkYsjSUwUG9ivnUR/wordoll.png'
 };
