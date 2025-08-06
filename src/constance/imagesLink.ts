@@ -1,6 +1,6 @@
 export const IMAGES = {
     // voucher: 'https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png',
-    voucher: '/ti 59.png',
+    voucher: '/voucher.png',
     diamond: 'https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png',
     coin: 'https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png',
     ticket: 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png',
