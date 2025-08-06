@@ -409,54 +409,124 @@ export function FlipPage() {
                     <StatusBar isMobile={isMobile} hideOnlineCount={true} />
                 </div>
 
+                {/* Flip Cards */}
+                <div className="flex flex-col items-center gap-y-3 mb-10 mt-5">
+                    {/* Row 1: First card */}
+                    <div className="flex justify-center">
+                        {selectedFlipCards.slice(0, 1).map((item) => (
+                            <div
+                                key={item.id}
+                                className={`transition-all duration-500 transform
+                            ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
+                            >
+                                <FlipCard
+                                    logo={IMAGES.logo}
+                                    items={item}
+                                    isSelected={selectedCardId === item.id}
+                                    onSelect={() => onSelect(item.id)}
+                                    isFlipped={flippedCards[item.id]}
+                                    isMobile={true}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Row 2: Second and third cards */}
+                    <div className="flex justify-center gap-x-3">
+                        {selectedFlipCards.slice(1).map((item) => (
+                            <div
+                                key={item.id}
+                                className={`transition-all duration-500 transform
+                            ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
+                            >
+                                <FlipCard
+                                    logo={IMAGES.logo}
+                                    items={item}
+                                    isSelected={selectedCardId === item.id}
+                                    onSelect={() => onSelect(item.id)}
+                                    isFlipped={flippedCards[item.id]}
+                                    isMobile={true}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Spin buttons */}
                 <div className="px-4 pb-24 space-y-2">
                     {selectedBalanceType === 'ticket' && (
                         <>
-                            <div className="flex font-inter items-center justify-between w-full py-3 px-2 rounded-[22px] bg-[#374151] text-white h-[80px]">
-                                <button
-                                    className="font-extrabold px-4 text-[30px] leading-none h-[64px] w-[64px] flex items-center justify-center rounded-[22px] bg-[#67768F]"
-                                    onClick={handleSpinMinusMark}
-                                >
-                                    -
-                                </button>
+                            {isFreeCard ?
+                                <>
+                                    <button
+                                        className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed"
+                                    >
+                                        Free
+                                    </button>
+                                </>
+                                :
+                                <>
+                                    <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinMinusMark}
+                                        >
+                                            -
+                                        </button>
 
-                                <div className="flex justify-center items-center pr-3 overflow-hidden">
-                                    <img
-                                        src={IMAGES.voucher}
-                                        alt="voucher"
-                                        className="h-full max-h-[90px] w-auto object-contain"
-                                    />
-                                    <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                        {Number.isInteger(spinVoucherCount)
-                                            ? spinVoucherCount
-                                            : spinVoucherCount.toFixed(2)}
-                                    </p>
-                                </div>
+                                        <div className="flex justify-center items-center pr-3 overflow-hidden">
+                                            <img
+                                                src={IMAGES.voucher}
+                                                alt="voucher"
+                                                className="h-full max-h-[90px] w-auto object-contain"
+                                            />
+                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                                {Number.isInteger(spinVoucherCount)
+                                                    ? spinVoucherCount
+                                                    : spinVoucherCount.toFixed(2)}
+                                            </p>
+                                        </div>
 
-                                <button
-                                    className="font-extrabold px-4 text-[30px] leading-none h-[64px] w-[64px] flex items-center justify-center rounded-[22px] bg-[#67768F]"
-                                    onClick={handleSpinPlusMark}
-                                >
-                                    +
-                                </button>
-                            </div>
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinPlusMark}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </>
+                            }
                         </>
                     )}
 
-                    {selectedBalanceType === 'coin' &&
+                    {selectedBalanceType === 'coin' && (
+                        <>
+                            <button
+                                className="w-full py-3 px-4 rounded-2xl bg-[#374151] text-white font-semibold text-3xl"
+                                onClick={() =>
+                                    console.log('25x Spin button clicked (not implemented)')
+                                }
+                            >
+                                25 x Flip
+                            </button>
+                        </>
+                    )}
+
+                    {currentRowIndex === 0 && !hasFlipped ? (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-xl"
+                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={handleFlipAllCards}
                         >
-                            3 x Flip
+                            Flip
                         </button>
-                    }
-                    <button
-                        className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={handleFlipAllCards}
-                    >
-                        Flip
-                    </button>
+                    ) : (
+                        <button
+                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors"
+                            onClick={handleNextRow}
+                        >
+                            Next
+                        </button>
+                    )}
                 </div>
             </div>
         )
@@ -501,13 +571,14 @@ export function FlipPage() {
                             isSelected={selectedCardId === item.id}
                             onSelect={() => onSelect(item.id)}
                             isFlipped={flippedCards[item.id]}
+                            isMobile={false}
                         />
                     </div>
                 ))}
             </div>
 
+            {/* Flip buttons */}
             <div className="flex justify-center items-center mb-10 px-4 py-8">
-                {/* Spin buttons */}
                 <div className="flex items-center md:flex-row gap-4 mt-4 w-full max-w-3xl">
                     {selectedBalanceType === 'ticket' && (
                         <>

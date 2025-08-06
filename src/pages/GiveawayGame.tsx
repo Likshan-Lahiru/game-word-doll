@@ -51,6 +51,9 @@ export function GiveawayGame() {
       return
     }
 
+    console.log("spinAmount ",entries.spinAmount)
+    console.log("coinAmount ",entries.coinAmount)
+
     setTemporaryVoucherBalance(temporaryVoucherBalance + entries.spinAmount)
     setTemporaryCoinBalance(temporaryCoinBalance + entries.coinAmount)
 
@@ -197,14 +200,30 @@ export function GiveawayGame() {
 
             {/* Prize Cards */}
             <div className="space-y-1 mb-8">
-              {prizes.map((prize) => (
-                  <PrizeCard
-                      key={prize.id}
-                      prize={prize}
-                      isMobile={true}
-                      onEnter={() => handleEnterGame(prize)}
-                  />
-              ))}
+              { selectedBalanceType === 'coin' ? (
+                  <>
+                    {desktopPrizes.map((prize) => (
+                        <PrizeCard
+                            key={prize.id}
+                            prize={prize}
+                            isMobile={true}
+                            onEnter={() => handleEnterGame(prize)}
+                        />
+                    ))}
+                  </>
+              ) : (
+                  <>
+                    {entries.map((entries) => (
+                        <PrizeCard
+                            key={entries.id}
+                            prize={entries}
+                            isMobile={true}
+                            onEnter={() => handleEnterGameEntries(entries)}
+                        />
+                    ))}
+                  </>
+                )
+              }
             </div>
           </div>
 

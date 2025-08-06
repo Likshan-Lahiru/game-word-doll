@@ -2,6 +2,7 @@ import React from 'react'
 import { BalanceSelector } from './BalanceSelector'
 import { useGlobalContext } from '../context/GlobalContext'
 import { useLocation } from 'react-router-dom'
+import {IMAGES} from "../constance/imagesLink.ts";
 export function StatusBar({
                               isMobile,
                               hideOnlineCount,
@@ -28,22 +29,22 @@ export function StatusBar({
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-0 ">
                             <div className="w-7 h-18 flex items-center justify-center">
                                 <img
-                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
+                                    src={IMAGES.voucher}
                                     alt="Diamond"
-                                    className="w-full h-full object-contain"
+                                    className="w-6 h-6 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">{gemBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{voucherBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             <div className="w-8 h-4 flex items-center justify-center">
                                 <img
-                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                                    src={IMAGES.diamond}
                                     alt="Heart"
-                                    className="w-full h-full object-contain"
+                                    className="w-5 h-5 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">{voucherBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{gemBalance.toFixed(2)}</span>
                         </div>
                     </div>
                 </>

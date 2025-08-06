@@ -1,4 +1,6 @@
+import React from 'react'
 import {useGlobalContext} from "../context/GlobalContext.tsx";
+import {IMAGES} from "../constance/imagesLink.ts";
 
 export type PrizeData = {
     id: number
@@ -13,8 +15,6 @@ type PrizeCardProps = {
     isMobile: boolean
     onEnter: () => void
 }
-
-import React from 'react'
 
 export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
 
@@ -32,19 +32,32 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                     <p className="font-medium text-base font-['DM_Sans']">
                         GC {prize.coinAmount.toLocaleString()}
                     </p>
-                    <p className="text-sm font-medium font-['DM_Sans']">+</p>
-                    <p className="text-sm font-medium font-['DM_Sans']">{prize.spinAmount} x Spin</p>
+                    <p className="text-sm font-semibold font-['DM_Sans']">+</p>
+                    <p className="mb-4 font-['DM_Sans'] text-sm font-semibold">
+                        {selectedBalanceType === 'coin' ?
+                            `${prize.spinAmount} x Spin`
+                            :
+                            <div className={"flex"}>
+                                <img
+                                    src={"https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"}
+                                    alt={"voucher"}
+                                    className={"w-7 h-6 mr-2"}
+                                />
+                                {`x ${prize.spinAmount} free`}
+                            </div>
+                        }
+                    </p>
                 </div>
                 <div className="flex flex-col items-end">
                     <div className="flex items-center mb-2 text-lg pr-8">
                         <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                            src={`${selectedBalanceType === 'coin' ? IMAGES.coin : IMAGES.ticket}`}
                             alt="Coins"
-                            className="w-6 h-6 mr-1"
+                            className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-8 h-8 mr-2 rounded-full p-[2px]`}
                         />
                         <span className="font-medium text-lg font-['DM_Sans']">
-              {prize.cost.toLocaleString()}
-            </span>
+                            {prize.cost.toLocaleString()}
+                        </span>
                     </div>
                     <button
                         className="bg-[#56CA5A] w-32 hover:bg-green-600 text-white py-1.5 px-5 rounded-full font-medium text-sm"
@@ -86,7 +99,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
             </p>
             <div className="flex items-center mb-3 mt-10">
                 <img
-                    src={`${selectedBalanceType === 'coin' ? 'https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png' : 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png'}`}
+                    src={`${selectedBalanceType === 'coin' ? IMAGES.coin : IMAGES.ticket}`}
                     alt="Coins"
                     className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-8 h-8 mr-2 rounded-full p-[2px]`}
                 />

@@ -24,6 +24,12 @@ export function AuthenticatedWinModal({
             addCoins(temporaryCoinBalance)
             setVoucherBalance(voucherBalance + temporaryVoucherBalance);
             setTicketBalance(ticketBalance - temporaryTicketBalance);
+
+            console.log("tv balance : ", temporaryVoucherBalance)
+            console.log("v balance : ", voucherBalance)
+
+            console.log("tt balance : ", temporaryTicketBalance)
+            console.log("ticketBalance : ", ticketBalance)
         }
 
         onClose()

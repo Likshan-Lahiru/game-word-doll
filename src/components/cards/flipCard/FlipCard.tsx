@@ -9,7 +9,7 @@ import {IMAGES} from "../../../constance/imagesLink.ts";
 //     isFlipped: boolean;
 // }
 
-export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped  }) => {
+export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped, isMobile }) => {
 
     const handleClickFlipCard = () => {
         onSelect();
@@ -17,7 +17,7 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped  }) => {
 
     return (
         <>
-            <div className="relative w-[230px] h-[70vh] perspective-[1000px]" onClick={handleClickFlipCard}>
+            <div className={`${isMobile ? 'h-[35vh] w-[170px]' : 'h-[70vh] w-[230px]'} relative perspective-[1000px]`} onClick={handleClickFlipCard}>
                 <div
                     className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d rounded-2xl 
                     ${isFlipped ? "rotate-y-180" : ""} 
@@ -25,7 +25,7 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped  }) => {
                 >
                     {/* Front */}
                     <div className="absolute w-full h-full backface-hidden flex items-center justify-center bg-[#374151] rounded-2xl">
-                        <img src={logo} alt="Cooky Cream Logo" className="w-40" />
+                        <img src={logo} alt="Cooky Cream Logo" className={`${isMobile ? 'w-32' : 'w-40'}`} />
                     </div>
 
                     {/* Back */}
@@ -33,7 +33,7 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped  }) => {
                         <div className={"flex flex-col h-full justify-between"}>
                             {/* Header */}
                             <div className={"flex justify-center"}>
-                                <p className={`lg:text-[24px] md:text-[28px] text-[23px] font-inter font-bold mt-10 mb-0`}>{items.name}</p>
+                                <p className={`${isMobile ? '' : ''} lg:text-[24px] md:text-[28px] text-[20px] font-inter font-bold mt-10 mb-0`}>{items.name}</p>
                             </div>
 
                             {/* Body */}
@@ -44,7 +44,7 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped  }) => {
                                     className={`
                                     ${items.image === '/ant.png' || items.image === '/outofstock.png' && 'lg:h-42 md:h-40'} 
                                     ${items.image === '/freeFlip.png' && 'lg:w-44 lg:h-40 md:w-36 md:h-36'}
-                                    lg:w-36 md:w-28`}
+                                    lg:w-36 md:w-28 h-24`}
                                 />
                             </div>
 
