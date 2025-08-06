@@ -2,37 +2,39 @@ import React from 'react'
 type TicketOption = {
     value: number
     label?: string
+    id: string
 }
 type TicketSelectorProps = {
     options: TicketOption[]
     selectedValue: number
     onChange: (value: number) => void
+    disabled?: boolean
 }
 export function TicketSelector({
                                    options,
                                    selectedValue,
                                    onChange,
+                                   disabled = false,
                                }: TicketSelectorProps) {
     return (
-        <div className="w-full max-w-md flex justify-between mb-5">
+        <div className="flex justify-center space-x-4 mb-6">
             {options.map((option) => (
-                <button
-                    key={option.value}
-                    onClick={() => onChange(option.value)}
-                    className={`flex-1 py-1 px-2 h-12 bg-[#374151] rounded-2xl flex items-center justify-center mx-1 relative ${selectedValue === option.value ? 'font-bold' : ''}`}
-                >
-                    <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
-                        alt="Ticket"
-                        className="w-6 h-6 mr-2"
-                    />
-                    <span className="text-lg font-[Inter]">
-                            {option.label || option.value}
-                     </span>
-                    {selectedValue === option.value && (
-                        <div className="absolute -bottom-3 left-0 right-0 h-1 mr-5 ml-5 bg-white rounded-full"></div>
-                    )}
-                </button>
+                <div key={option.id} className="flex flex-col items-center">
+                    <button
+                        className={`cursor-pointer p-4 rounded-2xl ${selectedValue === option.value ? 'bg-[#3B82F6]' : 'bg-[#374151]'} w-24 h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#3B82F6]'}`}
+                        onClick={() => !disabled && onChange(option.value)}
+                        disabled={disabled}
+                    >
+                        <img
+                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
+                            alt="Ticket"
+                            className="w-4 h-4 mr-2"
+                        />
+                        <span className="text-white text-lg font-semibold">
+              {option.label || option.value}
+            </span>
+                    </button>
+                </div>
             ))}
         </div>
     )

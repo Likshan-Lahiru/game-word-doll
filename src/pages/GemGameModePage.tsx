@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from 'react'
+import React, { useCallback, useEffect, useState, Component } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
@@ -37,6 +37,12 @@ export function GemGameModePage() {
     const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null)
     const [isLoadingCountdown, setIsLoadingCountdown] = useState(false)
     const [countdownActive, setCountdownActive] = useState(false)
+    const [hasJoined, setHasJoined] = useState(false)
+    const [isJoining, setIsJoining] = useState(false)
+    const [isLeaving, setIsLeaving] = useState(false)
+    const [showNavigationWarning, setShowNavigationWarning] = useState(false)
+    // New state for word/number length
+    const [wordOrNumberLength, setWordOrNumberLength] = useState(5) // Default to 5
     // Get game type from location state
     const { gameType } = (location.state as {
         gameType: string
@@ -47,6 +53,26 @@ export function GemGameModePage() {
     const getFormattedGameType = () => {
         return gameType === 'wordoll' ? 'WORDALL' : 'LOCKPICKER'
     }
+    // Prevent navigation if user has joined a session
+    const handleBeforeUnload = useCallback(
+        (e: BeforeUnloadEvent) => {
+            if (hasJoined) {
+                const message =
+                    "You have joined a game session. If you leave now, you'll lose your ticket. Please cancel the game first if you want to leave."
+                e.preventDefault()
+                e.returnValue = message
+                return message
+            }
+        },
+        [hasJoined],
+    )
+    // Add beforeunload event listener to prevent refresh when joined
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload)
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
+    }, [hasJoined, handleBeforeUnload])
     // Fetch room types from API
     useEffect(() => {
         const fetchRoomTypes = async () => {
@@ -102,6 +128,21 @@ export function GemGameModePage() {
         // Clean up interval on unmount or when dependencies change
         return () => clearInterval(intervalId)
     }, [selectedRoomId, gameType])
+    // New function to fetch word or number info
+    const fetchWordOrNumberInfo = async (sessionId: string) => {
+        try {
+            const endpoint = `/group-session/word-or-number-info/${sessionId}`
+            const response = await apiRequest(endpoint, 'GET')
+            if (response && response.length) {
+                setWordOrNumberLength(response.length)
+                return response.length
+            }
+            return 5 // Default length if not found
+        } catch (err) {
+            console.error('Error fetching word or number info:', err)
+            return 5 // Default length on error
+        }
+    }
     // Function to fetch countdown time from API
     const fetchCountdownTime = async () => {
         if (!selectedRoomId) return
@@ -148,8 +189,13 @@ export function GemGameModePage() {
             setCountdown((prevCountdown) => {
                 if (prevCountdown <= 1) {
                     clearInterval(timer)
-                    // When countdown reaches zero, fetch a new countdown time
-                    fetchCountdownTime()
+                    // When countdown reaches zero, navigate to game if user has joined
+                    if (hasJoined && groupSessionId) {
+                        handleCountdownComplete()
+                    } else {
+                        // Otherwise, fetch a new countdown time
+                        fetchCountdownTime()
+                    }
                     return 0
                 }
                 return prevCountdown - 1
@@ -157,7 +203,44 @@ export function GemGameModePage() {
         }, 1000)
         // Clean up the interval when component unmounts or dependencies change
         return () => clearInterval(timer)
-    }, [countdownActive, isLoadingCountdown])
+    }, [countdownActive, isLoadingCountdown, hasJoined, groupSessionId])
+    // Handle countdown completion - fetch word/number info before navigating
+    const handleCountdownComplete = async () => {
+        if (!groupSessionId) return
+        try {
+            // Fetch word or number length before navigating
+            const length = await fetchWordOrNumberInfo(groupSessionId)
+            navigateToGame(length)
+        } catch (error) {
+            console.error('Error preparing game:', error)
+            // Navigate with default length if there's an error
+            navigateToGame(5)
+        }
+    }
+    // Navigate to the appropriate game with the word/number length
+    const navigateToGame = (length: number = 5) => {
+        if (gameType === 'wordoll') {
+            navigate('/gem-wordoll-game', {
+                state: {
+                    ticketAmount: selectedTicketAmount,
+                    gemPool: gemPool,
+                    roomId: selectedRoomId,
+                    groupSessionId: groupSessionId,
+                    wordLength: length, // Pass the dynamic length
+                },
+            })
+        } else {
+            navigate('/gem-lockpickr-game', {
+                state: {
+                    ticketAmount: selectedTicketAmount,
+                    gemPool: gemPool,
+                    roomId: selectedRoomId,
+                    groupSessionId: groupSessionId,
+                    numberLength: length, // Pass the dynamic length
+                },
+            })
+        }
+    }
     // Update selected room ID when ticket option changes
     useEffect(() => {
         const selectedOption = ticketOptions.find(
@@ -165,6 +248,8 @@ export function GemGameModePage() {
         )
         if (selectedOption) {
             setSelectedRoomId(selectedOption.id)
+            // Reset join status when room changes
+            setHasJoined(false)
         }
     }, [selectedTicketAmount, ticketOptions])
     useEffect(() => {
@@ -193,38 +278,78 @@ export function GemGameModePage() {
         const secs = seconds % 60
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
     }
-    const handleEnterGame = () => {
-        if (ticketBalance >= selectedTicketAmount) {
-            setTicketBalance(ticketBalance - selectedTicketAmount)
-            setGameStarted(true)
-            // Find the selected room type to pass its ID
-            const selectedRoom = ticketOptions.find(
-                (option) => option.value === selectedTicketAmount,
-            )
-            const roomId = selectedRoom?.id || null
-            // Navigate to the appropriate gem game based on gameType
-            if (gameType === 'wordoll') {
-                navigate('/gem-wordoll-game', {
-                    state: {
-                        ticketAmount: selectedTicketAmount,
-                        gemPool: gemPool,
-                        roomId: roomId,
-                        groupSessionId: groupSessionId,
-                    },
-                })
-            } else {
-                navigate('/gem-lockpickr-game', {
-                    state: {
-                        ticketAmount: selectedTicketAmount,
-                        gemPool: gemPool,
-                        roomId: roomId,
-                        groupSessionId: groupSessionId,
-                    },
-                })
-            }
+    // Prevent navigation when user has joined
+    const handleNavigateBack = () => {
+        if (hasJoined) {
+            setShowNavigationWarning(true)
         } else {
+            navigate('/')
+        }
+    }
+    const handleJoinGame = async () => {
+        if (ticketBalance < selectedTicketAmount) {
             alert('Not enough tickets to play!')
             navigate('/')
+            return
+        }
+        try {
+            setIsJoining(true)
+            const userId = localStorage.getItem('userId')
+            if (!userId) {
+                setError('User ID not found. Please log in again.')
+                setIsJoining(false)
+                return
+            }
+            const formattedGameType = getFormattedGameType()
+            const joinData = {
+                userId: userId,
+                roomType: selectedRoomId,
+                gameType: formattedGameType,
+            }
+            const response = await apiRequest(
+                '/user-group-session/join',
+                'POST',
+                joinData,
+            )
+            if (response) {
+                setTicketBalance(ticketBalance - selectedTicketAmount)
+                setGroupSessionId(response.groupSessionId)
+                // Update gemPool with the value from the response
+                setGemPool(response.gemPool)
+                setHasJoined(true)
+                // Refresh player count
+                setPlayersJoined((prev) => prev + 1)
+            }
+        } catch (err) {
+            console.error('Error joining game:', err)
+            setError('Failed to join the game. Please try again.')
+        } finally {
+            setIsJoining(false)
+        }
+    }
+    const handleLeaveGame = async () => {
+        try {
+            setIsLeaving(true)
+            const userId = localStorage.getItem('userId')
+            if (!userId || !groupSessionId) {
+                setError('User ID or session ID not found.')
+                setIsLeaving(false)
+                return
+            }
+            const leaveEndpoint = `/user-group-session/leave?userId=${userId}&groupSessionId=${groupSessionId}`
+            await apiRequest(leaveEndpoint, 'DELETE')
+            // Reset join status
+            setHasJoined(false)
+            setShowNavigationWarning(false)
+            // Refresh player count
+            setPlayersJoined((prev) => Math.max(0, prev - 1))
+            // Return the ticket to the user
+            setTicketBalance(ticketBalance + selectedTicketAmount)
+        } catch (err) {
+            console.error('Error leaving game:', err)
+            setError('Failed to leave the game. Please try again.')
+        } finally {
+            setIsLeaving(false)
         }
     }
     // Loading state
@@ -256,7 +381,7 @@ export function GemGameModePage() {
                 <div className="absolute top-12 left-4 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
-                        onClick={() => navigate('/')}
+                        onClick={handleNavigateBack}
                     >
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
@@ -269,11 +394,41 @@ export function GemGameModePage() {
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
                 {/* Main Content */}
                 <div className="flex-1 flex flex-col items-center justify-start pt-5 px-4">
+                    {/* Navigation Warning Modal */}
+                    {showNavigationWarning && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+                            <div className="bg-[#374151] rounded-xl p-6 m-4 max-w-sm">
+                                <h3 className="text-xl font-bold mb-4 text-center">
+                                    Cannot Leave Game
+                                </h3>
+                                <p className="mb-6 text-center">
+                                    You have joined a game session. Please cancel the game first
+                                    if you want to leave.
+                                </p>
+                                <div className="flex justify-center space-x-4">
+                                    <button
+                                        className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-4 py-2 rounded-lg"
+                                        onClick={handleLeaveGame}
+                                        disabled={isLeaving}
+                                    >
+                                        {isLeaving ? 'Cancelling...' : 'Cancel Game'}
+                                    </button>
+                                    <button
+                                        className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg"
+                                        onClick={() => setShowNavigationWarning(false)}
+                                    >
+                                        Stay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {/* Ticket Selector Component */}
                     <TicketSelector
                         options={ticketOptions}
                         selectedValue={selectedTicketAmount}
                         onChange={setSelectedTicketAmount}
+                        disabled={hasJoined}
                     />
                     {/* Main Game Card */}
                     <div className="w-full max-w-md bg-[#374151] rounded-2xl overflow-hidden mb-3">
@@ -308,12 +463,23 @@ export function GemGameModePage() {
                                     {isLoadingCountdown ? 'Loading...' : formatTime(countdown)}
                                 </p>
                             </div>
-                            <button
-                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
-                                onClick={handleEnterGame}
-                            >
-                                Enter
-                            </button>
+                            {hasJoined ? (
+                                <button
+                                    className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
+                                    onClick={handleLeaveGame}
+                                    disabled={isLeaving}
+                                >
+                                    {isLeaving ? 'Cancelling...' : 'Cancel'}
+                                </button>
+                            ) : (
+                                <button
+                                    className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
+                                    onClick={handleJoinGame}
+                                    disabled={isJoining}
+                                >
+                                    {isJoining ? 'Entering...' : 'Enter'}
+                                </button>
+                            )}
                         </div>
                     </div>
                     {/* Legendary Card */}
@@ -356,7 +522,7 @@ export function GemGameModePage() {
             <div className="absolute top-4 left-4 z-10">
                 <button
                     className="w-12 h-12 rounded-full flex items-center justify-center"
-                    onClick={() => navigate('/')}
+                    onClick={handleNavigateBack}
                 >
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
@@ -365,6 +531,35 @@ export function GemGameModePage() {
                     />
                 </button>
             </div>
+            {/* Navigation Warning Modal */}
+            {showNavigationWarning && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+                    <div className="bg-[#374151] rounded-xl p-8 max-w-md">
+                        <h3 className="text-2xl font-bold mb-4 text-center">
+                            Cannot Leave Game
+                        </h3>
+                        <p className="mb-6 text-center">
+                            You have joined a game session. Please cancel the game first if
+                            you want to leave.
+                        </p>
+                        <div className="flex justify-center space-x-6">
+                            <button
+                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-lg"
+                                onClick={handleLeaveGame}
+                                disabled={isLeaving}
+                            >
+                                {isLeaving ? 'Cancelling...' : 'Cancel Game'}
+                            </button>
+                            <button
+                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg"
+                                onClick={() => setShowNavigationWarning(false)}
+                            >
+                                Stay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* Status Bar */}
             <div className="">
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
@@ -376,6 +571,7 @@ export function GemGameModePage() {
                     options={ticketOptions}
                     selectedValue={selectedTicketAmount}
                     onChange={setSelectedTicketAmount}
+                    disabled={hasJoined}
                 />
                 {/* Main Game Card */}
                 <div className="w-full max-w-md bg-[#374151] rounded-2xl overflow-hidden mb-3">
@@ -410,12 +606,23 @@ export function GemGameModePage() {
                                 {isLoadingCountdown ? 'Loading...' : formatTime(countdown)}
                             </p>
                         </div>
-                        <button
-                            className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16  py-2 rounded-2xl text-lg font-[Inter]"
-                            onClick={handleEnterGame}
-                        >
-                            Enter
-                        </button>
+                        {hasJoined ? (
+                            <button
+                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter] w-full"
+                                onClick={handleLeaveGame}
+                                disabled={isLeaving}
+                            >
+                                {isLeaving ? 'Cancelling...' : 'Cancel'}
+                            </button>
+                        ) : (
+                            <button
+                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter] w-full"
+                                onClick={handleJoinGame}
+                                disabled={isJoining}
+                            >
+                                {isJoining ? 'Entering...' : 'Enter'}
+                            </button>
+                        )}
                     </div>
                 </div>
                 {/* Legendary Card */}
@@ -443,7 +650,7 @@ export function GemGameModePage() {
                         <p className="text-lg ml-44 text-[#006CB9] font-[Inter]">
                             www.xyz.com
                         </p>
-                        <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-16 rounded-full  text-xs font-[Inter]">
+                        <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-16 rounded-full text-xs font-[Inter]">
                             Copy
                         </button>
                     </div>

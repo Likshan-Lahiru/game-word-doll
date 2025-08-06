@@ -3,14 +3,19 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
 import { apiRequest } from '../services/api'
+
 export function BetSelectorPage() {
+
     const navigate = useNavigate()
     const location = useLocation()
     const { setBetAmount, setWinAmount, isAuthenticated, coinBalance } =
         useGlobalContext()
     let { limitPlay, setLimitPlay } = useGlobalContext()
+
     const [selectedBet, setSelectedBet] = useState<number>(1000)
+
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
     const [betOptions, setBetOptions] = useState([
         {
             id: '',
@@ -31,26 +36,31 @@ export function BetSelectorPage() {
             earnAmount: 120000,
         },
     ])
+
     const [isLoading, setIsLoading] = useState(true)
+
     const [error, setError] = useState<string | null>(null)
+
     const [userId, setUserId] = useState<string>('')
+
     const [isJoining, setIsJoining] = useState(false)
+
     // Extract gameType from the URL state
     const { gameType } = location.state as {
         gameType: 'wordoll' | 'lockpickr'
     }
+
     useEffect(() => {
         const fetchBetOptions = async () => {
             try {
-                const token = localStorage.getItem('authToken')
-                console.log('Fetching bet options with token:', token)
-                if (!token) {
-                    console.warn('No auth token found. Using default bet options.')
-                    setIsLoading(false)
-                    return
-                }
                 setIsLoading(true)
-                const data = await apiRequest('/gold-coin-game-modes', 'GET')
+                // Fetch bet options from API for both authenticated and guest users
+                const data = await apiRequest(
+                    '/gold-coin-game-modes',
+                    'GET',
+                    undefined,
+                    false,
+                )
                 if (data && Array.isArray(data)) {
                     setBetOptions(data)
                     // Set default selected bet to the middle option if available
@@ -79,6 +89,7 @@ export function BetSelectorPage() {
         fetchBetOptions()
         fetchUserData()
     }, [setBetAmount, setWinAmount, isAuthenticated])
+
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -86,11 +97,13 @@ export function BetSelectorPage() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
     const handleSelectBet = (bet: number, win: number) => {
         setSelectedBet(bet)
         setBetAmount(bet)
         setWinAmount(win)
     }
+
     const handlePlay = async () => {
         const option = betOptions.find((opt) => opt.cost === selectedBet)
         if (!option) {
