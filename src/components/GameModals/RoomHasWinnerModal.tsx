@@ -21,27 +21,27 @@ export function RoomHasWinnerModal({
         navigate('/gem-game-mode')
     }
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]">
+        <div className="fixed inset-0 font-inter z-50 flex items-center justify-center bg-[#1F2937]">
             <div className="bg-[#374151] rounded-2xl p-6 text-center text-white w-[320px] flex flex-col items-center">
-                <h2 className="text-3xl font-bold mb-8 mt-6 font-[Inter]">
+                <h2 className="text-2xl font-bold mb-8 mt-6 font-[Inter]">
                     Room has a Winner !
                 </h2>
                 <div className="mb-4">
-                    <p className="text-xl font-medium font-[Inter]">THE LEGENDARY</p>
-                    <p className="text-xl font-medium mb-2 font-[Inter]">WINNER</p>
+                    <p className="font-medium font-[Inter]">THE LEGENDARY</p>
+                    <p className="font-medium mb-2 font-[Inter]">WINNER</p>
                 </div>
-                <p className="text-2xl font-medium mb-2 font-[Inter]">{winnerName}</p>
+                <p className="font-medium mb-0 font-[Inter]">{winnerName}</p>
                 <div className="flex items-center justify-center mb-8">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
                         alt="Gem"
-                        className="w-6 h-6 mr-2"
+                        className="w-4 h-4 mr-2"
                     />
-                    <span className="text-2xl font-medium font-[Inter]">
+                    <span className=" font-medium font-[Inter]">
             {legendaryAmount}
           </span>
                 </div>
-                <p className="text-xl font-medium mb-4 font-[Inter]">You Win</p>
+                <p className="text-xl font-medium mb-6 font-[Inter]">You Win</p>
                 <div className="flex items-center justify-center mb-8">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
@@ -52,7 +52,7 @@ export function RoomHasWinnerModal({
             {userReward}
           </span>
                 </div>
-                <p className="text-lg font-medium mb-8 font-[Inter]">
+                <p className="font-medium mb-8 font-[Inter]">
                     You could be the next one...
                 </p>
                 <button
