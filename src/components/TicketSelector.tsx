@@ -17,24 +17,31 @@ export function TicketSelector({
                                    disabled = false,
                                }: TicketSelectorProps) {
     return (
-        <div className="flex justify-center space-x-4 mb-6">
+        <div className="flex justify-center space-x-4 mb-3">
             {options.map((option) => (
-                <div key={option.id} className="flex flex-col items-center">
-                    <button
-                        className={`cursor-pointer p-4 rounded-2xl ${selectedValue === option.value ? 'bg-[#3B82F6]' : 'bg-[#374151]'} w-24 h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#3B82F6]'}`}
-                        onClick={() => !disabled && onChange(option.value)}
-                        disabled={disabled}
-                    >
-                        <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
-                            alt="Ticket"
-                            className="w-4 h-4 mr-2"
-                        />
-                        <span className="text-white text-lg font-semibold">
-              {option.label || option.value}
-            </span>
-                    </button>
-                </div>
+                <>
+                    <div key={option.id} className="flex flex-col items-center">
+                        <button
+                            className={`bg-[#374151] cursor-pointer p-4 rounded-2xl w-24 h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={() => !disabled && onChange(option.value)}
+                            disabled={disabled}
+                        >
+                            <img
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
+                                alt="Ticket"
+                                className="w-4 h-4 mr-2"
+                            />
+                            <span className="text-white text-lg font-semibold">
+                                {option.label || option.value}
+                            </span>
+                        </button>
+
+                        {/* Selected line */}
+                        { selectedValue === option.value &&
+                            <div className={"h-1 rounded-2xl w-16 bg-white mt-2"}></div>
+                        }
+                    </div>
+                </>
             ))}
         </div>
     )
