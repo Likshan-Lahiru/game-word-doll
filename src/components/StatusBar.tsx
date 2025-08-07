@@ -33,7 +33,9 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">{gemBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{Number.isInteger(gemBalance)
+                                ? gemBalance
+                                : gemBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             <div className="w-8 h-4 flex items-center justify-center">
@@ -43,7 +45,9 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">{voucherBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{Number.isInteger(voucherBalance)
+                                ? voucherBalance
+                                : voucherBalance.toFixed(2)}</span>
                         </div>
                     </div>
                 </>
@@ -77,7 +81,9 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 text-lg font-Inter font-bold">{gemBalance.toFixed(2)}</span>
+                            <span className="ml-1 text-lg font-Inter font-bold">{Number.isInteger(gemBalance)
+                                ? gemBalance
+                                : gemBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-1 space-x-2 outline outline-2 outline-[#374151]">
                             <div className="w-9 h-10 flex items-center justify-center">
@@ -88,7 +94,9 @@ export function StatusBar({
                                 />
                             </div>
                             <span className="ml-1 text-lg font-Inter font-bold">
-                                {voucherBalance.toFixed(2)}
+                                {Number.isInteger(voucherBalance)
+                                    ? voucherBalance
+                                    : voucherBalance.toFixed(2)}
                             </span>
                         </div>
                     </div>

@@ -61,7 +61,9 @@ export function BalanceSelector({
                                 className={`${isMobile && 'text-[11px] pl-[35px]'} min-w-[110px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
-                                {ticketBalance.toFixed(2)}
+                                {Number.isInteger(ticketBalance)
+                                    ? ticketBalance
+                                    : ticketBalance.toFixed(2)}
                                 {/*500,000,000,000,0*/}
                             </p>
                         </div>
