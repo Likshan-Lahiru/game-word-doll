@@ -551,7 +551,7 @@ export function GemGameModePage() {
                         </p>
                         <div className="flex justify-center space-x-6">
                             <button
-                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-6 py-3 rounded-lg"
+                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
                                 onClick={handleLeaveGame}
                                 disabled={isLeaving}
                             >
@@ -623,7 +623,7 @@ export function GemGameModePage() {
                             </button>
                         ) : (
                             <button
-                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter] w-full"
+                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
                                 onClick={handleJoinGame}
                                 disabled={isJoining}
                             >
@@ -653,11 +653,11 @@ export function GemGameModePage() {
                     <h3 className="text-lg font-semibold mt-2 mb-2 font-[Inter]">
                         Invite players to increase Gem Pool
                     </h3>
-                    <div className="flex items-center justify-between">
-                        <p className="text-lg ml-44 text-[#006CB9] font-[Inter]">
+                    <div className="flex items-center lr justify-between">
+                        <p className="text-lg ml-36 text-[#006CB9] font-[Inter]">
                             www.xyz.com
                         </p>
-                        <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-16 rounded-full text-xs font-[Inter]">
+                        <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-24 rounded-full text-xs font-[Inter]">
                             Copy
                         </button>
                     </div>
