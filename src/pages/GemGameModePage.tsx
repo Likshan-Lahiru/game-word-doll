@@ -572,7 +572,7 @@ export function GemGameModePage() {
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
-            <div className="flex-1 flex flex-col items-center justify-start pt-5 px-4">
+            <div className="flex-1 flex flex-col items-center justify-start pt-0 px-4">
                 {/* Ticket Selector Component */}
                 <TicketSelector
                     options={ticketOptions}

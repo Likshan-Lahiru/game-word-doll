@@ -22,7 +22,7 @@ export function TicketSelector({
                 <>
                     <div key={option.id} className="flex flex-col items-center">
                         <button
-                            className={`bg-[#374151] cursor-pointer p-4 rounded-2xl w-24 h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`bg-[#374151] cursor-pointer p-4 rounded-2xl w-28 h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                             onClick={() => !disabled && onChange(option.value)}
                             disabled={disabled}
                         >
