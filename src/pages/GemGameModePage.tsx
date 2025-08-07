@@ -511,11 +511,11 @@ export function GemGameModePage() {
                             Invite players to increase Gem Pool
                         </h3>
                         <div className="flex items-center justify-between">
-                            <p className="text-base ml-4 text-[#006CB9] font-[Inter]">
+                            <p className="text-lg ml-20 text-[#006CB9] font-[Inter]">
                                 www.xyz.com
                             </p>
-                            <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-4 rounded-full text-xs font-[Inter]">
-                                Copy
+                            <button
+                                className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-20 rounded-full text-xs font-[Inter]">                                Copy
                             </button>
                         </div>
                     </div>
@@ -615,7 +615,7 @@ export function GemGameModePage() {
                         </div>
                         {hasJoined ? (
                             <button
-                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter] w-full"
+                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
                                 onClick={handleLeaveGame}
                                 disabled={isLeaving}
                             >
