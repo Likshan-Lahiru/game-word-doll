@@ -446,18 +446,18 @@ export function RedeemPage() {
             <div className="mb-4">
 
               {/* Updated to match the image more closely - colon closer to the number */}
-              <div className="flex justify-between mb-2">
-                <span className="">Available Gems</span>
-                <span className="">
-                :{' '}
-                  <span className="mr-44 pr-2 font-medium">{availableGems.toFixed(2)}</span>
-              </span>
+              <div className="flex justify-start mb-2">
+                <p className={"mr-2 w-32"}>Available Gems </p>
+                <p className={""}>{" : "}{availableGems.toFixed(2)}</p>
+                {/*<span className="">Available Gems</span>*/}
+                {/*<span className="">:{' '}<span className="pr-2 text-left bg-amber-300 font-medium">{availableGems.toFixed(2)}</span></span>*/}
               </div>
-              <div className="flex justify-between mb-5">
-                <span className="">Total Gems</span>
-                <span className="">
-                : <span className="mr-44 font-medium">{totalGems.toFixed(2)}</span>
-              </span>
+              <div className="flex justify-start mb-5">
+                <p className="mr-2 w-32">Total Gems</p>
+                <p className="">{" : "}{totalGems.toFixed(2)}</p>
+              {/*  <span className="">*/}
+              {/*  : <span className="mr-44 font-medium">{totalGems.toFixed(2)}</span>*/}
+              {/*</span>*/}
               </div>
             </div>
 
@@ -488,7 +488,7 @@ export function RedeemPage() {
                       type="number"
                       value={redeemAmount}
                       onChange={(e) => setRedeemAmount(Number(e.target.value))}
-                      className="bg-transparent w-16 outline-none text-black text-lg"
+                      className="bg-transparent w-16 outline-none text-black text-md"
                   />
                   <span className="ml-1 font-['Inter'] text-black">(${redeemAmount})</span>
                 </div>
@@ -503,7 +503,7 @@ export function RedeemPage() {
                     onClick={handleRedeemNow}
                     className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-10 rounded-full font-medium text-sm w-auto"
                 >
-                  Transfer Now
+                  Redeem Now
                 </button>
               </div>
             </div>
@@ -537,14 +537,14 @@ export function RedeemPage() {
           {showTransferModal && (
               <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
                 <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                  <h2 className="text-xl font-bold mb-4">Transfer funds?</h2>
+                  <h2 className="text-xl font-bold mb-4">Redeem funds?</h2>
                   <p className="mb-6">
-                    Do you want to transfer ${redeemAmount} to your bank account?
+                    Do you want to redeem ${redeemAmount} to your bank account?
                   </p>
                   <div className="flex space-x-4">
                     <button
                         onClick={() => setShowTransferModal(false)}
-                        className="flex-1 bg-white text-gray-800 py-2 px-4 rounded-full font-medium"
+                        className="bg-white text-gray-800 py-2 px-4 rounded-full font-medium"
                     >
                       Cancel
                     </button>
@@ -552,7 +552,7 @@ export function RedeemPage() {
                         onClick={handleConfirmTransaction}
                         className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full font-medium"
                     >
-                      Confirm Transaction
+                      Confirm Redemption
                     </button>
                   </div>
                 </div>
@@ -563,17 +563,17 @@ export function RedeemPage() {
           {showCompletedModal && (
               <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
                 <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                  <div className="flex justify-center mb-2">
-                    <CheckCircleIcon className="w-6 h-6 text-green-500" />
+                  <div className="flex justify-start items-center mb-4">
+                    <h2 className="text-xl font-bold text-center pr-3">
+                      Transaction Completed
+                    </h2>
+                    <img src={"/complete-write.png"} alt={"write icon"} className={"w-5 h-5"}/>
                   </div>
-                  <h2 className="text-xl font-bold text-center mb-4">
-                    Transaction Completed
-                  </h2>
-                  <p className="text-center mb-6">
+                  <p className="text-start mb-6">
                     You transferred ${redeemAmount} to your bank account. You will
                     receive it in 3-5 business days.
                   </p>
-                  <div className="flex justify-center">
+                  <div className="flex justify-end mt-10">
                     <button
                         onClick={handleDone}
                         className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
@@ -627,9 +627,9 @@ export function RedeemPage() {
                   type="number"
                   value={redeemAmount}
                   onChange={(e) => setRedeemAmount(Number(e.target.value))}
-                  className="bg-transparent w-16 outline-none text-black text-lg"
+                  className="bg-transparent w-16 outline-none text-black text-md"
               />
-              <span className="ml-1 font-['Inter'] text-black">(${redeemAmount})</span>
+              <span className="ml-1 font-['Inter'] text-black text-md">(${redeemAmount})</span>
             </div>
 
             <p className="text-white">gems to cash ($1 per gem)</p>
@@ -672,15 +672,15 @@ export function RedeemPage() {
         {/* Transfer Funds Modal */}
         {showTransferModal && (
             <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-              <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">Transfer funds?</h2>
-                <p className="mb-6">
-                  Do you want to transfer ${redeemAmount} to your bank account?
+              <div className="bg-gray-800 rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
+                <h2 className="text-xl font-bold mb-4">Redeem funds?</h2>
+                <p className="mb-12">
+                  Do you want to redeem ${redeemAmount} to your bank account?
                 </p>
                 <div className="flex space-x-4">
                   <button
                       onClick={() => setShowTransferModal(false)}
-                      className="flex-1 bg-white text-gray-800 py-2 px-4 rounded-full font-medium"
+                      className="bg-white text-gray-800 px-5 rounded-full font-medium"
                   >
                     Cancel
                   </button>
@@ -688,7 +688,7 @@ export function RedeemPage() {
                       onClick={handleConfirmTransaction}
                       className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full font-medium"
                   >
-                    Confirm Transaction
+                    Confirm Redemption
                   </button>
                 </div>
               </div>
@@ -698,21 +698,21 @@ export function RedeemPage() {
         {/* Transaction Completed Modal */}
         {showCompletedModal && (
             <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-              <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                <div className="flex justify-center mb-2">
-                  <CheckCircleIcon className="w-6 h-6 text-green-500" />
+              <div className="bg-gray-800 rounded-xl p-16 w-full max-w-lg">
+                <div className="flex mb-4 items-center gap-x-2">
+                  <h2 className="text-2xl font-semibold text-center font-inter">
+                    Redeem Completed
+                  </h2>
+                  <img src={"/complete-write.png"} alt={"write icon"} className={"w-5 h-5"}/>
                 </div>
-                <h2 className="text-xl font-bold text-center mb-4">
-                  Transaction Completed
-                </h2>
-                <p className="text-center mb-6">
+                <p className=" mb-6 font-inter text-white text-opacity-75 font-semibold">
                   You transferred ${redeemAmount} to your bank account. You will
                   receive it in 3-5 business days.
                 </p>
-                <div className="flex justify-center">
+                <div className="flex justify-end mt-10">
                   <button
                       onClick={handleDone}
-                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
+                      className="font-inter bg-blue-500 hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
                   >
                     Done
                   </button>

@@ -246,7 +246,7 @@ export function RewardsTab() {
                           <div className={`flex items-center ${isMobile ? 'pr-2' : 'pr-5'} ${isSmallMobile && 'pr-0'}`}>
                             <img src={"https://uploadthingy.s3.us-west-1.amazonaws.com/oAU96XFXcVYkXtWtpooLxY/Vouchers.png"}
                                  alt={"ticket"}
-                                 className={`w-8 h-8`}
+                                 className={`w-10 h-16`}
                             />
                             <p className={`${fontInter} ${isMobile ? '' : 'text-sm'} ${isSmallMobile ? 'text-[9px]' : 'text-[10px]'}`}>x {item.reward}</p>
                           </div>
@@ -280,7 +280,7 @@ export function RewardsTab() {
                           onClick={handleCopyLink}
                           className={`${fontInter} ${isSmallMobile && 'text-[9px]'} hover:bg-blue-600 text-white px-5 py-3 text-[14px] bg-blue-500 rounded-full flex items-center ${isMobile ? 'h-5' : 'h-[32px] px-8'}`}
                       >
-                        {copySuccess ? 'Copied!' : 'Copy'}
+                        Copy
                       </button>
                     </div>
                 }

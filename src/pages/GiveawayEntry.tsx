@@ -3,12 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
+import {InfoModal} from "../components/infoModal/InfoModal.tsx";
+import {IMAGES} from "../constance/imagesLink.ts";
+
 export function GiveawayEntry() {
     const navigate = useNavigate()
     const location = useLocation()
-    const { spinBalance } = useGlobalContext()
+    const { isAuthenticated, spinBalance, selectedBalanceType, voucherBalance } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
+    const [openInfoModal, setOpenInfoModal] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -20,11 +24,55 @@ export function GiveawayEntry() {
 
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
-        navigate('/giveaway-game', {
-            state: {
-                selectedGame: gameType,
-            },
-        })
+
+        if (voucherBalance >= 2 && selectedBalanceType === 'ticket' && isAuthenticated) {
+            if (gameType === 'wordoll') {
+                navigate('/wordoll-game')
+            } else {
+                navigate('/lock-pickr-game')
+            }
+        } else {
+            navigate('/giveaway-game', {
+                state: {
+                    selectedGame: gameType,
+                },
+            })
+        }
+    }
+
+    const handleSpin = () => {
+        navigate('/spin')
+        // if (selectedBalanceType === 'ticket') {
+        //     if (voucherBalance === 0) {
+        //         setOpenInfoModal(true);
+        //     } else {
+        //         setOpenInfoModal(false);
+        //         navigate('/spin')
+        //     }
+        // } else  {
+        //     navigate('/spin')
+        // }
+    }
+
+    const GrandWin = () => {
+        return(
+            <>
+                <div className={`flex-col flex items-center justify-center gap-y-5
+                    ${isMobile && 'mt-10'}
+                `}>
+                    <p className={"font-semibold text-[20px] font-[DM Sans]"}>GRAND WIN</p>
+                    <div className={"flex items-center"}>
+                        <p className={"font-semibold pr-2 text-[20px] font-[DM Sans]"}>Win</p>
+                        <img
+                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                            alt="Heart"
+                            className="w-6 h-6 pt-[2px] object-contain"
+                        />
+                        <p className={"font-semibold pl-2 text-[20px] font-[DM Sans]"}>1,000 Daily</p>
+                    </div>
+                </div>
+            </>
+        )
     }
 
     const CustomWordollCard = () => {
@@ -122,7 +170,7 @@ export function GiveawayEntry() {
     return (
         <div className="relative font-['DM Sans']">
             {/* Back button */}
-            <div className="absolute top-12 left-4 z-10">
+            <div className="absolute top-12 left-2 z-10 lg:top-4 md:top-4 md:left-4 sm:top-4">
                 <button
                     className="w-12 h-12 rounded-full flex items-center justify-center"
                     onClick={() => navigate('/')}
@@ -134,48 +182,101 @@ export function GiveawayEntry() {
                     />
                 </button>
             </div>
+
             {/* Status Bar */}
             <div className="">
                 <StatusBar  isMobile={isMobile} hideOnlineCount={true} />
             </div>
+
             {/* Main Content */}
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
-                <div className="flex flex-col pt-3">
+                <div className="flex flex-col pt-1">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-4' : 'pb-10'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
+                    <h2 className={`${isMobile ? 'pb-3' : 'pb-5'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
                         Play any game to enter the Fortune Spin
                     </h2>
-                    {/* Game Cards */}
-                    <div className="px-4">
-                        <div
-                            className={`flex flex-wrap justify-center ${isMobile ? 'gap-3' : 'gap-4'} w-full max-w-2xl mx-auto`}
+
+                    <div className={"flex justify-center"}>
+                        {/* Left Side - Grand Win After Entries Select */}
+                        { selectedBalanceType === 'ticket' && !isMobile && isAuthenticated &&
+                            <GrandWin/>
+                        }
+
+
+                        {/* Game Cards */}
+                        <div className={`px-4 sm:h-[450px] 
+                            ${isMobile ? 'w-full' : 'mr-20 ml-20'}`
+                        }
                         >
                             <div
-                                className={`${isMobile ? 'w-[48%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                className={`flex justify-center ${isMobile ? 'gap-3' : 'gap-4'} w-full max-w-2xl mx-auto`}
                             >
-                                <CustomWordollCard />
-                            </div>
-                            <div
-                                className={`${isMobile ? 'w-[48%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
-                            >
-                                <CustomLockPickrCard />
+                                {/* WordollCard */}
+                                <div
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                >
+                                    <CustomWordollCard />
+                                </div>
+
+                                {/* LockPickerCard */}
+                                <div
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                >
+                                    <CustomLockPickrCard />
+                                </div>
                             </div>
                         </div>
+
+                        {/* Right Side - Grand Win After Entries Select */}
+                        { selectedBalanceType === 'ticket' && !isMobile &&  isAuthenticated &&
+                            <>
+                                <GrandWin/>
+                            </>
+                        }
                     </div>
+
+                    {/* Mobile - Grand Win After Entries Select */}
+                    { selectedBalanceType === 'ticket' && isMobile &&  isAuthenticated &&
+                        <>
+                            <GrandWin/>
+                        </>
+                    }
+
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-16 sm:mt-44 md:mt-8 lg:mt-24 xl:mt-44 mb-20">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-10 xl:mt-10 mb-20">
                         <button
-                            className={`${spinBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
-                            onClick={() => navigate('/spin')}
-                            disabled={spinBalance <= 0}
+                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
+                            onClick={handleSpin}
+                            disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
                         >
-                            SPIN NOW ({spinBalance} x Spin)
+                            { selectedBalanceType === 'ticket' && isAuthenticated ?
+                                <>
+                                    <div className={"h-[25px] flex items-center"}>
+                                        <p className={"flex items-center"}>FLIP NOW
+                                            {voucherBalance !== 0 &&
+                                            <>
+                                                (
+                                                <img
+                                                    src={IMAGES.voucher}
+                                                    alt={"voucher"}
+                                                    className={"w-6 h-6 mr-2 ml-2"}/>
+                                                <p>x {voucherBalance}  )</p>
+                                            </>
+                                        }
+                                        </p>
+                                    </div>
+                                </>
+                                :
+                                `SPIN NOW (${spinBalance} x Spin)`
+                            }
                         </button>
                     </div>
                 </div>
+
                 {/* Bottom Navigation */}
                 <BottomNavigation />
             </div>
+            <InfoModal isOpen={openInfoModal} onClose={() => setOpenInfoModal(false)} />
         </div>
     )
 }

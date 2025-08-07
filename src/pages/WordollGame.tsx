@@ -9,46 +9,19 @@ import { AuthenticatedWinModal } from '../components/GameModals/AuthenticatedWin
 import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLoseModal'
 import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
 import { useGlobalContext } from '../context/GlobalContext'
-const WORDS = ['HELLO', 'WORLD', 'REACT', 'GAMES', 'GUESS', 'BRAIN', 'SMART']
-function getLetterStatuses(
-    guess: string[],
-    target: string,
-): ('correct' | 'wrong-position' | 'incorrect')[] {
-  const statuses: ('correct' | 'wrong-position' | 'incorrect')[] =
-      Array(5).fill('incorrect')
-  const targetLetters = target.split('')
-  const used = Array(5).fill(false)
-  guess.forEach((letter, i) => {
-    if (letter === targetLetters[i]) {
-      statuses[i] = 'correct'
-      used[i] = true
-    }
-  })
-  guess.forEach((letter, i) => {
-    if (statuses[i] !== 'correct') {
-      const index = targetLetters.findIndex((l, j) => l === letter && !used[j])
-      if (index !== -1) {
-        statuses[i] = 'wrong-position'
-        used[index] = true
-      }
-    }
-  })
-  return statuses
-}
+import { apiRequest, checkLastWinTime } from '../services/api'
+import {CooldownModal} from "../components/GameCards/CooldownModal.tsx";
+
 export function WordollGame() {
   const navigate = useNavigate()
-
   const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
-  const [targetWord, setTargetWord] = useState('')
+  const [targetWord, setTargetWord] = useState('') // Keep for UI feedback only
+  const [wordLength, setWordLength] = useState(5)
   const [, setSelectedLetters] = useState<string[]>([])
   const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
-  const [currentAttempt, setCurrentAttempt] = useState<string[]>(
-      Array(5).fill(''),
-  )
-  const [lockedPositions, setLockedPositions] = useState<boolean[]>(
-      Array(5).fill(false),
-  )
-  const [timer, setTimer] = useState(300)
+  const [currentAttempt, setCurrentAttempt] = useState<string[]>([])
+  const [lockedPositions, setLockedPositions] = useState<boolean[]>([])
+  const [timer, setTimer] = useState(0)
   const [feedback, setFeedback] = useState<string>('')
   const [isMobile, setIsMobile] = useState(false)
   const [showCountdown, setShowCountdown] = useState(true)
@@ -59,38 +32,138 @@ export function WordollGame() {
   const [showWinModal, setShowWinModal] = useState(false)
   const [showLoseModal, setShowLoseModal] = useState(false)
   const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
+  const { selectedBalanceType } = useGlobalContext()
+  const [guestGameSession, setGuestGameSession] = useState<any>(null)
+  const [showCooldownModal, setShowCooldownModal] = useState(false)
+  const [cooldownTimeRemaining, setCooldownTimeRemaining] = useState('')
+  const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
+      ('correct' | 'wrong-position' | 'incorrect')[]
+  >([])
+  // Get number status (correct, wrong position, incorrect)
+  const getNumberStatus = (letter: string, index: number) => {
+    // First, check if we have status information from the API response
+    if (lastAttemptStatuses.length > 0) {
+      return lastAttemptStatuses[index]
+    }
+    // Fallback to default logic if API response is not available
+    if (
+        targetWord &&
+        index < targetWord.length &&
+        letter === targetWord[index]
+    ) {
+      return 'correct'
+    }
+    if (targetWord && targetWord.includes(letter)) {
+      return 'wrong-position'
+    }
+    return 'incorrect'
+  }
+
   useEffect(() => {
+    console.log("lastAttemptStatuses updated:", lastAttemptStatuses)
+  }, [lastAttemptStatuses])
+
+  useEffect(() => {
+    // Check if authenticated user is on cooldown
+    const checkCooldown = async () => {
+      if (isAuthenticated) {
+        try {
+          const userId = localStorage.getItem('userId')
+          if (userId) {
+            const result = await checkLastWinTime(userId, 'WORDALL')
+            // If there's a cooldown time remaining
+            if (result.cooldownRemaining && result.cooldownRemaining > 0) {
+              // Format the cooldown time (assuming it's in seconds)
+              const minutes = Math.floor(result.cooldownRemaining / 60)
+              const seconds = result.cooldownRemaining % 60
+              setCooldownTimeRemaining(
+                  `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+              )
+              setShowCooldownModal(true)
+            }
+          }
+        } catch (error) {
+          console.error('Error checking game cooldown:', error)
+          // Continue with the game if there's an error checking cooldown
+        }
+      }
+    }
+    checkCooldown()
+    // Check for authenticated game session data
+    const authSessionData = localStorage.getItem('authGameSession')
+    // Check for guest game session data
+    const guestSessionData = localStorage.getItem('guestGameSession')
+    if (authSessionData && isAuthenticated) {
+      try {
+        const parsedSession = JSON.parse(authSessionData)
+        // Set word length based on session data
+        const length = parsedSession.wordOrNumberLength || 5
+        setWordLength(length)
+        // Initialize current attempt and locked positions with the correct length
+        setCurrentAttempt(Array(length).fill(''))
+        setLockedPositions(Array(length).fill(false))
+        // If there's a target word in the session, use it for UI feedback
+        if (parsedSession.targetWord) {
+          setTargetWord(parsedSession.targetWord)
+        }
+      } catch (e) {
+        console.error('Error parsing auth session data:', e)
+        // Default to 5 if there's an error
+        setWordLength(5)
+        setCurrentAttempt(Array(5).fill(''))
+        setLockedPositions(Array(5).fill(false))
+      }
+    } else if (guestSessionData && !isAuthenticated) {
+      try {
+        const parsedSession = JSON.parse(guestSessionData)
+        setGuestGameSession(parsedSession)
+        // Set word length based on session data
+        const length = parsedSession.wordOrNumberLength || 5
+        setWordLength(length)
+        // Initialize current attempt and locked positions with the correct length
+        setCurrentAttempt(Array(length).fill(''))
+        setLockedPositions(Array(length).fill(false))
+        // If there's a target word in the session, use it for UI feedback
+        if (parsedSession.targetWord) {
+          setTargetWord(parsedSession.targetWord)
+        }
+      } catch (e) {
+        console.error('Error parsing guest session data:', e)
+        // Default to 5 if there's an error
+        setWordLength(5)
+        setCurrentAttempt(Array(5).fill(''))
+        setLockedPositions(Array(5).fill(false))
+      }
+    } else {
+      // Default to 5 if no session data
+      setWordLength(5)
+      setCurrentAttempt(Array(5).fill(''))
+      setLockedPositions(Array(5).fill(false))
+    }
+    if (selectedBalanceType === 'ticket') {
+      setTimer(900)
+    } else {
+      setTimer(300)
+    }
     const checkMobile = () => setIsMobile(window.innerWidth <= 768)
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-  useEffect(() => {
-    const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)]
-    setTargetWord(randomWord)
-    const targetLetters = randomWord.split('')
-    const allLetters = [...targetLetters]
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    while (allLetters.length < 10) {
-      const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)]
-      if (!allLetters.includes(randomLetter)) {
-        allLetters.push(randomLetter)
-      }
-    }
-    setSelectedLetters(allLetters.sort(() => Math.random() - 0.5))
-  }, [])
+  }, [isAuthenticated, selectedBalanceType])
+
   useEffect(() => {
     if (gameStarted && !showCountdown && isMobile && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 300)
     }
   }, [gameStarted, showCountdown, isMobile])
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!gameStarted) return
       const key = e.key.toUpperCase()
       if (/^[A-Z]$/.test(key)) {
         let nextPos = -1
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < wordLength; i++) {
           if (!lockedPositions[i] && !currentAttempt[i]) {
             nextPos = i
             break
@@ -103,7 +176,7 @@ export function WordollGame() {
         }
       } else if (e.key === 'Backspace') {
         let lastFilled = -1
-        for (let i = 4; i >= 0; i--) {
+        for (let i = wordLength - 1; i >= 0; i--) {
           if (!lockedPositions[i] && currentAttempt[i]) {
             lastFilled = i
             break
@@ -120,7 +193,8 @@ export function WordollGame() {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentAttempt, gameStarted, lockedPositions])
+  }, [currentAttempt, gameStarted, lockedPositions, wordLength])
+
   useEffect(() => {
     if (!gameStarted) return
     if (timer <= 0) {
@@ -130,56 +204,172 @@ export function WordollGame() {
     const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000)
     return () => clearInterval(countdown)
   }, [timer, gameStarted])
-  const checkGuess = useCallback(() => {
+
+  const checkGuess = useCallback(async () => {
     const guess = currentAttempt.join('')
-    if (guess.length < 5 || currentAttempt.includes('')) {
+    if (guess.length < wordLength || currentAttempt.includes('')) {
       return
     }
     setLastAttempt([...currentAttempt])
-    if (guess === targetWord) {
-      if (isAuthenticated) {
-        addCoins(winAmount)
+    if (isAuthenticated) {
+      // For authenticated users, use the solo/last-win-check endpoint
+      try {
+        const userId = localStorage.getItem('userId')
+        const checkWinData = {
+          userId: userId,
+          wordOrNumber: guess,
+          gameType: 'WORDALL',
+        }
+        await apiRequest('/solo/last-win-check', 'POST', checkWinData)
+            .then((response) => {
+              // Process the API response
+              if (response.win) {
+                // User won
+                addCoins(winAmount)
+                setShowWinModal(true)
+              } else {
+                // User didn't win - update UI based on API feedback
+                updateUIFromApiResponse(response, currentAttempt)
+                // Decrease attempts
+                setAttempts((prev) => prev - 1)
+                // Check if out of attempts
+                if (attempts <= 1) {
+                  setShowNoAttemptsModal(true)
+                  return
+                }
+              }
+            })
+            .catch((error) => {
+              console.error('Error checking win status:', error)
+              // Fall back to default handling if API call fails
+              setAttempts((prev) => prev - 1)
+              if (attempts <= 1) {
+                setShowNoAttemptsModal(true)
+              }
+            })
+      } catch (error) {
+        console.error('Error in API request:', error)
+        // Fall back to default handling if API call fails
+        setAttempts((prev) => prev - 1)
+        if (attempts <= 1) {
+          setShowNoAttemptsModal(true)
+        }
       }
-      setShowWinModal(true)
-      return
+    } else if (!isAuthenticated && guestGameSession) {
+      // For non-authenticated users, use the guess/win-check endpoint
+      try {
+        const checkWinData = {
+          googleSessionId: guestGameSession.googleSessionId,
+          wordOrNumber: guess,
+          gameType: guestGameSession.gameType,
+        }
+        await apiRequest('/guess/win-check', 'POST', checkWinData, false)
+            .then((response) => {
+              // Process the API response
+              if (response.win) {
+                // User won
+                addCoins(winAmount)
+                setShowWinModal(true)
+              } else {
+                // User didn't win - update UI based on API feedback
+                updateUIFromApiResponse(response, currentAttempt)
+                // Decrease attempts
+                setAttempts((prev) => prev - 1)
+                // Check if out of attempts
+                if (attempts <= 1) {
+                  setShowNoAttemptsModal(true)
+                  return
+                }
+              }
+            })
+            .catch((error) => {
+              console.error('Error checking win status:', error)
+              // Fall back to default handling if API call fails
+              setAttempts((prev) => prev - 1)
+              if (attempts <= 1) {
+                setShowNoAttemptsModal(true)
+              }
+            })
+      } catch (error) {
+        console.error('Error in API request:', error)
+        // Fall back to default handling if API call fails
+        setAttempts((prev) => prev - 1)
+        if (attempts <= 1) {
+          setShowNoAttemptsModal(true)
+        }
+      }
+    } else {
+      // Fallback for when session data is missing
+      setAttempts((prev) => prev - 1)
+      if (attempts <= 1) {
+        setShowNoAttemptsModal(true)
+      }
     }
-    const statuses = getLetterStatuses(currentAttempt, targetWord)
+  }, [
+    currentAttempt,
+    wordLength,
+    isAuthenticated,
+    guestGameSession,
+    attempts,
+    addCoins,
+    winAmount,
+  ])
+  // Helper function to update UI based on API response
+
+  const updateUIFromApiResponse = (response: any, attempt: string[]) => {
+    // Create a status array for the last attempt
+    const statuses: ('correct' | 'wrong-position' | 'incorrect')[] = Array(
+        attempt.length,
+    ).fill('incorrect')
+    // Mark correct positions
+    if (response.correctPositions && Array.isArray(response.correctPositions)) {
+      response.correctPositions.forEach((index: number) => {
+        // Convert from 1-based to 0-based indexing
+        const zeroBasedIndex = index - 1
+        if (zeroBasedIndex >= 0 && zeroBasedIndex < attempt.length) {
+          statuses[zeroBasedIndex] = 'correct'
+        }
+      })
+    }
+    // Mark correct but wrong positions
+    if (
+        response.correctButWrongPosition &&
+        Array.isArray(response.correctButWrongPosition)
+    ) {
+      response.correctButWrongPosition.forEach((index: number) => {
+        // Convert from 1-based to 0-based indexing
+        const zeroBasedIndex = index - 1
+        if (zeroBasedIndex >= 0 && zeroBasedIndex < attempt.length) {
+          statuses[zeroBasedIndex] = 'wrong-position'
+        }
+      })
+    }
+    // Update the last attempt statuses for rendering
+    setLastAttemptStatuses(statuses)
+    // Update locked positions and clear incorrect positions in current attempt
     const newLocks = [...lockedPositions]
-    const newAttempt = [...currentAttempt]
+    const newAttempt = Array(attempt.length).fill('')
     statuses.forEach((status, index) => {
       if (status === 'correct') {
         newLocks[index] = true
-      } else {
-        newAttempt[index] = ''
+        newAttempt[index] = attempt[index]
       }
     })
     setLockedPositions(newLocks)
     setCurrentAttempt(newAttempt)
-    setAttempts((prev) => prev - 1)
-    if (attempts <= 1) {
-      setShowNoAttemptsModal(true)
-      return
-    }
-    setFeedback('')
-  }, [
-    currentAttempt,
-    targetWord,
-    lockedPositions,
-    attempts,
-    isAuthenticated,
-    winAmount,
-    addCoins,
-  ])
+  }
+
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remaining = seconds % 60
     return `${minutes.toString().padStart(2, '0')}:${remaining.toString().padStart(2, '0')}`
   }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '')
     const newAttempt = [...currentAttempt]
     let inputIndex = 0
-    for (let i = 0; i < 5 && inputIndex < value.length; i++) {
+    for (let i = 0; i < wordLength && inputIndex < value.length; i++) {
       if (!lockedPositions[i]) {
         newAttempt[i] = value[inputIndex]
         inputIndex++
@@ -187,6 +377,7 @@ export function WordollGame() {
     }
     setCurrentAttempt(newAttempt)
   }
+
   const handleCountdownComplete = () => {
     setShowCountdown(false)
     setGameStarted(true)
@@ -194,13 +385,22 @@ export function WordollGame() {
       inputRef.current.focus()
     }
   }
+
   const renderLetterTile = (
       letter: string,
       index: number,
       status: 'correct' | 'wrong-position' | 'incorrect' | null,
   ) => {
     let bgColor = 'bg-gray-700'
-    if (status === 'correct') bgColor = 'bg-[#22C55E]'
+    // If we have a status from the API response, use it
+    if (lastAttemptStatuses.length > 0 && lastAttempt) {
+      const apiStatus = lastAttemptStatuses[index]
+      if (apiStatus === 'correct') bgColor = 'bg-[#22C55E]'
+      else if (apiStatus === 'wrong-position') bgColor = 'bg-[#C5BD22]'
+      else bgColor = 'bg-gray-700'
+    }
+    // Otherwise use the passed status
+    else if (status === 'correct') bgColor = 'bg-[#22C55E]'
     else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]'
     return (
         <div
@@ -211,6 +411,7 @@ export function WordollGame() {
         </div>
     )
   }
+
   const handleLetterClick = (index: number) => {
     if (!lockedPositions[index]) {
       const newAttempt = [...currentAttempt]
@@ -218,12 +419,13 @@ export function WordollGame() {
       setCurrentAttempt(newAttempt)
     }
   }
+
   const handleMobileKeyPress = (key: string) => {
     if (key === 'ENTER') {
       checkGuess()
     } else if (key === 'Backspace') {
       let lastFilled = -1
-      for (let i = 4; i >= 0; i--) {
+      for (let i = wordLength - 1; i >= 0; i--) {
         if (!lockedPositions[i] && currentAttempt[i]) {
           lastFilled = i
           break
@@ -236,7 +438,7 @@ export function WordollGame() {
       }
     } else if (/^[A-Z]$/.test(key)) {
       let nextPos = -1
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < wordLength; i++) {
         if (!lockedPositions[i] && !currentAttempt[i]) {
           nextPos = i
           break
@@ -249,6 +451,7 @@ export function WordollGame() {
       }
     }
   }
+
   const mobileKeyboard = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -260,7 +463,7 @@ export function WordollGame() {
           ref={gameContainerRef}
       >
         {/* Back button */}
-        <div className="absolute top-12 left-4 z-10">
+        <div className="absolute top-4 left-4 z-10">
           <button
               className="w-12 h-12 rounded-full flex items-center justify-center"
               onClick={() => navigate('/')}
@@ -276,12 +479,6 @@ export function WordollGame() {
           <p className="text-white text-xs">Timer</p>
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
-
-        {feedback && (
-            <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-              {feedback}
-            </div>
-        )}
         {isMobile && (
             <input
                 ref={inputRef}
@@ -295,17 +492,24 @@ export function WordollGame() {
                 spellCheck="false"
             />
         )}
-        <div className="flex justify-center mb-8">
-          <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
+        <div className="flex justify-center mt-5 mb-8">
+          <div
+              className="grid grid-cols-1 gap-2 text-2xl font-[Inter]"
+              style={{
+                gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+              }}
+          >
             {lastAttempt
                 ? lastAttempt.map((letter, index) =>
                     renderLetterTile(
                         letter,
                         index,
-                        getLetterStatuses(lastAttempt, targetWord)[index],
+                        lastAttemptStatuses.length > 0
+                            ? lastAttemptStatuses[index]
+                            : getNumberStatus(letter, index),
                     ),
                 )
-                : Array(5)
+                : Array(wordLength)
                     .fill('')
                     .map((_, index) => (
                         <div
@@ -321,9 +525,14 @@ export function WordollGame() {
             className="flex justify-center mb-8 "
             onClick={() => inputRef.current?.focus()}
         >
-          <div className="grid grid-cols-5 gap-2">
+          <div
+              className="grid grid-cols-1 gap-2"
+              style={{
+                gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+              }}
+          >
             {Array.from({
-              length: 5,
+              length: wordLength,
             }).map((_, index) => (
                 <div
                     key={index}
@@ -335,7 +544,7 @@ export function WordollGame() {
             ))}
           </div>
         </div>
-        <div className="text-center my-1">
+        <div className="text-center mt-16 my-1">
           <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
         </div>
         {isMobile && (
@@ -353,7 +562,6 @@ export function WordollGame() {
                 </div>
                 <p className="text-white text-lg font-bold">win</p>
               </div>
-
               <div className="w-full max-w-md mx-auto">
                 {mobileKeyboard.map((row, rowIndex) => (
                     <div
@@ -393,7 +601,7 @@ export function WordollGame() {
                         checkGuess()
                       } else if (key === 'Backspace') {
                         let lastFilled = -1
-                        for (let i = 4; i >= 0; i--) {
+                        for (let i = wordLength - 1; i >= 0; i--) {
                           if (!lockedPositions[i] && currentAttempt[i]) {
                             lastFilled = i
                             break
@@ -406,7 +614,7 @@ export function WordollGame() {
                         }
                       } else if (/^[A-Z]$/.test(key)) {
                         let nextPos = -1
-                        for (let i = 0; i < 5; i++) {
+                        for (let i = 0; i < wordLength; i++) {
                           if (!lockedPositions[i] && !currentAttempt[i]) {
                             nextPos = i
                             break
@@ -423,7 +631,7 @@ export function WordollGame() {
                     className="md:block"
                 />
               </div>
-              <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
+              <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-[76px] space-y-0">
                 <div className="flex items-center justify-center pt-2 h-10">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -434,7 +642,9 @@ export function WordollGame() {
                 {winAmount.toLocaleString()}
               </span>
                 </div>
-                <p className="text-xl pl-6 text-white font-semibold">win</p>
+                <p className="text-xl pl-6 text-white font-inter font-semibold">
+                  win
+                </p>
               </div>
             </>
         )}
@@ -442,25 +652,14 @@ export function WordollGame() {
             isOpen={showCountdown}
             onCountdownComplete={handleCountdownComplete}
         />
-        {isAuthenticated ? (
-            <>
-              <AuthenticatedWinModal
-                  isOpen={showWinModal}
-                  onClose={() => setShowWinModal(false)}
-                  reward={winAmount}
-              />
-              <AuthenticatedLoseModal
-                  isOpen={showLoseModal}
-                  onClose={() => setShowLoseModal(false)}
-                  penalty={1000}
-              />
-              <AuthenticatedNoAttemptsModal
-                  isOpen={showNoAttemptsModal}
-                  onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000}
-              />
-            </>
-        ) : (
+        <CooldownModal
+            isOpen={showCooldownModal}
+            onClose={() => setShowCooldownModal(false)}
+            remainingTime={cooldownTimeRemaining}
+            gameType="Wordoll"
+        />
+        {/* Show modals based on authentication status */}
+        {!isAuthenticated ? (
             <>
               <WinModal
                   isOpen={showWinModal}
@@ -477,7 +676,27 @@ export function WordollGame() {
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000} gameType={'wordoll'}/>
+                  penalty={1000}
+                  gameType={'wordoll'}
+              />
+            </>
+        ) : (
+            <>
+              <AuthenticatedWinModal
+                  isOpen={showWinModal}
+                  onClose={() => setShowWinModal(false)}
+                  reward={winAmount}
+              />
+              <AuthenticatedLoseModal
+                  isOpen={showLoseModal}
+                  onClose={() => setShowLoseModal(false)}
+                  penalty={1000}
+              />
+              <AuthenticatedNoAttemptsModal
+                  isOpen={showNoAttemptsModal}
+                  onClose={() => setShowNoAttemptsModal(false)}
+                  penalty={1000}
+              />
             </>
         )}
       </div>

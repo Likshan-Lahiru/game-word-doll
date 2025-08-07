@@ -11,11 +11,11 @@ export function StatusBar({
     hideOnlineCount?: boolean
     switchableBalanceSelector?: boolean
 }) {
-    const { isAuthenticated, gemBalance } = useGlobalContext()
+    const { isAuthenticated, gemBalance, voucherBalance } = useGlobalContext()
     const location = useLocation()
     const isHomePage = location.pathname === '/'
     return (
-        <div className="p-2 sm:p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+        <div className="p-2 sm:p-4 flex flex-col sm:flex-row sm:justify-between">
             {isMobile ? (
                 <>
                     <div className="w-full mb-2 ">
@@ -24,8 +24,8 @@ export function StatusBar({
                             switchable={switchableBalanceSelector}
                         />
                     </div>
-                    <div className="flex justify-center space-x-3 mb-2">
-                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-2 ">
+                    <div className="flex justify-center space-x-3 mb-0">
+                        <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-0 ">
                             <div className="w-7 h-18 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
@@ -43,7 +43,7 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">0</span>
+                            <span className="ml-1 font-bold">{voucherBalance.toFixed(2)}</span>
                         </div>
                     </div>
                 </>
@@ -51,7 +51,7 @@ export function StatusBar({
                 <>
                     <div className="flex items-center mr-52 space-x-3">
                         {isHomePage && !isAuthenticated && (
-                            <div className="absolute top-10 left-4 z-10">
+                            <div className="absolute top-6 left-7 z-10">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uYsqLmRkx6f1zBGRqMZA6G/cookycreanlogo3.png"
                                     alt="Cooky Cream Logo"
@@ -61,7 +61,7 @@ export function StatusBar({
                         )}
                     </div>
                     <div
-                        className={`flex-1 max-w-md mx-auto ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
+                        className={`flex-1 max-w-xl mx-auto mt-5 ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
                     >
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
@@ -69,7 +69,7 @@ export function StatusBar({
                         />
                     </div>
                     <div className="flex flex-col space-y-1 mt-5">
-                        <div className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-6 outline outline-2 outline-[#374151] mt-2 mb-2">
+                        <div className="w-50 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-4 outline outline-2 outline-[#374151] mt-1 mb-2">
                             <div className="w-5 h-7 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
@@ -77,18 +77,18 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 text-lg font-Inter font-bold">0</span>
+                            <span className="ml-1 text-lg font-Inter font-bold">{gemBalance.toFixed(2)}</span>
                         </div>
-                        <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-3 outline outline-2 outline-[#374151]">
-                            <div className="w-8 h-8 flex items-center justify-center">
+                        <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-1 space-x-2 outline outline-2 outline-[#374151]">
+                            <div className="w-9 h-10 flex items-center justify-center">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
                                     alt="Diamond"
-                                    className="w-14 h-28 object-contain"
+                                    className="w-[98px] h-[98px] object-contain"
                                 />
                             </div>
                             <span className="ml-1 text-lg font-Inter font-bold">
-                                {gemBalance.toFixed(2)}
+                                {voucherBalance.toFixed(2)}
                             </span>
                         </div>
                     </div>

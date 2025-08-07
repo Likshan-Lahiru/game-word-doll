@@ -32,43 +32,47 @@ export function BalanceSelector({
     }
     return (
         <>
-            <div className="w-full max-w-md mx-auto">
+            <div className="w-full max-w-2xl mx-auto">
                 {/* Main Bar */}
                 <div
-                    className={`relative ${isMobile ? 'h-10' : 'h-10'} h-10 sm:h-12 md:h-14 lg:h-16 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ${switchable ? 'cursor-pointer' : ''}`}
+                    className={`relative ${isMobile ? 'h-10' : 'h-10'} h-10 sm:h-12 md:h-12 lg:h-12 bg-[#0A0E1A] rounded-full border-2 border-gray-800 overflow-hidden ${switchable ? 'cursor-pointer' : ''}`}
                 >
                     {/* Switch Coin Bar and Ticket Bar */}
                     <div className="w-full h-full flex items-center justify-center">
-                        {/* Switch Coin Bar */}
+                            {/* Switch Coin Bar */}
                         <div
-                            className={`w-full h-full flex pr-20 items-center ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pr-16' : 'pr-24'} ${selectedBalanceType === 'coin' ? 'border-2 border-[#FDF222] rounded-full' : ''}`}
+                            className={`w-full h-full flex items-center justify-end border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? '' : 'lg:pr-[60px] md:pr-[48px] sm:pr-[68px]'} ${selectedBalanceType === 'coin' ? 'border-[#FDF222] rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('coin')}
                         >
                             <p
-                                className={`w-full font-inter text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
+                                className={`${isMobile && 'text-[11px] pr-10'} min-w-[139px] w-full font-inter pl-1 text-right ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'coin' ? 'text-[#FDF222]' : 'text-white'}`}
                                 onClick={() => handleSelect('coin')}
                             >
                                 {coinBalance.toLocaleString()}
+                                {/*500,000,000,000,0*/}
                             </p>
                         </div>
                         {/* Switch Ticket Bar */}
                         <div
-                            className={`w-full h-full flex items-center ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pl-14' : 'pl-20'} ${selectedBalanceType === 'ticket' ? 'border-2 border-green-600 rounded-full' : ''}`}
+                            className={`w-full h-full flex items-center justify-start border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? 'pl-5' : 'pl-16'} ${selectedBalanceType === 'ticket' ? 'border-green-600 rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('ticket')}
                         >
                             <p
-                                className={`w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
+                                className={`${isMobile && 'text-[11px] pl-[35px]'} min-w-[110px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
                                 {ticketBalance}
+                                {/*500,000,000,000,0*/}
                             </p>
                         </div>
                     </div>
-                    {/* Middle Coin and Ticket Icons Bar */}
+                     {/*Middle Coin and Ticket Icons Bar*/}
                     <div
-                        className={`flex justify-between h-full absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 rounded-full border-2 ${isMobile ? 'w-1/4' : 'w-2/1'} ${selectedBalanceType === 'coin' ? 'border-[#FDF222] bg-[#FFC000]' : 'border-[#22C55E] bg-green-600'}`}
+                        className={`flex justify-between h-full absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 rounded-full border-2 
+                        ${isMobile ? 'w-[85px] ml-[2px]' : 'w-1/5 md:w-[110px] ml-[2px]'} 
+                        ${selectedBalanceType === 'coin' ? 'border-[#FDF222] bg-[#FFC000]' : 'border-[#22C55E] bg-green-600'}`}
                     >
-                        {/* Coin Icon */}
+                    {/* Coin Icon */}
                         <div className="h-full w-full rounded-full">
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
@@ -78,7 +82,7 @@ export function BalanceSelector({
                         </div>
                         {/* Tickets Icon */}
                         <div
-                            className={`flex justify-end h-full w-full rounded-full ${!isMobile && 'ml-7'}`}
+                            className={`flex justify-end h-full w-full rounded-full ${!isMobile ? 'ml-2' : 'ml-2'}`}
                         >
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"

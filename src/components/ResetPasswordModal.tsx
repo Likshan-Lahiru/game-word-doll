@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import  { useState } from 'react'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 type ResetPasswordModalProps = {
@@ -18,6 +18,18 @@ export function ResetPasswordModal({
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const handleResetPassword = (e: React.FormEvent) => {
     e.preventDefault()
     if (newPassword !== confirmPassword) {
@@ -35,15 +47,15 @@ export function ResetPasswordModal({
   if (!isOpen) return null
   return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
-        <div className="bg-[#374151] rounded-lg p-5 sm:pt-10 sm:pb-24 sm:pr-20 sm:pl-20 shadow-xl w-full max-w-lg mx-4">
+        <div className={`${isMobile ? 'p-16 max-w-lg' : 'p-5 sm:pt-10 sm:pb-24 sm:pr-20 sm:pl-20 max-w-lg'} bg-[#374151] rounded-lg shadow-xl w-full mx-4`}>
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">
             Password Reset
           </h2>
-          <p className="text-[#FFFFFF80]/50 font-['Inter'] text-center text-xl sm:text-sm mb-4 sm:mb-6">
+          <p className={`${isMobile ? '' : 'text-xl'} text-[#FFFFFF80]/50 font-['Inter'] text-center mb-4 sm:mb-6`}>
             Enter a new password below to reset your password.
           </p>
           {error && (
-              <div className="bg-red-500/20 border border-red-500 text-red-300 px-4 py-2 rounded-md mb-4 text-xs sm:text-sm">
+              <div className="bg-red-500/20 border border-red-500 text-red-300 px-4 py-2 rounded-md mb-4 text-xs">
                 {error}
               </div>
           )}
@@ -53,7 +65,7 @@ export function ResetPasswordModal({
                 <input
                     type={showNewPassword ? 'text' : 'password'}
                     placeholder="New Password"
-                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-2xl focus:outline-none text-gray-800 text-sm sm:text-base"
+                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-2xl focus:outline-none text-gray-800"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
@@ -73,12 +85,12 @@ export function ResetPasswordModal({
                 </button>
               </div>
             </div>
-            <div className="relative mb-4 sm:mb-6">
+            <div className={`${isMobile ? 'mb-8' : 'mb-4'} relative sm:mb-6`}>
               <div className="relative">
                 <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="Confirm Password"
-                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-2xl focus:outline-none text-gray-800 text-sm sm:text-base"
+                    className="w-full px-4 py-2 sm:py-3 bg-white rounded-2xl focus:outline-none text-gray-800"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
@@ -98,13 +110,13 @@ export function ResetPasswordModal({
             </div>
             <button
                 type="submit"
-                className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors mb-2 sm:mb-3 text-sm sm:text-base"
+                className="w-full bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors mb-2 sm:mb-3"
             >
               Reset
             </button>
             <button
                 type="button"
-                className="w-full bg-white text-gray-800 font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors text-sm sm:text-base"
+                className="w-full bg-white text-gray-800 font-bold py-2 sm:py-3 px-4 rounded-2xl transition-colors"
                 onClick={onClose}
             >
               Cancel

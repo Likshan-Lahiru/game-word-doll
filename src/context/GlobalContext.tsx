@@ -1,7 +1,12 @@
-import React, { useState, createContext, useContext } from 'react'
+import React, { useEffect, useState, createContext, useContext } from 'react'
+import { getAuthToken, removeAuthToken } from '../services/auth.service'
 type GlobalContextType = {
     coinBalance: number
     ticketBalance: number
+    voucherBalance: number
+    temporaryVoucherBalance: number
+    temporaryTicketBalance: number
+    temporaryCoinBalance: number
     spinBalance: number
     gemBalance: number
     isAuthenticated: boolean
@@ -10,6 +15,10 @@ type GlobalContextType = {
     selectedBalanceType: 'coin' | 'ticket'
     setCoinBalance: (balance: number) => void
     setTicketBalance: (balance: number) => void
+    setVoucherBalance: (balance: number) => void
+    setTemporaryVoucherBalance: (balance: number) => void
+    setTemporaryTicketBalance: (balance: number) => void
+    setTemporaryCoinBalance: (balance: number) => void
     setSpinBalance: (balance: number) => void
     setGemBalance: (balance: number) => void
     addCoins: (amount: number) => void
@@ -21,19 +30,33 @@ type GlobalContextType = {
     setSelectedBalanceType: (type: 'coin' | 'ticket') => void
     login: () => void
     logout: () => void
+    limitPlay: number
+    setLimitPlay: React.Dispatch<React.SetStateAction<number>>
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [coinBalance, setCoinBalance] = useState(50000)
-    const [ticketBalance, setTicketBalance] = useState(15)
+    const [ticketBalance, setTicketBalance] = useState(0)
+    const [voucherBalance, setVoucherBalance] = useState(0)
+    const [temporaryVoucherBalance, setTemporaryVoucherBalance] = useState(0)
+    const [temporaryTicketBalance, setTemporaryTicketBalance] = useState(0)
+    const [temporaryCoinBalance, setTemporaryCoinBalance] = useState(0)
     const [spinBalance, setSpinBalance] = useState(0)
-    const [gemBalance, setGemBalance] = useState(15.2)
+    const [gemBalance, setGemBalance] = useState(0)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [betAmount, setBetAmount] = useState(1000)
     const [winAmount, setWinAmount] = useState(10000)
+    const [limitPlay, setLimitPlay] = useState<number>(3)
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
+    // Check for existing token on app initialization
+    useEffect(() => {
+        const token = getAuthToken()
+        if (token) {
+            setIsAuthenticated(true)
+        }
+    }, [])
     const addCoins = (amount: number) => {
         setCoinBalance((prev) => prev + amount)
     }
@@ -47,21 +70,32 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
         setIsAuthenticated(true)
     }
     const logout = () => {
+        removeAuthToken()
         setIsAuthenticated(false)
     }
     return (
         <GlobalContext.Provider
             value={{
+                limitPlay,
                 coinBalance,
                 ticketBalance,
+                voucherBalance,
+                temporaryVoucherBalance,
+                temporaryTicketBalance,
+                temporaryCoinBalance,
                 spinBalance,
                 gemBalance,
                 isAuthenticated,
                 betAmount,
                 winAmount,
                 selectedBalanceType,
+                setLimitPlay,
                 setCoinBalance,
                 setTicketBalance,
+                setVoucherBalance,
+                setTemporaryVoucherBalance,
+                setTemporaryTicketBalance,
+                setTemporaryCoinBalance,
                 setSpinBalance,
                 setGemBalance,
                 setIsAuthenticated,
