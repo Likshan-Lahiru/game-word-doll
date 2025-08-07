@@ -338,11 +338,12 @@ export function GemWordollGame() {
         setLastAttemptStatuses(statuses)
         // Update locked positions and clear incorrect positions in current attempt
         const newLocks = [...lockedPositions]
-        const newAttempt = Array(wordLength).fill('')
+        const newAttempt = [...currentAttempt]
         statuses.forEach((status, index) => {
             if (status === 'correct') {
                 newLocks[index] = true
-                newAttempt[index] = lastAttempt[index]
+            } else {
+                newAttempt[index] = ''
             }
         })
         setLockedPositions(newLocks)

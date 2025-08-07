@@ -45,9 +45,9 @@ export const apiRequest = async (
                 statusCode: response.status,
             }
         }
-        if (!response.ok) {
-            throw new Error(result.message || `Error: ${response.status}`)
-        }
+        // if (!response.ok) {
+        //     throw new Error(result.message || `Error: ${response.status}`)
+        // }
         return result
     } catch (error) {
         console.error('API request error:', error)

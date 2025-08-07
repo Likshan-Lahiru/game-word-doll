@@ -279,7 +279,7 @@ export function LockPickrGame() {
     // Mark correct positions
     if (response.correctPositions && Array.isArray(response.correctPositions)) {
       response.correctPositions.forEach((index: number) => {
-        statuses[index] = 'correct'
+        statuses[index - 1] = 'correct'
       })
     }
     // Mark correct but wrong positions
@@ -288,7 +288,7 @@ export function LockPickrGame() {
         Array.isArray(response.correctButWrongPosition)
     ) {
       response.correctButWrongPosition.forEach((index: number) => {
-        statuses[index] = 'wrong-position'
+        statuses[index - 1] = 'wrong-position'
       })
     }
     // Update the last attempt statuses for rendering
