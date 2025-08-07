@@ -19,6 +19,7 @@ export function UserWinGemModal({
         addGems(gemAmount)
         onClose()
     }
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]">
             <div className="bg-[#374151] rounded-2xl p-6 text-center text-white w-[320px] flex flex-col items-center">

@@ -72,7 +72,7 @@ export function UserProfilePage() {
   )
 }
 */
-import  { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ProfileTabs } from '../components/Profile/ProfileTabs'
 import { AccountTab } from '../components/Profile/AccountTab'
