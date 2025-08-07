@@ -102,31 +102,65 @@ export function GemGameModePage() {
         }
         fetchRoomTypes()
     }, [])
-    // Fetch session data (player count and gem pool)
-    useEffect(() => {
-        const fetchSessionData = async () => {
-            if (!selectedRoomId) return
-            try {
-                const formattedGameType = getFormattedGameType()
-                const endpoint = `/user-group-session/latest-session-user-count?roomTypeId=${selectedRoomId}&gameType=${formattedGameType}`
-                const response = await apiRequest(endpoint, 'GET')
-                if (response) {
-                    setPlayersJoined(response.userCount || 0)
-                    setGemPool(response.gemPool || 0)
-                    setGroupSessionId(response.groupSessionId || null)
-                }
-            } catch (err) {
-                console.error('Error fetching session data:', err)
-                // Don't set error state here to avoid blocking the UI
-                // Just use the existing values
+    // Fetch session data (player count and gem pool) separately
+    const fetchSessionData = async () => {
+        if (!selectedRoomId) return
+        try {
+            const formattedGameType = getFormattedGameType()
+            // Fetch session data (player count and gem pool)
+            const sessionEndpoint = `/user-group-session/latest-session-user-count?roomTypeId=${selectedRoomId}&gameType=${formattedGameType}`
+            const sessionResponse = await apiRequest(sessionEndpoint, 'GET')
+            if (sessionResponse) {
+                setPlayersJoined(sessionResponse.userCount || 0)
+                setGemPool(sessionResponse.gemPool || 0)
+                setGroupSessionId(sessionResponse.groupSessionId || null)
             }
+        } catch (err) {
+            console.error('Error fetching session data:', err)
         }
-        // Fetch immediately when roomId or gameType changes
-        fetchSessionData()
-        // Set up interval to fetch every minute
-        const intervalId = setInterval(fetchSessionData, 60000) // 60000 ms = 1 minute
-        // Clean up interval on unmount or when dependencies change
-        return () => clearInterval(intervalId)
+    }
+    // Fetch countdown time separately
+    const fetchCountdownTime = async () => {
+        if (!selectedRoomId) return
+        try {
+            setIsLoadingCountdown(true)
+            setCountdownActive(false) // Stop any existing countdown
+            const formattedGameType = getFormattedGameType()
+            // Fetch countdown time
+            const countdownEndpoint = `/group-session/latest-session-time-diff?roomTypeId=${selectedRoomId}&gameType=${formattedGameType}`
+            const countdownResponse = await apiRequest(countdownEndpoint, 'GET')
+            if (countdownResponse && countdownResponse.countdownSeconds) {
+                const seconds = parseInt(countdownResponse.countdownSeconds, 10)
+                if (!isNaN(seconds)) {
+                    setCountdown(seconds)
+                    setCountdownActive(true) // Start the countdown
+                }
+            }
+            setIsLoadingCountdown(false)
+        } catch (err) {
+            console.error('Error fetching countdown time:', err)
+            setIsLoadingCountdown(false)
+        }
+    }
+    // Replace the old fetchGameData function with separate fetch functions
+    // This function is kept for initial data load only
+    const fetchInitialData = async () => {
+        await fetchSessionData()
+        await fetchCountdownTime()
+    }
+    // Set up different intervals for session data and countdown
+    useEffect(() => {
+        // Initial data fetch
+        fetchInitialData()
+        // Set up interval to fetch session data every 5 seconds
+        const sessionDataIntervalId = setInterval(fetchSessionData, 5000)
+        // Set up interval to fetch countdown time every 30 seconds
+        const countdownIntervalId = setInterval(fetchCountdownTime, 30000)
+        // Clean up intervals on unmount or when dependencies change
+        return () => {
+            clearInterval(sessionDataIntervalId)
+            clearInterval(countdownIntervalId)
+        }
     }, [selectedRoomId, gameType])
     // New function to fetch word or number info
     const fetchWordOrNumberInfo = async (sessionId: string) => {
@@ -143,43 +177,16 @@ export function GemGameModePage() {
             return 5 // Default length on error
         }
     }
-    // Function to fetch countdown time from API
-    const fetchCountdownTime = async () => {
-        if (!selectedRoomId) return
-        try {
-            setIsLoadingCountdown(true)
-            setCountdownActive(false) // Stop any existing countdown
-            const formattedGameType = getFormattedGameType()
-            const endpoint = `/group-session/latest-session-time-diff?roomTypeId=${selectedRoomId}&gameType=${formattedGameType}`
-            const response = await apiRequest(endpoint, 'GET')
-            if (response) {
-                // Parse the response to extract seconds
-                if (response && response.countdownSeconds) {
-                    const seconds = parseInt(response.countdownSeconds, 10)
-                    if (!isNaN(seconds)) {
-                        setCountdown(seconds)
-                        setCountdownActive(true) // Start the countdown
-                    } else {
-                        console.warn(
-                            'Countdown value is not a number:',
-                            response.countdownSeconds,
-                        )
-                    }
-                } else {
-                    console.warn('Invalid countdown response:', response)
-                }
-            }
-            setIsLoadingCountdown(false)
-        } catch (err) {
-            console.error('Error fetching countdown time:', err)
-            setIsLoadingCountdown(false)
-            // Don't set error state here to avoid blocking the UI
-        }
-    }
     // Fetch countdown time initially when room ID or game type changes
+    /*
     useEffect(() => {
-        fetchCountdownTime()
+      fetchCountdownTime()
+      // Set up interval to fetch countdown time every 3 seconds
+      const countdownIntervalId = setInterval(fetchCountdownTime, 3000)
+      // Clean up interval on unmount or when dependencies change
+      return () => clearInterval(countdownIntervalId)
     }, [selectedRoomId, gameType])
+    */
     // Active countdown timer
     useEffect(() => {
         // Only start countdown if it's active and not loading
