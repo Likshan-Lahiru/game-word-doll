@@ -323,7 +323,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                       <img
                           src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
                           alt="Vouchers"
-                          className="w-8 h-8"
+                          className="w-6 h-6"
                       />
                     </div>
                     <h3 className=" font-bold text-white">Vouchers</h3>
