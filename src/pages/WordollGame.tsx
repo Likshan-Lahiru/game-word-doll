@@ -475,7 +475,7 @@ export function WordollGame() {
             />
           </button>
         </div>
-        <div className="text-center mb-0 mt-12">
+        <div className="text-center mb-0 mt-6">
           <p className="text-white text-xs">Timer</p>
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
@@ -522,7 +522,7 @@ export function WordollGame() {
           </div>
         </div>
         <div
-            className="flex justify-center mb-0 "
+            className="flex justify-center mb-2 "
             onClick={() => inputRef.current?.focus()}
         >
           <div
@@ -544,7 +544,7 @@ export function WordollGame() {
             ))}
           </div>
         </div>
-        <div className="text-center mt-4 my-1">
+        <div className="text-center mt-4 mb-4 my-1">
           <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
         </div>
         {isMobile && (
