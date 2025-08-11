@@ -43,7 +43,7 @@ export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
     }
 
     return (
-        <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative">
+        <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative">
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img
@@ -55,7 +55,7 @@ export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
             {/* Gradient overlay */}
             {/*<div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>*/}
             {/* Title */}
-            <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+            <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Cooky Flip
             </h3>
             {/* Spacer */}

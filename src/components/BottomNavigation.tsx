@@ -54,7 +54,7 @@ export function BottomNavigation() {
       location.pathname.includes('/signup')
   return (
       <div
-          className={`${isMobile ? 'py-4' : 'py-2 px-4'} bg-[#1F2937] fixed bottom-0 left-0 w-full z-50 flex justify-center`}
+          className={`${isMobile ? 'py-4' : 'py-1 px-4'} bg-[#1F2937] fixed bottom-0 left-0 w-full z-50 flex justify-center`}
       >
         <div
             className={`flex justify-between ${isMobile ? 'w-full max-w-[280px]' : 'w-full max-w-xs'}`}

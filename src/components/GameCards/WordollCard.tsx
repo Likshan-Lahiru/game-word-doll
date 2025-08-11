@@ -64,7 +64,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
         )
     }
     return (
-        <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative">
+        <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative">
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img
@@ -75,12 +75,12 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
             </div>
             {/* x3 indicator in top right corner */}
             { !isAuthenticated &&
-                <div className="absolute top-2 right-6 text-white text-2xl font-semibold z-10">
+                <div className="absolute top-2 right-7 text-white text-xl font-semibold z-10">
                     x 3
                 </div>
             }
             {/* Title */}
-            <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+            <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Wordoll
             </h3>
             {/* Spacer to push button to bottom */}
