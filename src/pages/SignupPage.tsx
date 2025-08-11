@@ -75,7 +75,7 @@ export function SignupPage() {
               <input
                   type="text"
                   placeholder="User Name"
-                  className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
+                  className="placeholder:font-semibold w-full px-4 py-3 bg-[#374151] rounded-xl text-white focus:outline-none"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -83,7 +83,7 @@ export function SignupPage() {
               <input
                   type="email"
                   placeholder="Email"
-                  className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
+                  className="placeholder:font-semibold w-full px-4 py-3 bg-[#374151] rounded-xl text-white focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -92,7 +92,7 @@ export function SignupPage() {
                 <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
-                    className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
+                    className="placeholder:font-semibold w-full px-4 py-3 bg-[#374151] rounded-xl text-white focus:outline-none"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -117,14 +117,35 @@ export function SignupPage() {
                   )}
                 </button>
               </div>
-              <input
-                  type="text"
-                  placeholder="Country"
-                  className="placeholder:font-semibold w-full px-4 py-4 bg-[#374151] rounded-xl text-white focus:outline-none"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  required
-              />
+              <div className="relative">
+                <select
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="w-full px-4 py-3 bg-[#374151] rounded-md text-white appearance-none pr-8"
+                >
+                  <option value="Australia">Australia</option>
+                  <option value="United States">United States</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Germany">Germany</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg
+                      className="w-4 h-4 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
               <div className="bg-[#374151] rounded-xl p-4 text-center">
                 <h3 className="font-inter font-bold mb-0">Sign Up Bonus</h3>
                 <p className="mb-4 font-bold font-inter">Get</p>
