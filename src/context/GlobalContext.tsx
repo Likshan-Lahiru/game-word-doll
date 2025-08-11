@@ -12,6 +12,7 @@ type GlobalContextType = {
     isAuthenticated: boolean
     betAmount: number
     winAmount: number
+    pageType: string
     selectedBalanceType: 'coin' | 'ticket'
     setCoinBalance: (balance: number) => void
     setTicketBalance: (balance: number) => void
@@ -28,6 +29,7 @@ type GlobalContextType = {
     setBetAmount: (amount: number) => void
     setWinAmount: (amount: number) => void
     setSelectedBalanceType: (type: 'coin' | 'ticket') => void
+    setPageType: (type: string) => void
     login: () => void
     logout: () => void
     limitPlay: number
@@ -47,9 +49,9 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [betAmount, setBetAmount] = useState(1000)
     const [winAmount, setWinAmount] = useState(10000)
     const [limitPlay, setLimitPlay] = useState<number>(3)
-    const [selectedBalanceType, setSelectedBalanceType] = useState<
-        'coin' | 'ticket'
-    >('coin')
+    const [selectedBalanceType, setSelectedBalanceType] = useState<'coin' | 'ticket'>('coin')
+    const [pageType, setPageType] = useState('')
+
     // Check for existing token on app initialization
     useEffect(() => {
         const token = getAuthToken()
@@ -88,6 +90,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 isAuthenticated,
                 betAmount,
                 winAmount,
+                pageType,
                 selectedBalanceType,
                 setLimitPlay,
                 setCoinBalance,
@@ -102,6 +105,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 setBetAmount,
                 setWinAmount,
                 setSelectedBalanceType,
+                setPageType,
                 addCoins,
                 addSpins,
                 addGems,
