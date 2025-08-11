@@ -281,7 +281,7 @@ export function BetSelectorPage() {
         )
     }
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+        <div className="flex flex-col w-full bg-[#1F2937] text-white">
             {/* Back button */}
             <div className="absolute top-4 left-4 z-10">
                 <button
@@ -300,7 +300,7 @@ export function BetSelectorPage() {
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
-            <div className="flex-1 flex flex-col items-center justify-center p-4 mb-96">
+            <div className="flex-1 flex flex-col items-center justify-center p-0 mb-0">
                 <div className="w-full max-w-md">
                     {/* Bet Options */}
                     <div className="flex justify-center space-x-4 mb-6 relative ">
@@ -323,8 +323,8 @@ export function BetSelectorPage() {
                                             className="w-5 h-5 ml-2"
                                         />
                                         <span className="text-white text-lg font-bold text-center w-full m-1 font-[Inter]">
-                      {option.cost.toLocaleString()}
-                    </span>
+                                          {option.cost.toLocaleString()}
+                                        </span>
                                         {/* Underline for selected option */}
                                         {selectedBet === option.cost && (
                                             <div className="absolute -bottom-3 ml-4 mr-4 left-0 right-0 h-1 bg-white rounded-full"></div>
