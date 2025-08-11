@@ -25,11 +25,15 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
                 })
             }
         } else {
-            navigate('/bet-selector', {
-                state: {
-                    gameType: 'lockpickr',
-                },
-            })
+            if (isAuthenticated && selectedBalanceType === 'ticket' || !isAuthenticated && selectedBalanceType === 'coin') {
+                navigate('/bet-selector', {
+                    state: {
+                        gameType: 'lockpickr',
+                    },
+                })
+            } else {
+                navigate('/login')
+            }
         }
     }
     if (isMobile) {

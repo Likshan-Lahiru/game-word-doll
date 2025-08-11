@@ -12,7 +12,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
     const handlePlayClick = () => {
 
         if (isAuthenticated) {
-            if (selectedBalanceType === 'ticket') {
+            if (selectedBalanceType === 'ticket' ) {
                 // Navigate to gem game mode if ticket is selected
                 navigate('/gem-game-mode', {
                     state: {
@@ -28,11 +28,15 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 })
             }
         } else {
-            navigate('/bet-selector', {
-                state: {
-                    gameType: 'wordoll',
-                },
-            })
+            if (isAuthenticated && selectedBalanceType === 'ticket' || !isAuthenticated && selectedBalanceType === 'coin') {
+                navigate('/bet-selector', {
+                    state: {
+                        gameType: 'wordoll',
+                    },
+                })
+            } else {
+                navigate('/login')
+            }
         }
     }
 

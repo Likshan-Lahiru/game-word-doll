@@ -459,7 +459,7 @@ export function WordollGame() {
   ]
   return (
       <div
-          className="flex flex-col w-full  min-h-screen bg-[#1F2937] text-white p-4"
+          className="flex flex-col w-full  min-h-screen bg-[#1F2937] text-white p-0"
           ref={gameContainerRef}
       >
         {/* Back button */}
@@ -475,7 +475,7 @@ export function WordollGame() {
             />
           </button>
         </div>
-        <div className="text-center mb-24 mt-16">
+        <div className="text-center mb-0 mt-12">
           <p className="text-white text-xs">Timer</p>
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
@@ -522,7 +522,7 @@ export function WordollGame() {
           </div>
         </div>
         <div
-            className="flex justify-center mb-8 "
+            className="flex justify-center mb-0 "
             onClick={() => inputRef.current?.focus()}
         >
           <div
@@ -544,7 +544,7 @@ export function WordollGame() {
             ))}
           </div>
         </div>
-        <div className="text-center mt-16 my-1">
+        <div className="text-center mt-4 my-1">
           <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
         </div>
         {isMobile && (
@@ -594,7 +594,7 @@ export function WordollGame() {
         )}
         {!isMobile && (
             <>
-              <div className="mt-4 mb-4">
+              <div className="mt-0 mb-0">
                 <VirtualKeyboard
                     onKeyPress={(key) => {
                       if (key === 'Enter') {
