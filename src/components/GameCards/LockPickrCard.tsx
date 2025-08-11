@@ -70,9 +70,9 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
             {/* Spacer to push button to bottom */}
             <div className="flex-1"></div>
             {/* Play button */}
-            <div className="p-4 flex justify-center mb-6 relative z-10">
+            <div className="p-2 flex justify-center mb-6 relative z-10">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-14 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
                 >
                     PLAY
