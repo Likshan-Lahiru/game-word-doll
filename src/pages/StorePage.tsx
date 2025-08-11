@@ -600,15 +600,18 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { BalanceSelector } from '../components/BalanceSelector'
 import { BottomNavigation } from '../components/BottomNavigation'
 import {RedeemPage} from "./RedeemPage.tsx";
+import {StatusBar} from "../components/StatusBar.tsx";
 
 export function StorePage() {
-  const { addCoins } = useGlobalContext()
+  const { addCoins, setPageType } = useGlobalContext()
   const [activeTab, setActiveTab] = useState('coins')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
   const {ticketBalance, setTicketBalance} = useGlobalContext();
 
   useEffect(() => {
+    setPageType("store");
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
     }
@@ -786,25 +789,27 @@ export function StorePage() {
 
   // Desktop view
   return (
-      <div className={`flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 mt-5 `}>
+      <div className={`flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-2 mt-0 `}>
 
         {/* Top balance bar */}
-        <div className="p-4">
+        {/*<div className="p-0">*/}
           {activeTabDesktop === 'coins' && (
-              <BalanceSelector
-                  onSelect={(type) => console.log(`Selected: ${type}`)}
+              <StatusBar
+                  isMobile={isMobile}
+                  hideOnlineCount={true}
+                  switchableBalanceSelector={false}
               />
           )}
-        </div>
+        {/*</div>*/}
 
         {/* Main content */}
-        <div className="flex flex-1 pt-5 pl-16 pr-5 pb-8">
+        <div className="flex flex-1 pt-5 pl-16 pr-5 pb-0">
 
           {/* Left sidebar */}
-          <div className={`${activeTabDesktop === 'redeem' ? 'mt-14 w-[467px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}>
+          <div className={`${activeTabDesktop === 'redeem' ? 'mt-[68px] w-[467px]' : 'w-72'} bg-[#374151] rounded-xl pr-6 pl-6 pt-6 mr-4`}>
             <h1 className="text-2xl font-bold mb-8">Store</h1>
             <button
-                className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-4 flex items-center`}
+                className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
                 onClick={() => {
                   setActiveTabDesktop('coins')
                 }}
@@ -812,29 +817,42 @@ export function StorePage() {
             <span className="flex-1 text-left ml-2 font-medium">
               Get Gold Coins
             </span>
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/tseH8zwDf6PgMMJLoCm3uz/gold-store.png"
-                    alt="Coins"
-                    className="w-10 h-10"
-                />
-              </div>
+              {/*<div className="w-12 h-12 flex items-center justify-center">*/}
+              {/*  <img*/}
+              {/*      src="https://uploadthingy.s3.us-west-1.amazonaws.com/tseH8zwDf6PgMMJLoCm3uz/gold-store.png"*/}
+              {/*      alt="Coins"*/}
+              {/*      className="w-10 h-10"*/}
+              {/*  />*/}
+              {/*</div>*/}
             </button>
 
             <button
-                className={`${activeTabDesktop === 'redeem' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl flex items-center`}
+                className={`${activeTabDesktop === 'redeem' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 mb-2 rounded-xl flex items-center`}
                 onClick={() => {
                   setActiveTabDesktop('redeem')
                 }}
             >
               <span className="flex-1 text-left ml-2 font-medium">Redeem</span>
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
-                    alt="Redeem"
-                    className="w-12 h-12"
-                />
-              </div>
+              {/*<div className="w-12 h-12 flex items-center justify-center">*/}
+              {/*  <img*/}
+              {/*      src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"*/}
+              {/*      alt="Redeem"*/}
+              {/*      className="w-12 h-12"*/}
+              {/*  />*/}
+              {/*</div>*/}
+            </button>
+
+            <button
+                className={`${activeTabDesktop === 'convertGems' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl flex items-center`}
+            >
+              <span className="flex-1 text-left ml-2 font-medium">Convert Gems</span>
+              {/*<div className="w-12 h-12 flex items-center justify-center">*/}
+              {/*  <img*/}
+              {/*      src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"*/}
+              {/*      alt="Redeem"*/}
+              {/*      className="w-12 h-12"*/}
+              {/*  />*/}
+              {/*</div>*/}
             </button>
           </div>
 
@@ -843,11 +861,11 @@ export function StorePage() {
               // Coins Section
               <>
                 {/* Right content area */}
-                <div className={`flex-1 bg-[#374151] rounded-xl p-6 `}>
+                <div className={`flex-1 bg-[#374151] rounded-xl p-6`}>
                   <h2 className="text font-medium mb-6 font-['DM Sans']">GC Package</h2>
 
                   {/* Package cards - updated to be responsive with min/max width */}
-                  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-4 mb-8`}>
+                  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-4 mb-4`}>
                     {packages.map((pkg) => (
                         <div
                             key={pkg.id}
@@ -865,25 +883,25 @@ export function StorePage() {
                           )}
 
                           <div
-                              className={`relative rounded-xl overflow-hidden flex flex-col h-[440px] bg-white ${
+                              className={`relative rounded-xl overflow-hidden flex flex-col h-[320px] bg-white ${
                                   pkg.bestValue
                                       ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]'
                                       : ''
                               }`}
                           >
                             {/* Coin image */}
-                            <div className="flex justify-center items-center pt-16 pb-6">
+                            <div className="flex justify-center items-center pt-6 pb-3">
                               <img
                                   src={pkg.image}
                                   alt="Coins"
-                                  className="w-24 h-24 object-contain"
+                                  className="w-24 h-20 object-contain"
                               />
                             </div>
 
                             {/* Package content - with consistent alignment */}
                             <div className="flex-1 flex flex-col text-center px-4">
                               {/* GC amount */}
-                              <p className="font-bold text-xl text-black mb-2 font-['DM Sans']">
+                              <p className="font-bold text-[17px] text-black mb-0 font-['DM Sans']">
                                 GC {pkg.coins.toLocaleString()}
                               </p>
 
@@ -892,14 +910,14 @@ export function StorePage() {
                                 {
                                   pkg.bonus > 0 ? (
                                       <>
-                                        <p className="text-black text-xl">+</p>
+                                        <p className="text-black text-[17px]">+</p>
                                         <div className="flex items-center justify-center mt-1">
                                           <img
                                               src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
                                               alt="Ticket"
-                                              className="w-8 h-8 mr-1 bg-[#0CC242] rounded-full p-[2px]"
+                                              className="w-6 h-6 mr-1 bg-[#0CC242] rounded-full p-[2px]"
                                           />
-                                          <span className="text-black text-xl font-bold font-['DM Sans']">
+                                          <span className="text-black text-[17px] font-bold font-['DM Sans']">
                                             × {pkg.bonus} free
                                           </span>
                                         </div>
@@ -911,16 +929,16 @@ export function StorePage() {
                               </div>
 
                               {/* Buy button - always at the same position */}
-                              <div className="mt-auto mb-8 px-4">
+                              <div className="mb-0 px-4">
 
                                 {/* Price */}
-                                <p className="font-bold text-xl text-black my-4 font-['DM Sans']">
+                                <p className="font-bold text-[19px] text-black my-4 font-['DM Sans']">
                                   ${pkg.price}
                                 </p>
 
                                 <button
                                     onClick={() => handleBuy(pkg)}
-                                    className="w-full bg-[#56CA5A] hover:bg-[#4BB850] text-white py-3 rounded-full font-bold"
+                                    className="w-full bg-[#56CA5A] hover:bg-[#4BB850] text-white py-1 rounded-full font-bold"
                                 >
                                   BUY
                                 </button>
@@ -932,7 +950,7 @@ export function StorePage() {
                   </div>
 
                   {/* Footer text */}
-                  <div className="text-center mt-8 pt-16">
+                  <div className="text-center mt-1 pt-0">
                     <p className="text-white">
                       Free to play. NO PURCHASE NECESSARY.
                     </p>
@@ -946,7 +964,7 @@ export function StorePage() {
               :
 
               // Redeem Section
-              <div className={`${activeTabDesktop === 'redeem' ? 'mt-14' : ''}`}>
+              <div className={`${activeTabDesktop === 'redeem' ? 'mt-[68px]' : ''}`}>
                 <RedeemPage/>
               </div>
           }
