@@ -1,11 +1,12 @@
-import React, { useState, createContext, useContext } from 'react'
+import React, { useEffect, useState, createContext, useContext } from 'react'
+import { getAuthToken, removeAuthToken } from '../services/auth.service'
 type GlobalContextType = {
     coinBalance: number
     ticketBalance: number
     voucherBalance: number
-    temporaryVoucherBalance: number,
-    temporaryTicketBalance: number,
-    temporaryCoinBalance: number,
+    temporaryVoucherBalance: number
+    temporaryTicketBalance: number
+    temporaryCoinBalance: number
     spinBalance: number
     gemBalance: number
     isAuthenticated: boolean
@@ -15,9 +16,9 @@ type GlobalContextType = {
     setCoinBalance: (balance: number) => void
     setTicketBalance: (balance: number) => void
     setVoucherBalance: (balance: number) => void
-    setTemporaryVoucherBalance: (balance: number) => void,
-    setTemporaryTicketBalance: (balance: number) => void,
-    setTemporaryCoinBalance: (balance: number) => void,
+    setTemporaryVoucherBalance: (balance: number) => void
+    setTemporaryTicketBalance: (balance: number) => void
+    setTemporaryCoinBalance: (balance: number) => void
     setSpinBalance: (balance: number) => void
     setGemBalance: (balance: number) => void
     addCoins: (amount: number) => void
@@ -29,7 +30,6 @@ type GlobalContextType = {
     setSelectedBalanceType: (type: 'coin' | 'ticket') => void
     login: () => void
     logout: () => void
-
     limitPlay: number
     setLimitPlay: React.Dispatch<React.SetStateAction<number>>
 }
@@ -50,7 +50,13 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
-
+    // Check for existing token on app initialization
+    useEffect(() => {
+        const token = getAuthToken()
+        if (token) {
+            setIsAuthenticated(true)
+        }
+    }, [])
     const addCoins = (amount: number) => {
         setCoinBalance((prev) => prev + amount)
     }
@@ -64,9 +70,9 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
         setIsAuthenticated(true)
     }
     const logout = () => {
+        removeAuthToken()
         setIsAuthenticated(false)
     }
-
     return (
         <GlobalContext.Provider
             value={{
