@@ -22,14 +22,14 @@ export function TicketSelector({
                 <>
                     <div key={option.id} className="flex flex-col items-center">
                         <button
-                            className={`bg-[#374151] cursor-pointer p-4 rounded-2xl w-28 h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`bg-[#374151] cursor-pointer p-4 rounded-2xl w-[139px] h-12 flex items-center justify-center mt-6 relative ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                             onClick={() => !disabled && onChange(option.value)}
                             disabled={disabled}
                         >
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
                                 alt="Ticket"
-                                className="w-4 h-4 mr-2"
+                                className="w-6 h-6 mr-2"
                             />
                             <span className="text-white text-lg font-semibold">
                                 {option.label || option.value}
@@ -38,7 +38,7 @@ export function TicketSelector({
 
                         {/* Selected line */}
                         { selectedValue === option.value &&
-                            <div className={"h-1 rounded-2xl w-16 bg-white mt-2"}></div>
+                            <div className={"h-1 rounded-2xl w-[100px] bg-white mt-2"}></div>
                         }
                     </div>
                 </>

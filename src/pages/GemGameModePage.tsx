@@ -572,7 +572,7 @@ export function GemGameModePage() {
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
-            <div className="flex-1 flex flex-col items-center justify-start pt-0 px-4">
+            <div className="flex-1 flex flex-col items-center pt-0 px-4">
                 {/* Ticket Selector Component */}
                 <TicketSelector
                     options={ticketOptions}
@@ -582,11 +582,11 @@ export function GemGameModePage() {
                 />
                 {/* Main Game Card */}
                 <div className="w-full max-w-md bg-[#374151] rounded-2xl overflow-hidden mb-3">
-                    <div className="p-6 text-center">
-                        <h2 className="text-xl font-bold mb-6">
+                    <div className="p-2 text-center">
+                        <h2 className="text-xl font-bold mb-2">
                             {gameType === 'wordoll' ? 'Wordoll' : 'Lock Pickr'}
                         </h2>
-                        <div className="grid grid-cols-2 gap-2 mb-8">
+                        <div className="grid grid-cols-2 gap-2 mb-4 pr-5 pl-5">
                             <div className="bg-[#1F2937] p-2 rounded-2xl">
                                 <p className=" mb-1 font-[Inter]">Players Joined</p>
                                 <p className="text-xl font-bold font-[Inter]">
@@ -607,8 +607,8 @@ export function GemGameModePage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="mb-8">
-                            <p className="text-xs mb-2 font-[Inter]">Starts In:</p>
+                        <div className="mb-3">
+                            <p className="text-xs mb-0 font-[Inter]">Starts In:</p>
                             <p className="text-2xl font-bold font-[Inter]">
                                 {isLoadingCountdown ? 'Loading...' : formatTime(countdown)}
                             </p>
@@ -623,7 +623,7 @@ export function GemGameModePage() {
                             </button>
                         ) : (
                             <button
-                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
+                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-1 rounded-xl text-lg font-[Inter]"
                                 onClick={handleJoinGame}
                                 disabled={isJoining}
                             >
@@ -633,8 +633,8 @@ export function GemGameModePage() {
                     </div>
                 </div>
                 {/* Legendary Card */}
-                <div className="w-full max-w-md bg-[#374151] rounded-xl p-6 text-center mb-3">
-                    <h3 className="text-xl font-semibold mb-4 font-[Inter]">
+                <div className="w-full max-w-md bg-[#374151] rounded-xl p-2 text-center mb-3">
+                    <h3 className="text-xl font-semibold mb-2 font-[Inter]">
                         THE LEGENDARY
                     </h3>
                     <div className="flex items-center justify-center">
@@ -649,8 +649,8 @@ export function GemGameModePage() {
                     </div>
                 </div>
                 {/* Invite Card */}
-                <div className="w-full max-w-md bg-[#374151] rounded-xl p-2 text-center mb-20">
-                    <h3 className="text-lg font-semibold mt-2 mb-2 font-[Inter]">
+                <div className="w-full max-w-md bg-[#374151] rounded-xl p-1 text-center mb-0">
+                    <h3 className="text-lg font-semibold mt-2 mb-1 font-[Inter]">
                         Invite players to increase Gem Pool
                     </h3>
                     <div className="flex items-center lr justify-between">
