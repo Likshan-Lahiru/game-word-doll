@@ -73,8 +73,8 @@ export function BetSelectorPage() {
                     }
                 }
             } catch (err) {
-                console.error('Failed to fetch bet options:', err)
-                setError('Failed to load bet options')
+                console.error('Failed to fetch select options:', err)
+                setError('Failed to load select options')
             } finally {
                 setIsLoading(false)
             }
@@ -107,7 +107,7 @@ export function BetSelectorPage() {
     const handlePlay = async () => {
         const option = betOptions.find((opt) => opt.cost === selectedBet)
         if (!option) {
-            setError('Please select a valid bet option')
+            setError('Please select a valid  option')
             return
         }
         setBetAmount(option.cost)
@@ -200,7 +200,7 @@ export function BetSelectorPage() {
                         {/* Bet Options */}
                         <div className="flex justify-center space-x-4 mb-12 relative">
                             {isLoading ? (
-                                <div className="text-center py-4">Loading bet options...</div>
+                                <div className="text-center py-4">Loading....</div>
                             ) : error ? (
                                 <div className="text-red-500 text-center py-4">{error}</div>
                             ) : (
@@ -305,7 +305,7 @@ export function BetSelectorPage() {
                     {/* Bet Options */}
                     <div className="flex justify-center space-x-4 mb-6 relative ">
                         {isLoading ? (
-                            <div className="text-center py-4">Loading bet options...</div>
+                            <div className="text-center py-4">Loading...</div>
                         ) : error ? (
                             <div className="text-red-500 text-center py-4">{error}</div>
                         ) : (
