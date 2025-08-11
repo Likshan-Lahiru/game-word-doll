@@ -654,9 +654,11 @@ export function GemGameModePage() {
                         Invite players to increase Gem Pool
                     </h3>
                     <div className="flex items-center lr justify-between">
-                        <p className="text-lg ml-36 text-[#006CB9] font-[Inter]">
-                            www.xyz.com
-                        </p>
+                        <div className={"flex p-1 pl-3 w-full justify-start bg-white ml-20 mr-5 rounded-full"}>
+                            <p className="text-sm text-left text-black opacity-70 font-[Inter]">
+                                www.xyz.com
+                            </p>
+                        </div>
                         <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-24 rounded-full text-xs font-[Inter]">
                             Copy
                         </button>
