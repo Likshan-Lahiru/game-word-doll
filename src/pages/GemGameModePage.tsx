@@ -363,7 +363,7 @@ export function GemGameModePage() {
     if (isLoading) {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white items-center justify-center">
-                <p className="text-xl">Loading game options...</p>
+                <p className="text-xl">Loading...</p>
             </div>
         )
     }

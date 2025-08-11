@@ -43,7 +43,7 @@ export function GiveawayCard({ isMobile = false }: GiveawayCardProps) {
     }
 
     return (
-        <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative">
+        <div className={`${isAuthenticated ? 'h-[370px]' : 'h-[318px]'} rounded-2xl overflow-hidden flex flex-col relative`}>
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img

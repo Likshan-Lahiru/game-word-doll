@@ -58,7 +58,7 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
         )
     }
     return (
-        <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative">
+        <div className={`${isAuthenticated ? 'h-[370px]' : 'h-[318px]'} rounded-2xl overflow-hidden flex flex-col relative`}>
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img
@@ -69,7 +69,7 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
             </div>
             {/* Title */}
             <h3 className="text-2xl font-semibold text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
-                Lock Picker
+                Lock Pickr
             </h3>
             {/* Spacer to push button to bottom */}
             <div className="flex-1"></div>
