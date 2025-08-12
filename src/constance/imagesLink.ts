@@ -8,5 +8,8 @@ export const IMAGES = {
     logo: 'https://uploadthingy.s3.us-west-1.amazonaws.com/uYsqLmRkx6f1zBGRqMZA6G/cookycreanlogo3.png',
     fortuneCooky: '/fortuneCooky.png',
     badCooky: '/badCooky.png',
-    freeFlip: '/freeFlip.png'
+    freeFlip: '/freeFlip.png',
+    outOfStock: '/outofstock.png',
+    crackedCooky :'/crackedcook.png',
+    antsInTheJar: '/ant.png'
 };
