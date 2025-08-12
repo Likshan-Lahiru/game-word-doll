@@ -193,20 +193,20 @@ export function RewardsTab() {
   return (
       <>
         <div className={"flex-col"}>
-          <h3 className={`${isMobile ? 'text-sm pl-[51px] mb-1' : 'text-base pl-[68px] mb-3'} ${fontInter}`}>
-            Lucky Score
-          </h3>
+          {/*<h3 className={`${isMobile ? 'text-sm pl-[51px] mb-1' : 'text-base pl-[68px] mb-3'} ${fontInter}`}>*/}
+          {/*  Lucky Score*/}
+          {/*</h3>*/}
 
           <div className={"flex w-full gap-0"}>
             {/* 1st Column */}
             <div className={`flex-shrink-0 ${isMobile ? 'w-[45px] py-[4px]' : 'px-2 py-[1px]'}`}>
 
-              <div className={`${isMobile ? 'flex justify-end' : ''}`}>
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwNqJAKVjMEoXyCFdqfR7v/Lucky_Meter.png"
-                    alt="Lucky Clover"
-                    className={`${isMobile ? 'w-8 h-8' : 'w-9 h-9'} mb-9`}
-                />
+              <div className={`${isMobile ? 'flex justify-end' : ''} pb-9 pr-5`}>
+                {/*<img*/}
+                {/*    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwNqJAKVjMEoXyCFdqfR7v/Lucky_Meter.png"*/}
+                {/*    alt="Lucky Clover"*/}
+                {/*    className={`${isMobile ? 'w-8 h-8' : 'w-9 h-9'} mb-9`}*/}
+                {/*/>*/}
               </div>
 
               {/* 10 / 10 , 10 / 35 , 10 / 100 */}
@@ -229,12 +229,12 @@ export function RewardsTab() {
             {/* 2nd Column */}
             <div className={"flex-grow-[2] px-2"}>
 
-              {/* Lucky Score Bar*/}
-              <div className={"flex items-center h-10 mb-10"}>
-                <div className={"w-full h-7 border-[8px] rounded-full border-[#1F2937] "}>
-                  <div className={"bg-[#61D94C] h-full rounded-full"} style={{ width : "3.4%" }}></div>
-                </div>
-              </div>
+              {/*/!* Lucky Score Bar*!/*/}
+              {/*<div className={"flex items-center h-10 mb-10"}>*/}
+              {/*  <div className={"w-full h-7 border-[8px] rounded-full border-[#1F2937] "}>*/}
+              {/*    <div className={"bg-[#61D94C] h-full rounded-full"} style={{ width : "3.4%" }}></div>*/}
+              {/*  </div>*/}
+              {/*</div>*/}
 
               {/* Invite Friend Count Bars*/}
               <div className={`${isMobile ? 'mb-8' : 'mb-10'}`}>
@@ -265,7 +265,7 @@ export function RewardsTab() {
               </div>
 
               {/* Copy Referral */}
-              <div className={`flex gap-3 ${isMobile ? 'mb-8' : 'mb-10 pr-12'}`}>
+              <div className={`flex gap-3 ${isMobile ? 'mb-8' : 'mb-5 pr-12'}`}>
                 <div className="flex-1 rounded-full overflow-hidden400">
                   <input
                       type="text"
@@ -291,9 +291,9 @@ export function RewardsTab() {
             <div className={`w-1/3 ${isMobile && 'w-1/4'}`}>
 
               {/* Lucky Score Percentage  */}
-              <div className={"flex items-center h-10 mb-10"}>
-                <span className={`${fontInter} text-green-500 font-medium px-4`}>1.4%</span>
-              </div>
+              {/*<div className={"flex items-center h-10 mb-10"}>*/}
+                {/*<span className={`${fontInter} text-green-500 font-medium px-4`}>1.4%</span>*/}
+              {/*</div>*/}
 
               {/* Collect Buttons */}
               {progressData.map((item, index) => (
