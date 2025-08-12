@@ -97,7 +97,7 @@ export function GiveawayEntry() {
         }
 
         return (
-            <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
+            <div className="h-[54vh] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/wEfJPtYkYsjSUwUG9ivnUR/wordoll.png"
@@ -111,7 +111,7 @@ export function GiveawayEntry() {
                 <div className="flex-1"></div>
                 <div className="p-4 flex justify-center mb-6 relative z-10">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-14 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-[4vw] text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                         onClick={() => handleGameSelect('wordoll')}
                     >
                         PLAY
@@ -143,7 +143,7 @@ export function GiveawayEntry() {
         }
 
         return (
-            <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
+            <div className="h-[54vh] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/i9wzJrxokDDqgwas4Cft5m/lockpickr.png"
@@ -157,7 +157,7 @@ export function GiveawayEntry() {
                 <div className="flex-1"></div>
                 <div className="p-4 flex justify-center mb-6 relative z-10">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-14 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-[4vw] text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                         onClick={() => handleGameSelect('lockpickr')}
                     >
                         PLAY
@@ -192,7 +192,7 @@ export function GiveawayEntry() {
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
                 <div className="flex flex-col pt-0">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-3' : 'pb-2'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-3 px-4`}>
+                    <h2 className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-3 px-4`}>
                         Play any game to enter the Fortune Spin
                     </h2>
 
@@ -204,7 +204,7 @@ export function GiveawayEntry() {
 
 
                         {/* Game Cards */}
-                        <div className={`px-4 sm:h-[450px] 
+                        <div className={`px-4 sm:h-[54vh] 
                             ${isMobile ? 'w-full' : 'mr-20 ml-20'}`
                         }
                         >
@@ -213,14 +213,14 @@ export function GiveawayEntry() {
                             >
                                 {/* WordollCard */}
                                 <div
-                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[16vw] min-w-[210px]'}`}
                                 >
                                     <CustomWordollCard />
                                 </div>
 
                                 {/* LockPickerCard */}
                                 <div
-                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[16vw] min-w-[210px]'}`}
                                 >
                                     <CustomLockPickrCard />
                                 </div>
@@ -243,7 +243,7 @@ export function GiveawayEntry() {
                     }
 
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-10 xl:mt-10 mb-20">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-14">
                         <button
                             className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}

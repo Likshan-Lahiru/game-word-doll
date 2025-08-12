@@ -34,7 +34,7 @@ export function GameCardGrid() {
         <div
             className={`flex-1 flex justify-center items-center ${isAuthenticated ? 'pb-28' : 'pt-0'} game-card-grid`}
         >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl min-w-[40vw] w-full">
                 <WordollCard />
                 <LockPickrCard />
                 <GiveawayCard />

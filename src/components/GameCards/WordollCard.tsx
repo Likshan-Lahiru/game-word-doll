@@ -68,7 +68,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
         )
     }
     return (
-        <div className={`${isAuthenticated ? 'h-[370px]' : 'h-[318px]'} rounded-2xl overflow-hidden flex flex-col relative`}>
+        <div className={`${isAuthenticated ? 'h-[60vh] max-h-[560px]' : 'h-[50.5vh] max-h-[420px]'} rounded-2xl overflow-hidden flex flex-col relative`}>
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img
@@ -92,7 +92,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
             {/* Play button */}
             <div className="p-2 flex justify-center mb-6 relative z-10">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-14 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-[4vw] text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
                     disabled={!isAuthenticated && limitPlay === 0}
                 >
