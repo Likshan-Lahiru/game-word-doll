@@ -97,7 +97,7 @@ export function GiveawayEntry() {
         }
 
         return (
-            <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
+            <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/wEfJPtYkYsjSUwUG9ivnUR/wordoll.png"
@@ -105,13 +105,13 @@ export function GiveawayEntry() {
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+                <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                     Wordoll
                 </h3>
                 <div className="flex-1"></div>
                 <div className="p-4 flex justify-center mb-6 relative z-10">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-14 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                         onClick={() => handleGameSelect('wordoll')}
                     >
                         PLAY
@@ -143,7 +143,7 @@ export function GiveawayEntry() {
         }
 
         return (
-            <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
+            <div className="h-[318px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/i9wzJrxokDDqgwas4Cft5m/lockpickr.png"
@@ -151,13 +151,13 @@ export function GiveawayEntry() {
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+                <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                     Lock Pickr
                 </h3>
                 <div className="flex-1"></div>
                 <div className="p-4 flex justify-center mb-6 relative z-10">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-14 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                         onClick={() => handleGameSelect('lockpickr')}
                     >
                         PLAY
@@ -190,9 +190,9 @@ export function GiveawayEntry() {
 
             {/* Main Content */}
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
-                <div className="flex flex-col pt-1">
+                <div className="flex flex-col pt-0">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-3' : 'pb-5'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
+                    <h2 className={`${isMobile ? 'pb-3' : 'pb-2'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-3 px-4`}>
                         Play any game to enter the Fortune Spin
                     </h2>
 

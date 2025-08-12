@@ -603,7 +603,7 @@ import {RedeemPage} from "./RedeemPage.tsx";
 import {StatusBar} from "../components/StatusBar.tsx";
 
 export function StorePage() {
-  const { addCoins, setPageType } = useGlobalContext()
+  const { addCoins, setPageType, gemBalance, voucherBalance, spinBalance } = useGlobalContext()
   const [activeTab, setActiveTab] = useState('coins')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
@@ -803,7 +803,7 @@ export function StorePage() {
         {/*</div>*/}
 
         {/* Main content */}
-        <div className="flex flex-1 pt-5 pl-16 pr-5 pb-0">
+        <div className="flex flex-1 pt-5 pl-16 pr-0 pb-0">
 
           {/* Left sidebar */}
           <div className={`${activeTabDesktop === 'redeem' ? 'mt-[68px] w-[405px]' : 'w-72'} bg-[#374151] rounded-xl pr-6 pl-6 pt-6 mr-4`}>
@@ -883,7 +883,7 @@ export function StorePage() {
                           )}
 
                           <div
-                              className={`relative rounded-xl overflow-hidden flex flex-col h-[320px] bg-white ${
+                              className={`relative rounded-xl overflow-hidden flex flex-col h-[50.5vh] bg-white ${
                                   pkg.bestValue
                                       ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]'
                                       : ''
@@ -899,7 +899,7 @@ export function StorePage() {
                             </div>
 
                             {/* Package content - with consistent alignment */}
-                            <div className="flex-1 flex flex-col text-center px-4">
+                            <div className="flex-1 flex justify-center flex-col text-center px-4">
                               {/* GC amount */}
                               <p className="font-bold text-[17px] text-black mb-0 font-['DM Sans']">
                                 GC {pkg.coins.toLocaleString()}
@@ -927,22 +927,22 @@ export function StorePage() {
                                   ) // Empty space for consistent alignment
                                 }
                               </div>
+                            </div>
 
-                              {/* Buy button - always at the same position */}
-                              <div className="mb-0 px-4">
+                            {/* Buy button - always at the same position */}
+                            <div className="mb-5 px-4">
 
-                                {/* Price */}
-                                <p className="font-bold text-[19px] text-black my-4 font-['DM Sans']">
-                                  ${pkg.price}
-                                </p>
+                              {/* Price */}
+                              <p className="font-bold text-center text-[19px] text-black my-4 font-['DM Sans']">
+                                ${pkg.price}
+                              </p>
 
-                                <button
-                                    onClick={() => handleBuy(pkg)}
-                                    className="w-full bg-[#56CA5A] hover:bg-[#4BB850] text-white py-1 rounded-full font-bold"
-                                >
-                                  BUY
-                                </button>
-                              </div>
+                              <button
+                                  onClick={() => handleBuy(pkg)}
+                                  className="w-full bg-[#56CA5A] hover:bg-[#4BB850] text-white py-1 rounded-full font-bold"
+                              >
+                                BUY
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -973,34 +973,37 @@ export function StorePage() {
               <div className={"flex-col justify-end ml-4"}>
 
                 {/* Diamonds */}
-                <div className="w-32 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-2">
-                  {/*outline outline-1 outline-[#374151]*/}
-                  <div className="w-8 h-4 flex items-center justify-center">
-                    <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
-                        alt="diamonds"
-                        className="w-full h-full object-contain"
-                    />
+                <>
+                  <div className="w-48 h-10 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-4 outline outline-2 outline-[#374151] mt-1 mb-3">
+                    <div className="w-5 h-7 flex items-center justify-center">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                          alt="Heart"
+                          className="w-14 h-28 object-contain"
+                      />
+                    </div>
+                    <span className="ml-1 text-lg font-Inter font-bold">{Number.isInteger(gemBalance)
+                        ? gemBalance
+                        : gemBalance.toFixed(2)}</span>
                   </div>
-                  <span className="ml-1">107.25</span>
-                </div>
-
-                {/* Tickets */}
-                <div className="w-32 h-10 bg-[#111827] rounded-full flex items-center px-4">
-                  {/*outline outline-1 outline-[#374151]*/}
-                  <div className="w-8 h-18 flex items-center justify-center">
-                    <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
-                        alt="Diamond"
-                        className="w-full h-full object-contain"
-                    />
+                  <div className="w-48 h-10 bg-[#0A0E1A] rounded-full flex items-center px-1 space-x-2 outline outline-2 outline-[#374151]">
+                    <div className="w-9 h-10 flex items-center justify-center">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
+                          alt="Diamond"
+                          className="w-[98px] h-[98px] object-contain"
+                      />
+                    </div>
+                    <span className="ml-1 text-lg font-Inter font-bold">
+                                        {Number.isInteger(voucherBalance)
+                                            ? voucherBalance
+                                            : voucherBalance.toFixed(2)}
+                                    </span>
                   </div>
-                  <span className="ml-1">0</span>
-                </div>
-              </div>
+                </>
+            </div>
           }
         </div>
-
         {/* Bottom navigation */}
         <BottomNavigation />
       </div>

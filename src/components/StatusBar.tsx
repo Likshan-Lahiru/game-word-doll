@@ -67,13 +67,14 @@ export function StatusBar({
                     <div
                         className={`flex-1 max-w-xl mx-auto mt-5 ${hideOnlineCount ? 'pl-0' : 'px-4'}`}
                     >
+                        { pageType === '' || pageType === 'coins' }
                         <BalanceSelector
                             onSelect={(type) => console.log(`Selected: ${type}`)}
                             switchable={switchableBalanceSelector}
                         />
                     </div>
                     <div className="flex flex-col space-y-1 mt-5">
-                        { pageType !== 'store' &&
+                        { pageType === 'redeem' || pageType === "" &&
                             <>
                                 <div className="w-50 h-10 bg-[#0A0E1A] rounded-full flex items-center px-3 space-x-4 outline outline-2 outline-[#374151] mt-1 mb-2">
                                     <div className="w-5 h-7 flex items-center justify-center">

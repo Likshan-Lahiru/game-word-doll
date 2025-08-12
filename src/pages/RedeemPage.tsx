@@ -398,15 +398,18 @@ export function RedeemPage() {
 import React from 'react'
 import  { useEffect, useState } from 'react'
 import { CheckCircleIcon } from 'lucide-react'
+import {useGlobalContext} from "../context/GlobalContext.tsx";
 
 export function RedeemPage() {
   const [redeemAmount, setRedeemAmount] = useState(75)
   const [showTransferModal, setShowTransferModal] = useState(false)
   const [showCompletedModal, setShowCompletedModal] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const {setPageType} = useGlobalContext()
 
   // Check if device is mobile
   useEffect(() => {
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
     }
@@ -599,7 +602,7 @@ export function RedeemPage() {
         />
 
         {/* Right content area - Updated to match the image exactly */}
-        <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter'] pr-24 pl-10">
+        <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter'] pr-20 pl-10">
           <h2 className="text-2xl font-medium mb-3 font-['Inter']">Redeem</h2>
 
           <div className="space-y-1 mb-3">
