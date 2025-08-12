@@ -57,7 +57,11 @@ export function GiveawayGame() {
     // Deduct the cost from user's entries balance
     setTemporaryTicketBalance(entries.cost - temporaryTicketBalance)
 
-    navigate('/wordoll-game')
+    if (selectedGame === 'wordoll') {
+      navigate('/giveaway-wordoll-game')
+    } else {
+      navigate('/giveaway-lockpickr-game')
+    }
   }
 
   // Prize data array
