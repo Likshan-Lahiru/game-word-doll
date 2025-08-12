@@ -578,7 +578,7 @@ export function FlipPage() {
             </div>
 
             {/* Flip buttons */}
-            <div className="flex justify-center items-center mb-0 px-4 py-8">
+            <div className="flex justify-center items-center mb-0 px-4 py-[4vh]">
                 <div className="flex items-center md:flex-row gap-4 mt-4 w-full max-w-3xl">
                     {selectedBalanceType === 'ticket' && (
                         <>
@@ -641,14 +641,14 @@ export function FlipPage() {
 
                     {currentRowIndex === 0 && !hasFlipped ? (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-3 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[60px]"
                             onClick={handleFlipAllCards}
                         >
                             Flip
                         </button>
                     ) : (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors"
+                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors h-[60px]"
                             onClick={handleNextRow}
                         >
                             Next

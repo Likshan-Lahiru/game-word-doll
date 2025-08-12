@@ -17,7 +17,7 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped, isMobil
 
     return (
         <>
-            <div className={`${isMobile ? 'h-[35vh] w-[170px]' : 'h-[65vh] w-[230px]'} relative perspective-[1000px]`} onClick={handleClickFlipCard}>
+            <div className={`${isMobile ? 'h-[35vh] w-[170px]' : 'h-[60vh] w-[230px]'} relative perspective-[1000px]`} onClick={handleClickFlipCard}>
                 <div
                     className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d rounded-2xl 
                     ${isFlipped ? "rotate-y-180" : ""} 
@@ -42,9 +42,12 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped, isMobil
                                     src={items.image}
                                     alt="card image"
                                     className={`
-                                    ${items.image === '/ant.png' || items.image === '/outofstock.png' && 'lg:h-42 md:h-40'} 
+                                    ${items.image === '/outofstock.png' && 'lg:h-36 md:h-36 lg:w-32'} 
+                                    ${items.image === '/ant.png' && 'lg:h-44 md:h-44 lg:w-32'} 
                                     ${items.image === '/freeFlip.png' && 'lg:w-44 lg:h-40 md:w-36 md:h-36'}
-                                    lg:w-36 md:w-28 h-24`}
+                                    ${items.image === '/fortuneCooky.png' && 'lg:w-36 lg:h-36 md:w-36 md:h-36'}
+                                    ${items.image === '/badCooky.png' && 'lg:w-40 lg:h-36 md:w-40 md:h-40'}
+                                    lg:w-36 md:w-28 h-32`}
                                 />
                             </div>
 
