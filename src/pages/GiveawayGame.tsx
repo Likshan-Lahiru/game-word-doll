@@ -237,16 +237,18 @@ export function GiveawayGame() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">
-          <div className={"w-full max-w-5xl pl-7"}>
-            <h2 className="text-xl font-['DM_Sans'] font-medium text-left mb-8">
-              { selectedBalanceType === 'coin' ? 'Select a prize to win!' : 'Select a prize to win! (One-time, single enter only per 24h)                                   '}
-            </h2>
-          </div>
+        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-4">
 
-          {/* Prize Cards Row */}
-          <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl mb-8">
-            { selectedBalanceType === 'coin' ? (
+          <div>
+            <div className={"w-full max-w-5xl"}>
+              <h2 className="text-xl font-['DM_Sans'] font-medium text-left mb-2">
+                { selectedBalanceType === 'coin' ? 'Select a prize to win!' : 'Select a prize to win! (One-time, single enter only per 24h)                                   '}
+              </h2>
+            </div>
+
+            {/* Prize Cards Row */}
+            <div className="flex flex-wrap justify-center gap-4 w-full max-w-8xl mb-8">
+              { selectedBalanceType === 'coin' ? (
                   <>
                     {desktopPrizes.map((prize) => (
                         <PrizeCard
@@ -269,7 +271,8 @@ export function GiveawayGame() {
                     ))}
                   </>
               )
-            }
+              }
+            </div>
           </div>
         </div>
 
