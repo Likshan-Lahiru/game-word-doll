@@ -591,35 +591,42 @@ export function RedeemPage() {
   // Desktop view
   return (
       <>
+
+        {/* Google Fonts Link for use font weight */}
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
         {/* Right content area - Updated to match the image exactly */}
         <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter'] pr-24 pl-10">
-          <h2 className="text-2xl font-medium mb-6 font-['Inter']">Redeem</h2>
+          <h2 className="text-2xl font-medium mb-3 font-['Inter']">Redeem</h2>
 
-          <div className="space-y-4 mb-10">
+          <div className="space-y-1 mb-3">
             <div className="flex items-center gap-x-2">
-              <p className="text-white">Available Gems</p>
-              <p>:</p>
-              <p className="font-medium">{availableGems.toFixed(2)}</p>
+              <p className="text-white font-inter font-medium">Available Gems</p>
+              <p className={"font-medium font-inter"}>:</p>
+              <p className="font-medium font-inter">{availableGems.toFixed(2)}</p>
             </div>
             <div className="flex items-center gap-x-2">
-              <p className="text-white mr-8">Total Gems</p>
-              <p className="">:</p>
-              <p className="font-medium">{totalGems.toFixed(2)}</p>
+              <p className="text-white font-medium font-inter mr-8">Total Gems</p>
+              <p className="font-medium font-inter">:</p>
+              <p className="font-medium font-inter">{totalGems.toFixed(2)}</p>
             </div>
           </div>
 
-          <ul className="list-disc pl-5 space-y-4 mb-10 font-['Inter']">
-            <li className="text-white font-['Inter']">
+          <ul className="list-disc pl-5 space-y-1 mb-5 font-inter">
+            <li className="text-white text-sm font-['Inter'] font-extralight">
               Total gems show your earnings to date, while available gems is the
               amount you can withdraw now. Gems earned today will be added to
               your available gems after 7 days.
             </li>
-            <li className="text-white font-['Inter']">
+            <li className="text-white text-sm font-['Inter'] font-thin">
               A minimum 100 Gems required to process a redeem.
             </li>
           </ul>
 
-          <div className="flex max-[958px]:flex-col max-[958px]:space-y-2 max-[958px]:items-start items-center mb-0.5 space-x-4">
+          <div className="flex max-[958px]:flex-col max-[958px]:space-y-1 max-[958px]:items-start items-center mb-0.5 space-x-4">
             <p className="text-white text-lg font-['Inter']">Redeem</p>
 
             <div className="bg-white rounded-md px-4 py-2 flex items-center">
@@ -638,17 +645,17 @@ export function RedeemPage() {
           <div className="flex-1 flex justify-end">
             <button
                 onClick={handleRedeemNow}
-                className="md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
+                className="md:mt-2 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
             >
               Redeem Now
             </button>
           </div>
 
-          <h2 className="text-2xl font-medium mt-12 mb-6">
+          <h2 className="text-2xl font-medium mt-3 mb-2">
             Setup Payment Method
           </h2>
 
-          <div className="flex items-center mb-12">
+          <div className="flex items-center mb-3">
             <p className="text-gray-300">
               Setup your payment method by entering your bank account details to
               receive funds.
@@ -664,14 +671,15 @@ export function RedeemPage() {
             </button>
           </div>
 
-          <ul className="list-disc pl-5 mt-16">
-            <li className="text-white">Note : 0.25% + $0.25 per payout</li>
+          <ul className="list-disc pl-5 mt-0">
+            <li className="text-white font-inter font-thin text-sm">Note : 0.25% + $0.25 per payout</li>
+            <li className="text-white font-inter font-thin text-sm">Note : $5 Customer verification fee (one-time only) </li>
           </ul>
         </div>
 
         {/* Transfer Funds Modal */}
         {showTransferModal && (
-            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4">
               <div className="bg-gray-800 rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
                 <h2 className="text-xl font-bold mb-4">Redeem funds?</h2>
                 <p className="mb-12">
@@ -680,13 +688,13 @@ export function RedeemPage() {
                 <div className="flex space-x-4">
                   <button
                       onClick={() => setShowTransferModal(false)}
-                      className="bg-white text-gray-800 px-5 rounded-full font-medium"
+                      className="bg-white text-gray-800 px-10 rounded-2xl font-medium"
                   >
                     Cancel
                   </button>
                   <button
                       onClick={handleConfirmTransaction}
-                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full font-medium"
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded-2xl font-medium"
                   >
                     Confirm Redemption
                   </button>
@@ -697,7 +705,7 @@ export function RedeemPage() {
 
         {/* Transaction Completed Modal */}
         {showCompletedModal && (
-            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4">
               <div className="bg-gray-800 rounded-xl p-16 w-full max-w-lg">
                 <div className="flex mb-4 items-center gap-x-2">
                   <h2 className="text-2xl font-semibold text-center font-inter">
