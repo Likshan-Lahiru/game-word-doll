@@ -39,7 +39,7 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [coinBalance, setCoinBalance] = useState(50000)
     const [ticketBalance, setTicketBalance] = useState(0)
-    const [voucherBalance, setVoucherBalance] = useState(50)
+    const [voucherBalance, setVoucherBalance] = useState(0)
     const [temporaryVoucherBalance, setTemporaryVoucherBalance] = useState(0)
     const [temporaryTicketBalance, setTemporaryTicketBalance] = useState(0)
     const [temporaryCoinBalance, setTemporaryCoinBalance] = useState(0)

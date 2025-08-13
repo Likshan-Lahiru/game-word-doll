@@ -335,7 +335,7 @@ export function BetSelectorPage() {
                         )}
                     </div>
                     {/* Game Title */}
-                    <div className="bg-[#374151] rounded-xl p-6 mb-10 flex flex-col items-center justify-center text-center">
+                    <div className="bg-[#374151] rounded-xl p-6 mb-0 flex flex-col items-center justify-center text-center">
                         <h2 className="text-white text-2xl font-bold text-center mb-16 font-[Inter]">
                             {gameType === 'wordoll' ? 'Wordoll' : 'Lock Pickr'}
                         </h2>

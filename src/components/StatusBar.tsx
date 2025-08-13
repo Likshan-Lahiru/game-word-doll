@@ -2,6 +2,7 @@ import React from 'react'
 import { BalanceSelector } from './BalanceSelector'
 import { useGlobalContext } from '../context/GlobalContext'
 import { useLocation } from 'react-router-dom'
+import {IMAGES} from "../constance/imagesLink.ts";
 export function StatusBar({
                               isMobile,
                               hideOnlineCount,
@@ -54,10 +55,10 @@ export function StatusBar({
             ) : (
                 <>
                     <div className={`${pageType === 'store' ? 'mr-8' : 'mr-52'} flex items-center space-x-3`}>
-                        {isHomePage && !isAuthenticated && (
+                        {isHomePage && (
                             <div className="absolute top-5 left-5 z-10">
                                 <img
-                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uYsqLmRkx6f1zBGRqMZA6G/cookycreanlogo3.png"
+                                    src={IMAGES.logo}
                                     alt="Cooky Cream Logo"
                                     className="h-12 sm:h-16"
                                 />

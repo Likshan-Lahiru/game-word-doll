@@ -41,17 +41,17 @@ export function GiveawayEntry() {
     }
 
     const handleSpin = () => {
-        navigate('/spin')
-        // if (selectedBalanceType === 'ticket') {
-        //     if (voucherBalance === 0) {
-        //         setOpenInfoModal(true);
-        //     } else {
-        //         setOpenInfoModal(false);
-        //         navigate('/spin')
-        //     }
-        // } else  {
-        //     navigate('/spin')
-        // }
+        // navigate('/spin')
+        if (selectedBalanceType === 'ticket') {
+            if (voucherBalance === 0) {
+                setOpenInfoModal(true);
+            } else {
+                setOpenInfoModal(false);
+                navigate('/spin')
+            }
+        } else  {
+            navigate('/spin')
+        }
     }
 
     const GrandWin = () => {
@@ -192,8 +192,8 @@ export function GiveawayEntry() {
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
                 <div className="flex flex-col pt-0">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-3 px-4`}>
-                        Play any game to enter the Fortune Spin
+                    <h2 className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-2 px-4`}>
+                        Play any game to enter the Cooky Flip
                     </h2>
 
                     <div className={"flex justify-center"}>
@@ -243,9 +243,9 @@ export function GiveawayEntry() {
                     }
 
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-14">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
                         <button
-                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
+                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
                             disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
                         >

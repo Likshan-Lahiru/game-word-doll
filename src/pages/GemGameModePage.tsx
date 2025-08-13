@@ -4,6 +4,9 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
 import { TicketSelector } from '../components/TicketSelector'
 import { apiRequest } from '../services/api'
+import {Loader} from '../components/loader/Loader.tsx'
+import {IMAGES} from "../constance/imagesLink.ts";
+
 export function GemGameModePage() {
     const navigate = useNavigate()
     const location = useLocation()
@@ -41,6 +44,7 @@ export function GemGameModePage() {
     const [isJoining, setIsJoining] = useState(false)
     const [isLeaving, setIsLeaving] = useState(false)
     const [showNavigationWarning, setShowNavigationWarning] = useState(false)
+
     // New state for word/number length
     const [wordOrNumberLength, setWordOrNumberLength] = useState(5) // Default to 5
     // Get game type from location state
@@ -359,14 +363,14 @@ export function GemGameModePage() {
             setIsLeaving(false)
         }
     }
+
     // Loading state
     if (isLoading) {
         return (
-            <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white items-center justify-center">
-                <p className="text-xl">Loading...</p>
-            </div>
-        )
+            <Loader isLoading={isLoading}/>
+        );
     }
+
     // Error state
     if (error) {
         return (
