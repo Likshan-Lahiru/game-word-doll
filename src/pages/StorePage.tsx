@@ -806,7 +806,7 @@ export function StorePage() {
         <div className="flex flex-1 pt-5 pl-16 pr-0 pb-0">
 
           {/* Left sidebar */}
-          <div className={`${activeTabDesktop === 'redeem' ? 'mt-[68px] w-[405px]' : 'w-72'} bg-[#374151] rounded-xl pr-6 pl-6 pt-6 mr-4`}>
+          <div className={`${activeTabDesktop === 'redeem' ? 'mt-[68px] w-[405px]' : 'w-[280px]'} bg-[#374151] rounded-xl pr-6 pl-6 pt-6 mr-4`}>
             <h1 className="text-2xl font-bold mb-8">Store</h1>
             <button
                 className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
@@ -861,7 +861,7 @@ export function StorePage() {
               // Coins Section
               <>
                 {/* Right content area */}
-                <div className={`flex-1 bg-[#374151] rounded-xl p-6`}>
+                <div className={`flex-1 bg-[#374151] rounded-xl pr-6 pl-6 pb-4 pt-6`}>
                   <h2 className="text font-medium mb-6 font-['DM Sans']">GC Package</h2>
 
                   {/* Package cards - updated to be responsive with min/max width */}
@@ -950,11 +950,11 @@ export function StorePage() {
                   </div>
 
                   {/* Footer text */}
-                  <div className="text-center mt-5 pt-0">
+                  <div className="text-center mt-2 pt-0">
                     <p className="text-white">
                       Prices in USD.
                     </p>
-                    <p className="text-white text-sm mt-2">
+                    <p className="text-white text-sm mt-1">
                       Your credit card will be securely billed one time without any recurring charges or obligations.
                     </p>
                   </div>
