@@ -10,6 +10,7 @@ import { AuthenticatedNoAttemptsModal } from '../components/GameModals/Authentic
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest, checkLastWinTime } from '../services/api'
 import {CooldownModal} from "../components/GameCards/CooldownModal.tsx";
+
 export function LockPickrGame() {
   const navigate = useNavigate()
   const globalContext = useGlobalContext()
@@ -41,7 +42,6 @@ export function LockPickrGame() {
   const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
       ('correct' | 'wrong-position' | 'incorrect')[]
   >([])
-
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -51,7 +51,6 @@ export function LockPickrGame() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
-
   // Initialize the game
   useEffect(() => {
     // Check if authenticated user is on cooldown
@@ -145,7 +144,6 @@ export function LockPickrGame() {
       setIsInputFocused(true)
     }
   }, [isAuthenticated])
-
   // Define checkGuess before any useEffect that depends on it
   const checkGuess = useCallback(async () => {
     // Check if we have a complete attempt (all positions filled)
@@ -172,8 +170,8 @@ export function LockPickrGame() {
             .then((response) => {
               // Process the API response
               if (response.win) {
-                // User won
-                addCoins(winAmount)
+                // User won - DON'T add coins here, let the modal handle it
+                // Remove: addCoins(winAmount)
                 setShowWinModal(true)
               } else {
                 // User didn't win - update UI based on API feedback
@@ -219,8 +217,8 @@ export function LockPickrGame() {
             .then((response) => {
               // Process the API response
               if (response.win) {
-                // User won
-                addCoins(winAmount)
+                // User won - DON'T add coins here, let the modal handle it
+                // Remove: addCoins(winAmount)
                 setShowWinModal(true)
               } else {
                 // User didn't win - update UI based on API feedback
@@ -269,7 +267,6 @@ export function LockPickrGame() {
     addCoins,
     winAmount,
   ])
-
   // Helper function to update UI based on API response
   const updateUIFromApiResponse = (response: any, attempt: number[]) => {
     // Create a status array for the last attempt
@@ -309,7 +306,6 @@ export function LockPickrGame() {
     setLockedPositions(newLocks)
     setCurrentAttempt(newAttempt)
   }
-
   // Focus input when game starts
   useEffect(() => {
     if (gameStarted && !showCountdown && inputRef.current) {
@@ -318,7 +314,6 @@ export function LockPickrGame() {
       }, 300)
     }
   }, [gameStarted, showCountdown])
-
   // Reset idle timer on user activity
   useEffect(() => {
     const resetIdleTimer = () => {
@@ -335,7 +330,6 @@ export function LockPickrGame() {
       window.removeEventListener('touchstart', resetIdleTimer)
     }
   }, [])
-
   // Auto-timeout feature - check idle time and decrease timer
   useEffect(() => {
     if (!gameStarted) return
@@ -353,7 +347,6 @@ export function LockPickrGame() {
     }, 1000)
     return () => clearInterval(idleInterval)
   }, [gameStarted, timer])
-
   // Keyboard input handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -401,7 +394,6 @@ export function LockPickrGame() {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [currentAttempt, gameStarted, lockedPositions, checkGuess, codeLength])
-
   // Timer countdown - only start after countdown completes
   useEffect(() => {
     if (!gameStarted) return
@@ -414,14 +406,12 @@ export function LockPickrGame() {
     }, 1000)
     return () => clearInterval(countdown)
   }, [timer, gameStarted])
-
   // Format time as MM:SS
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remainingSeconds = seconds % 60
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
   }
-
   // Handle input change for mobile keyboard
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Skip processing if the input is coming from the keyboard event listener
@@ -442,7 +432,6 @@ export function LockPickrGame() {
       }
     }
   }
-
   // Handle countdown completion
   const handleCountdownComplete = () => {
     setShowCountdown(false)
@@ -451,7 +440,6 @@ export function LockPickrGame() {
       inputRef.current.focus()
     }
   }
-
   // Get number status (correct, wrong position, incorrect)
   const getNumberStatus = (num: number, index: number) => {
     if (lastAttemptStatuses[index]) {
@@ -466,7 +454,6 @@ export function LockPickrGame() {
     }
     return 'incorrect'
   }
-
   // Handle mobile number pad key press
   const handleMobileKeyPress = (key: string) => {
     if (key === 'ENTER') {
@@ -502,7 +489,6 @@ export function LockPickrGame() {
       }
     }
   }
-
   // Handle desktop number pad key press
   const handleDesktopKeyPress = (key: string) => {
     if (key === 'ENTER') {
@@ -538,7 +524,6 @@ export function LockPickrGame() {
       }
     }
   }
-
   // Mobile view
   if (isMobile) {
     return (
@@ -751,13 +736,13 @@ export function LockPickrGame() {
                 <LoseModal
                     isOpen={showLoseModal}
                     onClose={() => setShowLoseModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                     gameType="lockpickr"
                 />
                 <NoAttemptsModal
                     isOpen={showNoAttemptsModal}
                     onClose={() => setShowNoAttemptsModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                 />
               </>
           ) : (
@@ -770,12 +755,12 @@ export function LockPickrGame() {
                 <AuthenticatedLoseModal
                     isOpen={showLoseModal}
                     onClose={() => setShowLoseModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                 />
                 <AuthenticatedNoAttemptsModal
                     isOpen={showNoAttemptsModal}
                     onClose={() => setShowNoAttemptsModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                 />
               </>
           )}
@@ -989,13 +974,13 @@ export function LockPickrGame() {
               <LoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
                   gameType="lockpickr"
               />
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
               />
             </>
         ) : (
@@ -1008,12 +993,12 @@ export function LockPickrGame() {
               <AuthenticatedLoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
               />
               <AuthenticatedNoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
               />
             </>
         )}

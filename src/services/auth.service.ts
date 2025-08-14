@@ -3,18 +3,23 @@ export interface SignupRequest {
     email: string
     password: string
     role: string
+    goldCoins?: number
+    userName?: string
+    country?: string
 }
 export interface AuthResponse {
     token: string
     message: string | null
     role: string | null
-    userId: string;
+    userId: string
 }
 export const signup = async (
     userData: SignupRequest,
 ): Promise<AuthResponse> => {
+    console.log("Signup request payload:", userData)
     return apiRequest('/auth', 'POST', userData)
 }
+
 export const login = async (
     email: string,
     password: string,

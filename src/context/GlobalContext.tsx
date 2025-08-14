@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createContext, useContext } from 'react'
 import { getAuthToken, removeAuthToken } from '../services/auth.service'
+import { fetchUserBalance } from '../services/api'
 type GlobalContextType = {
     coinBalance: number
     ticketBalance: number
@@ -32,6 +33,7 @@ type GlobalContextType = {
     logout: () => void
     limitPlay: number
     setLimitPlay: React.Dispatch<React.SetStateAction<number>>
+    updateUserBalance: () => Promise<void>
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
@@ -50,11 +52,33 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
+    // Function to update user balance from API
+      const updateUserBalance = async () => {
+        if (isAuthenticated) {
+            try {
+                const userId = localStorage.getItem('userId')
+                if (userId) {
+                    const balanceData = await fetchUserBalance(userId)
+                    if (balanceData) {
+                        setCoinBalance(balanceData.goldCoins || 0)
+                        setTicketBalance(balanceData.entries || 0)
+                        setVoucherBalance(balanceData.gems || 0)
+                        setGemBalance(balanceData.vouchers || 0)
+
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to update user balance:', error)
+            }
+        }
+    }
     // Check for existing token on app initialization
     useEffect(() => {
         const token = getAuthToken()
         if (token) {
             setIsAuthenticated(true)
+            // Fetch user balance when authenticated
+            updateUserBalance()
         }
     }, [])
     const addCoins = (amount: number) => {
@@ -68,6 +92,8 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     }
     const login = () => {
         setIsAuthenticated(true)
+        // Fetch user balance when user logs in
+        updateUserBalance()
     }
     const logout = () => {
         removeAuthToken()
@@ -107,6 +133,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 addGems,
                 login,
                 logout,
+                updateUserBalance,
             }}
         >
             {children}
