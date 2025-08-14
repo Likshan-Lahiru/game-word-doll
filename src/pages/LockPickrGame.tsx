@@ -736,13 +736,13 @@ export function LockPickrGame() {
                 <LoseModal
                     isOpen={showLoseModal}
                     onClose={() => setShowLoseModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                     gameType="lockpickr"
                 />
                 <NoAttemptsModal
                     isOpen={showNoAttemptsModal}
                     onClose={() => setShowNoAttemptsModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                 />
               </>
           ) : (
@@ -755,12 +755,12 @@ export function LockPickrGame() {
                 <AuthenticatedLoseModal
                     isOpen={showLoseModal}
                     onClose={() => setShowLoseModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                 />
                 <AuthenticatedNoAttemptsModal
                     isOpen={showNoAttemptsModal}
                     onClose={() => setShowNoAttemptsModal(false)}
-                    penalty={2000}
+                    penalty={betAmount}
                 />
               </>
           )}
@@ -974,13 +974,13 @@ export function LockPickrGame() {
               <LoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
                   gameType="lockpickr"
               />
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
               />
             </>
         ) : (
@@ -993,12 +993,12 @@ export function LockPickrGame() {
               <AuthenticatedLoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
               />
               <AuthenticatedNoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={2000}
+                  penalty={betAmount}
               />
             </>
         )}

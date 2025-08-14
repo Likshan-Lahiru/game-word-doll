@@ -11,6 +11,7 @@ import { AuthenticatedNoAttemptsModal } from '../components/GameModals/Authentic
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest, checkLastWinTime } from '../services/api'
 import {CooldownModal} from "../components/GameCards/CooldownModal.tsx";
+
 export function WordollGame() {
   const navigate = useNavigate()
   const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
@@ -653,13 +654,13 @@ export function WordollGame() {
               <LoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
                   gameType="wordoll"
               />
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
                   gameType={'wordoll'}
               />
             </>
@@ -673,12 +674,12 @@ export function WordollGame() {
               <AuthenticatedLoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
               />
               <AuthenticatedNoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
               />
             </>
         )}
