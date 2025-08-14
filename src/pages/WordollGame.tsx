@@ -58,11 +58,9 @@ export function WordollGame() {
     }
     return 'incorrect'
   }
-
   useEffect(() => {
-    console.log("lastAttemptStatuses updated:", lastAttemptStatuses)
+    console.log('lastAttemptStatuses updated:', lastAttemptStatuses)
   }, [lastAttemptStatuses])
-
   useEffect(() => {
     // Check if authenticated user is on cooldown
     const checkCooldown = async () => {
@@ -150,13 +148,11 @@ export function WordollGame() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [isAuthenticated, selectedBalanceType])
-
   useEffect(() => {
     if (gameStarted && !showCountdown && isMobile && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 300)
     }
   }, [gameStarted, showCountdown, isMobile])
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!gameStarted) return
@@ -194,7 +190,6 @@ export function WordollGame() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentAttempt, gameStarted, lockedPositions, wordLength])
-
   useEffect(() => {
     if (!gameStarted) return
     if (timer <= 0) {
@@ -204,7 +199,6 @@ export function WordollGame() {
     const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000)
     return () => clearInterval(countdown)
   }, [timer, gameStarted])
-
   const checkGuess = useCallback(async () => {
     const guess = currentAttempt.join('')
     if (guess.length < wordLength || currentAttempt.includes('')) {
@@ -224,8 +218,7 @@ export function WordollGame() {
             .then((response) => {
               // Process the API response
               if (response.win) {
-                // User won
-                addCoins(winAmount)
+                // User won - DON'T add coins here, let the modal handle it
                 setShowWinModal(true)
               } else {
                 // User didn't win - update UI based on API feedback
@@ -267,8 +260,7 @@ export function WordollGame() {
             .then((response) => {
               // Process the API response
               if (response.win) {
-                // User won
-                addCoins(winAmount)
+                // User won - DON'T add coins here, let the modal handle it
                 setShowWinModal(true)
               } else {
                 // User didn't win - update UI based on API feedback
@@ -315,7 +307,6 @@ export function WordollGame() {
     winAmount,
   ])
   // Helper function to update UI based on API response
-
   const updateUIFromApiResponse = (response: any, attempt: string[]) => {
     // Create a status array for the last attempt
     const statuses: ('correct' | 'wrong-position' | 'incorrect')[] = Array(
@@ -358,13 +349,11 @@ export function WordollGame() {
     setLockedPositions(newLocks)
     setCurrentAttempt(newAttempt)
   }
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remaining = seconds % 60
     return `${minutes.toString().padStart(2, '0')}:${remaining.toString().padStart(2, '0')}`
   }
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '')
     const newAttempt = [...currentAttempt]
@@ -377,7 +366,6 @@ export function WordollGame() {
     }
     setCurrentAttempt(newAttempt)
   }
-
   const handleCountdownComplete = () => {
     setShowCountdown(false)
     setGameStarted(true)
@@ -385,7 +373,6 @@ export function WordollGame() {
       inputRef.current.focus()
     }
   }
-
   const renderLetterTile = (
       letter: string,
       index: number,
@@ -411,7 +398,6 @@ export function WordollGame() {
         </div>
     )
   }
-
   const handleLetterClick = (index: number) => {
     if (!lockedPositions[index]) {
       const newAttempt = [...currentAttempt]
@@ -419,7 +405,6 @@ export function WordollGame() {
       setCurrentAttempt(newAttempt)
     }
   }
-
   const handleMobileKeyPress = (key: string) => {
     if (key === 'ENTER') {
       checkGuess()
@@ -451,7 +436,6 @@ export function WordollGame() {
       }
     }
   }
-
   const mobileKeyboard = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -670,13 +654,13 @@ export function WordollGame() {
               <LoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
                   gameType="wordoll"
               />
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
                   gameType={'wordoll'}
               />
             </>
@@ -690,12 +674,12 @@ export function WordollGame() {
               <AuthenticatedLoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
               />
               <AuthenticatedNoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={1000}
+                  penalty={betAmount}
               />
             </>
         )}

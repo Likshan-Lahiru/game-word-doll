@@ -3,19 +3,19 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
 import { apiRequest } from '../services/api'
-
 export function BetSelectorPage() {
-
     const navigate = useNavigate()
     const location = useLocation()
-    const { setBetAmount, setWinAmount, isAuthenticated, coinBalance } =
-        useGlobalContext()
+    const {
+        setBetAmount,
+        setWinAmount,
+        isAuthenticated,
+        coinBalance,
+        setCoinBalance,
+    } = useGlobalContext()
     let { limitPlay, setLimitPlay } = useGlobalContext()
-
     const [selectedBet, setSelectedBet] = useState<number>(1000)
-
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-
     const [betOptions, setBetOptions] = useState([
         {
             id: '',
@@ -36,20 +36,14 @@ export function BetSelectorPage() {
             earnAmount: 120000,
         },
     ])
-
     const [isLoading, setIsLoading] = useState(true)
-
     const [error, setError] = useState<string | null>(null)
-
     const [userId, setUserId] = useState<string>('')
-
     const [isJoining, setIsJoining] = useState(false)
-
     // Extract gameType from the URL state
     const { gameType } = location.state as {
         gameType: 'wordoll' | 'lockpickr'
     }
-
     useEffect(() => {
         const fetchBetOptions = async () => {
             try {
@@ -89,7 +83,6 @@ export function BetSelectorPage() {
         fetchBetOptions()
         fetchUserData()
     }, [setBetAmount, setWinAmount, isAuthenticated])
-
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -97,21 +90,28 @@ export function BetSelectorPage() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-
     const handleSelectBet = (bet: number, win: number) => {
         setSelectedBet(bet)
         setBetAmount(bet)
         setWinAmount(win)
     }
-
     const handlePlay = async () => {
         const option = betOptions.find((opt) => opt.cost === selectedBet)
         if (!option) {
-            setError('Please select a valid  option')
+            setError('Please select a valid option')
+            return
+        }
+        // Check if user has enough coins for the selected bet
+        if (coinBalance < option.cost) {
+            setError(
+                `Not enough coins. You need ${option.cost.toLocaleString()} coins to play.`,
+            )
             return
         }
         setBetAmount(option.cost)
         setWinAmount(option.earnAmount)
+        // Deduct the bet amount from user's coin balance
+        setCoinBalance(coinBalance - option.cost)
         // Decrement limit play for unauthenticated users
         if (!isAuthenticated && limitPlay > 0) {
             setLimitPlay((prev) => prev - 1)
@@ -173,6 +173,8 @@ export function BetSelectorPage() {
         } catch (err) {
             console.error('Failed to join game:', err)
             setError('Failed to start game. Please try again.')
+            // Restore the coin balance if the API call fails
+            setCoinBalance(coinBalance)
             setIsJoining(false)
         }
     }
@@ -252,22 +254,26 @@ export function BetSelectorPage() {
                   </span>
                                 </div>
                             </div>
+
                             {/* Play Button */}
                             <div className="flex justify-center mt-12 w-full">
                                 <button
-                                    className="bg-[#3B82F6] hover:bg-blue-600 text-white py-3 px-16 rounded-xl font-semibold text-2xl font-[Inter]"
+                                    className={`${coinBalance < selectedBet ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#3B82F6] hover:bg-blue-600'} text-white py-3 px-16 rounded-xl font-semibold text-2xl font-[Inter]`}
                                     onClick={handlePlay}
                                     disabled={
                                         (!isAuthenticated && limitPlay === 0) ||
                                         isLoading ||
-                                        isJoining
+                                        isJoining ||
+                                        coinBalance < selectedBet
                                     }
                                 >
                                     {isLoading
                                         ? 'Loading...'
                                         : isJoining
                                             ? 'Starting...'
-                                            : 'Play'}
+                                            : coinBalance < selectedBet
+                                                ? 'Not Enough Coins'
+                                                : 'Play'}
                                 </button>
                             </div>
                             {/* Error message */}
@@ -357,14 +363,22 @@ export function BetSelectorPage() {
                 </span>
                             </div>
                         </div>
+
+
                         {/* Play Button */}
                         <div className="flex justify-center mt-14">
                             <button
-                                className="bg-[#3B82F6] hover:bg-blue-600 text-white py-3 px-16 rounded-xl font-semibold text-2xl font-[Inter] w-full"
+                                className={`${coinBalance < selectedBet ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#3B82F6] hover:bg-blue-600'} text-white py-3 px-16 rounded-xl font-semibold text-2xl font-[Inter] w-full`}
                                 onClick={handlePlay}
-                                disabled={isLoading || isJoining}
+                                disabled={isLoading || isJoining || coinBalance < selectedBet}
                             >
-                                {isLoading ? 'Loading...' : isJoining ? 'Starting...' : 'Play'}
+                                {isLoading
+                                    ? 'Loading...'
+                                    : isJoining
+                                        ? 'Starting...'
+                                        : coinBalance < selectedBet
+                                            ? 'Not Enough Coins'
+                                            : 'Play'}
                             </button>
                         </div>
                         {/* Error message */}

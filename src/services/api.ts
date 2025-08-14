@@ -1,5 +1,6 @@
 // Base API configuration
-const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
+const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
+//const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
     const headers: Record<string, string> = {
@@ -51,6 +52,42 @@ export const apiRequest = async (
         return result
     } catch (error) {
         console.error('API request error:', error)
+        throw error
+    }
+}
+// Fetch user balance data
+export const fetchUserBalance = async (userId: string) => {
+    try {
+        const endpoint = `/users/${userId}/balance`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching user balance:', error)
+        throw error
+    }
+}
+// Fetch user basic information
+export const fetchUserBasicInfo = async (userId: string) => {
+    try {
+        const endpoint = `/users/${userId}/basic-info`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching user basic info:', error)
+        throw error
+    }
+}
+// Update user profile information
+export const updateUserProfile = async (
+    userId: string,
+    userData: { userName: string; email: string; country: string },
+) => {
+    try {
+        const endpoint = `/users/${userId}`
+        const result = await apiRequest(endpoint, 'PUT', userData)
+        return result
+    } catch (error) {
+        console.error('Error updating user profile:', error)
         throw error
     }
 }

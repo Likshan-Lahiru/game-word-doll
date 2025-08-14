@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { ForgotPasswordModal } from '../components/ForgotPasswordModal'
 import { ResetPasswordModal } from '../components/ResetPasswordModal'
+import { EmailInputModal } from '../components/EmailInputModal'
 import { useGlobalContext } from '../context/GlobalContext'
 import { login, storeAuthToken } from '../services/auth.service'
 export function LoginPage() {
@@ -11,6 +11,7 @@ export function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showEmailInputModal, setShowEmailInputModal] = useState(false)
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false)
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false)
   const [verificationEmail, setVerificationEmail] = useState('')
@@ -24,11 +25,9 @@ export function LoginPage() {
       // Call the login API
       const response = await login(email, password)
       // Store the token in localStorage
-
       if (response.token) {
         storeAuthToken(response.token)
         localStorage.setItem('userId', response.userId)
-
         // Update global auth state
         loginContext()
         // Redirect to home page after successful login
@@ -44,8 +43,14 @@ export function LoginPage() {
     }
   }
   const handleForgotPassword = () => {
-    setVerificationEmail(email || 'acd@gmail.com') // Use entered email or default
+    setShowEmailInputModal(true)
+  }
+  const handleEmailSubmit = (submittedEmail: string) => {
+    setVerificationEmail(submittedEmail)
+    setShowEmailInputModal(false)
     setShowForgotPasswordModal(true)
+    // In a real app, you would send the verification code to the email here
+    console.log('Sending verification code to:', submittedEmail)
   }
   const handleVerificationSuccess = (email: string) => {
     setVerificationEmail(email)
@@ -143,14 +148,21 @@ export function LoginPage() {
             </div>
           </div>
         </div>
-        {/* Forgot Password Modal - now skips email input */}
+        {/* Email Input Modal - new first step */}
+        <EmailInputModal
+            isOpen={showEmailInputModal}
+            onClose={() => setShowEmailInputModal(false)}
+            onSubmit={handleEmailSubmit}
+            initialEmail={email} // Pre-fill with login email if available
+        />
+        {/* Verification Code Modal - second step */}
         <ForgotPasswordModal
             isOpen={showForgotPasswordModal}
             onClose={() => setShowForgotPasswordModal(false)}
             onVerificationSuccess={handleVerificationSuccess}
             email={verificationEmail}
         />
-        {/* Reset Password Modal */}
+        {/* Reset Password Modal - final step */}
         <ResetPasswordModal
             isOpen={showResetPasswordModal}
             onClose={() => setShowResetPasswordModal(false)}
