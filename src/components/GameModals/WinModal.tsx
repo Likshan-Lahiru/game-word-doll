@@ -1,3 +1,4 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../../context/GlobalContext'
 type WinModalProps = {
@@ -6,12 +7,14 @@ type WinModalProps = {
     reward: number
     gameType: 'wordoll' | 'lockpickr'
 }
-export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
+export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
     const navigate = useNavigate()
     const { addCoins } = useGlobalContext()
     const isMobile = window.innerWidth <= 768
     if (!isOpen) return null
     const handleSignUp = () => {
+        // Add the reward before navigating to signup
+        addCoins(reward)
         navigate('/signup')
     }
     const handleNoThanks = () => {
@@ -90,7 +93,9 @@ export function WinModal({ isOpen, onClose, reward}: WinModalProps) {
                         <span>{reward.toLocaleString()}</span>
                     </div>
                     <p className="text-xl font-bold mb-8 font-['Inter']">GREAT !!!</p>
-                    <p className="text-xl mb-4 font-bold font-['Inter']">Sign Up to Get</p>
+                    <p className="text-xl mb-4 font-bold font-['Inter']">
+                        Sign Up to Get
+                    </p>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6 font-['Inter']">
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
