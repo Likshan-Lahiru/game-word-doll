@@ -1,5 +1,5 @@
 // Base API configuration
-const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
+const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
     const headers: Record<string, string> = {
