@@ -106,3 +106,31 @@ export const checkLastWinTime = async (userId: string, gameType: string) => {
         throw error
     }
 }
+// Fetch package offers
+export const fetchPackageOffers = async () => {
+    try {
+        const endpoint = '/package-offers/latest'
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching package offers:', error)
+        throw error
+    }
+}
+// Create Stripe checkout session for package purchase
+export const createStripeCheckout = async (
+    userId: string,
+    packageOfferId: string,
+) => {
+    try {
+        const data = {
+            userId,
+            packageOfferId,
+        }
+        const result = await apiRequest('/stripe/checkout', 'POST', data)
+        return result
+    } catch (error) {
+        console.error('Error creating Stripe checkout session:', error)
+        throw error
+    }
+}

@@ -134,12 +134,50 @@ export function SignupPage() {
                     required
                 >
                   <option value="">Select Country</option>
+                  <option value="Austria">Austria</option>
                   <option value="Australia">Australia</option>
-                  <option value="United States">United States</option>
+                  <option value="Belgium">Belgium</option>
+                  <option value="Bulgaria">Bulgaria</option>
                   <option value="Canada">Canada</option>
-                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Switzerland">Switzerland</option>
+                  <option value="Cyprus">Cyprus</option>
+                  <option value="Czech Republic">Czech Republic</option>
                   <option value="Germany">Germany</option>
+                  <option value="Denmark">Denmark</option>
+                  <option value="Estonia">Estonia</option>
+                  <option value="Spain">Spain</option>
+                  <option value="Finland">Finland</option>
+                  <option value="France">France</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Gibraltar">Gibraltar</option>
+                  <option value="Greece">Greece</option>
+                  <option value="Hong Kong">Hong Kong</option>
+                  <option value="Croatia">Croatia</option>
+                  <option value="Hungary">Hungary</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="Italy">Italy</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Liechtenstein">Liechtenstein</option>
+                  <option value="Lithuania">Lithuania</option>
+                  <option value="Luxembourg">Luxembourg</option>
+                  <option value="Latvia">Latvia</option>
+                  <option value="Malta">Malta</option>
+                  <option value="Mexico">Mexico</option>
+                  <option value="Netherlands">Netherlands</option>
+                  <option value="Norway">Norway</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Poland">Poland</option>
+                  <option value="Portugal">Portugal</option>
+                  <option value="Romania">Romania</option>
+                  <option value="Sweden">Sweden</option>
+                  <option value="Singapore">Singapore</option>
+                  <option value="Slovenia">Slovenia</option>
+                  <option value="Slovakia">Slovakia</option>
+                  <option value="Thailand">Thailand</option>
+                  <option value="United Arab Emirates">United Arab Emirates</option>
+                  <option value="United States">United States</option>
                 </select>
+
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <svg
                       className="w-4 h-4 text-gray-400"
