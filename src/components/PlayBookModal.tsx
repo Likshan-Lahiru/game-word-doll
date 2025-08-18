@@ -323,7 +323,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                       <img
                           src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
                           alt="Vouchers"
-                          className="w-8 h-8"
+                          className="w-6 h-6"
                       />
                     </div>
                     <h3 className=" font-bold text-white">Vouchers</h3>
@@ -334,25 +334,7 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                   </p>
                 </div>
                 {/* Lucky Score Section */}
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1">
-                    <div className="rounded-full p-1">
-                      <img
-                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/nsm9dStD4yr2m3TCXP3A67/Lucky_Meter.png"
-                          alt="Lucky Score"
-                          className="w-9 h-9"
-                      />
-                    </div>
-                    <h3 className=" font-bold text-white">Lucky Score</h3>
-                  </div>
-                  <p className="text-white">
-                    Your Lucky Score is visible in your account section. The more
-                    you share your personalized game link, the higher your Lucky
-                    Score goes, boosting your chances to win in Giveaway spins.
-                    (Note: The Lucky Score doesn't affect outcomes in skill-based
-                    games.)
-                  </p>
-                </div>
+
               </div>
             </div>
           </div>

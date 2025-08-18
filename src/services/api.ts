@@ -1,6 +1,6 @@
 // Base API configuration
-const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
-//const API_BASE_URL = 'http://localhost:8080/wordoll/api'
+//const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
+const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
     const headers: Record<string, string> = {
@@ -103,6 +103,34 @@ export const checkLastWinTime = async (userId: string, gameType: string) => {
         return result
     } catch (error) {
         console.error('Error checking last win time:', error)
+        throw error
+    }
+}
+// Fetch package offers
+export const fetchPackageOffers = async () => {
+    try {
+        const endpoint = '/package-offers/latest'
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching package offers:', error)
+        throw error
+    }
+}
+// Create Stripe checkout session for package purchase
+export const createStripeCheckout = async (
+    userId: string,
+    packageOfferId: string,
+) => {
+    try {
+        const data = {
+            userId,
+            packageOfferId,
+        }
+        const result = await apiRequest('/stripe/checkout', 'POST', data)
+        return result
+    } catch (error) {
+        console.error('Error creating Stripe checkout session:', error)
         throw error
     }
 }
