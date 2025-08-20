@@ -2,10 +2,9 @@ import React from 'react'
 export function WinningStatus() {
     return (
 
-        <div className=" mb-3 text-center">
-
+        <div className=" mb-0 text-center">
             <p className="font-['DM_Sans'] text-lg font-medium">You Won</p>
-            <p className="flex items-center justify-center pt-5 gap-1">
+            <p className="flex items-center justify-center pt-2 gap-1">
                 <span className="font-medium  mr-1 font-['DM_Sans'] text-lg">FREE</span>
                 <img
                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"

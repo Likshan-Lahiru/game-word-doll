@@ -13,20 +13,8 @@ export function BalanceSelector({
         ticketBalance,
         selectedBalanceType,
         setSelectedBalanceType,
-        updateUserBalance,
     } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(false)
-    // Add this effect to refresh balance data when component mounts or when balance might change
-    useEffect(() => {
-        // Update balance data from API when component mounts
-        updateUserBalance()
-        // Set up an interval to periodically refresh balance data
-        const intervalId = setInterval(() => {
-            updateUserBalance()
-        }, 10000) // Refresh every 10 seconds
-        // Clean up interval on unmount
-        return () => clearInterval(intervalId)
-    }, [updateUserBalance])
     useEffect(() => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -51,7 +39,7 @@ export function BalanceSelector({
                 >
                     {/* Switch Coin Bar and Ticket Bar */}
                     <div className="w-full h-full flex items-center justify-center">
-                        {/* Switch Coin Bar */}
+                            {/* Switch Coin Bar */}
                         <div
                             className={`w-full h-full flex items-center justify-end border-2 ${switchable ? 'cursor-pointer' : ''} ${isMobile ? '' : 'lg:pr-[60px] md:pr-[48px] sm:pr-[68px]'} ${selectedBalanceType === 'coin' ? 'border-[#FDF222] rounded-full' : 'border-[#374151] rounded-full'}`}
                             onClick={() => handleSelect('coin')}
@@ -73,19 +61,23 @@ export function BalanceSelector({
                                 className={`${isMobile && 'text-[11px] pl-[35px]'} min-w-[110px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
-                                {ticketBalance}
+                                {Number.isInteger(ticketBalance)
+                                    ? ticketBalance
+                                    : ticketBalance.toFixed(2)}
                                 {/*500,000,000,000,0*/}
                             </p>
                         </div>
                     </div>
-                    {/*Middle Coin and Ticket Icons Bar*/}
+                     {/*Middle Coin and Ticket Icons Bar*/}
                     <div
                         className={`flex justify-between h-full absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 rounded-full border-2 
                         ${isMobile ? 'w-[85px] ml-[2px]' : 'w-1/5 md:w-[110px] ml-[2px]'} 
                         ${selectedBalanceType === 'coin' ? 'border-[#FDF222] bg-[#FFC000]' : 'border-[#22C55E] bg-green-600'}`}
                     >
-                        {/* Coin Icon */}
-                        <div className="h-full w-full rounded-full">
+                    {/* Coin Icon */}
+                        <div className="h-full w-full rounded-full"
+                             onClick={() => handleSelect('coin')}
+                        >
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
                                 alt="coin"
@@ -95,6 +87,7 @@ export function BalanceSelector({
                         {/* Tickets Icon */}
                         <div
                             className={`flex justify-end h-full w-full rounded-full ${!isMobile ? 'ml-2' : 'ml-2'}`}
+                            onClick={() => handleSelect('ticket')}
                         >
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"

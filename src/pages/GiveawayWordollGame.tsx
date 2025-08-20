@@ -261,7 +261,7 @@ export function GiveawayWordollGame() {
     ]
     return (
         <div
-            className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
+            className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white pr-4 pl-4"
             ref={gameContainerRef}
         >
             {/* Back button */}
@@ -277,7 +277,7 @@ export function GiveawayWordollGame() {
                     />
                 </button>
             </div>
-            <div className="text-center mb-28 mt-20">
+            <div className="text-center mb-[6vh] mt-[4vh]">
                 <p className="text-white text-xs">Timer</p>
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
@@ -300,7 +300,7 @@ export function GiveawayWordollGame() {
                 />
             )}
             {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-[8vh]">
                 <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
                     {lastAttempt.map((letter, index) => {
                         // Only check status if there's an actual letter
@@ -313,7 +313,7 @@ export function GiveawayWordollGame() {
                 </div>
             </div>
             <div
-                className="flex justify-center mb-16"
+                className="flex justify-center mb-[10vh]"
                 onClick={() => inputRef.current?.focus()}
             >
                 <div className="grid grid-cols-5 gap-2">
@@ -365,7 +365,7 @@ export function GiveawayWordollGame() {
             )}
             {!isMobile && (
                 <>
-                    <div className="mt-4 mb-4">
+                    <div className="mt-4 mb-[3vh]">
                         <VirtualKeyboard
                             onKeyPress={(key) => {
                                 if (key === 'Enter') {

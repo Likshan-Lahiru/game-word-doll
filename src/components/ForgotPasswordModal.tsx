@@ -106,7 +106,9 @@ export function ForgotPasswordModal({
   }
   if (!isOpen) return null
   return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90"
+           onClick={onClose}
+      >
         <div className="bg-[#374151] font-['Inter'] rounded-lg p-10 shadow-xl w-full max-w-lg mx-4">
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">
             Password Reset

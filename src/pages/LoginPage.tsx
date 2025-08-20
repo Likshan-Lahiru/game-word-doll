@@ -63,6 +63,19 @@ export function LoginPage() {
   }
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['Inter']">
+        {/* Back button */}
+        <div className="absolute top-12 left-2 z-10 lg:top-4 md:top-4 md:left-4 sm:top-4">
+          <button
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              onClick={() => navigate('/')}
+          >
+            <img
+                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                alt="Back"
+                className="w-8 h-8"
+            />
+          </button>
+        </div>
         <div className="flex-1 flex flex-col items-center justify-center p-4">
           {/* Logo */}
           <div className="mb-12">

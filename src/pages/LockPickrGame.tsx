@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { VirtualKeyboard } from '../components/VirtualKeyboard'
+import { BottomNavigation } from '../components/BottomNavigation'
 import { CountdownModal } from '../components/CountdownModal'
 import { WinModal } from '../components/GameModals/WinModal'
 import { LoseModal } from '../components/GameModals/LoseModal'
@@ -8,17 +10,13 @@ import { AuthenticatedWinModal } from '../components/GameModals/AuthenticatedWin
 import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLoseModal'
 import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
 import { useGlobalContext } from '../context/GlobalContext'
-import { apiRequest, checkLastWinTime } from '../services/api'
-import {CooldownModal} from "../components/GameCards/CooldownModal.tsx";
-
 export function LockPickrGame() {
   const navigate = useNavigate()
   const globalContext = useGlobalContext()
   const { betAmount, winAmount, isAuthenticated, addCoins } = globalContext
-  const [targetCode, setTargetCode] = useState<number[]>([]) // Keep for UI feedback only
-  const [codeLength, setCodeLength] = useState(5)
+  const [targetCode, setTargetCode] = useState<number[]>([])
   const [currentAttempt, setCurrentAttempt] = useState<(number | undefined)[]>(
-      [],
+      Array(5).fill(undefined),
   )
   const [lastAttempt, setLastAttempt] = useState<number[]>([])
   const [timer, setTimer] = useState(300)
@@ -35,13 +33,66 @@ export function LockPickrGame() {
   const [showLoseModal, setShowLoseModal] = useState(false)
   const [attemptsLeft, setAttemptsLeft] = useState(50)
   const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
-  const [lockedPositions, setLockedPositions] = useState<boolean[]>([])
-  const [guestGameSession, setGuestGameSession] = useState<any>(null)
-  const [showCooldownModal, setShowCooldownModal] = useState(false)
-  const [cooldownTimeRemaining, setCooldownTimeRemaining] = useState('')
-  const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
-      ('correct' | 'wrong-position' | 'incorrect')[]
-  >([])
+  const [lockedPositions, setLockedPositions] = useState<boolean[]>(
+      Array(5).fill(false),
+  )
+  // Define checkGuess before any useEffect that depends on it
+  const checkGuess = useCallback(() => {
+    // Check if we have a complete attempt (all 5 positions filled)
+    const hasEmptyPositions = currentAttempt.some((num) => num === undefined)
+    if (hasEmptyPositions) {
+      setFeedback('Invalid Number')
+      return
+    }
+    // Store current attempt as the last attempt
+    setLastAttempt(currentAttempt.map((n) => (n !== undefined ? n : 0)))
+    // Check if the guess matches the target code
+    const isCorrect = currentAttempt.every(
+        (num, index) => num === targetCode[index],
+    )
+    if (isCorrect) {
+      if (isAuthenticated) {
+        addCoins(winAmount) // Use the selected win amount
+      }
+      setShowWinModal(true)
+      return
+    }
+    // Update locked positions for correct numbers
+    const newLocks = [...lockedPositions]
+    const newAttempt = [...currentAttempt]
+    currentAttempt.forEach((num, index) => {
+      if (num === targetCode[index]) {
+        newLocks[index] = true
+        // Keep the correct number in the new attempt
+        newAttempt[index] = num
+      } else {
+        // Clear incorrect positions
+        newAttempt[index] = undefined
+      }
+    })
+    setLockedPositions(newLocks)
+    setCurrentAttempt(newAttempt)
+    // Decrease attempts
+    setAttemptsLeft((prev) => prev - 1)
+    // Check if out of attempts
+    if (attemptsLeft <= 1) {
+      setShowNoAttemptsModal(true)
+      return
+    }
+    setFeedback('')
+    // Focus the input for next attempt
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [
+    currentAttempt,
+    targetCode,
+    attemptsLeft,
+    isAuthenticated,
+    winAmount,
+    addCoins,
+    lockedPositions,
+  ])
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -53,259 +104,20 @@ export function LockPickrGame() {
   }, [])
   // Initialize the game
   useEffect(() => {
-    // Check if authenticated user is on cooldown
-    const checkCooldown = async () => {
-      if (isAuthenticated) {
-        try {
-          const userId = localStorage.getItem('userId')
-          if (userId) {
-            const result = await checkLastWinTime(userId, 'LOCKPICKER')
-            // If there's a cooldown time remaining
-            if (result.cooldownRemaining && result.cooldownRemaining > 0) {
-              // Format the cooldown time (assuming it's in seconds)
-              const minutes = Math.floor(result.cooldownRemaining / 60)
-              const seconds = result.cooldownRemaining % 60
-              setCooldownTimeRemaining(
-                  `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
-              )
-              setShowCooldownModal(true)
-            }
-          }
-        } catch (error) {
-          console.error('Error checking game cooldown:', error)
-          // Continue with the game if there's an error checking cooldown
-        }
-      }
-    }
-    checkCooldown()
-    // Check for authenticated game session data
-    const authSessionData = localStorage.getItem('authGameSession')
-    // Check for guest game session data
-    const guestSessionData = localStorage.getItem('guestGameSession')
-    if (authSessionData && isAuthenticated) {
-      try {
-        const parsedSession = JSON.parse(authSessionData)
-        // Set code length based on session data
-        const length = parsedSession.wordOrNumberLength || 5
-        setCodeLength(length)
-        // Initialize current attempt and locked positions with the correct length
-        setCurrentAttempt(Array(length).fill(undefined))
-        setLockedPositions(Array(length).fill(false))
-        // If there's a target code in the session, use it for UI feedback
-        if (parsedSession.targetCode) {
-          setTargetCode(parsedSession.targetCode)
-        } else {
-          // Placeholder for UI feedback
-          setTargetCode(Array(length).fill(0))
-        }
-      } catch (e) {
-        console.error('Error parsing auth session data:', e)
-        // Default to 5 if there's an error
-        setCodeLength(5)
-        setCurrentAttempt(Array(5).fill(undefined))
-        setLockedPositions(Array(5).fill(false))
-        setTargetCode(Array(5).fill(0)) // Placeholder
-      }
-    } else if (guestSessionData && !isAuthenticated) {
-      try {
-        const parsedSession = JSON.parse(guestSessionData)
-        setGuestGameSession(parsedSession)
-        // Set code length based on session data
-        const length = parsedSession.wordOrNumberLength || 5
-        setCodeLength(length)
-        // Initialize current attempt and locked positions with the correct length
-        setCurrentAttempt(Array(length).fill(undefined))
-        setLockedPositions(Array(length).fill(false))
-        // If there's a target code in the session, use it for UI feedback
-        if (parsedSession.targetCode) {
-          setTargetCode(parsedSession.targetCode)
-        } else {
-          // Placeholder for UI feedback
-          setTargetCode(Array(length).fill(0))
-        }
-      } catch (e) {
-        console.error('Error parsing guest session data:', e)
-        // Default to 5 if there's an error
-        setCodeLength(5)
-        setCurrentAttempt(Array(5).fill(undefined))
-        setLockedPositions(Array(5).fill(false))
-        setTargetCode(Array(5).fill(0)) // Placeholder
-      }
-    } else {
-      // Default to 5 for if no session data
-      setCodeLength(5)
-      setCurrentAttempt(Array(5).fill(undefined))
-      setLockedPositions(Array(5).fill(false))
-      setTargetCode(Array(5).fill(0)) // Placeholder
-    }
+    // Generate a random 5-digit code
+    const code = Array.from(
+        {
+          length: 5,
+        },
+        () => Math.floor(Math.random() * 10),
+    )
+    setTargetCode(code)
     // Auto-focus the input when the component mounts
     if (inputRef.current) {
       inputRef.current.focus()
       setIsInputFocused(true)
     }
-  }, [isAuthenticated])
-  // Define checkGuess before any useEffect that depends on it
-  const checkGuess = useCallback(async () => {
-    // Check if we have a complete attempt (all positions filled)
-    const hasEmptyPositions = currentAttempt.some((num) => num === undefined)
-    if (hasEmptyPositions) {
-      setFeedback('Invalid Number')
-      return
-    }
-    // Store current attempt as the last attempt
-    const guessArray = currentAttempt.map((n) => (n !== undefined ? n : 0))
-    setLastAttempt(guessArray)
-    // Convert number array to string
-    const guess = guessArray.join('')
-    if (isAuthenticated) {
-      // For authenticated users, use the solo/last-win-check endpoint
-      try {
-        const userId = localStorage.getItem('userId')
-        const checkWinData = {
-          userId: userId,
-          wordOrNumber: guess,
-          gameType: 'LOCKPICKER',
-        }
-        await apiRequest('/solo/last-win-check', 'POST', checkWinData)
-            .then((response) => {
-              // Process the API response
-              if (response.win) {
-                // User won - DON'T add coins here, let the modal handle it
-                // Remove: addCoins(winAmount)
-                setShowWinModal(true)
-              } else {
-                // User didn't win - update UI based on API feedback
-                updateUIFromApiResponse(response, guessArray)
-                // Decrease attempts
-                setAttemptsLeft((prev) => prev - 1)
-                // Check if out of attempts
-                if (attemptsLeft <= 1) {
-                  setShowNoAttemptsModal(true)
-                  return
-                }
-                // Focus the input for next attempt
-                if (inputRef.current) {
-                  inputRef.current.focus()
-                }
-              }
-            })
-            .catch((error) => {
-              console.error('Error checking win status:', error)
-              // Fall back to default handling if API call fails
-              setAttemptsLeft((prev) => prev - 1)
-              if (attemptsLeft <= 1) {
-                setShowNoAttemptsModal(true)
-              }
-            })
-      } catch (error) {
-        console.error('Error in API request:', error)
-        // Fall back to default handling if API call fails
-        setAttemptsLeft((prev) => prev - 1)
-        if (attemptsLeft <= 1) {
-          setShowNoAttemptsModal(true)
-        }
-      }
-    } else if (!isAuthenticated && guestGameSession) {
-      // For non-authenticated users, use the guess/win-check endpoint
-      try {
-        const checkWinData = {
-          googleSessionId: guestGameSession.googleSessionId,
-          wordOrNumber: guess,
-          gameType: guestGameSession.gameType,
-        }
-        await apiRequest('/guess/win-check', 'POST', checkWinData, false)
-            .then((response) => {
-              // Process the API response
-              if (response.win) {
-                // User won - DON'T add coins here, let the modal handle it
-                // Remove: addCoins(winAmount)
-                setShowWinModal(true)
-              } else {
-                // User didn't win - update UI based on API feedback
-                updateUIFromApiResponse(response, guessArray)
-                // Decrease attempts
-                setAttemptsLeft((prev) => prev - 1)
-                // Check if out of attempts
-                if (attemptsLeft <= 1) {
-                  setShowNoAttemptsModal(true)
-                  return
-                }
-                // Focus the input for next attempt
-                if (inputRef.current) {
-                  inputRef.current.focus()
-                }
-              }
-            })
-            .catch((error) => {
-              console.error('Error checking win status:', error)
-              // Fall back to default handling if API call fails
-              setAttemptsLeft((prev) => prev - 1)
-              if (attemptsLeft <= 1) {
-                setShowNoAttemptsModal(true)
-              }
-            })
-      } catch (error) {
-        console.error('Error in API request:', error)
-        // Fall back to default handling if API call fails
-        setAttemptsLeft((prev) => prev - 1)
-        if (attemptsLeft <= 1) {
-          setShowNoAttemptsModal(true)
-        }
-      }
-    } else {
-      // Fallback for when session data is missing
-      setAttemptsLeft((prev) => prev - 1)
-      if (attemptsLeft <= 1) {
-        setShowNoAttemptsModal(true)
-      }
-    }
-  }, [
-    currentAttempt,
-    isAuthenticated,
-    guestGameSession,
-    attemptsLeft,
-    addCoins,
-    winAmount,
-  ])
-  // Helper function to update UI based on API response
-  const updateUIFromApiResponse = (response: any, attempt: number[]) => {
-    // Create a status array for the last attempt
-    const statuses: ('correct' | 'wrong-position' | 'incorrect')[] = Array(
-        attempt.length,
-    ).fill('incorrect')
-    // Mark correct positions
-    if (response.correctPositions && Array.isArray(response.correctPositions)) {
-      response.correctPositions.forEach((index: number) => {
-        statuses[index - 1] = 'correct'
-      })
-    }
-    // Mark correct but wrong positions
-    if (
-        response.correctButWrongPosition &&
-        Array.isArray(response.correctButWrongPosition)
-    ) {
-      response.correctButWrongPosition.forEach((index: number) => {
-        statuses[index - 1] = 'wrong-position'
-      })
-    }
-    // Update the last attempt statuses for rendering
-    setLastAttemptStatuses(statuses)
-    // Update locked positions and clear incorrect positions in current attempt
-    const newLocks = [...lockedPositions]
-    const newAttempt = [...currentAttempt]
-    statuses.forEach((status, index) => {
-      if (status === 'correct') {
-        newLocks[index] = true
-        // Keep the correct number in the new attempt
-        newAttempt[index] = attempt[index]
-      } else {
-        // Clear incorrect positions
-        newAttempt[index] = undefined
-      }
-    })
-    setLockedPositions(newLocks)
-    setCurrentAttempt(newAttempt)
-  }
+  }, [])
   // Focus input when game starts
   useEffect(() => {
     if (gameStarted && !showCountdown && inputRef.current) {
@@ -356,7 +168,7 @@ export function LockPickrGame() {
         const number = parseInt(e.key, 10)
         // Find the leftmost empty non-locked position
         let nextPos = -1
-        for (let i = 0; i < codeLength; i++) {
+        for (let i = 0; i < 5; i++) {
           if (!lockedPositions[i] && currentAttempt[i] === undefined) {
             nextPos = i
             break
@@ -372,7 +184,7 @@ export function LockPickrGame() {
       else if (e.key === 'Backspace') {
         // Find the rightmost filled non-locked position
         let lastFilled = -1
-        for (let i = codeLength - 1; i >= 0; i--) {
+        for (let i = 4; i >= 0; i--) {
           if (!lockedPositions[i] && currentAttempt[i] !== undefined) {
             lastFilled = i
             break
@@ -393,7 +205,7 @@ export function LockPickrGame() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [currentAttempt, gameStarted, lockedPositions, checkGuess, codeLength])
+  }, [currentAttempt, gameStarted, lockedPositions, checkGuess])
   // Timer countdown - only start after countdown completes
   useEffect(() => {
     if (!gameStarted) return
@@ -418,11 +230,11 @@ export function LockPickrGame() {
     // This prevents duplicate entries when typing on a physical keyboard
     if (e.nativeEvent.inputType === 'insertText') {
       const value = e.target.value.replace(/[^0-9]/g, '')
-      if (value.length <= codeLength) {
+      if (value.length <= 5) {
         const newAttempt = [...currentAttempt]
         let valueIndex = 0
         // Fill in non-locked positions with input values
-        for (let i = 0; i < codeLength && valueIndex < value.length; i++) {
+        for (let i = 0; i < 5 && valueIndex < value.length; i++) {
           if (!lockedPositions[i]) {
             newAttempt[i] = parseInt(value[valueIndex], 10)
             valueIndex++
@@ -442,17 +254,26 @@ export function LockPickrGame() {
   }
   // Get number status (correct, wrong position, incorrect)
   const getNumberStatus = (num: number, index: number) => {
-    if (lastAttemptStatuses[index]) {
-      return lastAttemptStatuses[index]
-    }
-    // Fallback to default logic if API response is not available
+    // If the number is in the correct position, always return 'correct'
     if (targetCode[index] === num) {
-      return 'correct'
+      return 'correct' // Correct number in correct position
     }
-    if (targetCode.includes(num)) {
-      return 'wrong-position'
+    // Check if the number exists elsewhere in the target code
+    // But we need to count occurrences to avoid marking too many as 'wrong-position'
+    const targetOccurrences = targetCode.filter((n) => n === num).length
+    const correctPositions = lastAttempt.filter(
+        (n, i) => n === num && targetCode[i] === num,
+    ).length
+    const previousOccurrences = lastAttempt
+        .slice(0, index)
+        .filter((n) => n === num).length
+    if (
+        targetOccurrences > correctPositions + previousOccurrences &&
+        targetCode.includes(num)
+    ) {
+      return 'wrong-position' // Correct number in wrong position
     }
-    return 'incorrect'
+    return 'incorrect' // Incorrect number
   }
   // Handle mobile number pad key press
   const handleMobileKeyPress = (key: string) => {
@@ -461,7 +282,7 @@ export function LockPickrGame() {
     } else if (key === 'Backspace') {
       // Find the rightmost filled non-locked position
       let lastFilled = -1
-      for (let i = codeLength - 1; i >= 0; i--) {
+      for (let i = 4; i >= 0; i--) {
         if (!lockedPositions[i] && currentAttempt[i] !== undefined) {
           lastFilled = i
           break
@@ -476,7 +297,7 @@ export function LockPickrGame() {
       const number = parseInt(key, 10)
       // Find the leftmost empty non-locked position
       let nextPos = -1
-      for (let i = 0; i < codeLength; i++) {
+      for (let i = 0; i < 5; i++) {
         if (!lockedPositions[i] && currentAttempt[i] === undefined) {
           nextPos = i
           break
@@ -496,7 +317,7 @@ export function LockPickrGame() {
     } else if (key === 'Backspace') {
       // Find the rightmost filled non-locked position
       let lastFilled = -1
-      for (let i = codeLength - 1; i >= 0; i--) {
+      for (let i = 4; i >= 0; i--) {
         if (!lockedPositions[i] && currentAttempt[i] !== undefined) {
           lastFilled = i
           break
@@ -511,7 +332,7 @@ export function LockPickrGame() {
       const number = parseInt(key, 10)
       // Find the leftmost empty non-locked position
       let nextPos = -1
-      for (let i = 0; i < codeLength; i++) {
+      for (let i = 0; i < 5; i++) {
         if (!lockedPositions[i] && currentAttempt[i] === undefined) {
           nextPos = i
           break
@@ -551,11 +372,7 @@ export function LockPickrGame() {
             <p className="text-2xl font-bold">{formatTime(timer)}</p>
           </div>
           {/* Feedback message */}
-          {feedback && (
-              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                {feedback}
-              </div>
-          )}
+
           {/* Hidden input for keyboard */}
           <input
               ref={inputRef}
@@ -572,35 +389,29 @@ export function LockPickrGame() {
           />
           {/* Last attempt display - Always shown */}
           <div className="flex justify-center mb-6">
-            <div
-                className="grid grid-cols-1 gap-2"
-                style={{
-                  gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-                }}
-            >
-              {(lastAttempt.length > 0
-                      ? lastAttempt
-                      : Array(codeLength).fill('')
-              ).map((num, index) => {
-                const status =
-                    lastAttempt.length > 0
-                        ? getNumberStatus(num as number, index)
-                        : null
-                let bgColor = 'bg-[#374151]'
-                if (status === 'correct') {
-                  bgColor = 'bg-[#22C55E]'
-                } else if (status === 'wrong-position') {
-                  bgColor = 'bg-[#C5BD22]'
-                }
-                return (
-                    <div
-                        key={index}
-                        className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
-                    >
-                      {typeof num === 'number' ? num : ''}
-                    </div>
-                )
-              })}
+            <div className="grid grid-cols-5 gap-2">
+              {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                  (num, index) => {
+                    const status =
+                        lastAttempt.length > 0
+                            ? getNumberStatus(num as number, index)
+                            : null
+                    let bgColor = 'bg-[#374151]'
+                    if (status === 'correct') {
+                      bgColor = 'bg-[#22C55E]'
+                    } else if (status === 'wrong-position') {
+                      bgColor = 'bg-[#C5BD22]'
+                    }
+                    return (
+                        <div
+                            key={index}
+                            className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
+                        >
+                          {typeof num === 'number' ? num : ''}
+                        </div>
+                    )
+                  },
+              )}
             </div>
           </div>
           {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
@@ -608,14 +419,9 @@ export function LockPickrGame() {
               className="flex justify-center mb-6"
               onClick={() => inputRef.current?.focus()}
           >
-            <div
-                className="grid grid-cols-1 gap-2"
-                style={{
-                  gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-                }}
-            >
+            <div className="grid grid-cols-5 gap-2">
               {Array.from({
-                length: codeLength,
+                length: 5,
               }).map((_, index) => (
                   <div
                       key={index}
@@ -717,15 +523,26 @@ export function LockPickrGame() {
               isOpen={showCountdown}
               onCountdownComplete={handleCountdownComplete}
           />
-          {/* Cooldown Modal */}
-          <CooldownModal
-              isOpen={showCooldownModal}
-              onClose={() => setShowCooldownModal(false)}
-              remainingTime={cooldownTimeRemaining}
-              gameType="Lock Pickr"
-          />
-          {/* Show modals based on authentication status */}
-          {!isAuthenticated ? (
+          {/* Conditionally render different modals based on authentication status */}
+          {isAuthenticated ? (
+              <>
+                <AuthenticatedWinModal
+                    isOpen={showWinModal}
+                    onClose={() => setShowWinModal(false)}
+                    reward={winAmount}
+                />
+                <AuthenticatedLoseModal
+                    isOpen={showLoseModal}
+                    onClose={() => setShowLoseModal(false)}
+                    penalty={2000}
+                />
+                <AuthenticatedNoAttemptsModal
+                    isOpen={showNoAttemptsModal}
+                    onClose={() => setShowNoAttemptsModal(false)}
+                    penalty={2000}
+                />
+              </>
+          ) : (
               <>
                 <WinModal
                     isOpen={showWinModal}
@@ -736,31 +553,13 @@ export function LockPickrGame() {
                 <LoseModal
                     isOpen={showLoseModal}
                     onClose={() => setShowLoseModal(false)}
-                    penalty={betAmount}
+                    penalty={2000}
                     gameType="lockpickr"
                 />
                 <NoAttemptsModal
                     isOpen={showNoAttemptsModal}
                     onClose={() => setShowNoAttemptsModal(false)}
-                    penalty={betAmount}
-                />
-              </>
-          ) : (
-              <>
-                <AuthenticatedWinModal
-                    isOpen={showWinModal}
-                    onClose={() => setShowWinModal(false)}
-                    reward={winAmount}
-                />
-                <AuthenticatedLoseModal
-                    isOpen={showLoseModal}
-                    onClose={() => setShowLoseModal(false)}
-                    penalty={betAmount}
-                />
-                <AuthenticatedNoAttemptsModal
-                    isOpen={showNoAttemptsModal}
-                    onClose={() => setShowNoAttemptsModal(false)}
-                    penalty={betAmount}
+                    penalty={2000}
                 />
               </>
           )}
@@ -770,7 +569,7 @@ export function LockPickrGame() {
   // Desktop view
   return (
       <div
-          className="flex flex-col w-full min-h-screen bg-[#1E2532] text-white p-4"
+          className="flex flex-col w-full min-h-screen bg-[#1E2532] text-white pr-4 pl-4"
           ref={gameContainerRef}
           tabIndex={0}
       >
@@ -788,16 +587,11 @@ export function LockPickrGame() {
           </button>
         </div>
         {/* Timer */}
-        <div className="text-center mb-14 mt-16">
+        <div className="text-center mb-[2vh] mt-[3vh]">
           <p className="text-white text-xs">Timer</p>
           <p className="text-2xl font-bold">{formatTime(timer)}</p>
         </div>
-        {/* Feedback message */}
-        {feedback && (
-            <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-              <p className="text-white text-lg">{feedback}</p>
-            </div>
-        )}
+
         {/* Hidden input for keyboard */}
         <input
             ref={inputRef}
@@ -813,51 +607,40 @@ export function LockPickrGame() {
             readOnly
         />
         {/* Last attempt display - Always shown */}
-        <div className="flex justify-center mb-7 mt-16">
-          <div
-              className="grid grid-cols-1 gap-2"
-              style={{
-                gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-              }}
-          >
-            {(lastAttempt.length > 0
-                    ? lastAttempt
-                    : Array(codeLength).fill('')
-            ).map((num, index) => {
-              const status =
-                  lastAttempt.length > 0
-                      ? getNumberStatus(num as number, index)
-                      : null
-              let bgColor = 'bg-[#374151]'
-              if (status === 'correct') {
-                bgColor = 'bg-[#22C55E]'
-              } else if (status === 'wrong-position') {
-                bgColor = 'bg-[#C5BD22]'
-              }
-              return (
-                  <div
-                      key={index}
-                      className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
-                  >
-                    {typeof num === 'number' ? num : ''}
-                  </div>
-              )
-            })}
+        <div className="flex justify-center mt-[2vh] mb-[3vh]">
+          <div className="grid grid-cols-5 gap-2">
+            {(lastAttempt.length > 0 ? lastAttempt : Array(5).fill('')).map(
+                (num, index) => {
+                  const status =
+                      lastAttempt.length > 0
+                          ? getNumberStatus(num as number, index)
+                          : null
+                  let bgColor = 'bg-[#374151]'
+                  if (status === 'correct') {
+                    bgColor = 'bg-[#22C55E]'
+                  } else if (status === 'wrong-position') {
+                    bgColor = 'bg-[#C5BD22]'
+                  }
+                  return (
+                      <div
+                          key={index}
+                          className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
+                      >
+                        {typeof num === 'number' ? num : ''}
+                      </div>
+                  )
+                },
+            )}
           </div>
         </div>
         {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
         <div
-            className="flex justify-center mb-10"
+            className="flex justify-center mb-[3vh]"
             onClick={() => inputRef.current?.focus()}
         >
-          <div
-              className="grid grid-cols-1 gap-2"
-              style={{
-                gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-              }}
-          >
+          <div className="grid grid-cols-5 gap-2">
             {Array.from({
-              length: codeLength,
+              length: 5,
             }).map((_, index) => (
                 <div
                     key={index}
@@ -869,17 +652,17 @@ export function LockPickrGame() {
           </div>
         </div>
         {/* Attempts count */}
-        <div className="text-center mb-5">
+        <div className="text-center mb-[2.8vh]">
           <p className="text-xl font-medium">{attemptsLeft} x attempt</p>
         </div>
         {/* Desktop number pad */}
-        <div className="w-full max-w-md mx-auto mb-10">
+        <div className="w-full max-w-md mx-auto mb-0">
           {/* Row 1: 1-2-3 */}
           <div className="flex justify-center gap-2 mb-2">
             {[1, 2, 3].map((num) => (
                 <button
                     key={num}
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[130px] h-[54px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress(num.toString())}
                 >
                   {num}
@@ -891,7 +674,7 @@ export function LockPickrGame() {
             {[4, 5, 6].map((num) => (
                 <button
                     key={num}
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[130px] h-[54px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress(num.toString())}
                 >
                   {num}
@@ -903,7 +686,7 @@ export function LockPickrGame() {
             {[7, 8, 9].map((num) => (
                 <button
                     key={num}
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[130px] h-[54px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress(num.toString())}
                 >
                   {num}
@@ -913,19 +696,19 @@ export function LockPickrGame() {
           {/* Row 4: ENTER-0-Backspace */}
           <div className="flex justify-center gap-2">
             <button
-                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
+                className="w-[130px] h-[54px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
                 onClick={() => handleDesktopKeyPress('ENTER')}
             >
               ENTER
             </button>
             <button
-                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                className="w-[130px] h-[54px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                 onClick={() => handleDesktopKeyPress('0')}
             >
               0
             </button>
             <button
-                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
+                className="w-[130px] h-[54px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
                 onClick={() => handleDesktopKeyPress('Backspace')}
             >
               <img
@@ -936,7 +719,7 @@ export function LockPickrGame() {
             </button>
           </div>
           <br />
-          <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
+          <div className="bg-[#374151] rounded-2xl text-center mt-0 mb-[2vh] mx-auto w-[320px] h-15 space-y-0">
             <div className="flex items-center justify-center pt-2 h-10">
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -955,15 +738,26 @@ export function LockPickrGame() {
             isOpen={showCountdown}
             onCountdownComplete={handleCountdownComplete}
         />
-        {/* Cooldown Modal */}
-        <CooldownModal
-            isOpen={showCooldownModal}
-            onClose={() => setShowCooldownModal(false)}
-            remainingTime={cooldownTimeRemaining}
-            gameType="Lock Pickr"
-        />
-        {/* Show modals based on authentication status */}
-        {!isAuthenticated ? (
+        {/* Conditionally render different modals based on authentication status */}
+        {isAuthenticated ? (
+            <>
+              <AuthenticatedWinModal
+                  isOpen={showWinModal}
+                  onClose={() => setShowWinModal(false)}
+                  reward={winAmount}
+              />
+              <AuthenticatedLoseModal
+                  isOpen={showLoseModal}
+                  onClose={() => setShowLoseModal(false)}
+                  penalty={2000}
+              />
+              <AuthenticatedNoAttemptsModal
+                  isOpen={showNoAttemptsModal}
+                  onClose={() => setShowNoAttemptsModal(false)}
+                  penalty={2000}
+              />
+            </>
+        ) : (
             <>
               <WinModal
                   isOpen={showWinModal}
@@ -974,31 +768,13 @@ export function LockPickrGame() {
               <LoseModal
                   isOpen={showLoseModal}
                   onClose={() => setShowLoseModal(false)}
-                  penalty={betAmount}
+                  penalty={2000}
                   gameType="lockpickr"
               />
               <NoAttemptsModal
                   isOpen={showNoAttemptsModal}
                   onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={betAmount}
-              />
-            </>
-        ) : (
-            <>
-              <AuthenticatedWinModal
-                  isOpen={showWinModal}
-                  onClose={() => setShowWinModal(false)}
-                  reward={winAmount}
-              />
-              <AuthenticatedLoseModal
-                  isOpen={showLoseModal}
-                  onClose={() => setShowLoseModal(false)}
-                  penalty={betAmount}
-              />
-              <AuthenticatedNoAttemptsModal
-                  isOpen={showNoAttemptsModal}
-                  onClose={() => setShowNoAttemptsModal(false)}
-                  penalty={betAmount}
+                  penalty={2000}
               />
             </>
         )}

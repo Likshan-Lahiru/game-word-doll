@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 // src/pages/HomePage.tsx
 import { StatusBar } from '../components/StatusBar'
 import { WinningStatus } from '../components/WinningStatus'
@@ -9,7 +9,12 @@ import { OnlineCountDisplay } from '../components/OnlineCountDisplay'
 import { useGlobalContext } from '../context/GlobalContext'
 import {GameCardGrid} from "../components/GameCards/GameCardGrid.tsx";
 export function HomePage({ isMobile }: { isMobile: boolean }) {
-    const { isAuthenticated } = useGlobalContext()
+    const { isAuthenticated, setPageType } = useGlobalContext()
+
+    useEffect(() => {
+        setPageType("")
+    },[])
+
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white overflow-hidden">
             <StatusBar
