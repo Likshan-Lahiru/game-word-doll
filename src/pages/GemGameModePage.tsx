@@ -4,7 +4,13 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
 import { TicketSelector } from '../components/TicketSelector'
 import { apiRequest } from '../services/api'
+import { ref, onValue } from "firebase/database";
+import {db} from "../../firebaseConfig.ts";
+import { get } from "firebase/database";
+
+
 export function GemGameModePage() {
+    let sessionId: any;
     const navigate = useNavigate()
     const location = useLocation()
     const { ticketBalance, gemBalance, addGems, setTicketBalance } =
@@ -103,13 +109,15 @@ export function GemGameModePage() {
         fetchRoomTypes()
     }, [])
     // Fetch session data (player count and gem pool) separately
-    const fetchSessionData = async () => {
+   const fetchSessionData = async () => {
         if (!selectedRoomId) return
         try {
             const formattedGameType = getFormattedGameType()
             // Fetch session data (player count and gem pool)
             const sessionEndpoint = `/user-group-session/latest-session-user-count?roomTypeId=${selectedRoomId}&gameType=${formattedGameType}`
             const sessionResponse = await apiRequest(sessionEndpoint, 'GET')
+            sessionId = sessionResponse.groupSessionId
+           // await fetchSessionData1()
             if (sessionResponse) {
                 setPlayersJoined(sessionResponse.userCount || 0)
                 setGemPool(sessionResponse.gemPool || 0)
@@ -119,6 +127,34 @@ export function GemGameModePage() {
             console.error('Error fetching session data:', err)
         }
     }
+
+
+
+    /*const fetchSessionData1 = async () => {
+        if (!sessionId) return;
+
+        try {
+            // Correct path → sessionId only
+            const sessionRef = ref(db,`sessions/${sessionId}`);
+            console.log("Fetching session data from Firebase for session ID:", sessionId);
+            const snapshot = await get(sessionRef);
+            console.log("Snapshot data:", snapshot.val());
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                setPlayersJoined(data.userCount || 0);
+                setGemPool(data.gemPoolTotal || 0);
+                setGroupSessionId(data.sessionId || null);
+                setCountdown(data.remainingSeconds);
+            } else {
+                console.log("No session data found");
+            }
+        } catch (err) {
+            console.error("Error fetching session data from Firebase:", err);
+        }
+    };*/
+
+
+
     // Fetch countdown time separately
     const fetchCountdownTime = async () => {
         if (!selectedRoomId) return
@@ -129,6 +165,7 @@ export function GemGameModePage() {
             // Fetch countdown time
             const countdownEndpoint = `/group-session/latest-session-time-diff?roomTypeId=${selectedRoomId}&gameType=${formattedGameType}`
             const countdownResponse = await apiRequest(countdownEndpoint, 'GET')
+            console.log("Countdown Response:", countdownResponse)
             if (countdownResponse && countdownResponse.countdownSeconds) {
                 const seconds = parseInt(countdownResponse.countdownSeconds, 10)
                 if (!isNaN(seconds)) {

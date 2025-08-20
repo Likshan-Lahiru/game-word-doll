@@ -1,5 +1,5 @@
 // Base API configuration
-const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
+const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
 //const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
@@ -131,6 +131,17 @@ export const createStripeCheckout = async (
         return result
     } catch (error) {
         console.error('Error creating Stripe checkout session:', error)
+        throw error
+    }
+}
+// Fetch online user count
+export const fetchOnlineUserCount = async () => {
+    try {
+        const endpoint = '/users/random-number'
+        const result = await apiRequest(endpoint, 'GET', undefined, false)
+        return result
+    } catch (error) {
+        console.error('Error fetching online user count:', error)
         throw error
     }
 }
