@@ -528,188 +528,193 @@ export function LockPickrGame() {
   if (isMobile) {
     return (
         <div
-            className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
+            className="flex flex-col w-full h-screen max-h-screen bg-[#1F2937] text-white overflow-hidden"
             ref={gameContainerRef}
             tabIndex={0}
         >
-          {/* Back button */}
-          <div className="absolute top-4 left-4 z-10">
-            <button
-                className="w-12 h-12 rounded-full flex items-center justify-center"
-                onClick={() => navigate('/')}
-            >
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                  alt="Back"
-                  className="w-8 h-8"
-              />
-            </button>
-          </div>
-          {/* Timer */}
-          <div className="text-center mb-24 mt-20">
-            <p className="text-xs">Timer</p>
-            <p className="text-2xl font-bold">{formatTime(timer)}</p>
-          </div>
-          {/* Feedback message */}
-          {feedback && (
-              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                {feedback}
-              </div>
-          )}
-          {/* Hidden input for keyboard */}
-          <input
-              ref={inputRef}
-              type="tel"
-              inputMode="none"
-              pattern="[0-9]*"
-              value={currentAttempt.filter((n) => n !== undefined).join('')}
-              onChange={handleInputChange}
-              className="opacity-0 h-0 w-0 absolute"
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              readOnly
-          />
-          {/* Last attempt display - Always shown */}
-          <div className="flex justify-center mb-6">
-            <div
-                className="grid grid-cols-1 gap-2"
-                style={{
-                  gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-                }}
-            >
-              {(lastAttempt.length > 0
-                      ? lastAttempt
-                      : Array(codeLength).fill('')
-              ).map((num, index) => {
-                const status =
-                    lastAttempt.length > 0
-                        ? getNumberStatus(num as number, index)
-                        : null
-                let bgColor = 'bg-[#374151]'
-                if (status === 'correct') {
-                  bgColor = 'bg-[#22C55E]'
-                } else if (status === 'wrong-position') {
-                  bgColor = 'bg-[#C5BD22]'
-                }
-                return (
-                    <div
-                        key={index}
-                        className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
-                    >
-                      {typeof num === 'number' ? num : ''}
-                    </div>
-                )
-              })}
-            </div>
-          </div>
-          {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
-          <div
-              className="flex justify-center mb-6"
-              onClick={() => inputRef.current?.focus()}
-          >
-            <div
-                className="grid grid-cols-1 gap-2"
-                style={{
-                  gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-                }}
-            >
-              {Array.from({
-                length: codeLength,
-              }).map((_, index) => (
-                  <div
-                      key={index}
-                      className={`w-14 h-14 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-xl`}
-                  >
-                    {currentAttempt[index] !== undefined
-                        ? currentAttempt[index]
-                        : ''}
-                  </div>
-              ))}
-            </div>
-          </div>
-          {/* Attempts count */}
-          <div className="text-center mb-4">
-            <p className="text-xl font-medium font-[Inter]">
-              {attemptsLeft} x attempt
-            </p>
-          </div>
-          {/* Win bar */}
-          <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-8 mt-2 mx-auto  w-[320px] h-[65px]">
-            <div className="flex items-center justify-center">
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
-                  alt="Coins"
-                  className="w-6 h-6 mr-2"
-              />
-              <span className="text-lg font-bold text-white">
-              {winAmount.toLocaleString()}
-            </span>
-            </div>
-            <p className="text-white text-lg font-bold">win</p>
-          </div>
-          {/* Mobile number pad */}
-          <div className="w-full max-w-md mx-auto">
-            {/* Row 1: 1-2-3 */}
-            <div className="flex justify-between mb-2">
-              {[1, 2, 3].map((num) => (
-                  <button
-                      key={num}
-                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
-                      onClick={() => handleMobileKeyPress(num.toString())}
-                  >
-                    {num}
-                  </button>
-              ))}
-            </div>
-            {/* Row 2: 4-5-6 */}
-            <div className="flex justify-between mb-2">
-              {[4, 5, 6].map((num) => (
-                  <button
-                      key={num}
-                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
-                      onClick={() => handleMobileKeyPress(num.toString())}
-                  >
-                    {num}
-                  </button>
-              ))}
-            </div>
-            {/* Row 3: 7-8-9 */}
-            <div className="flex justify-between mb-2">
-              {[7, 8, 9].map((num) => (
-                  <button
-                      key={num}
-                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
-                      onClick={() => handleMobileKeyPress(num.toString())}
-                  >
-                    {num}
-                  </button>
-              ))}
-            </div>
-            {/* Row 4: ENTER-0-Backspace */}
-            <div className="flex justify-between">
+          <div className="relative flex flex-col h-full">
+            {/* Back button */}
+            <div className="absolute top-4 left-4 z-10">
               <button
-                  className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-xl font-bold"
-                  onClick={() => handleMobileKeyPress('ENTER')}
-              >
-                ENTER
-              </button>
-              <button
-                  className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
-                  onClick={() => handleMobileKeyPress('0')}
-              >
-                0
-              </button>
-              <button
-                  className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center"
-                  onClick={() => handleMobileKeyPress('Backspace')}
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  onClick={() => navigate('/')}
               >
                 <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
-                    alt="Backspace"
-                    className="h-8 w-8"
+                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                    alt="Back"
+                    className="w-8 h-8"
                 />
               </button>
+            </div>
+            {/* Timer */}
+            <div className="flex-none text-center pt-16 pb-4">
+              <p className="text-xs">Timer</p>
+              <p className="text-2xl font-bold">{formatTime(timer)}</p>
+            </div>
+            {/* Feedback message */}
+            {feedback && (
+                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-4">
+                  {feedback}
+                </div>
+            )}
+            <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
+              {/* Hidden input for keyboard */}
+              <input
+                  ref={inputRef}
+                  type="tel"
+                  inputMode="none"
+                  pattern="[0-9]*"
+                  value={currentAttempt.filter((n) => n !== undefined).join('')}
+                  onChange={handleInputChange}
+                  className="opacity-0 h-0 w-0 absolute"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  readOnly
+              />
+              {/* Last attempt display */}
+              <div className="flex justify-center mb-6">
+                <div
+                    className="grid grid-cols-1 gap-2"
+                    style={{
+                      gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
+                    }}
+                >
+                  {(lastAttempt.length > 0
+                          ? lastAttempt
+                          : Array(codeLength).fill('')
+                  ).map((num, index) => {
+                    const status =
+                        lastAttempt.length > 0
+                            ? getNumberStatus(num as number, index)
+                            : null
+                    let bgColor = 'bg-[#374151]'
+                    if (status === 'correct') {
+                      bgColor = 'bg-[#22C55E]'
+                    } else if (status === 'wrong-position') {
+                      bgColor = 'bg-[#C5BD22]'
+                    }
+                    return (
+                        <div
+                            key={index}
+                            className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-lg shadow-md`}
+                        >
+                          {typeof num === 'number' ? num : ''}
+                        </div>
+                    )
+                  })}
+                </div>
+              </div>
+              {/* Current attempt */}
+              <div
+                  className="flex justify-center mb-6"
+                  onClick={() => inputRef.current?.focus()}
+              >
+                <div
+                    className="grid grid-cols-1 gap-2"
+                    style={{
+                      gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
+                    }}
+                >
+                  {Array.from({
+                    length: codeLength,
+                  }).map((_, index) => (
+                      <div
+                          key={index}
+                          className={`w-16 h-16 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md`}
+                      >
+                        {currentAttempt[index] !== undefined
+                            ? currentAttempt[index]
+                            : ''}
+                      </div>
+                  ))}
+                </div>
+              </div>
+              {/* Attempts count */}
+              <div className="text-center mb-6">
+                <p className="text-xl font-medium font-[Inter]">
+                  {attemptsLeft} x attempt
+                </p>
+              </div>
+            </div>
+            {/* Mobile number pad */}
+            <div className="flex-none pb-4">
+              <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-4 mx-auto w-[340px] h-[65px]">
+                <div className="flex items-center justify-center">
+                  <img
+                      src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                      alt="Coins"
+                      className="w-6 h-6 mr-2"
+                  />
+                  <span className="text-lg font-bold text-white">
+                  {winAmount.toLocaleString()}
+                </span>
+                </div>
+                <p className="text-white text-lg font-bold">win</p>
+              </div>
+              <div className="w-full max-w-md mx-auto">
+                {/* Row 1: 1-2-3 */}
+                <div className="flex justify-between mb-2 px-4">
+                  {[1, 2, 3].map((num) => (
+                      <button
+                          key={num}
+                          className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                          onClick={() => handleMobileKeyPress(num.toString())}
+                      >
+                        {num}
+                      </button>
+                  ))}
+                </div>
+                {/* Row 2: 4-5-6 */}
+                <div className="flex justify-between mb-2 px-4">
+                  {[4, 5, 6].map((num) => (
+                      <button
+                          key={num}
+                          className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                          onClick={() => handleMobileKeyPress(num.toString())}
+                      >
+                        {num}
+                      </button>
+                  ))}
+                </div>
+                {/* Row 3: 7-8-9 */}
+                <div className="flex justify-between mb-2 px-4">
+                  {[7, 8, 9].map((num) => (
+                      <button
+                          key={num}
+                          className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                          onClick={() => handleMobileKeyPress(num.toString())}
+                      >
+                        {num}
+                      </button>
+                  ))}
+                </div>
+                {/* Row 4: ENTER-0-Backspace */}
+                <div className="flex justify-between px-4">
+                  <button
+                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-xl font-bold"
+                      onClick={() => handleMobileKeyPress('ENTER')}
+                  >
+                    ENTER
+                  </button>
+                  <button
+                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold"
+                      onClick={() => handleMobileKeyPress('0')}
+                  >
+                    0
+                  </button>
+                  <button
+                      className="w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center"
+                      onClick={() => handleMobileKeyPress('Backspace')}
+                  >
+                    <img
+                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                        alt="Backspace"
+                        className="h-8 w-8"
+                    />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           {/* Countdown Modal */}
@@ -770,184 +775,191 @@ export function LockPickrGame() {
   // Desktop view
   return (
       <div
-          className="flex flex-col w-full min-h-screen bg-[#1E2532] text-white p-4"
+          className="flex flex-col w-full h-screen max-h-screen bg-[#1E2532] text-white overflow-hidden"
           ref={gameContainerRef}
           tabIndex={0}
       >
-        {/* Back button */}
-        <div className="absolute top-4 left-4 z-10">
-          <button
-              className="w-12 h-12 rounded-full flex items-center justify-center"
-              onClick={() => navigate('/')}
-          >
-            <img
-                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                alt="Back"
-                className="w-8 h-8"
+        <div className="relative flex flex-col h-full">
+          {/* Back button */}
+          <div className="absolute top-4 left-4 z-10">
+            <button
+                className="w-12 h-12 rounded-full flex items-center justify-center"
+                onClick={() => navigate('/')}
+            >
+              <img
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                  alt="Back"
+                  className="w-8 h-8"
+              />
+            </button>
+          </div>
+          {/* Timer */}
+          <div className="flex-none text-center pt-16 pb-4">
+            <p className="text-white text-xs">Timer</p>
+            <p className="text-2xl font-bold">{formatTime(timer)}</p>
+          </div>
+          {/* Feedback message */}
+          {feedback && (
+              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+                <p className="text-white text-lg">{feedback}</p>
+              </div>
+          )}
+          <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
+            {/* Hidden input for keyboard */}
+            <input
+                ref={inputRef}
+                type="tel"
+                inputMode="none"
+                pattern="[0-9]*"
+                value={currentAttempt.filter((n) => n !== undefined).join('')}
+                onChange={handleInputChange}
+                className="opacity-0 h-0 w-0 absolute"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                readOnly
             />
-          </button>
-        </div>
-        {/* Timer */}
-        <div className="text-center mb-14 mt-16">
-          <p className="text-white text-xs">Timer</p>
-          <p className="text-2xl font-bold">{formatTime(timer)}</p>
-        </div>
-        {/* Feedback message */}
-        {feedback && (
-            <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-              <p className="text-white text-lg">{feedback}</p>
+            {/* Last attempt display */}
+            <div className="flex justify-center mb-7">
+              <div
+                  className="grid grid-cols-1 gap-2"
+                  style={{
+                    gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
+                  }}
+              >
+                {(lastAttempt.length > 0
+                        ? lastAttempt
+                        : Array(codeLength).fill('')
+                ).map((num, index) => {
+                  const status =
+                      lastAttempt.length > 0
+                          ? getNumberStatus(num as number, index)
+                          : null
+                  let bgColor = 'bg-[#374151]'
+                  if (status === 'correct') {
+                    bgColor = 'bg-[#22C55E]'
+                  } else if (status === 'wrong-position') {
+                    bgColor = 'bg-[#C5BD22]'
+                  }
+                  return (
+                      <div
+                          key={index}
+                          className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
+                      >
+                        {typeof num === 'number' ? num : ''}
+                      </div>
+                  )
+                })}
+              </div>
             </div>
-        )}
-        {/* Hidden input for keyboard */}
-        <input
-            ref={inputRef}
-            type="tel"
-            inputMode="none"
-            pattern="[0-9]*"
-            value={currentAttempt.filter((n) => n !== undefined).join('')}
-            onChange={handleInputChange}
-            className="opacity-0 h-0 w-0 absolute"
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            readOnly
-        />
-        {/* Last attempt display - Always shown */}
-        <div className="flex justify-center mb-7 mt-16">
-          <div
-              className="grid grid-cols-1 gap-2"
-              style={{
-                gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-              }}
-          >
-            {(lastAttempt.length > 0
-                    ? lastAttempt
-                    : Array(codeLength).fill('')
-            ).map((num, index) => {
-              const status =
-                  lastAttempt.length > 0
-                      ? getNumberStatus(num as number, index)
-                      : null
-              let bgColor = 'bg-[#374151]'
-              if (status === 'correct') {
-                bgColor = 'bg-[#22C55E]'
-              } else if (status === 'wrong-position') {
-                bgColor = 'bg-[#C5BD22]'
-              }
-              return (
-                  <div
-                      key={index}
-                      className={`w-12 h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-3xl shadow-md`}
-                  >
-                    {typeof num === 'number' ? num : ''}
-                  </div>
-              )
-            })}
+            {/* Current attempt */}
+            <div
+                className="flex justify-center mb-10"
+                onClick={() => inputRef.current?.focus()}
+            >
+              <div
+                  className="grid grid-cols-1 gap-2"
+                  style={{
+                    gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
+                  }}
+              >
+                {Array.from({
+                  length: codeLength,
+                }).map((_, index) => (
+                    <div
+                        key={index}
+                        className={`w-16 h-16 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md`}
+                    >
+                      {currentAttempt[index] !== undefined
+                          ? currentAttempt[index]
+                          : ''}
+                    </div>
+                ))}
+              </div>
+            </div>
+            {/* Attempts count */}
+            <div className="text-center mb-5">
+              <p className="text-xl font-medium">{attemptsLeft} x attempt</p>
+            </div>
           </div>
-        </div>
-        {/* Current attempt - Clickable to enable keyboard input - Now shown second */}
-        <div
-            className="flex justify-center mb-10"
-            onClick={() => inputRef.current?.focus()}
-        >
-          <div
-              className="grid grid-cols-1 gap-2"
-              style={{
-                gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
-              }}
-          >
-            {Array.from({
-              length: codeLength,
-            }).map((_, index) => (
-                <div
-                    key={index}
-                    className={`w-16 h-16 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md`}
+          {/* Desktop number pad */}
+          <div className="flex-none pb-4">
+            <div className="w-full max-w-md mx-auto">
+              {/* Row 1: 1-2-3 */}
+              <div className="flex justify-center gap-2 mb-2">
+                {[1, 2, 3].map((num) => (
+                    <button
+                        key={num}
+                        className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                        onClick={() => handleDesktopKeyPress(num.toString())}
+                    >
+                      {num}
+                    </button>
+                ))}
+              </div>
+              {/* Row 2: 4-5-6 */}
+              <div className="flex justify-center gap-2 mb-2">
+                {[4, 5, 6].map((num) => (
+                    <button
+                        key={num}
+                        className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                        onClick={() => handleDesktopKeyPress(num.toString())}
+                    >
+                      {num}
+                    </button>
+                ))}
+              </div>
+              {/* Row 3: 7-8-9 */}
+              <div className="flex justify-center gap-2 mb-2">
+                {[7, 8, 9].map((num) => (
+                    <button
+                        key={num}
+                        className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                        onClick={() => handleDesktopKeyPress(num.toString())}
+                    >
+                      {num}
+                    </button>
+                ))}
+              </div>
+              {/* Row 4: ENTER-0-Backspace */}
+              <div className="flex justify-center gap-2">
+                <button
+                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
+                    onClick={() => handleDesktopKeyPress('ENTER')}
                 >
-                  {currentAttempt[index] !== undefined ? currentAttempt[index] : ''}
+                  ENTER
+                </button>
+                <button
+                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    onClick={() => handleDesktopKeyPress('0')}
+                >
+                  0
+                </button>
+                <button
+                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
+                    onClick={() => handleDesktopKeyPress('Backspace')}
+                >
+                  <img
+                      src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                      alt="Backspace"
+                      className="h-8 w-8"
+                  />
+                </button>
+              </div>
+              <div className="bg-[#374151] rounded-2xl text-center mt-4 mb-4 mx-auto w-[320px] h-[76px] space-y-0">
+                <div className="flex items-center justify-center pt-2 h-10">
+                  <img
+                      src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                      alt="Coins"
+                      className="w-5 h-5 mr-2"
+                  />
+                  <span className="text-xl font-['Inter'] font-semibold text-white">
+                  {winAmount.toLocaleString()}
+                </span>
                 </div>
-            ))}
-          </div>
-        </div>
-        {/* Attempts count */}
-        <div className="text-center mb-5">
-          <p className="text-xl font-medium">{attemptsLeft} x attempt</p>
-        </div>
-        {/* Desktop number pad */}
-        <div className="w-full max-w-md mx-auto mb-10">
-          {/* Row 1: 1-2-3 */}
-          <div className="flex justify-center gap-2 mb-2">
-            {[1, 2, 3].map((num) => (
-                <button
-                    key={num}
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
-                    onClick={() => handleDesktopKeyPress(num.toString())}
-                >
-                  {num}
-                </button>
-            ))}
-          </div>
-          {/* Row 2: 4-5-6 */}
-          <div className="flex justify-center gap-2 mb-2">
-            {[4, 5, 6].map((num) => (
-                <button
-                    key={num}
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
-                    onClick={() => handleDesktopKeyPress(num.toString())}
-                >
-                  {num}
-                </button>
-            ))}
-          </div>
-          {/* Row 3: 7-8-9 */}
-          <div className="flex justify-center gap-2 mb-2">
-            {[7, 8, 9].map((num) => (
-                <button
-                    key={num}
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
-                    onClick={() => handleDesktopKeyPress(num.toString())}
-                >
-                  {num}
-                </button>
-            ))}
-          </div>
-          {/* Row 4: ENTER-0-Backspace */}
-          <div className="flex justify-center gap-2">
-            <button
-                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
-                onClick={() => handleDesktopKeyPress('ENTER')}
-            >
-              ENTER
-            </button>
-            <button
-                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
-                onClick={() => handleDesktopKeyPress('0')}
-            >
-              0
-            </button>
-            <button
-                className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
-                onClick={() => handleDesktopKeyPress('Backspace')}
-            >
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
-                  alt="Backspace"
-                  className="h-8 w-8"
-              />
-            </button>
-          </div>
-          <br />
-          <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-4 mx-auto w-[320px] h-15 space-y-0">
-            <div className="flex items-center justify-center pt-2 h-10">
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
-                  alt="Coins"
-                  className="w-5 h-5 mr-2"
-              />
-              <span className="text-xl font-['Inter'] font-semibold text-white">
-              {winAmount.toLocaleString()}
-            </span>
+                <p className="text-xl pl-6 text-white font-semibold">win</p>
+              </div>
             </div>
-            <p className="text-xl pl-6 text-white font-semibold">win</p>
           </div>
         </div>
         {/* Countdown Modal */}

@@ -3,8 +3,9 @@ import { WordollCard } from './WordollCard.tsx'
 import { LockPickrCard } from './LockPickrCard.tsx'
 import { GiveawayCard } from './GiveawayCard.tsx'
 import { PlayBookCard } from './PlayBookCard.tsx'
-import { LoginButton } from '../LoginButton.tsx'
-import { useGlobalContext } from '../../context/GlobalContext.tsx'
+import { LoginButton } from '../LoginButton'
+import { useGlobalContext } from '../../context/GlobalContext'
+
 export function GameCardGrid() {
     // Check if mobile
     const isMobile = window.innerWidth <= 768
@@ -32,9 +33,9 @@ export function GameCardGrid() {
     }
     return (
         <div
-            className={`flex-1 flex justify-center items-center ${isAuthenticated ? 'pb-40' : 'pt-0'} game-card-grid`}
+            className={`flex-1 flex justify-center items-center ${isAuthenticated ? 'pb-24' : 'pt-0'} game-card-grid`}
         >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl min-w-[40vw] w-full">
                 <WordollCard />
                 <LockPickrCard />
                 <GiveawayCard />
