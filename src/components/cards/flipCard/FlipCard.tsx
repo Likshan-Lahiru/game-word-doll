@@ -51,7 +51,6 @@ export const FlipCard = ({ logo, items, isSelected, onSelect, isFlipped, isMobil
                                 />
                             </div>
 
-                            {/* Footer */}
                             <div className={"mb-10"}>
                                 { items.type === 'winImg' ?
                                     <>
