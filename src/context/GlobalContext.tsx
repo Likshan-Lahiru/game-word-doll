@@ -34,9 +34,6 @@ type GlobalContextType = {
     limitPlay: number
     setLimitPlay: React.Dispatch<React.SetStateAction<number>>
     updateUserBalance: () => Promise<void>
-    setPageType: (type: string) => void
-
-
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
@@ -68,6 +65,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                         setTicketBalance(balanceData.entries || 0)
                         setVoucherBalance(balanceData.gems || 0)
                         setGemBalance(balanceData.vouchers || 0)
+
                     }
                 }
             } catch (error) {
