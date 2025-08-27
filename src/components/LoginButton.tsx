@@ -11,7 +11,7 @@ export function LoginButton() {
     }
     return (
         <div
-            className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-12 pb-16 pt-8'}`}
+            className={`w-full flex justify-center ${isMobile ? 'pt-2 pb-4' : 'mb-0 pb-16 pt-2'}`}
         >
             <button
                 onClick={() => navigate('/login')}
@@ -19,9 +19,9 @@ export function LoginButton() {
                     backgroundColor: '#2D7FF0',
                     color: 'white',
                     fontSize: isMobile ? '14px' : '18px',
-                    padding: isMobile ? '16px 40px' : '16px 40px',
+                    padding: isMobile ? '16px 40px' : '10px 40px',
                     borderRadius: '9999px',
-                    width: isMobile ? '240px' : '240px',
+                    width: isMobile ? '240px' : '215px',
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 600,
                 }}
