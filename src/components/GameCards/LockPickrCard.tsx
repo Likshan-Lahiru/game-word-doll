@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGlobalContext } from '../../context/GlobalContext.tsx'
+import { useGlobalContext } from '../../context/GlobalContext'
 type LockPickrCardProps = {
     isMobile?: boolean
 }
@@ -25,11 +25,15 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
                 })
             }
         } else {
-            navigate('/bet-selector', {
-                state: {
-                    gameType: 'lockpickr',
-                },
-            })
+            if (isAuthenticated && selectedBalanceType === 'ticket' || !isAuthenticated && selectedBalanceType === 'coin') {
+                navigate('/bet-selector', {
+                    state: {
+                        gameType: 'lockpickr',
+                    },
+                })
+            } else {
+                navigate('/login')
+            }
         }
     }
     if (isMobile) {
@@ -54,7 +58,7 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
         )
     }
     return (
-        <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative">
+        <div className={`${isAuthenticated ? 'h-[60vh] max-h-[560px]' : 'h-[50.5vh] max-h-[420px]'} rounded-2xl overflow-hidden flex flex-col relative`}>
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img
@@ -64,15 +68,15 @@ export function LockPickrCard({ isMobile = false }: LockPickrCardProps) {
                 />
             </div>
             {/* Title */}
-            <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+            <h3 className="text-2xl font-semibold text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Lock Pickr
             </h3>
             {/* Spacer to push button to bottom */}
             <div className="flex-1"></div>
             {/* Play button */}
-            <div className="p-4 flex justify-center mb-6 relative z-10">
+            <div className="p-2 flex justify-center mb-6 relative z-10">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                    className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-[4vw] text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                     onClick={handlePlayClick}
                 >
                     PLAY

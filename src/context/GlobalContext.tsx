@@ -52,8 +52,9 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [selectedBalanceType, setSelectedBalanceType] = useState<
         'coin' | 'ticket'
     >('coin')
+    const [pageType, setPageType] = useState('')
     // Function to update user balance from API
-      const updateUserBalance = async () => {
+    const updateUserBalance = async () => {
         if (isAuthenticated) {
             try {
                 const userId = localStorage.getItem('userId')
@@ -134,6 +135,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 login,
                 logout,
                 updateUserBalance,
+                setPageType
             }}
         >
             {children}
