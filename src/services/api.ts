@@ -1,6 +1,6 @@
 // Base API configuration
-const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
-//const API_BASE_URL = 'http://localhost:8080/wordoll/api'
+//const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
+const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
     const headers: Record<string, string> = {
@@ -131,6 +131,39 @@ export const createStripeCheckout = async (
         return result
     } catch (error) {
         console.error('Error creating Stripe checkout session:', error)
+        throw error
+    }
+}
+// Fetch online user count
+export const fetchOnlineUserCount = async () => {
+    try {
+        const endpoint = '/users/random-number'
+        const result = await apiRequest(endpoint, 'GET', undefined, false)
+        return result
+    } catch (error) {
+        console.error('Error fetching online user count:', error)
+        throw error
+    }
+}
+// Fetch flip packages
+export const fetchFlipPackages = async () => {
+    try {
+        const endpoint = '/flip-packages/sorted'
+        const result = await apiRequest(endpoint, 'GET')
+        // Apply specific modifications to Pack 03 and Pack 04
+        if (Array.isArray(result)) {
+            return result.map((pack) => {
+                if (pack.title === 'Pack 03') {
+                    return { ...pack, voucher: pack.voucher + 1 }
+                } else if (pack.title === 'Pack 04') {
+                    return { ...pack, voucher: pack.voucher + 2 } // Changed from +3 to +2
+                }
+                return pack
+            })
+        }
+        return result
+    } catch (error) {
+        console.error('Error fetching flip packages:', error)
         throw error
     }
 }

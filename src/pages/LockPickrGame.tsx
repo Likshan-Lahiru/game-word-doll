@@ -9,7 +9,7 @@ import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLo
 import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest, checkLastWinTime } from '../services/api'
-import {CooldownModal} from "../components/GameCards/CooldownModal.tsx";
+import {CooldownModal} from "../components/GameModals/CooldownModal.tsx";
 
 export function LockPickrGame() {
   const navigate = useNavigate()

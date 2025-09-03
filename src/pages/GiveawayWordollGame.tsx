@@ -1,97 +1,215 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { VirtualKeyboard } from '../components/VirtualKeyboard'
 import { CountdownModal } from '../components/CountdownModal'
 import { WinModal } from '../components/GameModals/WinModal'
 import { LoseModal } from '../components/GameModals/LoseModal'
+import { NoAttemptsModal } from '../components/GameModals/NoAttemptsModal'
 import { AuthenticatedWinModal } from '../components/GameModals/AuthenticatedWinModal'
 import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLoseModal'
-import { PrizeWinModal } from '../components/GameModals/PrizeWinModal'
+import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
+import { ClaimEntryModal } from '../components/GameModals/ClaimEntryModal'
+import { WinPackageModal } from '../components/GameModals/WinPackageModal'
 import { useGlobalContext } from '../context/GlobalContext'
-const WORDS = ['HELLO', 'WORLD', 'REACT', 'GAMES', 'GUESS', 'BRAIN', 'SMART']
-function getLetterStatuses(
-    guess: string[],
-    target: string,
-): ('correct' | 'wrong-position' | 'incorrect')[] {
-    const statuses: ('correct' | 'wrong-position' | 'incorrect')[] =
-        Array(5).fill('incorrect')
-    const targetLetters = target.split('')
-    const used = Array(5).fill(false)
-    guess.forEach((letter, i) => {
-        if (letter === targetLetters[i]) {
-            statuses[i] = 'correct'
-            used[i] = true
-        }
-    })
-    guess.forEach((letter, i) => {
-        if (statuses[i] !== 'correct') {
-            const index = targetLetters.findIndex((l, j) => l === letter && !used[j])
-            if (index !== -1) {
-                statuses[i] = 'wrong-position'
-                used[index] = true
-            }
-        }
-    })
-    return statuses
-}
+import { apiRequest, checkLastWinTime } from '../services/api'
+import { CooldownModal } from '../components/GameModals/CooldownModal.tsx'
 export function GiveawayWordollGame() {
     const navigate = useNavigate()
-    const location = useLocation()
-    const { spinBalance, setSpinBalance, isAuthenticated, addCoins } =
-        useGlobalContext()
-    const [targetWord, setTargetWord] = useState('')
+    const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
+    const [targetWord, setTargetWord] = useState('') // Keep for UI feedback only
+    const [wordLength, setWordLength] = useState(5)
     const [, setSelectedLetters] = useState<string[]>([])
-    const [lastAttempt, setLastAttempt] = useState<string[]>(Array(5).fill(''))
-    const [currentAttempt, setCurrentAttempt] = useState<string[]>(
-        Array(5).fill(''),
-    )
-    const [lockedPositions, setLockedPositions] = useState<boolean[]>(
-        Array(5).fill(false),
-    )
-    const [timer, setTimer] = useState(900) // 15 minutes
+    const [lastAttempt, setLastAttempt] = useState<string[] | null>(null)
+    const [currentAttempt, setCurrentAttempt] = useState<string[]>([])
+    const [lockedPositions, setLockedPositions] = useState<boolean[]>([])
+    const [timer, setTimer] = useState(900) // 15 minutes (900 seconds)
     const [feedback, setFeedback] = useState<string>('')
-    const [isMobile, setIsMobile] = useState(false)
     const [showCountdown, setShowCountdown] = useState(true)
     const [gameStarted, setGameStarted] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
     const gameContainerRef = useRef<HTMLDivElement>(null)
     const [showWinModal, setShowWinModal] = useState(false)
+    const [showWinPackageModal, setShowWinPackageModal] = useState(false)
     const [showLoseModal, setShowLoseModal] = useState(false)
-    const [showPrizeWinModal, setShowPrizeWinModal] = useState(false)
-    const [prizeCoinAmount, setPrizeCoinAmount] = useState(0)
-    const [prizeSpinAmount, setPrizeSpinAmount] = useState(0)
+    const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
+    const [showClaimEntryModal, setShowClaimEntryModal] = useState(false)
+    const { selectedBalanceType } = useGlobalContext()
+    const [guestGameSession, setGuestGameSession] = useState<any>(null)
+    const [showCooldownModal, setShowCooldownModal] = useState(false)
+    const [cooldownTimeRemaining, setCooldownTimeRemaining] = useState('')
+    const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
+        ('correct' | 'wrong-position' | 'incorrect')[]
+    >([])
+    const [selectedPrize, setSelectedPrize] = useState<any>(null)
+    // Get number status (correct, wrong position, incorrect)
+    const getNumberStatus = (letter: string, index: number) => {
+        // First, check if we have status information from the API response
+        if (lastAttemptStatuses.length > 0) {
+            return lastAttemptStatuses[index]
+        }
+        // Fallback to default logic if API response is not available
+        if (
+            targetWord &&
+            index < targetWord.length &&
+            letter === targetWord[index]
+        ) {
+            return 'correct'
+        }
+        if (targetWord && targetWord.includes(letter)) {
+            return 'wrong-position'
+        }
+        return 'incorrect'
+    }
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 768)
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
-    }, [])
-    useEffect(() => {
-        const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)]
-        setTargetWord(randomWord)
-        const targetLetters = randomWord.split('')
-        const allLetters = [...targetLetters]
-        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        while (allLetters.length < 10) {
-            const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)]
-            if (!allLetters.includes(randomLetter)) {
-                allLetters.push(randomLetter)
+        // Load selected prize from session storage
+        const prizeSaved = sessionStorage.getItem('selectedPrize')
+        if (prizeSaved) {
+            try {
+                const prize = JSON.parse(prizeSaved)
+                setSelectedPrize(prize)
+            } catch (e) {
+                console.error('Error parsing selected prize:', e)
             }
         }
-        setSelectedLetters(allLetters.sort(() => Math.random() - 0.5))
-    }, [])
+        // Check if authenticated user is on cooldown
+        const checkCooldown = async () => {
+            if (isAuthenticated) {
+                try {
+                    const userId = localStorage.getItem('userId')
+                    if (userId) {
+                        const result = await checkLastWinTime(userId, 'WORDALL')
+                        // If there's a cooldown time remaining
+                        if (result.cooldownRemaining && result.cooldownRemaining > 0) {
+                            // Format the cooldown time (assuming it's in seconds)
+                            const minutes = Math.floor(result.cooldownRemaining / 60)
+                            const seconds = result.cooldownRemaining % 60
+                            setCooldownTimeRemaining(
+                                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+                            )
+                            setShowCooldownModal(true)
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking game cooldown:', error)
+                    // Continue with the game if there's an error checking cooldown
+                }
+            }
+        }
+        checkCooldown()
+        // Check for authenticated game session data
+        const authSessionData = localStorage.getItem('authGameSession')
+        // Check for guest game session data
+        const guestSessionData = localStorage.getItem('guestGameSession')
+        if (authSessionData && isAuthenticated) {
+            try {
+                const parsedSession = JSON.parse(authSessionData)
+                // Set word length based on session data
+                const length = parsedSession.wordOrNumberLength || 5
+                setWordLength(length)
+                // Initialize current attempt and locked positions with the correct length
+                setCurrentAttempt(Array(length).fill(''))
+                setLockedPositions(Array(length).fill(false))
+                // If there's a target word in the session, use it for UI feedback
+                if (parsedSession.targetWord) {
+                    setTargetWord(parsedSession.targetWord)
+                }
+            } catch (e) {
+                console.error('Error parsing auth session data:', e)
+                // Default to 5 if there's an error
+                setWordLength(5)
+                setCurrentAttempt(Array(5).fill(''))
+                setLockedPositions(Array(5).fill(false))
+            }
+        } else if (guestSessionData && !isAuthenticated) {
+            try {
+                const parsedSession = JSON.parse(guestSessionData)
+                setGuestGameSession(parsedSession)
+                // Set word length based on session data
+                const length = parsedSession.wordOrNumberLength || 5
+                setWordLength(length)
+                // Initialize current attempt and locked positions with the correct length
+                setCurrentAttempt(Array(length).fill(''))
+                setLockedPositions(Array(length).fill(false))
+                // If there's a target word in the session, use it for UI feedback
+                if (parsedSession.targetWord) {
+                    setTargetWord(parsedSession.targetWord)
+                }
+            } catch (e) {
+                console.error('Error parsing guest session data:', e)
+                // Default to 5 if there's an error
+                setWordLength(5)
+                setCurrentAttempt(Array(5).fill(''))
+                setLockedPositions(Array(5).fill(false))
+            }
+        } else {
+            // Default to 5 if no session data
+            setWordLength(5)
+            setCurrentAttempt(Array(5).fill(''))
+            setLockedPositions(Array(5).fill(false))
+        }
+        // Always set timer to 15 minutes (900 seconds)
+        setTimer(900)
+        // Prevent scrolling
+        document.body.style.overflow = 'hidden'
+        return () => {
+            document.body.style.overflow = ''
+        }
+    }, [isAuthenticated, selectedBalanceType])
+    // Handle win and purchase the flip package
+    const handleWin = async () => {
+        try {
+            const userId = localStorage.getItem('userId')
+            // Get prize data from session storage
+            const prizeSaved = sessionStorage.getItem('selectedPrize')
+            let prizeData = null
+            if (prizeSaved) {
+                try {
+                    prizeData = JSON.parse(prizeSaved)
+                } catch (e) {
+                    console.error('Error parsing selected prize:', e)
+                }
+            }
+            console.log('User ID:', userId, 'Prize data:', prizeData)
+            if (userId && prizeData && prizeData.originalId) {
+                // Call the flip API to buy the package
+                console.log(
+                    `Purchasing flip package: /flip/${userId}/buy-flip-package/${prizeData.originalId}`,
+                )
+                await apiRequest(
+                    `/flip/${userId}/buy-flip-package/${prizeData.originalId}`,
+                    'POST',
+                )
+                console.log(
+                    'Successfully purchased flip package:',
+                    prizeData.originalId,
+                )
+            } else {
+                console.error(
+                    'Missing data for purchasing flip package:',
+                    'userId:',
+                    userId,
+                    'prizeData:',
+                    prizeData,
+                    'originalId:',
+                    prizeData?.originalId,
+                )
+            }
+        } catch (error) {
+            console.error('Error purchasing flip package:', error)
+        }
+    }
     useEffect(() => {
-        if (gameStarted && !showCountdown && isMobile && inputRef.current) {
+        if (gameStarted && !showCountdown && inputRef.current) {
             setTimeout(() => inputRef.current?.focus(), 300)
         }
-    }, [gameStarted, showCountdown, isMobile])
+    }, [gameStarted, showCountdown])
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (!gameStarted) return
             const key = e.key.toUpperCase()
             if (/^[A-Z]$/.test(key)) {
                 let nextPos = -1
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < wordLength; i++) {
                     if (!lockedPositions[i] && !currentAttempt[i]) {
                         nextPos = i
                         break
@@ -104,7 +222,7 @@ export function GiveawayWordollGame() {
                 }
             } else if (e.key === 'Backspace') {
                 let lastFilled = -1
-                for (let i = 4; i >= 0; i--) {
+                for (let i = wordLength - 1; i >= 0; i--) {
                     if (!lockedPositions[i] && currentAttempt[i]) {
                         lastFilled = i
                         break
@@ -121,60 +239,99 @@ export function GiveawayWordollGame() {
         }
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [currentAttempt, gameStarted, lockedPositions])
+    }, [currentAttempt, gameStarted, lockedPositions, wordLength])
     useEffect(() => {
         if (!gameStarted) return
         if (timer <= 0) {
-            setShowLoseModal(true)
+            setShowClaimEntryModal(true)
             return
         }
         const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000)
         return () => clearInterval(countdown)
     }, [timer, gameStarted])
-    const checkGuess = useCallback(() => {
+    const checkGuess = useCallback(async () => {
         const guess = currentAttempt.join('')
-        if (guess.length < 5 || currentAttempt.includes('')) {
-            setFeedback('Please enter 5 letters')
+        if (guess.length < wordLength || currentAttempt.includes('')) {
             return
         }
         setLastAttempt([...currentAttempt])
-        if (guess === targetWord) {
-            // Get the selected prize from session storage
-            const prizeString = sessionStorage.getItem('selectedPrize')
-            if (prizeString) {
-                const prize = JSON.parse(prizeString)
-                setPrizeCoinAmount(prize.coinAmount)
-                setPrizeSpinAmount(prize.spinAmount)
-                setShowPrizeWinModal(true)
-            } else {
-                // Fallback if no prize is found (should not happen in normal flow)
-                if (isAuthenticated) {
-                    setSpinBalance((prev) => prev + 1)
-                }
-                setShowWinModal(true)
-            }
+        // Get userId from localStorage
+        const userId = localStorage.getItem('userId')
+        if (!userId) {
+            console.error('User ID not found')
             return
         }
-        const statuses = getLetterStatuses(currentAttempt, targetWord)
+        try {
+            // Use the giveaway/last-win-check endpoint
+            const checkWinData = {
+                userId: userId,
+                wordOrNumber: guess,
+                gameType: 'WORDALL',
+            }
+            const response = await apiRequest(
+                '/giveaway/last-win-check',
+                'POST',
+                checkWinData,
+            )
+            console.log('Giveaway win check response:', response)
+            if (response.win) {
+                // User won - call the handleWin function and show win modal
+                await handleWin()
+                // Show the win package modal with prize details
+                setShowWinPackageModal(true)
+            } else {
+                // User didn't win - update UI based on API feedback
+                updateUIFromApiResponse(response, currentAttempt)
+            }
+        } catch (error) {
+            console.error('Error checking win status:', error)
+            // Fallback handling
+            setLastAttemptStatuses(Array(currentAttempt.length).fill('incorrect'))
+        }
+    }, [currentAttempt, wordLength, selectedPrize])
+    // Helper function to update UI based on API response
+    const updateUIFromApiResponse = (response: any, attempt: string[]) => {
+        // Create a status array for the last attempt
+        const statuses: ('correct' | 'wrong-position' | 'incorrect')[] = Array(
+            attempt.length,
+        ).fill('incorrect')
+        // Mark correct positions
+        if (response.correctPositions && Array.isArray(response.correctPositions)) {
+            response.correctPositions.forEach((index: number) => {
+                // Convert from 1-based to 0-based indexing
+                const zeroBasedIndex = index - 1
+                if (zeroBasedIndex >= 0 && zeroBasedIndex < attempt.length) {
+                    statuses[zeroBasedIndex] = 'correct'
+                }
+            })
+        }
+        // Mark correct but wrong positions
+        if (
+            response.correctButWrongPosition &&
+            Array.isArray(response.correctButWrongPosition)
+        ) {
+            response.correctButWrongPosition.forEach((index: number) => {
+                // Convert from 1-based to 0-based indexing
+                const zeroBasedIndex = index - 1
+                if (zeroBasedIndex >= 0 && zeroBasedIndex < attempt.length) {
+                    statuses[zeroBasedIndex] = 'wrong-position'
+                }
+            })
+        }
+        // Update the last attempt statuses for rendering
+        setLastAttemptStatuses(statuses)
+        // Update locked positions and clear incorrect positions in current attempt
         const newLocks = [...lockedPositions]
-        const newAttempt = [...currentAttempt]
+        const newAttempt = Array(attempt.length).fill('')
         statuses.forEach((status, index) => {
             if (status === 'correct') {
                 newLocks[index] = true
-            } else {
-                newAttempt[index] = ''
+                newAttempt[index] = attempt[index]
             }
         })
         setLockedPositions(newLocks)
         setCurrentAttempt(newAttempt)
-        setFeedback('')
-    }, [
-        currentAttempt,
-        targetWord,
-        lockedPositions,
-        isAuthenticated,
-        setSpinBalance,
-    ])
+    }
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const remaining = seconds % 60
@@ -184,7 +341,7 @@ export function GiveawayWordollGame() {
         const value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '')
         const newAttempt = [...currentAttempt]
         let inputIndex = 0
-        for (let i = 0; i < 5 && inputIndex < value.length; i++) {
+        for (let i = 0; i < wordLength && inputIndex < value.length; i++) {
             if (!lockedPositions[i]) {
                 newAttempt[i] = value[inputIndex]
                 inputIndex++
@@ -195,7 +352,7 @@ export function GiveawayWordollGame() {
     const handleCountdownComplete = () => {
         setShowCountdown(false)
         setGameStarted(true)
-        if (isMobile && inputRef.current) {
+        if (inputRef.current) {
             inputRef.current.focus()
         }
     }
@@ -205,12 +362,20 @@ export function GiveawayWordollGame() {
         status: 'correct' | 'wrong-position' | 'incorrect' | null,
     ) => {
         let bgColor = 'bg-gray-700'
-        if (status === 'correct') bgColor = 'bg-[#22C55E]'
+        // If we have a status from the API response, use it
+        if (lastAttemptStatuses.length > 0 && lastAttempt) {
+            const apiStatus = lastAttemptStatuses[index]
+            if (apiStatus === 'correct') bgColor = 'bg-[#22C55E]'
+            else if (apiStatus === 'wrong-position') bgColor = 'bg-[#C5BD22]'
+            else bgColor = 'bg-gray-700'
+        }
+        // Otherwise use the passed status
+        else if (status === 'correct') bgColor = 'bg-[#22C55E]'
         else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]'
         return (
             <div
                 key={index}
-                className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-lg shadow-md`}
+                className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-lg md:text-xl shadow-md`}
             >
                 {letter}
             </div>
@@ -223,12 +388,12 @@ export function GiveawayWordollGame() {
             setCurrentAttempt(newAttempt)
         }
     }
-    const handleMobileKeyPress = (key: string) => {
-        if (key === 'ENTER') {
+    const handleKeyPress = (key: string) => {
+        if (key === 'Enter' || key === 'ENTER') {
             checkGuess()
         } else if (key === 'Backspace') {
             let lastFilled = -1
-            for (let i = 4; i >= 0; i--) {
+            for (let i = wordLength - 1; i >= 0; i--) {
                 if (!lockedPositions[i] && currentAttempt[i]) {
                     lastFilled = i
                     break
@@ -241,7 +406,7 @@ export function GiveawayWordollGame() {
             }
         } else if (/^[A-Z]$/.test(key)) {
             let nextPos = -1
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < wordLength; i++) {
                 if (!lockedPositions[i] && !currentAttempt[i]) {
                     nextPos = i
                     break
@@ -261,95 +426,113 @@ export function GiveawayWordollGame() {
     ]
     return (
         <div
-            className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
+            className="flex flex-col w-full h-screen max-h-screen bg-[#1F2937] text-white overflow-hidden"
             ref={gameContainerRef}
         >
-            {/* Back button */}
-            <div className="absolute top-4 left-4 z-10">
-                <button
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    onClick={() => navigate('/giveaway-entry')}
-                >
-                    <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                        alt="Back"
-                        className="w-8 h-8"
+            <div className="relative flex flex-col h-full">
+                {/* Back button */}
+                <div className="absolute top-4 left-4 z-10">
+                    <button
+                        className="w-12 h-12 rounded-full flex items-center justify-center"
+                        onClick={() => navigate('/')}
+                    >
+                        <img
+                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                            alt="Back"
+                            className="w-8 h-8"
+                        />
+                    </button>
+                </div>
+                <div className="flex-none text-center pt-16 pb-4">
+                    <p className="text-white text-xs">Timer</p>
+                    <p className="text-2xl font-bold">{formatTime(timer)}</p>
+                </div>
+                <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        value={currentAttempt.join('')}
+                        onChange={handleInputChange}
+                        className="opacity-0 h-0 w-0 absolute"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
                     />
-                </button>
-            </div>
-            <div className="text-center mb-28 mt-20">
-                <p className="text-white text-xs">Timer</p>
-                <p className="text-2xl font-bold">{formatTime(timer)}</p>
-            </div>
-            {feedback && (
-                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                    {feedback}
-                </div>
-            )}
-            {isMobile && (
-                <input
-                    ref={inputRef}
-                    type="text"
-                    value={currentAttempt.join('')}
-                    onChange={handleInputChange}
-                    className="opacity-0 h-0 w-0 absolute"
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"
-                />
-            )}
-            {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-8">
-                <div className="grid grid-cols-5 gap-2 text-2xl font-[Inter]">
-                    {lastAttempt.map((letter, index) => {
-                        // Only check status if there's an actual letter
-                        const hasActualLetter = letter !== ''
-                        const status = hasActualLetter
-                            ? getLetterStatuses(lastAttempt, targetWord)[index]
-                            : null
-                        return renderLetterTile(letter, index, status)
-                    })}
-                </div>
-            </div>
-            <div
-                className="flex justify-center mb-16"
-                onClick={() => inputRef.current?.focus()}
-            >
-                <div className="grid grid-cols-5 gap-2">
-                    {Array.from({
-                        length: 5,
-                    }).map((_, index) => (
+                    {/* Last attempt display */}
+                    <div className="flex justify-center mt-4 mb-4">
                         <div
-                            key={index}
-                            className={`w-16 h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                            onClick={() => handleLetterClick(index)}
+                            className="grid grid-cols-1 gap-2 text-2xl font-[Inter]"
+                            style={{
+                                gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+                            }}
                         >
-                            {currentAttempt[index]}
+                            {lastAttempt
+                                ? lastAttempt.map((letter, index) =>
+                                    renderLetterTile(
+                                        letter,
+                                        index,
+                                        lastAttemptStatuses.length > 0
+                                            ? lastAttemptStatuses[index]
+                                            : getNumberStatus(letter, index),
+                                    ),
+                                )
+                                : Array(wordLength)
+                                    .fill('')
+                                    .map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#374151] rounded-md text-white font-bold text-lg md:text-xl shadow-md"
+                                        >
+                                            {/* Empty tile */}
+                                        </div>
+                                    ))}
                         </div>
-                    ))}
+                    </div>
+                    {/* Current attempt */}
+                    <div
+                        className="flex justify-center mb-4"
+                        onClick={() => inputRef.current?.focus()}
+                    >
+                        <div
+                            className="grid grid-cols-1 gap-2"
+                            style={{
+                                gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+                            }}
+                        >
+                            {Array.from({
+                                length: wordLength,
+                            }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-2xl md:text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                                    onClick={() => handleLetterClick(index)}
+                                >
+                                    {currentAttempt[index]}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            {isMobile && (
-                <>
+                {/* Keyboard section - Responsive for all screen sizes */}
+                <div className="flex-none pb-6 mb-36">
                     <div className="w-full max-w-md mx-auto">
                         {mobileKeyboard.map((row, rowIndex) => (
                             <div
                                 key={rowIndex}
-                                className={`flex justify-center mb-0.5 ${rowIndex === 1 ? 'px-4' : ''}`}
+                                className={`flex justify-center mb-1 ${rowIndex === 1 ? 'px-4' : ''}`}
                             >
                                 {row.map((key, keyIndex) => (
                                     <button
                                         key={`${rowIndex}-${keyIndex}`}
-                                        className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
-                                        onClick={() => handleMobileKeyPress(key)}
+                                        className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[60px] md:w-[80px]' : 'w-[32px] md:w-[45px]'} h-[45px] md:h-[55px] m-[1px] md:m-[2px] rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold ${key === 'ENTER' ? 'text-xs md:text-sm' : 'text-md md:text-lg'} flex items-center justify-center shadow-md transition-colors`}
+                                        onClick={() => handleKeyPress(key)}
                                     >
                                         {key === 'Backspace' ? (
                                             <img
                                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
                                                 alt="Backspace"
-                                                className="h-8 w-8"
+                                                className="h-6 w-6 md:h-8 md:w-8"
                                             />
                                         ) : key === 'ENTER' ? (
                                             <span className="text-xs">ENTER</span>
@@ -361,103 +544,74 @@ export function GiveawayWordollGame() {
                             </div>
                         ))}
                     </div>
-                </>
-            )}
-            {!isMobile && (
-                <>
-                    <div className="mt-4 mb-4">
-                        <VirtualKeyboard
-                            onKeyPress={(key) => {
-                                if (key === 'Enter') {
-                                    checkGuess()
-                                } else if (key === 'Backspace') {
-                                    let lastFilled = -1
-                                    for (let i = 4; i >= 0; i--) {
-                                        if (!lockedPositions[i] && currentAttempt[i]) {
-                                            lastFilled = i
-                                            break
-                                        }
-                                    }
-                                    if (lastFilled !== -1) {
-                                        const newAttempt = [...currentAttempt]
-                                        newAttempt[lastFilled] = ''
-                                        setCurrentAttempt(newAttempt)
-                                    }
-                                } else if (/^[A-Z]$/.test(key)) {
-                                    let nextPos = -1
-                                    for (let i = 0; i < 5; i++) {
-                                        if (!lockedPositions[i] && !currentAttempt[i]) {
-                                            nextPos = i
-                                            break
-                                        }
-                                    }
-                                    if (nextPos !== -1) {
-                                        const newAttempt = [...currentAttempt]
-                                        newAttempt[nextPos] = key
-                                        setCurrentAttempt(newAttempt)
-                                    }
-                                }
-                            }}
-                            keyboardType="qwerty"
-                            className="md:block"
-                        />
-                    </div>
-                </>
-            )}
-
+                </div>
+            </div>
             <CountdownModal
                 isOpen={showCountdown}
                 onCountdownComplete={handleCountdownComplete}
             />
-            {isAuthenticated ? (
+            <CooldownModal
+                isOpen={showCooldownModal}
+                onClose={() => setShowCooldownModal(false)}
+                remainingTime={cooldownTimeRemaining}
+                gameType="Wordoll"
+            />
+            {/* Claim Entry Modal */}
+            <ClaimEntryModal
+                isOpen={showClaimEntryModal}
+                onClose={() => setShowClaimEntryModal(false)}
+                entryCost={selectedPrize?.cost || 5}
+            />
+            {/* Win Package Modal - Show this when user wins */}
+            <WinPackageModal
+                isOpen={showWinPackageModal}
+                onClose={() => setShowWinPackageModal(false)}
+                prize={{
+                    coinAmount: selectedPrize?.coinAmount || 300000,
+                    spinAmount: selectedPrize?.spinAmount || 5,
+                }}
+            />
+            {/* Show modals based on authentication status */}
+            {!isAuthenticated ? (
                 <>
-                    <AuthenticatedWinModal
+                    <WinModal
                         isOpen={showWinModal}
-                        onClose={() => {
-                            setShowWinModal(false)
-                            navigate('/giveaway-entry')
-                        }}
-                        reward={1}
-                        rewardType="spin"
+                        onClose={() => setShowWinModal(false)}
+                        reward={winAmount}
+                        gameType="wordoll"
                     />
-                    <AuthenticatedLoseModal
+                    <LoseModal
                         isOpen={showLoseModal}
-                        onClose={() => {
-                            setShowLoseModal(false)
-                            navigate('/giveaway-entry')
-                        }}
-                        penalty={0}
+                        onClose={() => setShowLoseModal(false)}
+                        penalty={betAmount}
+                        gameType="wordoll"
+                    />
+                    <NoAttemptsModal
+                        isOpen={showNoAttemptsModal}
+                        onClose={() => setShowNoAttemptsModal(false)}
+                        penalty={betAmount}
+                        gameType={'wordoll'}
                     />
                 </>
             ) : (
                 <>
-                    <WinModal
+                    <AuthenticatedWinModal
                         isOpen={showWinModal}
-                        onClose={() => {
-                            setShowWinModal(false)
-                            navigate('/giveaway-entry')
-                        }}
-                        reward={1}
-                        gameType="wordoll"
-                        rewardType="spin"
+                        onClose={() => setShowWinModal(false)}
+                        reward={winAmount}
                     />
-                    <LoseModal
+                    <AuthenticatedLoseModal
                         isOpen={showLoseModal}
-                        onClose={() => {
-                            setShowLoseModal(false)
-                            navigate('/giveaway-entry')
-                        }}
-                        penalty={0}
-                        gameType="wordoll"
+                        onClose={() => setShowLoseModal(false)}
+                        penalty={betAmount}
+                    />
+                    <AuthenticatedNoAttemptsModal
+                        isOpen={showNoAttemptsModal}
+                        onClose={() => setShowNoAttemptsModal(false)}
+                        penalty={betAmount}
                     />
                 </>
             )}
-            <PrizeWinModal
-                isOpen={showPrizeWinModal}
-                onClose={() => setShowPrizeWinModal(false)}
-                coinAmount={prizeCoinAmount}
-                spinAmount={prizeSpinAmount}
-            />
         </div>
     )
 }
