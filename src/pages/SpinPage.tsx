@@ -4,30 +4,23 @@ import { StatusBar } from '../components/StatusBar'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { CongratsModal } from '../components/CongratsModal'
-import {IMAGES} from "../constance/imagesLink.ts";
-
-const spinVoucherCountData = [
-    {
-        id: 1,
-        count: 0.20
-    },
-    {
-        id: 2,
-        count: 0.40
-    },
-    {
-        id: 3,
-        count: 1
-    },
-    {
-        id: 4,
-        count: 2
-    }
-]
-
+import { IMAGES } from '../constance/imagesLink.ts'
+import { apiRequest } from '../services/api'
+// Updated interface for flip options from API
+interface FlipOption {
+    id: string
+    costPerFlip: number
+}
 export function SpinPage() {
     const navigate = useNavigate()
-    const { spinBalance, addSpins, addCoins, coinBalance, gemBalance, selectedBalanceType } = useGlobalContext()
+    const {
+        spinBalance,
+        addSpins,
+        addCoins,
+        coinBalance,
+        gemBalance,
+        selectedBalanceType,
+    } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [isSpinning, setIsSpinning] = useState(false)
     const [rotationDegrees, setRotationDegrees] = useState(0)
@@ -36,12 +29,44 @@ export function SpinPage() {
         coins: 0,
         spins: 0,
     })
-
-    let [spinVoucherId, setSpinVoucherId] = useState(2)
-    const [spinVoucherCount, setSpinVoucherCount] = useState(0.40)
-
+    // Replace hardcoded spinVoucherCountData with API data
+    const [flipOptions, setFlipOptions] = useState<FlipOption[]>([])
+    const [isLoadingOptions, setIsLoadingOptions] = useState(true)
+    const [optionsError, setOptionsError] = useState<string | null>(null)
+    // State for selected option
+    const [selectedFlipOptionIndex, setSelectedFlipOptionIndex] = useState(1) // Default to second option (0.40)
+    const [spinVoucherCount, setSpinVoucherCount] = useState(0.4)
     const wheelRef = useRef<HTMLDivElement>(null)
-
+    // Fetch flip options from API
+    useEffect(() => {
+        const fetchFlipOptions = async () => {
+            try {
+                setIsLoadingOptions(true)
+                const response = await apiRequest('/flip-options', 'GET')
+                if (Array.isArray(response)) {
+                    setFlipOptions(response)
+                    // Set default selected option (0.40 or the second option if available)
+                    if (response.length > 1) {
+                        setSelectedFlipOptionIndex(1)
+                        setSpinVoucherCount(response[1].costPerFlip)
+                    } else if (response.length > 0) {
+                        setSelectedFlipOptionIndex(0)
+                        setSpinVoucherCount(response[0].costPerFlip)
+                    }
+                } else {
+                    setOptionsError('Invalid response format')
+                }
+                setIsLoadingOptions(false)
+            } catch (error) {
+                console.error('Error fetching flip options:', error)
+                setOptionsError('Failed to load flip options')
+                setIsLoadingOptions(false)
+                // Fallback to default values if API fails
+                setSpinVoucherCount(0.4)
+            }
+        }
+        fetchFlipOptions()
+    }, [])
     // Prizes configuration
     const prizes = [
         {
@@ -85,7 +110,6 @@ export function SpinPage() {
             spins: 0,
         },
     ]
-
     // Add some spins for testing if none are available
     useEffect(() => {
         if (spinBalance <= 0) {
@@ -94,7 +118,6 @@ export function SpinPage() {
             console.log('Added 5 spins for testing')
         }
     }, [])
-
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -102,7 +125,6 @@ export function SpinPage() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-
     const spinWheel = () => {
         console.log('Spin button clicked', {
             spinBalance,
@@ -125,28 +147,23 @@ export function SpinPage() {
         const fullRotations = 3 + Math.floor(Math.random() * 3)
         const randomPrizeIndex = Math.floor(Math.random() * 8)
         const segmentAngle = 45 // 360 degrees / 8 segments
-
         // Calculate final rotation (multiple full rotations + position to stop at the random prize)
-        const finalRotation = fullRotations * 360 + (360 - randomPrizeIndex * segmentAngle)
-
+        const finalRotation =
+            fullRotations * 360 + (360 - randomPrizeIndex * segmentAngle)
         // Set the new absolute rotation value
         setRotationDegrees((prevRotation) => prevRotation + finalRotation)
         console.log(
             `Spinning to ${rotationDegrees + finalRotation} degrees (prize index: ${randomPrizeIndex})`,
         )
-
         // After animation completes, show the prize
         setTimeout(() => {
-
             setIsSpinning(false)
             const wonPrize = prizes[randomPrizeIndex]
             setPrize(wonPrize)
-
             // Add the coins to the user's balance
             if (wonPrize.coins > 0) {
                 addCoins(wonPrize.coins)
             }
-
             // Add any spins won
             if (wonPrize.spins > 0) {
                 addSpins(wonPrize.spins)
@@ -154,29 +171,20 @@ export function SpinPage() {
             setShowCongratsModal(true)
         }, 12000) // Match this to the new animation duration (7s + 5s)
     }
-
     const handleSpinPlusMark = () => {
-        if (spinVoucherId < spinVoucherCountData.length) {
-            const newId = spinVoucherId + 1;
-            const nextItem = spinVoucherCountData.find(item => item.id === newId);
-            if (nextItem) {
-                setSpinVoucherId(newId);
-                setSpinVoucherCount(nextItem.count);
-            }
+        if (selectedFlipOptionIndex < flipOptions.length - 1) {
+            const newIndex = selectedFlipOptionIndex + 1
+            setSelectedFlipOptionIndex(newIndex)
+            setSpinVoucherCount(flipOptions[newIndex].costPerFlip)
         }
     }
-
     const handleSpinMinusMark = () => {
-        if (spinVoucherId > 1) {
-            const newId = spinVoucherId - 1;
-            const prevItem = spinVoucherCountData.find(item => item.id === newId);
-            if (prevItem) {
-                setSpinVoucherId(newId);
-                setSpinVoucherCount(prevItem.count);
-            }
+        if (selectedFlipOptionIndex > 0) {
+            const newIndex = selectedFlipOptionIndex - 1
+            setSelectedFlipOptionIndex(newIndex)
+            setSpinVoucherCount(flipOptions[newIndex].costPerFlip)
         }
     }
-
     // Mobile view based on the provided image
     if (isMobile) {
         return (
@@ -233,6 +241,7 @@ export function SpinPage() {
                                 <button
                                     className="font-extrabold px-4 text-[30px] leading-none h-[64px] w-[64px] flex items-center justify-center rounded-[22px] bg-[#67768F]"
                                     onClick={handleSpinMinusMark}
+                                    disabled={isLoadingOptions || selectedFlipOptionIndex === 0}
                                 >
                                     -
                                 </button>
@@ -243,16 +252,26 @@ export function SpinPage() {
                                         alt="voucher"
                                         className="h-full max-h-[90px] w-auto object-contain"
                                     />
-                                    <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                        {Number.isInteger(spinVoucherCount)
-                                            ? spinVoucherCount
-                                            : spinVoucherCount.toFixed(2)}
-                                    </p>
+                                    {isLoadingOptions ? (
+                                        <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                            ...
+                                        </p>
+                                    ) : (
+                                        <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                            {Number.isInteger(spinVoucherCount)
+                                                ? spinVoucherCount
+                                                : spinVoucherCount.toFixed(2)}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <button
                                     className="font-extrabold px-4 text-[30px] leading-none h-[64px] w-[64px] flex items-center justify-center rounded-[22px] bg-[#67768F]"
                                     onClick={handleSpinPlusMark}
+                                    disabled={
+                                        isLoadingOptions ||
+                                        selectedFlipOptionIndex === flipOptions.length - 1
+                                    }
                                 >
                                     +
                                 </button>
@@ -260,14 +279,14 @@ export function SpinPage() {
                         </>
                     )}
 
-                    {selectedBalanceType === 'coin' &&
+                    {selectedBalanceType === 'coin' && (
                         <button
                             className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-xl"
                             disabled={isSpinning || spinBalance < 3}
                         >
                             3 x Spin
                         </button>
-                    }
+                    )}
                     <button
                         className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={spinWheel}
@@ -287,8 +306,7 @@ export function SpinPage() {
             </div>
         )
     }
-
-    // Desktop view - unchanged
+    // Desktop view
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
             {/* Back button */}
@@ -307,7 +325,7 @@ export function SpinPage() {
 
             {/* Status Bar */}
             <div className="">
-                <StatusBar  isMobile={isMobile} hideOnlineCount={true} />
+                <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
 
             {/* Main content */}
@@ -346,6 +364,7 @@ export function SpinPage() {
                                 <button
                                     className="font-extrabold px-4 text-[30px] leading-none h-[64px] w-[64px] flex items-center justify-center rounded-2xl bg-[#67768F]"
                                     onClick={handleSpinMinusMark}
+                                    disabled={isLoadingOptions || selectedFlipOptionIndex === 0}
                                 >
                                     -
                                 </button>
@@ -356,16 +375,26 @@ export function SpinPage() {
                                         alt="voucher"
                                         className="h-full max-h-[90px] w-auto object-contain"
                                     />
-                                    <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                        {Number.isInteger(spinVoucherCount)
-                                        ? spinVoucherCount
-                                        : spinVoucherCount.toFixed(2)}
-                                    </p>
+                                    {isLoadingOptions ? (
+                                        <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                            ...
+                                        </p>
+                                    ) : (
+                                        <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                            {Number.isInteger(spinVoucherCount)
+                                                ? spinVoucherCount
+                                                : spinVoucherCount.toFixed(2)}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <button
                                     className="font-extrabold px-4 text-[30px] leading-none h-[64px] w-[64px] flex items-center justify-center rounded-2xl bg-[#67768F]"
                                     onClick={handleSpinPlusMark}
+                                    disabled={
+                                        isLoadingOptions ||
+                                        selectedFlipOptionIndex === flipOptions.length - 1
+                                    }
                                 >
                                     +
                                 </button>

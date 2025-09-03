@@ -63,8 +63,8 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                     if (balanceData) {
                         setCoinBalance(balanceData.goldCoins || 0)
                         setTicketBalance(balanceData.entries || 0)
-                        setVoucherBalance(balanceData.gems || 0)
-                        setGemBalance(balanceData.vouchers || 0)
+                        setVoucherBalance(balanceData.vouchers || 0)
+                        setGemBalance(balanceData.gems || 0)
 
                     }
                 }
@@ -100,6 +100,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
         removeAuthToken()
         setIsAuthenticated(false)
     }
+
     return (
         <GlobalContext.Provider
             value={{

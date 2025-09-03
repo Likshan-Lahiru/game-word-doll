@@ -36,15 +36,14 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                     <p className="text-sm font-medium font-['DM_Sans']">{prize.spinAmount} x Spin</p>
                 </div>
                 <div className="flex flex-col items-end">
-                    <div className="flex items-center mb-2 text-lg pr-8">
+                    <div className="flex items-center mb-3 mr-8 mt-2">
                         <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                            src={`${selectedBalanceType === 'coin' ? 'https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png' : 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png'}`}
                             alt="Coins"
-                            className="w-6 h-6 mr-1"
+                            className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-8 h-8 mr-2 rounded-full p-[2px]`}
                         />
-                        <span className="font-medium text-lg font-['DM_Sans']">
-              {prize.cost.toLocaleString()}
-            </span>
+                        <span
+                            className="text-[#170F49] font-semibold font-['DM_Sans'] text-xl">{prize.cost.toLocaleString()}</span>
                     </div>
                     <button
                         className="bg-[#56CA5A] w-32 hover:bg-green-600 text-white py-1.5 px-5 rounded-full font-medium text-sm"

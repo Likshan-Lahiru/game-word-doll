@@ -3,17 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { useGlobalContext } from '../context/GlobalContext'
 import { StatusBar } from '../components/StatusBar'
-import {InfoModal} from "../components/infoModal/InfoModal.tsx";
-import {IMAGES} from "../constance/imagesLink.ts";
-
+import { InfoModal } from '../components/infoModal/InfoModal.tsx'
+import { IMAGES } from '../constance/imagesLink.ts'
 export function GiveawayEntry() {
     const navigate = useNavigate()
     const location = useLocation()
-    const { isAuthenticated, spinBalance, selectedBalanceType, voucherBalance } = useGlobalContext()
+    const { isAuthenticated, spinBalance, selectedBalanceType, voucherBalance } =
+        useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
     const [openInfoModal, setOpenInfoModal] = useState(false)
-
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -21,60 +20,56 @@ export function GiveawayEntry() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
-
-        if (voucherBalance >= 2 && selectedBalanceType === 'ticket' && isAuthenticated) {
-            if (gameType === 'wordoll') {
-                navigate('/wordoll-game')
+        // Always navigate to giveaway-game page first, regardless of user status or balance
+        navigate('/giveaway-game', {
+            state: {
+                selectedGame: gameType,
+            },
+        })
+    }
+    const handleSpin = () => {
+        // navigate('/spin')
+        if (selectedBalanceType === 'ticket') {
+            if (voucherBalance === 0) {
+                setOpenInfoModal(true)
             } else {
-                navigate('/lock-pickr-game')
+                setOpenInfoModal(false)
+                navigate('/spin')
             }
         } else {
-            navigate('/giveaway-game', {
-                state: {
-                    selectedGame: gameType,
-                },
-            })
+            navigate('/spin')
         }
     }
-
-    const handleSpin = () => {
-        navigate('/spin')
-        // if (selectedBalanceType === 'ticket') {
-        //     if (voucherBalance === 0) {
-        //         setOpenInfoModal(true);
-        //     } else {
-        //         setOpenInfoModal(false);
-        //         navigate('/spin')
-        //     }
-        // } else  {
-        //     navigate('/spin')
-        // }
-    }
-
     const GrandWin = () => {
-        return(
+        return (
             <>
-                <div className={`flex-col flex items-center justify-center gap-y-5
+                <div
+                    className={`flex-col flex items-center justify-center gap-y-5
                     ${isMobile && 'mt-10'}
-                `}>
-                    <p className={"font-semibold text-[20px] font-[DM Sans]"}>GRAND WIN</p>
-                    <div className={"flex items-center"}>
-                        <p className={"font-semibold pr-2 text-[20px] font-[DM Sans]"}>Win</p>
+                `}
+                >
+                    <p className={'font-semibold text-[20px] font-[DM Sans]'}>
+                        GRAND WIN
+                    </p>
+                    <div className={'flex items-center'}>
+                        <p className={'font-semibold pr-2 text-[20px] font-[DM Sans]'}>
+                            Win
+                        </p>
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
                             alt="Heart"
                             className="w-6 h-6 pt-[2px] object-contain"
                         />
-                        <p className={"font-semibold pl-2 text-[20px] font-[DM Sans]"}>1,000 Daily</p>
+                        <p className={'font-semibold pl-2 text-[20px] font-[DM Sans]'}>
+                            1,000 Daily
+                        </p>
                     </div>
                 </div>
             </>
         )
     }
-
     const CustomWordollCard = () => {
         if (isMobile) {
             return (
@@ -95,9 +90,8 @@ export function GiveawayEntry() {
                 </div>
             )
         }
-
         return (
-            <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
+            <div className="h-[54vh] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/wEfJPtYkYsjSUwUG9ivnUR/wordoll.png"
@@ -105,13 +99,13 @@ export function GiveawayEntry() {
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+                <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                     Wordoll
                 </h3>
                 <div className="flex-1"></div>
                 <div className="p-4 flex justify-center mb-6 relative z-10">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-[4vw] text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                         onClick={() => handleGameSelect('wordoll')}
                     >
                         PLAY
@@ -120,7 +114,6 @@ export function GiveawayEntry() {
             </div>
         )
     }
-
     const CustomLockPickrCard = () => {
         if (isMobile) {
             return (
@@ -141,9 +134,8 @@ export function GiveawayEntry() {
                 </div>
             )
         }
-
         return (
-            <div className="h-[450px] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
+            <div className="h-[54vh] rounded-2xl overflow-hidden flex flex-col relative font-['DM Sans']">
                 <div className="absolute inset-0">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/i9wzJrxokDDqgwas4Cft5m/lockpickr.png"
@@ -151,13 +143,13 @@ export function GiveawayEntry() {
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <h3 className="text-3xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
+                <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                     Lock Pickr
                 </h3>
                 <div className="flex-1"></div>
                 <div className="p-4 flex justify-center mb-6 relative z-10">
                     <button
-                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-16 text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
+                        className="bg-blue-500 hover:bg-blue-600 rounded-full py-1 px-[4vw] text-white font-medium text-xl border border-white/60 font-['DM_Sans']"
                         onClick={() => handleGameSelect('lockpickr')}
                     >
                         PLAY
@@ -166,7 +158,6 @@ export function GiveawayEntry() {
             </div>
         )
     }
-
     return (
         <div className="relative font-['DM Sans']">
             {/* Back button */}
@@ -185,42 +176,43 @@ export function GiveawayEntry() {
 
             {/* Status Bar */}
             <div className="">
-                <StatusBar  isMobile={isMobile} hideOnlineCount={true} />
+                <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
 
             {/* Main Content */}
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
-                <div className="flex flex-col pt-1">
+                <div className="flex flex-col pt-0">
                     {/* Title */}
-                    <h2 className={`${isMobile ? 'pb-3' : 'pb-5'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-10 px-4`}>
-                        Play any game to enter the Fortune Spin
+                    <h2
+                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-2 px-4`}
+                    >
+                        Play any game to enter the Cooky Flip
                     </h2>
 
-                    <div className={"flex justify-center"}>
+                    <div className={'flex justify-center'}>
                         {/* Left Side - Grand Win After Entries Select */}
-                        { selectedBalanceType === 'ticket' && !isMobile && isAuthenticated &&
-                            <GrandWin/>
-                        }
-
+                        {selectedBalanceType === 'ticket' &&
+                            !isMobile &&
+                            isAuthenticated && <GrandWin />}
 
                         {/* Game Cards */}
-                        <div className={`px-4 sm:h-[450px] 
-                            ${isMobile ? 'w-full' : 'mr-20 ml-20'}`
-                        }
+                        <div
+                            className={`px-4 sm:h-[54vh] 
+                            ${isMobile ? 'w-full' : 'mr-20 ml-20'}`}
                         >
                             <div
                                 className={`flex justify-center ${isMobile ? 'gap-3' : 'gap-4'} w-full max-w-2xl mx-auto`}
                             >
                                 {/* WordollCard */}
                                 <div
-                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[16vw] min-w-[210px]'}`}
                                 >
                                     <CustomWordollCard />
                                 </div>
 
                                 {/* LockPickerCard */}
                                 <div
-                                    className={`${isMobile ? 'w-[60%]' : 'w-[240px]'} ${isMobile ? 'h-[265px]' : 'h-[320px]'}`}
+                                    className={`${isMobile ? 'w-[60%]' : 'w-[16vw] min-w-[210px]'}`}
                                 >
                                     <CustomLockPickrCard />
                                 </div>
@@ -228,47 +220,51 @@ export function GiveawayEntry() {
                         </div>
 
                         {/* Right Side - Grand Win After Entries Select */}
-                        { selectedBalanceType === 'ticket' && !isMobile &&  isAuthenticated &&
-                            <>
-                                <GrandWin/>
-                            </>
-                        }
+                        {selectedBalanceType === 'ticket' &&
+                            !isMobile &&
+                            isAuthenticated && (
+                                <>
+                                    <GrandWin />
+                                </>
+                            )}
                     </div>
 
                     {/* Mobile - Grand Win After Entries Select */}
-                    { selectedBalanceType === 'ticket' && isMobile &&  isAuthenticated &&
+                    {selectedBalanceType === 'ticket' && isMobile && isAuthenticated && (
                         <>
-                            <GrandWin/>
+                            <GrandWin />
                         </>
-                    }
+                    )}
 
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-10 xl:mt-10 mb-20">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
                         <button
-                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-4 px-16 rounded-full mx-auto block`}
+                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
                             disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
                         >
-                            { selectedBalanceType === 'ticket' && isAuthenticated ?
+                            {selectedBalanceType === 'ticket' && isAuthenticated ? (
                                 <>
-                                    <div className={"h-[25px] flex items-center"}>
-                                        <p className={"flex items-center"}>FLIP NOW
-                                            {voucherBalance !== 0 &&
-                                            <>
-                                                (
-                                                <img
-                                                    src={IMAGES.voucher}
-                                                    alt={"voucher"}
-                                                    className={"w-6 h-6 mr-2 ml-2"}/>
-                                                <p>x {voucherBalance}  )</p>
-                                            </>
-                                        }
+                                    <div className={'h-[25px] flex items-center'}>
+                                        <p className={'flex items-center'}>
+                                            FLIP NOW
+                                            {voucherBalance !== 0 && (
+                                                <>
+                                                    (
+                                                    <img
+                                                        src={IMAGES.voucher}
+                                                        alt={'voucher'}
+                                                        className={'w-6 h-6 mr-2 ml-2'}
+                                                    />
+                                                    <p>x {voucherBalance} )</p>
+                                                </>
+                                            )}
                                         </p>
                                     </div>
                                 </>
-                                :
+                            ) : (
                                 `SPIN NOW (${spinBalance} x Spin)`
-                            }
+                            )}
                         </button>
                     </div>
                 </div>
@@ -276,7 +272,10 @@ export function GiveawayEntry() {
                 {/* Bottom Navigation */}
                 <BottomNavigation />
             </div>
-            <InfoModal isOpen={openInfoModal} onClose={() => setOpenInfoModal(false)} />
+            <InfoModal
+                isOpen={openInfoModal}
+                onClose={() => setOpenInfoModal(false)}
+            />
         </div>
     )
 }
