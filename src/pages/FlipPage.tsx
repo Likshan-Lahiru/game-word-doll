@@ -96,24 +96,24 @@ const allFlipCardData: FlipCardData[][] = [
         {
             id: 1,
             name: 'Out of Stock',
-            image: 'IMAGES.outOfStock',
-            desc: "Today', s, stock, ran,",
+            image: IMAGES.outOfStock,
+            desc: "Today’s stock ran out",
             selected: false,
             type: ''
         },
         {
             id: 2,
             name: 'Out of Stock',
-            image: 'IMAGES.outOfStock',
-            desc: "Today', s, stock, ran,",
+            image: IMAGES.outOfStock,
+            desc: "Today’s stock ran out",
             selected: false,
             type: ''
         },
         {
             id: 3,
             name: 'Out of Stock',
-            image: 'IMAGES.outOfStock',
-            desc: "Today', s, stock, ran,",
+            image: IMAGES.outOfStock,
+            desc: "Today’s stock ran out",
             selected: false,
             type: ''
         },
