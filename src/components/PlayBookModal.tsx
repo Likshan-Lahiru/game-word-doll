@@ -274,9 +274,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <h3 className="text font-bold text-white">Gold Coins</h3>
                   </div>
                   <p className="text-white">
-                    Gold Coins are your main in-game currency. Use them to play
-                    any of our games. You can get more Gold Coins by buying them
-                    in the store or winning them from games.
+                    Gold Coins are your main in game currency.
+                    Use them to play any of our skill-games.
+                    You can get more Gold Coins by buying them in the store or winning them from games.
                   </p>
                 </div>
                 {/* Entries Section */}
@@ -292,8 +292,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <h3 className=" font-bold text-white">Entries</h3>
                   </div>
                   <p className="text-white">
-                    Entries are special passes that let you join paid rooms and
-                    compete in skill-based games for a chance to win Gems.
+                    Entries (Contest entries) are special passes that let
+                    you join paid rooms and compete in skill-based
+                    tournament games.
                   </p>
                 </div>
                 {/* Gems Section */}
@@ -309,8 +310,8 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <h3 className=" font-bold text-white">Gems</h3>
                   </div>
                   <p className="text-white">
-                    Gems are a premium reward. If you collect enough Gems, you can
-                    redeem and transfer them as funds to your bank account.
+                    Gems are a premium reward. If you collect enough
+                    Gems, you can get gift cards from the store.
                   </p>
                 </div>
               </div>
@@ -329,8 +330,9 @@ export function PlayBookModal({ isOpen, onClose }: PlayBookModalProps) {
                     <h3 className=" font-bold text-white">Vouchers</h3>
                   </div>
                   <p className="text-white">
-                    Earn Vouchers by playing skill-based games. Vouchers let you
-                    spin the Giveaway Spin for bonus prizes and gems!
+                    Get Vouchers by playing skill-based games.
+                    Vouchers let you play selected games for bonus
+                    prizes and gems.
                   </p>
                 </div>
                 {/* Lucky Score Section */}
