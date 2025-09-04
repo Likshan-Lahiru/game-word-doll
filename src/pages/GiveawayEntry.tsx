@@ -184,7 +184,7 @@ export function GiveawayEntry() {
                 <div className="flex flex-col pt-0">
                     {/* Title */}
                     <h2
-                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-2 px-4`}
+                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-lg font-medium text-center my-10 sm:my-3 md:mb-2 lg:mb-4 px-4`}
                     >
                         Play any game to enter the Cooky Flip
                     </h2>
@@ -237,7 +237,7 @@ export function GiveawayEntry() {
                     )}
 
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-8 mb-12">
                         <button
                             className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}

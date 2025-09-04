@@ -716,7 +716,7 @@ export function WordollGame() {
   const [isMobile, setIsMobile] = useState(false)
   const [showCountdown, setShowCountdown] = useState(true)
   const [gameStarted, setGameStarted] = useState(false)
-  const [attempts, setAttempts] = useState(20)
+  const [attempts, setAttempts] = useState(12)
   const inputRef = useRef<HTMLInputElement>(null)
   const gameContainerRef = useRef<HTMLDivElement>(null)
   const [showWinModal, setShowWinModal] = useState(false)
