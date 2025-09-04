@@ -45,9 +45,9 @@ export function GuidePage() {
                         </h3>
                     </div>
                     <p className="text-sm sm:text-base text-gray-300">
-                        Gold Coins are your main in-game currency. Use them to play any of
-                        our games. You can get more Gold Coins by buying them in the store
-                        or winning them from games.
+                        Gold Coins are your main in game currency.
+                        Use them to play any of our skill-games.
+                        You can get more Gold Coins by buying them in the store or winning them from games.
                     </p>
                 </div>
                 {/* Entries Section */}
@@ -65,8 +65,9 @@ export function GuidePage() {
                         </h3>
                     </div>
                     <p className="text-sm sm:text-base text-white">
-                        Entries are special passes that let you join paid rooms and compete
-                        in skill-based games for a chance to win Gems.
+                        Entries (Contest entries) are special passes that let
+                        you join paid rooms and compete in skill-based
+                        tournament games.
                     </p>
                 </div>
                 {/* Gems Section */}
@@ -84,8 +85,8 @@ export function GuidePage() {
                         </h3>
                     </div>
                     <p className="text-sm sm:text-base text-white">
-                        Gems are a premium reward. If you collect enough Gems, you can
-                        redeem and transfer them as funds to your bank account.
+                        Gems are a premium reward. If you collect enough
+                        Gems, you can get gift cards from the store.
                     </p>
                 </div>
                 {/* Vouchers Section */}
@@ -103,31 +104,13 @@ export function GuidePage() {
                         </h3>
                     </div>
                     <p className="text-sm sm:text-base text-white">
-                        Earn Vouchers by playing skill-based games. Vouchers let you spin
-                        the Giveaway Spin for bonus prizes and gems.
+                        Get Vouchers by playing skill-based games.
+                        Vouchers let you play selected games for bonus
+                        prizes and gems.
                     </p>
                 </div>
                 {/* Lucky Score Section */}
-                <div className="space-y-1 sm:space-y-2 pb-16 sm:pb-8">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="rounded-full">
-                            <img
-                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/nsm9dStD4yr2m3TCXP3A67/Lucky_Meter.png"
-                                alt="Lucky Score"
-                                className="w-8 h-8 sm:w-8 sm:h-8"
-                            />
-                        </div>
-                        <h3 className="text-base sm:text-xl font-bold text-white">
-                            Lucky Score
-                        </h3>
-                    </div>
-                    <p className="text-sm sm:text-base text-white">
-                        Your Lucky Score is visible in your account section. The more you
-                        share your personalized game link, the higher your Lucky Score goes,
-                        boosting your chances to win in Giveaway spins. (Note: The Lucky
-                        Score doesn't affect outcomes in skill-based games.)
-                    </p>
-                </div>
+
             </div>
             {/* Bottom Navigation */}
             <BottomNavigation />

@@ -33,7 +33,7 @@ export function LockPickrGame() {
   const lastActivityRef = useRef(Date.now())
   const [showWinModal, setShowWinModal] = useState(false)
   const [showLoseModal, setShowLoseModal] = useState(false)
-  const [attemptsLeft, setAttemptsLeft] = useState(50)
+  const [attemptsLeft, setAttemptsLeft] = useState(6)
   const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
   const [lockedPositions, setLockedPositions] = useState<boolean[]>([])
   const [guestGameSession, setGuestGameSession] = useState<any>(null)

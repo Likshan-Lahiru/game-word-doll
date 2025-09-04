@@ -56,7 +56,7 @@ export function StatusBar({
             ) : (
                 <>
                     <div className="flex items-center mr-52 space-x-3">
-                        {isHomePage && !isAuthenticated && (
+                        {isHomePage  && (
                             <div className="absolute top-6 left-7 z-10">
                                 <img
                                     src="https://uploadthingy.s3.us-west-1.amazonaws.com/uYsqLmRkx6f1zBGRqMZA6G/cookycreanlogo3.png"
