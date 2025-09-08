@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { StatusBar } from '../components/StatusBar'
 import { useGlobalContext } from '../context/GlobalContext'
 import { IMAGES } from '../constance/imagesLink.ts'
-import { FlipCard } from '../components/FlipCard'
+import { GoldFlipCard } from '../components/GameCards/GoldFlipCard'
 import { apiRequest } from '../services/api'
 // Updated interface for flip options from API
 interface FlipOption {
@@ -26,9 +26,9 @@ interface ApiFlipCardData {
 interface FlipGameResponse {
     flipCardType: string
     winAmount: number
-    remainingVouchers: number
-    remainingRTP: number
-    flipCardData: ApiFlipCardData
+    remainingGoldCoins: number
+    remainingGoldCoinFlips: number
+    flipGoldCardData: ApiFlipCardData
 }
 interface FlipCardData {
     id: number
@@ -37,6 +37,7 @@ interface FlipCardData {
     desc: string
     type: string
     selected?: boolean
+    winCount?: number
 }
 const allFlipCardData: FlipCardData[][] = [
     [
@@ -98,6 +99,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
+            type: '',
         },
         {
             id: 2,
@@ -105,6 +107,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
+            type: '',
         },
         {
             id: 3,
@@ -112,6 +115,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
+            type: '',
         },
     ],
     [
@@ -167,13 +171,16 @@ const allFlipCardData: FlipCardData[][] = [
         },
     ],
 ]
-export function FlipPage() {
+export function GoldFlipPage() {
     const navigate = useNavigate()
     const {
         selectedBalanceType,
         setVoucherBalance,
         voucherBalance,
         isAuthenticated,
+        setCoinBalance,
+        setGoldCoinFlipCount,
+        goldCoinFlipCount,
     } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     // Replace hardcoded spinVoucherCountData with API data
@@ -286,10 +293,17 @@ export function FlipPage() {
     }
     // Cards Flip Logic
     const handleFlipAllCards = async () => {
-        const vouchers = parseFloat(voucherBalance.toFixed(2))
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return
-        if (vouchers < spinVoucherCount) {
-            return alert('Please recharge your voucher balance!')
+        // For gold coin flips, check if user has available flips
+        if (selectedBalanceType === 'coin' && goldCoinFlipCount <= 0) {
+            return alert('You have no gold coin flips remaining!')
+        }
+        // For voucher flips, check voucher balance
+        if (selectedBalanceType === 'ticket') {
+            const vouchers = parseFloat(voucherBalance.toFixed(2))
+            if (vouchers < spinVoucherCount) {
+                return alert('Please recharge your voucher balance!')
+            }
         }
         if (!selectedCardId) {
             return alert('Please select a card before flipping.')
@@ -303,24 +317,26 @@ export function FlipPage() {
                 if (!userId) {
                     throw new Error('User ID not found. Please log in again.')
                 }
-                // Make API call to flip game
+                // Make API call to gold coin flip game
                 const requestData = {
                     userId: userId,
-                    flipOptionId: spinVoucherId,
                 }
                 const response = await apiRequest(
-                    '/game/flip/play',
+                    '/game/gold-coin-flip/play',
                     'POST',
                     requestData,
                 )
                 setApiResponse(response)
-                // Update voucher balance from API response
-                setVoucherBalance(response.remainingVouchers)
-                // Check if the response is a free card
-                setIsFreeCard(response.flipCardType === 'FREE')
+                // Update gold coin balance and flip count from API response
+                if (response.remainingGoldCoins !== undefined) {
+                    setCoinBalance(response.remainingGoldCoins)
+                }
+                if (response.remainingGoldCoinFlips !== undefined) {
+                    setGoldCoinFlipCount(response.remainingGoldCoinFlips)
+                }
                 // Create a new card based on API response
-                const apiCard = response.flipCardData
-                // Replace only unselected cards with random cards from other sets
+                const apiCard = response.flipGoldCardData
+                // Replace only selected card with API response card
                 const updatedCards = selectedFlipCards.map((card) => {
                     if (card.id === selectedCardId) {
                         return {
@@ -329,11 +345,7 @@ export function FlipPage() {
                             image: apiCard.imageLink,
                             desc: apiCard.desc,
                             type: apiCard.type || 'imgText',
-                            ...(['WIN', 'GRAND', 'FORTUNE'].includes(
-                                apiCard.flipCardType,
-                            ) && {
-                                winCount: apiCard.winCount,
-                            }),
+                            winCount: response.winAmount,
                         }
                     } else {
                         const newCard = getRandomCardFromOtherSets(selectedFlipCards)
@@ -345,6 +357,8 @@ export function FlipPage() {
                     }
                 })
                 setSelectedFlipCards(updatedCards)
+                // Check if free card based on response
+                setIsFreeCard(response.flipCardType === 'FREE')
             } else {
                 // Fallback for non-authenticated users (use existing random logic)
                 // Replace only unselected cards with random cards from other sets
@@ -361,8 +375,11 @@ export function FlipPage() {
                     }
                 })
                 setSelectedFlipCards(updatedCards)
-                // Update voucher balance for non-authenticated users
-                setVoucherBalance(vouchers - spinVoucherCount)
+                // Update voucher balance for non-authenticated users if using ticket balance
+                if (selectedBalanceType === 'ticket') {
+                    const vouchers = parseFloat(voucherBalance.toFixed(2))
+                    setVoucherBalance(vouchers - spinVoucherCount)
+                }
             }
             // Flip unselected cards immediately
             const immediateFlips: {
@@ -383,10 +400,6 @@ export function FlipPage() {
             }))
             setHasFlipped(true)
             setIsFlippingSelectedCard(false)
-            // Always deduct voucher balance unless it's a free card
-            if (!isAuthenticated && !isFreeCard) {
-                setVoucherBalance(vouchers - spinVoucherCount)
-            }
         } catch (error) {
             console.error('Error flipping cards:', error)
             setApiError(
@@ -408,7 +421,11 @@ export function FlipPage() {
                 }
             })
             setSelectedFlipCards(updatedCards)
-            setVoucherBalance(vouchers - spinVoucherCount)
+            // If using ticket balance, update voucher balance
+            if (selectedBalanceType === 'ticket') {
+                const vouchers = parseFloat(voucherBalance.toFixed(2))
+                setVoucherBalance(vouchers - spinVoucherCount)
+            }
         } finally {
             setIsFlipping(false)
         }
@@ -483,6 +500,15 @@ export function FlipPage() {
                         />
                     </button>
                 </div>
+                {/* Gold indicator */}
+                {/*   <div className="absolute top-12 right-3 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
+                   <img
+                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                       alt="Gold"
+                       className="w-4 h-4 mr-1"
+                   />
+                   <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
+               </div>*/}
                 {/* Status Bar */}
                 <div className="">
                     <StatusBar isMobile={isMobile} hideOnlineCount={true} />
@@ -497,7 +523,7 @@ export function FlipPage() {
                                 className={`transition-all duration-500 transform
                             ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
                             >
-                                <FlipCard
+                                <GoldFlipCard
                                     logo={IMAGES.logo}
                                     items={item}
                                     isSelected={selectedCardId === item.id}
@@ -516,7 +542,7 @@ export function FlipPage() {
                                 className={`transition-all duration-500 transform
                             ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
                             >
-                                <FlipCard
+                                <GoldFlipCard
                                     logo={IMAGES.logo}
                                     items={item}
                                     isSelected={selectedCardId === item.id}
@@ -528,72 +554,83 @@ export function FlipPage() {
                         ))}
                     </div>
                 </div>
-                {/* Spin buttons */}
+                {/* Flip buttons */}
                 <div className="px-4 pb-24 space-y-2">
+                    {/* Display remaining gold coin flips or Free */}
+                    {selectedBalanceType === 'coin' && (
+                        <div className="flex items-center justify-center w-full py-3 px-1 rounded-2xl bg-[#374151] text-white">
+                            <div className="flex items-center">
+                                {isFreeCard ? (
+                                    <span className="text-white font-bold text-xl">Free</span>
+                                ) : (
+                                    <span className="text-yellow-50 font-bold text-xl">
+                    {goldCoinFlipCount} X Flip
+                  </span>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     {selectedBalanceType === 'ticket' && (
                         <>
                             {isFreeCard ? (
-                                <button className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
-                                    Free
-                                </button>
+                                <>
+                                    <button className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
+                                        Free
+                                    </button>
+                                </>
                             ) : (
-                                <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
-                                    <button
-                                        className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
-                                        onClick={handleSpinMinusMark}
-                                        disabled={isLoadingOptions || selectedFlipOptionIndex === 0}
-                                    >
-                                        -
-                                    </button>
-                                    <div className="flex justify-center items-center pr-3 overflow-hidden">
-                                        <img
-                                            src={IMAGES.voucher}
-                                            alt="voucher"
-                                            className="h-full max-h-[90px] w-auto object-contain"
-                                        />
-                                        {isLoadingOptions ? (
-                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                                ...
-                                            </p>
-                                        ) : (
-                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                                {Number.isInteger(spinVoucherCount)
-                                                    ? spinVoucherCount
-                                                    : spinVoucherCount.toFixed(2)}
-                                            </p>
-                                        )}
+                                <>
+                                    <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinMinusMark}
+                                            disabled={
+                                                isLoadingOptions || selectedFlipOptionIndex === 0
+                                            }
+                                        >
+                                            -
+                                        </button>
+                                        <div className="flex justify-center items-center pr-3 overflow-hidden">
+                                            <img
+                                                src={IMAGES.voucher}
+                                                alt="voucher"
+                                                className="h-full max-h-[90px] w-auto object-contain"
+                                            />
+                                            {isLoadingOptions ? (
+                                                <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                                    ...
+                                                </p>
+                                            ) : (
+                                                <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                                    {Number.isInteger(spinVoucherCount)
+                                                        ? spinVoucherCount
+                                                        : spinVoucherCount.toFixed(2)}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinPlusMark}
+                                            disabled={
+                                                isLoadingOptions ||
+                                                selectedFlipOptionIndex === flipOptions.length - 1
+                                            }
+                                        >
+                                            +
+                                        </button>
                                     </div>
-                                    <button
-                                        className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
-                                        onClick={handleSpinPlusMark}
-                                        disabled={
-                                            isLoadingOptions ||
-                                            selectedFlipOptionIndex === flipOptions.length - 1
-                                        }
-                                    >
-                                        +
-                                    </button>
-                                </div>
+                                </>
                             )}
-                        </>
-                    )}
-                    {selectedBalanceType === 'coin' && (
-                        <>
-                            <button
-                                className="w-full py-3 px-4 rounded-2xl bg-[#374151] text-white font-semibold text-3xl"
-                                onClick={() =>
-                                    console.log('25x Spin button clicked (not implemented)')
-                                }
-                            >
-                                25 x Flip
-                            </button>
                         </>
                     )}
                     {currentRowIndex === 0 && !hasFlipped ? (
                         <button
                             className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={handleFlipAllCards}
-                            disabled={isFlipping}
+                            disabled={
+                                isFlipping ||
+                                (selectedBalanceType === 'coin' && goldCoinFlipCount <= 0)
+                            }
                         >
                             {isFlipping ? 'Flipping...' : 'Flip'}
                         </button>
@@ -629,6 +666,15 @@ export function FlipPage() {
                         />
                     </button>
                 </div>
+                {/* Gold indicator */}
+                {/*    <div className="absolute top-4 right-4 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
+                <img
+                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                    alt="Gold"
+                    className="w-5 h-5 mr-1"
+                />
+                <span className="text-[#FFD700] font-medium">Gold Game</span>
+             </div>*/}
                 {/* Status Bar */}
                 <div className="">
                     <StatusBar isMobile={isMobile} hideOnlineCount={true} />
@@ -642,7 +688,7 @@ export function FlipPage() {
                         className={`transition-all duration-500 transform
                                     ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
                     >
-                        <FlipCard
+                        <GoldFlipCard
                             logo={IMAGES.logo}
                             items={item}
                             isSelected={selectedCardId === item.id}
@@ -656,70 +702,84 @@ export function FlipPage() {
             {/* Flip buttons */}
             <div className="flex justify-center items-center mb-0 px-4 py-[4vh]">
                 <div className="flex items-center md:flex-row gap-4 mt-4 w-full max-w-3xl">
+                    {/* Display remaining gold coin flips or Free */}
+                    {selectedBalanceType === 'coin' && (
+                        <div className="flex items-center justify-center w-full py-3 px-4 rounded-2xl bg-[#374151] text-white h-[60px]">
+                            <div className="flex items-center">
+                                {isFreeCard ? (
+                                    <span className="text-white font-bold text-xl">Free</span>
+                                ) : (
+                                    <span className="text-yellow-50 font-bold text-xl">
+                    {goldCoinFlipCount} x Flip
+                  </span>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     {selectedBalanceType === 'ticket' && (
                         <>
                             {isFreeCard ? (
-                                <button className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[60px]">
-                                    Free
-                                </button>
+                                <>
+                                    <button
+                                        className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={isFreeCard}
+                                    >
+                                        Free
+                                    </button>
+                                </>
                             ) : (
-                                <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
-                                    <button
-                                        className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
-                                        onClick={handleSpinMinusMark}
-                                        disabled={isLoadingOptions || selectedFlipOptionIndex === 0}
-                                    >
-                                        -
-                                    </button>
-                                    <div className="flex justify-center items-center pr-3 overflow-hidden">
-                                        <img
-                                            src={IMAGES.voucher}
-                                            alt="voucher"
-                                            className="h-full max-h-[90px] w-auto object-contain"
-                                        />
-                                        {isLoadingOptions ? (
-                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                                ...
-                                            </p>
-                                        ) : (
-                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                                {Number.isInteger(spinVoucherCount)
-                                                    ? spinVoucherCount
-                                                    : spinVoucherCount.toFixed(2)}
-                                            </p>
-                                        )}
+                                <>
+                                    <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinMinusMark}
+                                            disabled={
+                                                isLoadingOptions || selectedFlipOptionIndex === 0
+                                            }
+                                        >
+                                            -
+                                        </button>
+                                        <div className="flex justify-center items-center pr-3 overflow-hidden">
+                                            <img
+                                                src={IMAGES.voucher}
+                                                alt="voucher"
+                                                className="h-full max-h-[90px] w-auto object-contain"
+                                            />
+                                            {isLoadingOptions ? (
+                                                <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                                    ...
+                                                </p>
+                                            ) : (
+                                                <p className="font-bold text-2xl cursor-default text-center w-[60px]">
+                                                    {Number.isInteger(spinVoucherCount)
+                                                        ? spinVoucherCount
+                                                        : spinVoucherCount.toFixed(2)}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <button
+                                            className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                            onClick={handleSpinPlusMark}
+                                            disabled={
+                                                isLoadingOptions ||
+                                                selectedFlipOptionIndex === flipOptions.length - 1
+                                            }
+                                        >
+                                            +
+                                        </button>
                                     </div>
-                                    <button
-                                        className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
-                                        onClick={handleSpinPlusMark}
-                                        disabled={
-                                            isLoadingOptions ||
-                                            selectedFlipOptionIndex === flipOptions.length - 1
-                                        }
-                                    >
-                                        +
-                                    </button>
-                                </div>
+                                </>
                             )}
-                        </>
-                    )}
-                    {selectedBalanceType === 'coin' && (
-                        <>
-                            <button
-                                className="w-full py-3 px-4 rounded-2xl bg-[#374151] text-white font-semibold text-3xl"
-                                onClick={() =>
-                                    console.log('25x Spin button clicked (not implemented)')
-                                }
-                            >
-                                25 x Flip
-                            </button>
                         </>
                     )}
                     {currentRowIndex === 0 && !hasFlipped ? (
                         <button
                             className="w-full py-3 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[60px]"
                             onClick={handleFlipAllCards}
-                            disabled={isFlipping}
+                            disabled={
+                                isFlipping ||
+                                (selectedBalanceType === 'coin' && goldCoinFlipCount <= 0)
+                            }
                         >
                             {isFlipping ? 'Flipping...' : 'Flip'}
                         </button>

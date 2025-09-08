@@ -8,8 +8,15 @@ import { IMAGES } from '../constance/imagesLink.ts'
 export function GiveawayEntry() {
     const navigate = useNavigate()
     const location = useLocation()
-    const { isAuthenticated, spinBalance, selectedBalanceType, voucherBalance } =
-        useGlobalContext()
+    const {
+        isAuthenticated,
+        spinBalance,
+        selectedBalanceType,
+        voucherBalance,
+        goldCoinFlipCount,
+        updateGoldCoinFlipCount,
+        setSelectedBalanceType,
+    } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [selectedGame, setSelectedGame] = useState<string | null>(null)
     const [openInfoModal, setOpenInfoModal] = useState(false)
@@ -20,26 +27,44 @@ export function GiveawayEntry() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+    // Fetch gold coin flip count when balance type changes to 'coin'
+    useEffect(() => {
+        if (selectedBalanceType === 'coin' && isAuthenticated) {
+            updateGoldCoinFlipCount()
+        }
+    }, [selectedBalanceType, isAuthenticated, updateGoldCoinFlipCount])
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
-        // Always navigate to giveaway-game page first, regardless of user status or balance
-        navigate('/giveaway-game', {
-            state: {
-                selectedGame: gameType,
-            },
-        })
+        // Check if using gold coin balance type
+        if (selectedBalanceType === 'coin') {
+            // Navigate to gold-giveaway-game for gold coin balance type
+            navigate('/gold-giveaway-game', {
+                state: {
+                    selectedGame: gameType,
+                },
+            })
+        } else {
+            // Navigate to regular giveaway-game for ticket balance type
+            navigate('/giveaway-game', {
+                state: {
+                    selectedGame: gameType,
+                },
+            })
+        }
     }
     const handleSpin = () => {
-        // navigate('/spin')
-        if (selectedBalanceType === 'ticket') {
+        // Check if using gold coin balance type
+        if (selectedBalanceType === 'coin') {
+            // Navigate to gold spin page for gold coin balance
+            navigate('/gold-spin')
+        } else {
+            // For ticket balance, check for vouchers
             if (voucherBalance === 0) {
                 setOpenInfoModal(true)
             } else {
                 setOpenInfoModal(false)
                 navigate('/spin')
             }
-        } else {
-            navigate('/spin')
         }
     }
     const GrandWin = () => {
@@ -173,28 +198,24 @@ export function GiveawayEntry() {
                     />
                 </button>
             </div>
-
             {/* Status Bar */}
             <div className="">
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
-
             {/* Main Content */}
             <div className="flex flex-col w-full bg-[#1F2937] text-white">
                 <div className="flex flex-col pt-0">
                     {/* Title */}
                     <h2
-                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-lg font-medium text-center my-10 sm:my-3 md:mb-2 lg:mb-4 px-4`}
+                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-2 px-4`}
                     >
                         Play any game to enter the Cooky Flip
                     </h2>
-
                     <div className={'flex justify-center'}>
                         {/* Left Side - Grand Win After Entries Select */}
                         {selectedBalanceType === 'ticket' &&
                             !isMobile &&
                             isAuthenticated && <GrandWin />}
-
                         {/* Game Cards */}
                         <div
                             className={`px-4 sm:h-[54vh] 
@@ -209,7 +230,6 @@ export function GiveawayEntry() {
                                 >
                                     <CustomWordollCard />
                                 </div>
-
                                 {/* LockPickerCard */}
                                 <div
                                     className={`${isMobile ? 'w-[60%]' : 'w-[16vw] min-w-[210px]'}`}
@@ -218,7 +238,6 @@ export function GiveawayEntry() {
                                 </div>
                             </div>
                         </div>
-
                         {/* Right Side - Grand Win After Entries Select */}
                         {selectedBalanceType === 'ticket' &&
                             !isMobile &&
@@ -228,20 +247,20 @@ export function GiveawayEntry() {
                                 </>
                             )}
                     </div>
-
                     {/* Mobile - Grand Win After Entries Select */}
                     {selectedBalanceType === 'ticket' && isMobile && isAuthenticated && (
                         <>
                             <GrandWin />
                         </>
                     )}
-
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-8 mb-12">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
                         <button
                             className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
-                            disabled={selectedBalanceType === 'coin' && spinBalance <= 0}
+                            disabled={
+                                selectedBalanceType === 'coin' && goldCoinFlipCount <= 0
+                            }
                         >
                             {selectedBalanceType === 'ticket' && isAuthenticated ? (
                                 <>
@@ -263,12 +282,11 @@ export function GiveawayEntry() {
                                     </div>
                                 </>
                             ) : (
-                                `SPIN NOW (${spinBalance} x Spin)`
+                                `SPIN NOW (${selectedBalanceType === 'coin' ? goldCoinFlipCount : spinBalance} x Spin)`
                             )}
                         </button>
                     </div>
                 </div>
-
                 {/* Bottom Navigation */}
                 <BottomNavigation />
             </div>

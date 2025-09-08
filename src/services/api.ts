@@ -156,7 +156,7 @@ export const fetchFlipPackages = async () => {
                 if (pack.title === 'Pack 03') {
                     return { ...pack, voucher: pack.voucher + 1 }
                 } else if (pack.title === 'Pack 04') {
-                    return { ...pack, voucher: pack.voucher + 2 } // Changed from +3 to +2
+                    return { ...pack, voucher: pack.voucher + 5 } // Changed from +3 to +2
                 }
                 return pack
             })
@@ -164,6 +164,28 @@ export const fetchFlipPackages = async () => {
         return result
     } catch (error) {
         console.error('Error fetching flip packages:', error)
+        throw error
+    }
+}
+// Fetch gold coin packages
+export const fetchGoldCoinPackages = async () => {
+    try {
+        const endpoint = '/flip-gold-coin-packages/sorted'
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching gold coin packages:', error)
+        throw error
+    }
+}
+// Fetch gold coin flip count
+export const fetchGoldCoinFlipCount = async (userId: string) => {
+    try {
+        const endpoint = `/users/${userId}/gold-coin-flip-count`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching gold coin flip count:', error)
         throw error
     }
 }
