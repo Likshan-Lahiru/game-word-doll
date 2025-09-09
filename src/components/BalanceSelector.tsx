@@ -14,6 +14,7 @@ export function BalanceSelector({
         selectedBalanceType,
         setSelectedBalanceType,
         updateUserBalance,
+        updateGoldCoinFlipCount,
     } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(false)
     // Add this effect to refresh balance data when component mounts or when balance might change
@@ -38,6 +39,10 @@ export function BalanceSelector({
     const handleSelect = (type: 'coin' | 'ticket') => {
         if (!switchable) return
         setSelectedBalanceType(type)
+        // Fetch gold coin flip count if switching to coin type
+        if (type === 'coin') {
+            updateGoldCoinFlipCount()
+        }
         if (onSelect) {
             onSelect(type)
         }

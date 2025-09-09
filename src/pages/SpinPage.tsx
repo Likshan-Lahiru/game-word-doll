@@ -20,6 +20,7 @@ export function SpinPage() {
         coinBalance,
         gemBalance,
         selectedBalanceType,
+        goldCoinFlipCount,
     } = useGlobalContext()
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [isSpinning, setIsSpinning] = useState(false)
@@ -128,20 +129,34 @@ export function SpinPage() {
     const spinWheel = () => {
         console.log('Spin button clicked', {
             spinBalance,
+            goldCoinFlipCount,
+            selectedBalanceType,
             isSpinning,
         })
         if (isSpinning) {
             console.log('Already spinning, ignoring click')
             return
         }
-        if (spinBalance <= 0) {
+        // Check if user has spins available based on balance type
+        if (
+            (selectedBalanceType === 'coin' && goldCoinFlipCount <= 0) ||
+            (selectedBalanceType === 'ticket' && spinBalance <= 0)
+        ) {
             console.log('No spins available')
             // Add spins for testing if needed
-            addSpins(1)
+            if (selectedBalanceType === 'ticket') {
+                addSpins(1)
+            }
             return
         }
-        // Use one spin
-        addSpins(-1)
+        // Use one spin - this would need to be updated to handle the gold coin flips in a production app
+        if (selectedBalanceType === 'ticket') {
+            addSpins(-1)
+        } else {
+            // In a real app, you would make an API call to decrement the gold coin flip count
+            // For now, we just log it
+            console.log('Using 1 gold coin flip, remaining:', goldCoinFlipCount - 1)
+        }
         setIsSpinning(true)
         // Random number of full rotations (3-5) plus a random segment
         const fullRotations = 3 + Math.floor(Math.random() * 3)
@@ -290,7 +305,12 @@ export function SpinPage() {
                     <button
                         className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={spinWheel}
-                        disabled={isSpinning || spinBalance <= 0}
+                        disabled={
+                            isSpinning ||
+                            (selectedBalanceType === 'coin'
+                                ? goldCoinFlipCount <= 0
+                                : spinBalance <= 0)
+                        }
                     >
                         Spin
                     </button>
@@ -419,7 +439,12 @@ export function SpinPage() {
                     <button
                         className="w-full py-3 px-4 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-semibold text-3xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={spinWheel}
-                        disabled={isSpinning || spinBalance <= 0}
+                        disabled={
+                            isSpinning ||
+                            (selectedBalanceType === 'coin'
+                                ? goldCoinFlipCount <= 0
+                                : spinBalance <= 0)
+                        }
                     >
                         Spin
                     </button>
