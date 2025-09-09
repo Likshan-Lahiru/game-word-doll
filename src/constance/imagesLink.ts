@@ -14,7 +14,8 @@ export const IMAGES = {
     freeFlip: 'https://i.ibb.co/SXhHWHTn/free-jar.png',
     outOfStock: 'https://i.ibb.co/0pd8DxL0/outofstock.png',
     crackedCooky :'https://i.ibb.co/BHNs6mMw/crakc.png',
-    antsInTheJar: 'https://i.ibb.co/8gJvnV78/ant.png'
+    antsInTheJar: 'https://i.ibb.co/8gJvnV78/ant.png',
+    checkMark: "/checkMark.png"
 }
 //https://i.ibb.co/k2LgHH1m/grandwin.png
 //https://i.ibb.co/Mx0x2WmQ/pngwing-com.png

@@ -5,6 +5,7 @@ import { BalanceSelector } from '../components/BalanceSelector'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { RedeemPage } from './RedeemPage'
 import { fetchPackageOffers, createStripeCheckout } from '../services/api'
+import PackageInclusions from "../components/StorePage/PackageInclusions.tsx";
 interface PackageOffer {
   id: string
   title: string
@@ -14,6 +15,41 @@ interface PackageOffer {
   imageLink: string
   bestValue: boolean
 }
+
+const pkgInclusions = [
+  {
+    id: 1,
+    name: "Starter",
+    instruction1: "3 days access to the cooky shop.",
+    instruction2: "VIP access to Cooky club. (coming soon)",
+    instruction3: "200,000 gold coins.",
+  },
+  {
+    id: 2,
+    name: "Silver",
+    instruction1: "7 days access to the cooky shop.",
+    instruction2: "VIP access to Cooky club. (coming soon).",
+    instruction3: "200,000 gold coins.",
+    instruction4: "5 free entries.",
+  },
+  {
+    id: 3,
+    name: "Gold",
+    instruction1: "2 weeks access to the cooky shop.",
+    instruction2: "VIP access to Cooky club. (coming soon).",
+    instruction3: "2,500,000 gold coins.",
+    instruction4: "15 free entries.",
+  },
+  {
+    id: 4,
+    name: "Diamond",
+    instruction1: "1 month access to the cooky shop.",
+    instruction2: "VIP access to Cooky club. (coming soon).",
+    instruction3: "15,000,000 gold coins.",
+    instruction4: "80 free entries.",
+  }
+]
+
 export function StorePage() {
   const navigate = useNavigate()
   const { addCoins } = useGlobalContext()
@@ -25,6 +61,7 @@ export function StorePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [processingPayment, setProcessingPayment] = useState(false)
+  const [collapsePkgInclusions, setCollapsePkgInclusions] = useState(false);
   // Fetch package offers from API
   useEffect(() => {
     const getPackageOffers = async () => {
@@ -98,6 +135,10 @@ export function StorePage() {
   ]
   // Use API packages if available, otherwise use defaults
   const displayPackages = packages.length > 0 ? packages : defaultPackages
+
+  console.log("packages ---------------------------------------- ", packages)
+  console.log("display packages ---------------------------------------- ", displayPackages)
+
   const handleBuy = async (packageItem: PackageOffer) => {
     try {
       setProcessingPayment(true)
@@ -279,42 +320,53 @@ export function StorePage() {
         </div>
         {/* Main content */}
         <div className="flex flex-1 pt-5 pl-16 pr-5 pb-8">
+
           {/* Left sidebar */}
           <div
               className={`${activeTabDesktop === 'redeem' ? 'mt-14 w-[467px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}
           >
-            <h1 className="text-2xl font-bold mb-8">Store</h1>
+            <h1 className="text-2xl font-bold mb-3">Store</h1>
+
+            {/* MemberShip Tab */}
             <button
-                className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-4 flex items-center`}
+                className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
                 onClick={() => {
                   setActiveTabDesktop('coins')
                 }}
             >
             <span className="flex-1 text-left ml-2 font-medium">
-              Get Gold Coins
+              Memberships
             </span>
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/tseH8zwDf6PgMMJLoCm3uz/gold-store.png"
-                    alt="Coins"
-                    className="w-10 h-10"
-                />
-              </div>
             </button>
+
+            {/* Cooky Shop Tab */}
             <button
-                className={`${activeTabDesktop === 'redeem' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl flex items-center`}
+                className={`${activeTabDesktop === 'cookyShop' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
+                onClick={() => {
+                  setActiveTabDesktop('cookyShop')
+                }}
+            >
+              <span className="flex-1 text-left ml-2 font-medium">Cooky Shop</span>
+            </button>
+
+            {/* Convert Gems */}
+            <button
+                className={`${activeTabDesktop === 'redeem' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
                 onClick={() => {
                   setActiveTabDesktop('redeem')
                 }}
             >
-              <span className="flex-1 text-left ml-2 font-medium">Redeem</span>
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
-                    alt="Redeem"
-                    className="w-12 h-12"
-                />
-              </div>
+              <span className="flex-1 text-left ml-2 font-medium">Convert Gems</span>
+            </button>
+
+            {/* Convert to Entries */}
+            <button
+                className={`${activeTabDesktop === 'convertToEntries' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
+                onClick={() => {
+                  setActiveTabDesktop('convertToEntries')
+                }}
+            >
+              <span className="flex-1 text-left ml-2 font-medium">Convert to Entries</span>
             </button>
           </div>
           {activeTabDesktop === 'coins' ? (
@@ -323,7 +375,7 @@ export function StorePage() {
                 {/* Right content area */}
                 <div className="flex-1 bg-[#374151] rounded-xl p-6">
                   <h2 className="text font-medium mb-6 font-['DM Sans']">
-                    GC Package
+                    Membership Packages
                   </h2>
                   {isLoading ? (
                       <div className="text-center py-4">Loading packages...</div>
@@ -352,8 +404,20 @@ export function StorePage() {
                               <div
                                   className={`relative rounded-xl overflow-hidden flex flex-col h-[440px] bg-white ${pkg.bestValue ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''}`}
                               >
+                                {/* Card Title */}
+                                <div className={"flex justify-center text-xl pt-5 font-['DM Sans'] font-semibold"}>
+                                  <h2 className={`
+                                    ${{
+                                      Gold: "text-[#FFB302]",
+                                      Silver: "text-[#67768F]",
+                                      Diamond: "text-[#AB13F7]"
+                                    }[pkg.title] || "text-black"}
+                                  `}>
+                                    {pkg.title}
+                                  </h2>
+                                </div>
                                 {/* Coin image */}
-                                <div className="flex justify-center items-center pt-16 pb-6">
+                                <div className="flex justify-center items-center pt-8 pb-6">
                                   <img
                                       src={pkg.imageLink}
                                       alt="Coins"
@@ -391,15 +455,16 @@ export function StorePage() {
                                   {/* Buy button - always at the same position */}
                                   <div className="mt-auto mb-8 px-4">
                                     {/* Price */}
-                                    <p className="font-semibold text-xl text-black my-4 font-['DM Sans']">
+                                    <p className="font-semibold text-xl text-black my-2 font-['DM Sans']">
                                       ${pkg.priceUsd}
                                     </p>
+                                    <p className={"text-black mb-4 text-xs font-bold"}>(Single payment only)</p>
                                     <button
                                         onClick={() => handleBuy(pkg)}
                                         disabled={processingPayment}
-                                        className={`w-full ${processingPayment ? 'bg-gray-400' : 'bg-[#56CA5A] hover:bg-[#4BB850]'} text-white py-3 rounded-full font-bold`}
+                                        className={`w-full ${processingPayment ? 'bg-gray-400' : 'bg-[#56CA5A] hover:bg-[#4BB850]'} text-white py-2 rounded-full font-bold`}
                                     >
-                                      {processingPayment ? 'BUY.' : 'BUY'}
+                                      {processingPayment ? 'SELECT' : 'SELECT'}
                                     </button>
                                   </div>
                                 </div>
@@ -409,17 +474,40 @@ export function StorePage() {
                       </div>
                   )}
                   {/* Footer text */}
-                  <div className="text-center mt-8 pt-16">
+                  <div className="text-center mt-2 pt-2">
                     <p className="text-white">
-                      Free to play. NO PURCHASE NECESSARY.
+                      Price in USD.
                     </p>
                     <p className="text-white text-sm mt-2">
-                      Your credit card will be securely billed one time without any
-                      recurring charges or obligations.
+                      Your credit card will be securely billed one time without any recurring charges or obligations.
                     </p>
+
+                    {/* Package Inclusions Button */}
+                    <div className={"h-12 p-2 w-full bg-[#1F2937] rounded-xl mt-5 flex justify-center items-center"}
+                      onClick={() => setCollapsePkgInclusions(!collapsePkgInclusions)}
+                    >
+                      <p className={"text-white"}>Click Here To See Full Inclusions</p>
+                    </div>
+
+                    {/* Package Inclusions */}
+                    <div className={"mt-2"}>
+                      {collapsePkgInclusions && (
+                          <>
+                            {pkgInclusions.map((inclusions) => (
+                                <PackageInclusions key={inclusions.id} inclusions={inclusions} />
+                            ))}
+                          </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </>
+          ) : activeTabDesktop === "cookyShop" ? (
+            <>
+            </>
+          ) : activeTabDesktop === "convertToEntries" ? (
+            <>
+            </>
           ) : (
               // Redeem Section
               <div className={`${activeTabDesktop === 'redeem' ? 'mt-14' : ''}`}>
