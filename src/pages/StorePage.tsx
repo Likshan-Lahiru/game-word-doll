@@ -6,6 +6,8 @@ import { BottomNavigation } from '../components/BottomNavigation'
 import { RedeemPage } from './RedeemPage'
 import { fetchPackageOffers, createStripeCheckout } from '../services/api'
 import PackageInclusions from "../components/StorePage/PackageInclusions.tsx";
+import {IMAGES} from "../constance/imagesLink.ts";
+import CookyShop from "./CookyShop.tsx";
 interface PackageOffer {
   id: string
   title: string
@@ -47,6 +49,54 @@ const pkgInclusions = [
     instruction2: "VIP access to Cooky club. (coming soon).",
     instruction3: "15,000,000 gold coins.",
     instruction4: "80 free entries.",
+  }
+]
+
+const logos = [
+  {
+    id: 1,
+    image: IMAGES.originalLogo,
+    title: "#1 Original Cooky",
+  },
+  {
+    id: 2,
+    image: IMAGES.logo2,
+    title: "#2 Jelly Bean",
+  },
+  {
+    id: 3,
+    image: IMAGES.logo3,
+    title: "#3 On the Walls",
+  },
+  {
+    id: 4,
+    image: IMAGES.logo4,
+    title: "#4 Arcade",
+  },
+  {
+    id: 5,
+    image: IMAGES.logo5,
+    title: "#5 Dark Side",
+  },
+  {
+    id: 6,
+    image: IMAGES.logo6,
+    title: "#6 2077",
+  },
+  {
+    id: 7,
+    image: IMAGES.logo7,
+    title: "#7 Life is Plastic",
+  },
+  {
+    id: 8,
+    image: IMAGES.logo8,
+    title: "#8 8-bit",
+  },
+  {
+    id: 9,
+    image: IMAGES.logo9,
+    title: "#9 Red Rage",
   }
 ]
 
@@ -504,6 +554,14 @@ export function StorePage() {
               </>
           ) : activeTabDesktop === "cookyShop" ? (
             <>
+              <div className="p-4 bg-[#374151] rounded-2xl">
+                {/* responsive: 1 col on xs, 2 on sm, 3 on md+ */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {logos.map((logo) => (
+                    <CookyShop logo={logo}/>
+                  ))}
+                </div>
+              </div>
             </>
           ) : activeTabDesktop === "convertToEntries" ? (
             <>

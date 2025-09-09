@@ -15,7 +15,16 @@ export const IMAGES = {
     outOfStock: 'https://i.ibb.co/0pd8DxL0/outofstock.png',
     crackedCooky :'https://i.ibb.co/BHNs6mMw/crakc.png',
     antsInTheJar: 'https://i.ibb.co/8gJvnV78/ant.png',
-    checkMark: "/checkMark.png"
+    checkMark: "/checkMark.png",
+    originalLogo: "/original-logo.png",
+    logo2: "/logo-2.png",
+    logo3: "/logo-3.png",
+    logo4: "/logo-4.png",
+    logo5: "/logo-5.png",
+    logo6: "/logo-6.png",
+    logo7: "/logo-7.png",
+    logo8: "/logo-8.png",
+    logo9: "/logo-9.png",
 }
 //https://i.ibb.co/k2LgHH1m/grandwin.png
 //https://i.ibb.co/Mx0x2WmQ/pngwing-com.png
