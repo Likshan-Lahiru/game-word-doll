@@ -12,7 +12,7 @@ import { LoginPage } from './pages/LoginPage'
 import { SignupPage } from './pages/SignupPage'
 import { UserProfilePage } from './pages/UserProfilePage'
 import { StorePage } from './pages/StorePage'
-import { RedeemPage } from './pages/RedeemPage'
+import { ConvertGem } from './pages/ConvertGem.tsx'
 import { GuidePage } from './pages/GuidePage'
 import { GlobalProvider } from './context/GlobalContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -88,7 +88,7 @@ export function App() {
                             path="/redeem"
                             element={
                                 <ProtectedRoute>
-                                    <RedeemPage />
+                                    <ConvertGem />
                                 </ProtectedRoute>
                             }
                         />
