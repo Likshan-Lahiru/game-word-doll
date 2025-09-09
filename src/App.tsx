@@ -5,6 +5,8 @@ import { GiveawayGame } from './pages/GiveawayGame'
 import { GiveawayEntry } from './pages/GiveawayEntry'
 import { GiveawayWordollGame } from './pages/GiveawayWordollGame'
 import { GiveawayLockPickrGame } from './pages/GiveawayLockPickrGame'
+import { GiveawayGoldWordollGame } from './pages/GiveawayGoldWordollGame'
+import { GiveawayGoldLockPickrGame } from './pages/GiveawayGoldLockPickrGame'
 import { LockPickrGame } from './pages/LockPickrGame'
 import { LoginPage } from './pages/LoginPage'
 import { SignupPage } from './pages/SignupPage'
@@ -20,6 +22,8 @@ import { BetSelectorPage } from './pages/BetSelectorPage'
 import { GemGameModePage } from './pages/GemGameModePage'
 import { GemWordollGame } from './pages/GemWordollGame'
 import { GemLockPickrGame } from './pages/GemLockPickrGame'
+import { GoldGiveawayGame } from './pages/GoldGiveawayGame'
+import { GoldFlipPage } from './pages/GoldFlipPage'
 export function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     useEffect(() => {
@@ -47,11 +51,21 @@ export function App() {
                             path="/giveaway-lockpickr-game"
                             element={<GiveawayLockPickrGame />}
                         />
+                        <Route
+                            path="/giveaway-gold-wordoll-game"
+                            element={<GiveawayGoldWordollGame />}
+                        />
+                        <Route
+                            path="/giveaway-gold-lockpickr-game"
+                            element={<GiveawayGoldLockPickrGame />}
+                        />
                         <Route path="/lock-pickr-game" element={<LockPickrGame />} />
                         <Route path="/bet-selector" element={<BetSelectorPage />} />
                         <Route path="/gem-game-mode" element={<GemGameModePage />} />
                         <Route path="/gem-wordoll-game" element={<GemWordollGame />} />
                         <Route path="/gem-lockpickr-game" element={<GemLockPickrGame />} />
+                        <Route path="/gold-giveaway-game" element={<GoldGiveawayGame />} />
+                        <Route path="/gold-spin" element={<GoldFlipPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/signup" element={<SignupPage />} />
                         <Route
