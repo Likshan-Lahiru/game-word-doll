@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { CheckCircleIcon } from 'lucide-react'
 import { BottomNavigation } from '../components/BottomNavigation'
 import { BalanceSelector } from '../components/BalanceSelector'
-export function RedeemPage() {
+export function ConvertGem() {
   const navigate = useNavigate()
   const [redeemAmount, setRedeemAmount] = useState(75)
   const [showTransferModal, setShowTransferModal] = useState(false)
@@ -395,15 +395,19 @@ export function RedeemPage() {
   )
 }
 */
-import React from 'react'
+import React, {useRef} from 'react'
 import  { useEffect, useState } from 'react'
 import { CheckCircleIcon } from 'lucide-react'
 
-export function RedeemPage() {
+export function ConvertGem() {
   const [redeemAmount, setRedeemAmount] = useState(75)
   const [showTransferModal, setShowTransferModal] = useState(false)
+  const [showQuestionGemModal, setShowQuestionGemModal] = useState(false)
   const [showCompletedModal, setShowCompletedModal] = useState(false)
+  const [showCompletedModalAusUsers, setShowCompletedModalAusUsers] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isDisable, setIsDisable] = useState(false)
+  const [inputValue, setInputValue] = useState("");
 
   // Check if device is mobile
   useEffect(() => {
@@ -425,7 +429,13 @@ export function RedeemPage() {
 
   const handleConfirmTransaction = () => {
     setShowTransferModal(false)
-    setShowCompletedModal(true)
+    // setShowCompletedModal(true)
+    setShowQuestionGemModal(true);
+  }
+
+  const handleQuestionGemModal = () => {
+    setShowQuestionGemModal(false);
+    setShowCompletedModal(true);
   }
 
   const handleDone = () => {
@@ -593,7 +603,7 @@ export function RedeemPage() {
       <>
         {/* Right content area - Updated to match the image exactly */}
         <div className="flex-1 bg-[#374151] rounded-xl p-5 font-['Inter'] pr-24 pl-10">
-          <h2 className="text-2xl font-medium mb-6 font-['Inter']">Redeem</h2>
+          <h2 className="text-2xl font-medium mb-6 font-['Inter']">Convert Gems to Giftcard</h2>
 
           <div className="space-y-4 mb-10">
             <div className="flex items-center gap-x-2">
@@ -609,18 +619,16 @@ export function RedeemPage() {
           </div>
 
           <ul className="list-disc pl-5 space-y-4 mb-10 font-['Inter']">
-            <li className="text-white font-['Inter']">
-              Total gems show your earnings to date, while available gems is the
-              amount you can withdraw now. Gems earned today will be added to
-              your available gems after 7 days.
+            <li className="text-white font-inter font-thin">
+              Total gems show your winnings to date, while available gems is the amount you can convert now. Gems won today will be added to your available gems after 7 days.
             </li>
             <li className="text-white font-['Inter']">
-              A minimum 100 Gems required to process a redeem.
+              A minimum 100 Gems required to process a conversion.
             </li>
           </ul>
 
           <div className="flex max-[958px]:flex-col max-[958px]:space-y-2 max-[958px]:items-start items-center mb-0.5 space-x-4">
-            <p className="text-white text-lg font-['Inter']">Redeem</p>
+            <p className="text-white text-lg font-['Inter']">Convert</p>
 
             <div className="bg-white rounded-md px-4 py-2 flex items-center">
               <input
@@ -632,63 +640,79 @@ export function RedeemPage() {
               <span className="ml-1 font-['Inter'] text-black text-md">(${redeemAmount})</span>
             </div>
 
-            <p className="text-white">gems to cash ($1 per gem)</p>
+            <p className="text-white">gems</p>
           </div>
 
-          <div className="flex-1 flex justify-end">
+          <div className="flex-1 flex justify-end mb-16">
             <button
                 onClick={handleRedeemNow}
                 className="md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium"
             >
-              Redeem Now
+              Convert Now
             </button>
           </div>
-
-          <h2 className="text-2xl font-medium mt-12 mb-6">
-            Setup Payment Method
-          </h2>
-
-          <div className="flex items-center mb-12">
-            <p className="text-gray-300">
-              Setup your payment method by entering your bank account details to
-              receive funds.
-            </p>
-          </div>
-
-          <div className="flex-1 flex justify-end">
-            <button
-                onClick={handleAddBankAccount}
-                className="bg-[#2D7FF0] hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
-            >
-              Add Bank Account
-            </button>
-          </div>
-
-          <ul className="list-disc pl-5 mt-16">
-            <li className="text-white">Note : 0.25% + $0.25 per payout</li>
-          </ul>
         </div>
 
-        {/* Transfer Funds Modal */}
+        {/* Convert Gem Modal */}
         {showTransferModal && (
-            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-              <div className="bg-gray-800 rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
-                <h2 className="text-xl font-bold mb-4">Redeem funds?</h2>
+            <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
+              <div className="bg-[#374151] rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
+                <h2 className="text-2xl font-semibold mb-4">Convert Gems?</h2>
                 <p className="mb-12">
-                  Do you want to redeem ${redeemAmount} to your bank account?
+                  Do you want to convert 120 gems to a gift card?
                 </p>
-                <div className="flex space-x-4">
+                <div className="flex justify-end space-x-4">
                   <button
                       onClick={() => setShowTransferModal(false)}
-                      className="bg-white text-gray-800 px-5 rounded-full font-medium"
+                      className="bg-white text-gray-800 px-12 rounded-full font-medium"
                   >
                     Cancel
                   </button>
                   <button
                       onClick={handleConfirmTransaction}
-                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full font-medium"
+                      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-10 rounded-full font-medium"
                   >
-                    Confirm Redemption
+                    Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
+
+        {/* Convert Gem Question Modal */}
+        {showQuestionGemModal && (
+            <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
+              <div className="bg-[#374151] rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
+                <h2 className="text-2xl font-semibold mb-4">Convert Gems?</h2>
+                <div className={"mb-4"}>
+                  <p className="mb-4">
+                    You are required to correctly answer a skill-based question to be eligible to receive a gift card.
+                  </p>
+                  <p>
+                    Please solve the following puzzle within 3 minute without assistance from any device or person.
+                  </p>
+                </div>
+                <div className={"flex mb-5 gap-x-3 items-center"}>
+                  <p className={"font-bold"}>(10 x 2) ÷ 5 + (20 - 10) = ? </p>
+                  <input
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      className="w-28 h-9 rounded text-black p-2"
+                  />
+                </div>
+                <div className="flex justify-end space-x-4">
+                  <button
+                      onClick={() => setShowQuestionGemModal(false)}
+                      className="bg-white text-gray-800 px-10 rounded-full font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                      onClick={handleQuestionGemModal}
+                      className={`${inputValue === "" ? "bg-[#67768F]" : "bg-blue-500 hover:bg-blue-600"} text-white py-2 px-10 rounded-full font-medium`}
+                      disabled={inputValue === ""}
+                  >
+                    Submit
                   </button>
                 </div>
               </div>
@@ -696,19 +720,49 @@ export function RedeemPage() {
         )}
 
         {/* Transaction Completed Modal */}
-        {showCompletedModal && (
-            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-              <div className="bg-gray-800 rounded-xl p-16 w-full max-w-lg">
+        {showCompletedModalAusUsers && (
+            <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
+              <div className="bg-[#374151] rounded-xl p-16 w-full max-w-lg">
                 <div className="flex mb-4 items-center gap-x-2">
                   <h2 className="text-2xl font-semibold text-center font-inter">
-                    Redeem Completed
+                    Email Sent
                   </h2>
                   <img src={"/complete-write.png"} alt={"write icon"} className={"w-5 h-5"}/>
                 </div>
-                <p className=" mb-6 font-inter text-white text-opacity-75 font-semibold">
-                  You transferred ${redeemAmount} to your bank account. You will
-                  receive it in 3-5 business days.
-                </p>
+                <div>
+                  <p className=" mb-6 font-inter text-white text-opacity-75 font-semibold">
+                    Our gift card does not support for Australia.
+                  </p>
+                  <span className={"mt-5 font-inter text-white text-opacity-75 font-semibold"}>Please check your email for further instructions.</span>
+                </div>
+                <div className="flex justify-end mt-10">
+                  <button
+                      onClick={handleDone}
+                      className="font-inter bg-blue-500 hover:bg-blue-600 text-white py-2 px-8 rounded-full font-medium"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
+
+        {/* Transaction Completed Modal For Australian Users */}
+        {showCompletedModal && (
+            <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
+              <div className="bg-[#374151] rounded-xl p-16 w-full max-w-lg">
+                <div className="flex mb-4 items-center gap-x-2">
+                  <h2 className="text-2xl font-semibold text-center font-inter">
+                    Email Sent
+                  </h2>
+                  <img src={"/complete-write.png"} alt={"write icon"} className={"w-5 h-5"}/>
+                </div>
+                <div>
+                  <p className=" mb-6 font-inter text-white text-opacity-75 font-semibold">
+                    Your gems have been converted to a gift card. The code has been sent to your email.
+                  </p>
+                  <span className={"mt-5 font-inter text-white text-opacity-75 font-semibold"}>Please check your email for further instructions.</span>
+                </div>
                 <div className="flex justify-end mt-10">
                   <button
                       onClick={handleDone}

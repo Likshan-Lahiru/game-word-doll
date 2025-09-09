@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
 import { BalanceSelector } from '../components/BalanceSelector'
 import { BottomNavigation } from '../components/BottomNavigation'
-import { RedeemPage } from './RedeemPage'
+import { ConvertGem } from './ConvertGem.tsx'
 import { fetchPackageOffers, createStripeCheckout } from '../services/api'
 import PackageInclusions from "../components/StorePage/PackageInclusions.tsx";
 import {IMAGES} from "../constance/imagesLink.ts";
 import CookyShop from "./CookyShop.tsx";
+import ConvertToEntries from "./ConvertToEntries.tsx";
 interface PackageOffer {
   id: string
   title: string
@@ -186,9 +187,6 @@ export function StorePage() {
   // Use API packages if available, otherwise use defaults
   const displayPackages = packages.length > 0 ? packages : defaultPackages
 
-  console.log("packages ---------------------------------------- ", packages)
-  console.log("display packages ---------------------------------------- ", displayPackages)
-
   const handleBuy = async (packageItem: PackageOffer) => {
     try {
       setProcessingPayment(true)
@@ -349,7 +347,7 @@ export function StorePage() {
               </>
           ) : (
               <>
-                <RedeemPage />
+                <ConvertGem />
               </>
           )}
           {/* Bottom navigation */}
@@ -362,7 +360,7 @@ export function StorePage() {
       <div className="flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 mt-5">
         {/* Top balance bar */}
         <div className="p-4">
-          {activeTabDesktop === 'coins' && (
+          {(activeTabDesktop === 'membership' || activeTabDesktop === 'cookyShop') && (
               <BalanceSelector
                   onSelect={(type) => console.log(`Selected: ${type}`)}
               />
@@ -373,15 +371,15 @@ export function StorePage() {
 
           {/* Left sidebar */}
           <div
-              className={`${activeTabDesktop === 'redeem' ? 'mt-14 w-[467px]' : 'w-72'} bg-[#374151] rounded-xl p-6 mr-4`}
+              className={`${activeTabDesktop === 'convertGem' || activeTabDesktop === 'convertToEntries' ? 'mt-14' : 'w-72'} ${activeTabDesktop === 'convertGem' && 'w-[467px]'} ${activeTabDesktop === 'convertToEntries' && 'w-[292px]'} bg-[#374151] rounded-xl p-6 mr-4`}
           >
             <h1 className="text-2xl font-bold mb-3">Store</h1>
 
             {/* MemberShip Tab */}
             <button
-                className={`${activeTabDesktop === 'coins' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
+                className={`${activeTabDesktop === 'membership' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A]'} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
                 onClick={() => {
-                  setActiveTabDesktop('coins')
+                  setActiveTabDesktop('membership')
                 }}
             >
             <span className="flex-1 text-left ml-2 font-medium">
@@ -401,9 +399,9 @@ export function StorePage() {
 
             {/* Convert Gems */}
             <button
-                className={`${activeTabDesktop === 'redeem' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
+                className={`${activeTabDesktop === 'convertGem' ? 'bg-blue-500 hover:bg-blue-600' : ' bg-[#1F2937] hover:bg-[#0A0E1A] '} w-full text-white py-4 px-5 rounded-xl mb-2 flex items-center`}
                 onClick={() => {
-                  setActiveTabDesktop('redeem')
+                  setActiveTabDesktop('convertGem')
                 }}
             >
               <span className="flex-1 text-left ml-2 font-medium">Convert Gems</span>
@@ -419,8 +417,8 @@ export function StorePage() {
               <span className="flex-1 text-left ml-2 font-medium">Convert to Entries</span>
             </button>
           </div>
-          {activeTabDesktop === 'coins' ? (
-              // Coins Section
+          {activeTabDesktop === 'membership' ? (
+              // Membership Section
               <>
                 {/* Right content area */}
                 <div className="flex-1 bg-[#374151] rounded-xl p-6">
@@ -565,15 +563,16 @@ export function StorePage() {
             </>
           ) : activeTabDesktop === "convertToEntries" ? (
             <>
+              <ConvertToEntries />
             </>
           ) : (
-              // Redeem Section
-              <div className={`${activeTabDesktop === 'redeem' ? 'mt-14' : ''}`}>
-                <RedeemPage />
+              // ConvertGem Section
+              <div className={`${activeTabDesktop === 'convertGem' ? 'mt-14' : ''}`}>
+                <ConvertGem />
               </div>
           )}
           {/* Diamonds And Tickets */}
-          {activeTabDesktop === 'redeem' && (
+          {(activeTabDesktop === 'convertGem' || activeTabDesktop === "convertToEntries" ) && (
               <div className="flex-col justify-end ml-4">
                 {/* Diamonds */}
                 <div className="w-32 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-2">
