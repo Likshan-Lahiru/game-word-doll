@@ -17,12 +17,12 @@ const ConvertToEntries = () => {
 
                 <div className="space-y-4 mb-10">
                     <div className="flex items-center gap-x-2">
-                        <p className="text-white">Entries</p>
+                        <p className="text-white mr-[83px]">Entries</p>
                         <p>:</p>
                         <p className="font-medium">5.60</p>
                     </div>
                     <div className="flex items-center gap-x-2">
-                        <p className="text-white mr-8">Convertible Gems</p>
+                        <p className="text-white">Convertible Gems</p>
                         <p className="">:</p>
                         <p className="font-medium">120</p>
                     </div>

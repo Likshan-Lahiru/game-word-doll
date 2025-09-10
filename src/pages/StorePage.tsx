@@ -115,6 +115,8 @@ export function StorePage() {
   const [collapsePkgInclusions, setCollapsePkgInclusions] = useState(false);
   // Fetch package offers from API
   useEffect(() => {
+    setActiveTabDesktop("membership")
+
     const getPackageOffers = async () => {
       try {
         setIsLoading(true)
