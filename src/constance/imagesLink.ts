@@ -25,6 +25,10 @@ export const IMAGES = {
     logo7: "/logo-7.png",
     logo8: "/logo-8.png",
     logo9: "/logo-9.png",
+    starterBatch: "/starterBatch.png",
+    silverBatch: "/silverBatch.png",
+    goldBatch: "/goldBatch.png",
+    diamondBatch: "/diamondBatch.png",
 }
 //https://i.ibb.co/k2LgHH1m/grandwin.png
 //https://i.ibb.co/Mx0x2WmQ/pngwing-com.png

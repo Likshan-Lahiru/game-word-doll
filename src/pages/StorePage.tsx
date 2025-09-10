@@ -113,6 +113,8 @@ export function StorePage() {
   const [error, setError] = useState<string | null>(null)
   const [processingPayment, setProcessingPayment] = useState(false)
   const [collapsePkgInclusions, setCollapsePkgInclusions] = useState(false);
+  const [test, setTest] = useState(true)
+
   // Fetch package offers from API
   useEffect(() => {
     setActiveTabDesktop("membership")
@@ -147,47 +149,52 @@ export function StorePage() {
   // Fallback to default packages if API fails or is loading
   const defaultPackages = [
     {
-      id: '1',
+      id: 1,
       title: 'pack 1',
       goldCoins: 200000,
       entries: 0,
       priceUsd: 4.99,
-      imageLink:
-          'https://uploadthingy.s3.us-west-1.amazonaws.com/sEuNjxvFCMfX4d66QCon1T/prizez-coins-1_.png',
+      // imageLink:
+      //     'https://uploadthingy.s3.us-west-1.amazonaws.com/sEuNjxvFCMfX4d66QCon1T/prizez-coins-1_.png',
+      imageLink: IMAGES.starterBatch,
       bestValue: false,
     },
     {
-      id: '2',
+      id: 2,
       title: 'pack 2',
       goldCoins: 200000,
       entries: 5,
       priceUsd: 4.99,
-      imageLink:
-          'https://uploadthingy.s3.us-west-1.amazonaws.com/sEuNjxvFCMfX4d66QCon1T/prizez-coins-1_.png',
+      // imageLink:
+      //     'https://uploadthingy.s3.us-west-1.amazonaws.com/sEuNjxvFCMfX4d66QCon1T/prizez-coins-1_.png',
+      imageLink: IMAGES.silverBatch,
       bestValue: true,
     },
     {
-      id: '3',
+      id: 3,
       title: 'pack 3',
       goldCoins: 2500000,
       entries: 15,
       priceUsd: 14.99,
-      imageLink:
-          'https://uploadthingy.s3.us-west-1.amazonaws.com/n5UGDYmiJRz3NqoePW9zf3/prizez-coins-3.png',
+      // imageLink:
+      //     'https://uploadthingy.s3.us-west-1.amazonaws.com/n5UGDYmiJRz3NqoePW9zf3/prizez-coins-3.png',
+      imageLink: IMAGES.goldBatch,
       bestValue: false,
     },
     {
-      id: '4',
+      id: 4,
       title: 'pack 4',
       goldCoins: 30000000,
       entries: 80,
       priceUsd: 79.99,
-      imageLink: 'https://i.ibb.co/TMcsVBBr/4-store.png',
+      // imageLink: 'https://i.ibb.co/TMcsVBBr/4-store.png',
+      imageLink: IMAGES.diamondBatch,
       bestValue: false,
     },
   ]
   // Use API packages if available, otherwise use defaults
-  const displayPackages = packages.length > 0 ? packages : defaultPackages
+  // const displayPackages = packages.length > 0 ? packages : defaultPackages
+  const displayPackages = defaultPackages
 
   const handleBuy = async (packageItem: PackageOffer) => {
     try {
@@ -232,34 +239,39 @@ export function StorePage() {
           {/* Store title */}
           <h1 className="text-2xl font-bold text-center my-4">Store</h1>
           {/* Tabs */}
-          <div className="flex px-4 mb-6">
+          <div className="flex px-0 mb-2 justify-between rounded-2xl bg-[#0A0E1A] mr-2 ml-2 p-2 font-inter text-[13px]">
             <button
-                className={`flex-1 py-4 px-4 rounded-2xl flex items-center justify-center space-x-2 ${activeTab === 'coins' ? 'bg-blue-500' : 'bg-[#1F2937]'}`}
-                onClick={() => setActiveTab('coins')}
+                className={`flex-1 pr-1 pl-2 rounded-2xl flex items-center justify-center ${activeTab === 'membership' ? 'bg-blue-500' : 'bg-[#0A0E1A]'}`}
+                onClick={() => setActiveTab('membership')}
             >
-              <span className="font-bold text-sm">Get Gold Coins</span>
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/tseH8zwDf6PgMMJLoCm3uz/gold-store.png"
-                  alt="Coins"
-                  className="w-8 h-8"
-              />
+              <span className="font-bold text-sm">Memberships</span>
             </button>
-            <div className="w-4"></div>
             <button
-                className={`flex-1 py-4 px-4 rounded-2xl flex items-center justify-center space-x-2 ${activeTab === 'redeem' ? 'bg-blue-500' : 'bg-[#1F2937]'}`}
+                className={`flex-1 pr-1 pl-2 rounded-2xl flex items-center justify-center space-x-2 ${activeTab === 'cookyShop' ? 'bg-blue-500' : 'bg-[#0A0E1A]'}`}
                 onClick={() => {
-                  setActiveTab('redeem')
+                  setActiveTab('cookyShop')
                 }}
             >
-              <span className="font-bold">Redeem</span>
-              <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/5ARgETPVNopfYddtEfN6Yn/redeem.png"
-                  alt="Redeem"
-                  className="w-9 h-9"
-              />
+              <span className="font-bold">Cooky Shop</span>
+            </button>
+            <button
+                className={`flex-1 pr-1 pl-2 rounded-2xl flex items-center justify-center space-x-2 ${activeTab === 'convertGems' ? 'bg-blue-500' : 'bg-[#0A0E1A]'}`}
+                onClick={() => {
+                  setActiveTab('convertGems')
+                }}
+            >
+              <span className="font-bold">Convert Gems</span>
+            </button>
+            <button
+                className={`flex-1 pr-1 pl-2 rounded-2xl flex items-center justify-start space-x-2 ${activeTab === 'convertToEntries' ? 'bg-blue-500' : 'bg-[#0A0E1A]'}`}
+                onClick={() => {
+                  setActiveTab('convertToEntries')
+                }}
+            >
+              <span className="font-bold">Convert To Gems</span>
             </button>
           </div>
-          {activeTab === 'coins' ? (
+          {activeTab === 'membership' ? (
               <>
                 {isLoading ? (
                     <div className="text-center py-4">Loading packages...</div>
@@ -268,84 +280,126 @@ export function StorePage() {
                       {error}
                     </div> /* Package cards - vertical stack with min/max width */
                 ) : (
-                    <div className="px-2 space-y-1 mb-4 w-full max-w-md mx-auto">
-                      {displayPackages.map((pkg, index) => (
-                          <div className="relative" key={pkg.id}>
-                            {pkg.bestValue && (
-                                <div
-                                    className="w-full h-16 rounded-2xl absolute top-0"
-                                    style={{
-                                      background:
-                                          'linear-gradient(90deg, #A7F432, #50C878)',
-                                    }}
-                                >
-                                  <p className="text-center font-semibold pt-[2px]">
-                                    Best Value
-                                  </p>
+                    <>
+                      <div className={"grid grid-cols-2 sm:grid-cols-2 gap-4 gap-y-3 p-3 place-items-center"}>
+                        {displayPackages.map((pkg) => (
+                            <div className={`${pkg.bestValue && "flex flex-col justify-between"} w-[46vw] h-[34vh] bg-white rounded-2xl font-inter`}>
+
+                              {/* Best Value */}
+                              {pkg.bestValue &&
+                                  <div className={"w-full h-6 rounded-t-2xl flex items-center justify-center"}
+                                       style={{
+                                         background:
+                                             'linear-gradient(90deg, #A7F432, #50C878)',
+                                       }}
+                                  >
+                                    <p className={"font-bold text-white text-sm"}>Best Value</p>
+                                  </div>
+                              }
+
+                              {/* Card Content */}
+                              <div className={`${pkg.bestValue ? "pr-3 pl-3 pb-3 pt-1" : "p-3"} flex flex-col items-center justify-between h-full`}>
+                                {/* Rank Batch */}
+                                <div className={`
+                                       ${pkg.id === 1 && "w-[12vw] h-[6.5vh]"}
+                                       ${pkg.id === 2 && "w-[13vw] h-[7vh]"}
+                                       ${pkg.id === 3 && "w-[17vw] h-[8vh]"}
+                                       ${pkg.id === 4 && "w-[18vw] h-[8vh]"}
+                                `}>
+                                  <img src={pkg.imageLink} className={"w-full h-full"}/>
                                 </div>
-                            )}
-                            <div
-                                className={`${pkg.bestValue ? 'top-7 mb-8 gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''} relative bg-white rounded-2xl p-4 flex items-center min-w-[280px] h-32 max-w-full w-full`}
-                            >
-                              {/* Coin image */}
-                              <div className="w-20 h-20 flex items-center justify-center">
-                                <img
-                                    src={pkg.imageLink}
-                                    alt="Coins"
-                                    className="w-16 h-16 object-contain"
-                                />
-                              </div>
-                              {/* Package details */}
-                              <div className="flex-1 text-black mx-2">
-                                <p className="text-xs font-semibold font-['DM_Sans']">
-                                  GC {pkg.goldCoins.toLocaleString()}
-                                </p>
-                                {pkg.entries > 0 && (
-                                    <div className="flex flex-col">
-                            <span className="text-center mr-10 text-xs font-semibold font-['DM_Sans']">
-                              +
-                            </span>
-                                      <div className="flex items-center">
-                                        <img
-                                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
-                                            alt="Ticket"
-                                            className="w-7 h-7 mr-1 bg-[#0CC242] rounded-full p-[2px]"
-                                        />
-                                        <span className="font-['DM_Sans'] text-xs font-semibold">
-                                × {pkg.entries} free
-                              </span>
-                                      </div>
-                                    </div>
-                                )}
-                              </div>
-                              {/* Price and buy button */}
-                              <div className="flex flex-col items-end">
-                                <p className="font-bold text-black mb-2 font-['DM_Sans'] pr-10">
-                                  ${pkg.priceUsd}
-                                </p>
-                                <button
-                                    onClick={() => handleBuy(pkg)}
-                                    disabled={processingPayment}
-                                    className={`${processingPayment ? 'bg-gray-400' : 'bg-[#56CA5A] hover:bg-[#4BB850]'} text-white py-1.5 px-12 rounded-full font-['DM_Sans'] font-bold`}
-                                >
-                                  {processingPayment ? 'BUY.' : 'BUY'}
-                                </button>
+
+                                {/* Amounts */}
+                                <div className={"flex flex-col items-center"}>
+                                  {/* Gold Coin Amount */}
+                                  <div>
+                                    <p className="font-semibold text-sm text-black text-center font-['DM Sans']">
+                                      GC {pkg.goldCoins.toLocaleString()}
+                                    </p>
+                                  </div>
+
+                                  {/* Entries Amount */}
+                                  {
+                                      pkg.entries > 0 && (
+                                          <>
+                                            <p className="text-black text-xl">+</p>
+                                            <div className="flex items-center justify-center mt-0">
+                                              <img
+                                                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
+                                                  alt="Ticket"
+                                                  className="w-6 h-6 mr-1 bg-[#0CC242] rounded-full p-[2px]"
+                                              />
+                                              <span className="text-black text-md font-semibold font-['DM Sans']"> × {pkg.entries} free</span>
+                                            </div>
+                                          </>
+                                      )
+                                  }
+                                </div>
+
+                                {/* Footer */}
+                                <div className={"mt-0 flex flex-col items-center"}>
+                                  {/* Price */}
+                                  <p className={"font-bold text-black text-center text-md"}>$ {pkg.priceUsd}</p>
+
+                                  {/* Info */}
+                                  <p className={"text-black text-[12px] font-semibold"}>(Single payment only)</p>
+
+                                  {/* Select Button */}
+                                  <button className={"bg-[#56CA5A] pt-1 pb-1 rounded-3xl mt-1 px-6"}
+                                          onClick={() => handleBuy(pkg)}
+                                  >SELECT</button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    </>
                 )}
                 {/*Footer text */}
-                <div className="text-center px-4 mb-20">
+                <div className="text-center px-4 mb-0">
                   <p className="text-white text-xs text-s font-['DM_Sans']">
-                    free to play. NO PURCHASE NECESSARY.
+                    Prices in USD.
                   </p>
                   <p className="text-white text-[8px] mt-1 font-['DM_Sans']">
-                    Your credit card will be securely billed one time without any
-                    recurring charges or obligations.
+                    Your credit card will be securely billed one time without any recurring charges or obligations.
                   </p>
                 </div>
+
+                {/* See Full Inclusions */}
+                <div className={"pr-3 pl-3"}>
+                  {/* Package Inclusions Button */}
+                  <div className={"h-12 p-2 w-full bg-[#374151] rounded-xl mt-4 mb-4 flex justify-center items-center"}
+                       onClick={() => setCollapsePkgInclusions(!collapsePkgInclusions)}
+                  >
+                    <p className={"text-white"}>Click Here To See Full Inclusions</p>
+                  </div>
+
+                  {/* Package Inclusions */}
+                  <div className={"mt-2 mb-20"}>
+                    {collapsePkgInclusions && (
+                        <>
+                          {pkgInclusions.map((inclusions) => (
+                              <PackageInclusions key={inclusions.id} inclusions={inclusions} />
+                          ))}
+                        </>
+                    )}
+                  </div>
+                </div>
+              </>
+          ) : activeTab === "cookyShop" ? (
+              <>
+                <div className="p-2 rounded-2xl mb-20 place-items-center">
+                  {/* responsive: 1 col on xs, 2 on sm, 3 on md+ */}
+                  <div className="grid grid-cols-2 gap-5">
+                    {logos.map((logo) => (
+                        <CookyShop logo={logo} isMobile={isMobile}/>
+                    ))}
+                  </div>
+                </div>
+              </>
+          ) : activeTab === "convertToEntries" ? (
+              <>
+                <ConvertToEntries isMobile={isMobile}/>
               </>
           ) : (
               <>
@@ -467,11 +521,16 @@ export function StorePage() {
                                   </h2>
                                 </div>
                                 {/* Coin image */}
-                                <div className="flex justify-center items-center pt-8 pb-6">
+                                <div className="flex justify-center items-center pt-2 pb-4">
                                   <img
                                       src={pkg.imageLink}
                                       alt="Coins"
-                                      className="w-24 h-24 object-contain"
+                                      className={`object-contain
+                                            ${pkg.id === 1 && "w-[85px] h-[85px]"}
+                                            ${pkg.id === 2 && "w-[90px] h-[90px]"}
+                                            ${pkg.id === 3 && "w-[105px] h-[105px]"}
+                                            ${pkg.id === 4 && "w-[105px] h-[105px]"}
+                                      `}
                                   />
                                 </div>
                                 {/* Package content - with consistent alignment */}
@@ -558,14 +617,14 @@ export function StorePage() {
                 {/* responsive: 1 col on xs, 2 on sm, 3 on md+ */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {logos.map((logo) => (
-                    <CookyShop logo={logo}/>
+                    <CookyShop logo={logo} isMobile={false}/>
                   ))}
                 </div>
               </div>
             </>
           ) : activeTabDesktop === "convertToEntries" ? (
             <>
-              <ConvertToEntries />
+              <ConvertToEntries isMobile={false} />
             </>
           ) : (
               // ConvertGem Section
