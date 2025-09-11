@@ -138,9 +138,12 @@ export function StorePage() {
   // Function to fetch Cooky Shop items
   const fetchCookyShopData = async () => {
     try {
-      const items = await fetchCookyShopItems()
-      if (Array.isArray(items)) {
-        setCookyShopItems(items)
+      const userId = localStorage.getItem('userId')
+      if (userId) {
+        const items = await fetchCookyShopItems(userId)
+        if (Array.isArray(items)) {
+          setCookyShopItems(items)
+        }
       }
     } catch (error) {
       console.error('Error fetching Cooky Shop items:', error)

@@ -1,6 +1,6 @@
 // Base API configuration
-//const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
-const API_BASE_URL = 'http://localhost:8080/wordoll/api'
+const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
+//const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
     const headers: Record<string, string> = {
@@ -201,9 +201,9 @@ export const checkCookyShopAccess = async (userId: string) => {
     }
 }
 // Fetch Cooky Shop items
-export const fetchCookyShopItems = async () => {
+export const fetchCookyShopItems = async (userId: string) => {
     try {
-        const endpoint = '/cookyshop/ascending'
+        const endpoint = `/cookyshop/ascending/${userId}`
         const result = await apiRequest(endpoint, 'GET')
         return result
     } catch (error) {
