@@ -90,21 +90,26 @@ export function BalanceSelector({
                         ${selectedBalanceType === 'coin' ? 'border-[#FDF222] bg-[#FFC000]' : 'border-[#22C55E] bg-green-600'}`}
                     >
                         {/* Coin Icon */}
-                        <div className="h-full w-full rounded-full">
+                        <div className="h-full w-full rounded-full"
+                             onClick={() => handleSelect('coin')}
+                        >
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
                                 alt="coin"
                                 className={`h-full border-[#FDF222] bg-[#FDF222] rounded-full ${isMobile ? 'border-4' : 'border-8'}`}
+                                onClick={() => handleSelect('coin')}
                             />
                         </div>
                         {/* Tickets Icon */}
                         <div
                             className={`flex justify-end h-full w-full rounded-full ${!isMobile ? 'ml-2' : 'ml-2'}`}
+                            onClick={() => handleSelect('ticket')}
                         >
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
                                 alt="ticket"
                                 className={`h-full border-green-500 bg-[#22C55E] rounded-full ${isMobile ? 'border-4' : 'border-8'}`}
+                                onClick={() => handleSelect('ticket')}
                             />
                         </div>
                     </div>
