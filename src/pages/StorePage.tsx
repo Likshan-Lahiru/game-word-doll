@@ -107,7 +107,7 @@ export function StorePage() {
   const [activeTab, setActiveTab] = useState('coins')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
-  const { ticketBalance, setTicketBalance } = useGlobalContext()
+  const { ticketBalance, setTicketBalance, gemBalance, voucherBalance } = useGlobalContext()
   const [packages, setPackages] = useState<PackageOffer[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -417,9 +417,13 @@ export function StorePage() {
         {/* Top balance bar */}
         <div className="p-4">
           {(activeTabDesktop === 'membership' || activeTabDesktop === 'cookyShop') && (
-              <BalanceSelector
-                  onSelect={(type) => console.log(`Selected: ${type}`)}
-              />
+              <div className={"flex justify-center"}>
+                <div className={"w-[576px] ml-[18px]"}>
+                  <BalanceSelector
+                      onSelect={(type) => console.log(`Selected: ${type}`)}
+                  />
+                </div>
+              </div>
           )}
         </div>
         {/* Main content */}
@@ -637,26 +641,30 @@ export function StorePage() {
           {(activeTabDesktop === 'convertGem' || activeTabDesktop === "convertToEntries" ) && (
               <div className="flex-col justify-end ml-4">
                 {/* Diamonds */}
-                <div className="w-32 h-10 bg-[#111827] rounded-full flex items-center px-4 mb-2">
+                <div className="w-48 h-12 outline outline-2 outline-[#374151] bg-[#0A0E1A] rounded-full flex items-center px-4 mb-3">
                   <div className="w-8 h-4 flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
                         alt="diamonds"
-                        className="w-full h-full object-contain"
+                        className="w-5 h-5 object-contain"
                     />
                   </div>
-                  <span className="ml-1">107.25</span>
+                  <span className="ml-1 text-lg font-Inter font-bold">{Number.isInteger(gemBalance)
+                      ? gemBalance
+                      : gemBalance.toFixed(2)}</span>
                 </div>
                 {/* Tickets */}
-                <div className="w-32 h-10 bg-[#111827] rounded-full flex items-center px-4">
-                  <div className="w-8 h-18 flex items-center justify-center">
+                <div className="w-48 h-12 outline outline-2 outline-[#374151] bg-[#0A0E1A] rounded-full flex items-center px-4">
+                  <div className="w-10 h-18 flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
                         alt="Diamond"
                         className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="ml-1">0</span>
+                  <span className="ml-1  text-lg font-Inter font-bold">{Number.isInteger(voucherBalance)
+                      ? voucherBalance
+                      : voucherBalance.toFixed(2)}</span>
                 </div>
               </div>
           )}
