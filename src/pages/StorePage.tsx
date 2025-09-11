@@ -150,7 +150,7 @@ export function StorePage() {
   const defaultPackages = [
     {
       id: 1,
-      title: 'pack 1',
+      title: 'Starter',
       goldCoins: 200000,
       entries: 0,
       priceUsd: 4.99,
@@ -161,29 +161,29 @@ export function StorePage() {
     },
     {
       id: 2,
-      title: 'pack 2',
+      title: 'Silver',
       goldCoins: 200000,
       entries: 5,
       priceUsd: 4.99,
       // imageLink:
       //     'https://uploadthingy.s3.us-west-1.amazonaws.com/sEuNjxvFCMfX4d66QCon1T/prizez-coins-1_.png',
       imageLink: IMAGES.silverBatch,
-      bestValue: true,
+      bestValue: false,
     },
     {
       id: 3,
-      title: 'pack 3',
+      title: 'Gold',
       goldCoins: 2500000,
       entries: 15,
       priceUsd: 14.99,
       // imageLink:
       //     'https://uploadthingy.s3.us-west-1.amazonaws.com/n5UGDYmiJRz3NqoePW9zf3/prizez-coins-3.png',
       imageLink: IMAGES.goldBatch,
-      bestValue: false,
+      bestValue: true,
     },
     {
       id: 4,
-      title: 'pack 4',
+      title: 'Diamond',
       goldCoins: 30000000,
       entries: 80,
       priceUsd: 79.99,
@@ -301,10 +301,10 @@ export function StorePage() {
                               <div className={`${pkg.bestValue ? "pr-3 pl-3 pb-3 pt-1" : "p-3"} flex flex-col items-center justify-between h-full`}>
                                 {/* Rank Batch */}
                                 <div className={`
-                                       ${pkg.id === 1 && "w-[12vw] h-[6.5vh]"}
-                                       ${pkg.id === 2 && "w-[13vw] h-[7vh]"}
-                                       ${pkg.id === 3 && "w-[17vw] h-[8vh]"}
-                                       ${pkg.id === 4 && "w-[18vw] h-[8vh]"}
+                                       ${pkg.title === "Starter" && "w-[12vw] h-[6.5vh]"}
+                                       ${pkg.title === "Silver" && "w-[13vw] h-[7vh]"}
+                                       ${pkg.title === "Gold" && "w-[17vw] h-[8vh]"}
+                                       ${pkg.title === "Diamond" && "w-[18vw] h-[8vh]"}
                                 `}>
                                   <img src={pkg.imageLink} className={"w-full h-full"}/>
                                 </div>
@@ -521,15 +521,15 @@ export function StorePage() {
                                   </h2>
                                 </div>
                                 {/* Coin image */}
-                                <div className="flex justify-center items-center pt-2 pb-4">
+                                <div className={`flex justify-center items-center ${(pkg.title === "Diamond" || pkg.title === "Gold") ? "pt-0 pb-2" : "pt-2 pb-4"}`}>
                                   <img
                                       src={pkg.imageLink}
                                       alt="Coins"
                                       className={`object-contain
-                                            ${pkg.id === 1 && "w-[85px] h-[85px]"}
-                                            ${pkg.id === 2 && "w-[90px] h-[90px]"}
-                                            ${pkg.id === 3 && "w-[105px] h-[105px]"}
-                                            ${pkg.id === 4 && "w-[105px] h-[105px]"}
+                                            ${pkg.title === "Starter" && "w-[16vw] h-[11.5vh]"}
+                                            ${pkg.title === "Silver" && "w-[17vw] h-[11.5vh]"}
+                                            ${pkg.title === "Gold" && "w-[23vw] h-[14vh]"}
+                                            ${pkg.title === "Diamond" && "w-[23vw] h-[14vh]"}
                                       `}
                                   />
                                 </div>
