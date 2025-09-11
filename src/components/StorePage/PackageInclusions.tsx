@@ -1,5 +1,5 @@
 import {IMAGES} from "../../constance/imagesLink.ts";
-
+import React from 'react'
 interface InclusionsProps {
     id: number,
     name: string,

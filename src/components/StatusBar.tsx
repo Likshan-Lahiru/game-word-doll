@@ -2,6 +2,7 @@ import React from 'react'
 import { BalanceSelector } from './BalanceSelector'
 import { useGlobalContext } from '../context/GlobalContext'
 import { useLocation } from 'react-router-dom'
+import { IMAGES } from '../constance/imagesLink'
 export function StatusBar({
                               isMobile,
                               hideOnlineCount,
@@ -11,9 +12,12 @@ export function StatusBar({
     hideOnlineCount?: boolean
     switchableBalanceSelector?: boolean
 }) {
-    const { isAuthenticated, gemBalance, voucherBalance } = useGlobalContext()
+    const { isAuthenticated, gemBalance, voucherBalance, customLogo } =
+        useGlobalContext()
     const location = useLocation()
     const isHomePage = location.pathname === '/'
+    // Use custom logo if available, otherwise use default
+    const logoSrc = customLogo || IMAGES.logo
     return (
         <div className="p-2 sm:p-4 flex flex-col sm:flex-row sm:justify-between">
             {isMobile ? (
@@ -33,10 +37,7 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-
-                            <span className="ml-1 font-bold">{Number.isInteger(voucherBalance)
-                                ? voucherBalance
-                                : voucherBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{gemBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             <div className="w-8 h-4 flex items-center justify-center">
@@ -46,20 +47,19 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">{Number.isInteger(gemBalance)
-                                ? gemBalance
-                                : gemBalance.toFixed(2)}</span>
-
+                            <span className="ml-1 font-bold">
+                {voucherBalance.toFixed(2)}
+              </span>
                         </div>
                     </div>
                 </>
             ) : (
                 <>
                     <div className="flex items-center mr-52 space-x-3">
-                        {isHomePage  && (
+                        {isHomePage && (
                             <div className="absolute top-6 left-7 z-10">
                                 <img
-                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/uYsqLmRkx6f1zBGRqMZA6G/cookycreanlogo3.png"
+                                    src={logoSrc}
                                     alt="Cooky Cream Logo"
                                     className="h-12 sm:h-16"
                                 />
@@ -83,9 +83,9 @@ export function StatusBar({
                                     className="w-14 h-28 object-contain"
                                 />
                             </div>
-                            <span className="ml-1 text-lg font-Inter font-bold">{Number.isInteger(gemBalance)
-                                ? gemBalance
-                                : gemBalance.toFixed(2)}</span>
+                            <span className="ml-1 text-lg font-Inter font-bold">
+                {gemBalance.toFixed(2)}
+              </span>
                         </div>
                         <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-1 space-x-2 outline outline-2 outline-[#374151]">
                             <div className="w-9 h-10 flex items-center justify-center">
@@ -96,10 +96,8 @@ export function StatusBar({
                                 />
                             </div>
                             <span className="ml-1 text-lg font-Inter font-bold">
-                                {Number.isInteger(voucherBalance)
-                                    ? voucherBalance
-                                    : voucherBalance.toFixed(2)}
-                            </span>
+                {voucherBalance.toFixed(2)}
+              </span>
                         </div>
                     </div>
                 </>

@@ -189,3 +189,25 @@ export const fetchGoldCoinFlipCount = async (userId: string) => {
         throw error
     }
 }
+// Check if user has access to Cooky Shop
+export const checkCookyShopAccess = async (userId: string) => {
+    try {
+        const endpoint = `/cookyshop/check/${userId}`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error checking Cooky Shop access:', error)
+        throw error
+    }
+}
+// Fetch Cooky Shop items
+export const fetchCookyShopItems = async (userId: string) => {
+    try {
+        const endpoint = `/cookyshop/ascending/${userId}`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching Cooky Shop items:', error)
+        throw error
+    }
+}
