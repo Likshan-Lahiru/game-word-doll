@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createContext, useContext } from 'react'
 import { getAuthToken, removeAuthToken } from '../services/auth.service'
 import { fetchUserBalance, fetchGoldCoinFlipCount } from '../services/api'
+import { IMAGES } from '../constance/imagesLink'
 type GlobalContextType = {
     coinBalance: number
     ticketBalance: number
@@ -15,6 +16,7 @@ type GlobalContextType = {
     betAmount: number
     winAmount: number
     selectedBalanceType: 'coin' | 'ticket'
+    customLogo: string | null
     setCoinBalance: (balance: number) => void
     setTicketBalance: (balance: number) => void
     setVoucherBalance: (balance: number) => void
@@ -24,6 +26,7 @@ type GlobalContextType = {
     setSpinBalance: (balance: number) => void
     setGoldCoinFlipCount: (count: number) => void
     setGemBalance: (balance: number) => void
+    setCustomLogo: (logoUrl: string | null) => void
     addCoins: (amount: number) => void
     addSpins: (amount: number) => void
     addGems: (amount: number) => void
@@ -58,6 +61,17 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
         'coin' | 'ticket'
     >('coin')
     const [pageType, setPageType] = useState('')
+    const [customLogo, setCustomLogo] = useState<string | null>(
+        localStorage.getItem('customLogo'),
+    )
+    // Save custom logo to localStorage when it changes
+    useEffect(() => {
+        if (customLogo) {
+            localStorage.setItem('customLogo', customLogo)
+        } else {
+            localStorage.removeItem('customLogo')
+        }
+    }, [customLogo])
     // Function to update gold coin flip count from API
     const updateGoldCoinFlipCount = async () => {
         if (isAuthenticated) {
@@ -138,6 +152,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 betAmount,
                 winAmount,
                 selectedBalanceType,
+                customLogo,
                 setLimitPlay,
                 setCoinBalance,
                 setTicketBalance,
@@ -148,6 +163,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
                 setSpinBalance,
                 setGoldCoinFlipCount,
                 setGemBalance,
+                setCustomLogo,
                 setIsAuthenticated,
                 setBetAmount,
                 setWinAmount,
