@@ -632,6 +632,7 @@ export function StorePage() {
                 <ConvertGem />
               </div>
           )}
+
           {/* Diamonds And Tickets */}
           {(activeTabDesktop === 'convertGem' || activeTabDesktop === "convertToEntries" ) && (
               <div className="flex-col justify-end ml-4">
