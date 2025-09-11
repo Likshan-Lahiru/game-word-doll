@@ -348,8 +348,7 @@ export function RewardsTab() {
           {/* Invite Description */}
           <div>
             <p className={`leading-6 ${isMobile ? 'text-xs ml-[10px] mr-[10px]' : 'text-sm pr-10 ml-[52px] mr-[72px]'} ${fontInter} px-2  mt-4`}>
-              Invite & sign up friends from your personal link to increase Lucky
-              Score and get free{' '}
+              Invite & sign up friends from your personal link to get free
               <img
                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
                   alt="Voucher"
