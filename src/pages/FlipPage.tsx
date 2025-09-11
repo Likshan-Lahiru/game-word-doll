@@ -5,6 +5,8 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { IMAGES } from '../constance/imagesLink.ts'
 import { FlipCard } from '../components/FlipCard'
 import { apiRequest } from '../services/api'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // Updated interface for flip options from API
 interface FlipOption {
     id: string
@@ -220,10 +222,10 @@ export function FlipPage() {
         const randomIndex = Math.floor(Math.random() * allFlipCardData.length)
         const selectedSet = allFlipCardData[randomIndex].map((card, index) => ({
             ...card,
-            selected: index === 0,
+            selected: index === 1, // Select the middle card (index 1) instead of first card
         }))
         setSelectedFlipCards(selectedSet)
-        setSelectedCardId(selectedSet[0].id)
+        setSelectedCardId(selectedSet[1].id) // Set the middle card ID as selected
     }
     function getRandomCardFromOtherSets(
         excludeSet: typeof selectedFlipCards,
@@ -289,10 +291,12 @@ export function FlipPage() {
         const vouchers = parseFloat(voucherBalance.toFixed(2))
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return
         if (vouchers < spinVoucherCount) {
-            return alert('Please recharge your voucher balance!')
+            toast.info('Please recharge your voucher balance!')
+            return
         }
         if (!selectedCardId) {
-            return alert('Please select a card before flipping.')
+            toast.info('Please select a card before flipping.')
+            return
         }
         setIsFlipping(true)
         setApiError(null)
@@ -471,6 +475,7 @@ export function FlipPage() {
     if (isMobile) {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1A202C] text-white">
+                <ToastContainer position="top-right" autoClose={3000} />
                 <div className="absolute top-12 left-3 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -615,6 +620,7 @@ export function FlipPage() {
     // Desktop view
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+            <ToastContainer position="top-right" autoClose={3000} />
             <div>
                 {/* Back button */}
                 <div className="absolute top-12 left-2 z-10 lg:top-4 md:top-4 md:left-4 sm:top-4">

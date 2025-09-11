@@ -1,6 +1,6 @@
 // Base API configuration
-const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
-//const API_BASE_URL = 'http://localhost:8080/wordoll/api'
+//const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
+const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
     const headers: Record<string, string> = {
@@ -156,7 +156,7 @@ export const fetchFlipPackages = async () => {
                 if (pack.title === 'Pack 03') {
                     return { ...pack, voucher: pack.voucher + 1 }
                 } else if (pack.title === 'Pack 04') {
-                    return { ...pack, voucher: pack.voucher + 5 } // Changed from +3 to +2
+                    return { ...pack, voucher: pack.voucher + 2 } // Changed from +3 to +2
                 }
                 return pack
             })

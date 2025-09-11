@@ -5,6 +5,7 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { IMAGES } from '../constance/imagesLink.ts'
 import { GoldFlipCard } from '../components/GameCards/GoldFlipCard'
 import { apiRequest } from '../services/api'
+import {toast, ToastContainer} from "react-toastify";
 // Updated interface for flip options from API
 interface FlipOption {
     id: string
@@ -227,10 +228,10 @@ export function GoldFlipPage() {
         const randomIndex = Math.floor(Math.random() * allFlipCardData.length)
         const selectedSet = allFlipCardData[randomIndex].map((card, index) => ({
             ...card,
-            selected: index === 0,
+            selected: index === 1, // Select the middle card (index 1) instead of first card
         }))
         setSelectedFlipCards(selectedSet)
-        setSelectedCardId(selectedSet[0].id)
+        setSelectedCardId(selectedSet[1].id) // Set the middle card ID as selected
     }
     function getRandomCardFromOtherSets(
         excludeSet: typeof selectedFlipCards,
@@ -296,7 +297,7 @@ export function GoldFlipPage() {
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return
         // For gold coin flips, check if user has available flips
         if (selectedBalanceType === 'coin' && goldCoinFlipCount <= 0) {
-            return alert('You have no gold coin flips remaining!')
+            toast.info('You have no gold coin flips remaining!')
         }
         // For voucher flips, check voucher balance
         if (selectedBalanceType === 'ticket') {
@@ -488,6 +489,7 @@ export function GoldFlipPage() {
     if (isMobile) {
         return (
             <div className="flex flex-col w-full min-h-screen bg-[#1A202C] text-white">
+                <ToastContainer position="top-right" autoClose={3000} />
                 <div className="absolute top-12 left-3 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -502,13 +504,13 @@ export function GoldFlipPage() {
                 </div>
                 {/* Gold indicator */}
                 {/*   <div className="absolute top-12 right-3 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
-                   <img
-                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
-                       alt="Gold"
-                       className="w-4 h-4 mr-1"
-                   />
-                   <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
-               </div>*/}
+                       <img
+                           src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                           alt="Gold"
+                           className="w-4 h-4 mr-1"
+                       />
+                       <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
+                   </div>*/}
                 {/* Status Bar */}
                 <div className="">
                     <StatusBar isMobile={isMobile} hideOnlineCount={true} />
@@ -652,6 +654,7 @@ export function GoldFlipPage() {
     // Desktop view
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
+            <ToastContainer position="top-right" autoClose={3000} />
             <div>
                 {/* Back button */}
                 <div className="absolute top-12 left-2 z-10 lg:top-4 md:top-4 md:left-4 sm:top-4">
