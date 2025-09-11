@@ -35,7 +35,11 @@ export function PrivacyTab() {
             <div>
                 <p className="text-sm  mb-14 mt-8">
                     We protect your privacy and personal information.
-                    <a href="#" className="text-[#006CB9] ml-1 underline">
+                    <a
+                        href="/files/privacy-policy- COOKYCREAM.pdf"
+                        className="text-[#006CB9] ml-1 underline"
+                        target={"_blank"}
+                    >
                         Click here
                     </a>{' '}
                     to learn more.
