@@ -5,6 +5,7 @@ import { StatusBar } from '../components/StatusBar'
 import { useGlobalContext } from '../context/GlobalContext'
 import { PrizeCard, PrizeData } from '../components/PrizeCard'
 import { fetchFlipPackages, apiRequest } from '../services/api'
+import {toast, ToastContainer} from "react-toastify";
 export function GiveawayGame() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -148,7 +149,7 @@ export function GiveawayGame() {
   const handleEnterGameEntries = async (entries: PrizeData) => {
     // Check if user has enough entries
     if (ticketBalance < entries.cost) {
-      alert("You don't have enough entries to play for this prize!")
+      toast.info("You don't have enough entries to play for this prize!")
       return
     }
     try {
@@ -333,6 +334,7 @@ export function GiveawayGame() {
   if (isMobile) {
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
+          <ToastContainer position="top-right" autoClose={3000} />
           <div className="absolute top-12 left-2 z-10">
             <button
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -385,6 +387,7 @@ export function GiveawayGame() {
   }
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
+        <ToastContainer position="top-right" autoClose={3000} />
         {/* Back Button */}
         <div className="absolute top-4 left-4 z-10">
           <button

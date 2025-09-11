@@ -5,6 +5,8 @@ import { StatusBar } from '../components/StatusBar'
 import { useGlobalContext } from '../context/GlobalContext'
 import { PrizeCard, PrizeData } from '../components/PrizeCard'
 import { fetchGoldCoinPackages, apiRequest } from '../services/api'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 export function GoldGiveawayGame() {
     const navigate = useNavigate()
     const location = useLocation()
@@ -148,7 +150,8 @@ export function GoldGiveawayGame() {
     const handleEnterGameEntries = async (entries: PrizeData) => {
         // Check if user has enough entries
         if (ticketBalance < entries.cost) {
-            alert("You don't have enough entries to play for this prize!")
+
+            toast.info("You don't have enough entries to play for this prize!")
             return
         }
         try {
