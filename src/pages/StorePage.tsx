@@ -193,8 +193,8 @@ export function StorePage() {
     },
   ]
   // Use API packages if available, otherwise use defaults
-  // const displayPackages = packages.length > 0 ? packages : defaultPackages
-  const displayPackages = defaultPackages
+  const displayPackages = packages.length > 0 ? packages : defaultPackages
+  // const displayPackages = defaultPackages
 
   const handleBuy = async (packageItem: PackageOffer) => {
     try {
