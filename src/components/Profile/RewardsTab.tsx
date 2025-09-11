@@ -168,21 +168,21 @@ export function RewardsTab() {
   const progressData = [
     {
       label: 'Invite & sign up 10 friends',
-      reward: 10,
+      reward: 2,
       current: 10,
       total: 10,
       collected: false,
     },
     {
-      label: 'Invite & sign up 35 friends',
-      reward: 45,
+      label: 'Invite & sign up 25 friends',
+      reward: 5,
       current: 10,
-      total: 35,
+      total: 25,
       collected: false,
     },
     {
       label: 'Invite & sign up 100 friends',
-      reward: 120,
+      reward: 10,
       current: 10,
       total: 100,
       collected: false,
