@@ -5,9 +5,10 @@ import { ResetPasswordModal } from '../components/ResetPasswordModal'
 import { EmailInputModal } from '../components/EmailInputModal'
 import { useGlobalContext } from '../context/GlobalContext'
 import { login, storeAuthToken } from '../services/auth.service'
+import { IMAGES } from '../constance/imagesLink'
 export function LoginPage() {
   const navigate = useNavigate()
-  const { login: loginContext } = useGlobalContext()
+  const { login: loginContext, customLogo } = useGlobalContext()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -17,6 +18,8 @@ export function LoginPage() {
   const [verificationEmail, setVerificationEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  // Use custom logo if available, otherwise use default
+  const logoSrc = customLogo || IMAGES.logo
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -66,11 +69,7 @@ export function LoginPage() {
         <div className="flex-1 flex flex-col items-center justify-center p-4">
           {/* Logo */}
           <div className="mb-12">
-            <img
-                src="https://uploadthingy.s3.us-west-1.amazonaws.com/mMkBSTmjm9ZJj7f2LPjgMg/cookycreanlogo3.png"
-                alt="Cooky Cream Logo"
-                className="h-24 w-auto"
-            />
+            <img src={logoSrc} alt="Cooky Cream Logo" className="h-24 w-auto" />
           </div>
           <div className="w-full max-w-md">
             {error && (

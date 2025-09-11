@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
 import { signup, storeAuthToken } from '../services/auth.service'
+import { IMAGES } from '../constance/imagesLink'
 export function SignupPage() {
   const navigate = useNavigate()
-  const { login, coinBalance } = useGlobalContext()
+  const { login, coinBalance, customLogo } = useGlobalContext()
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -12,6 +13,8 @@ export function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  // Use custom logo if available, otherwise use default
+  const logoSrc = customLogo || IMAGES.logo
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -68,11 +71,7 @@ export function SignupPage() {
         <div className="flex-1 flex flex-col items-center justify-center p-4">
           {/* Logo */}
           <div className="mb-8">
-            <img
-                src="https://uploadthingy.s3.us-west-1.amazonaws.com/mMkBSTmjm9ZJj7f2LPjgMg/cookycreanlogo3.png"
-                alt="Cooky Cream Logo"
-                className="h-24 w-auto"
-            />
+            <img src={logoSrc} alt="Cooky Cream Logo" className="h-24 w-auto" />
           </div>
           <div className="w-full max-w-md">
             {error && (
@@ -174,10 +173,11 @@ export function SignupPage() {
                   <option value="Slovenia">Slovenia</option>
                   <option value="Slovakia">Slovakia</option>
                   <option value="Thailand">Thailand</option>
-                  <option value="United Arab Emirates">United Arab Emirates</option>
+                  <option value="United Arab Emirates">
+                    United Arab Emirates
+                  </option>
                   <option value="United States">United States</option>
                 </select>
-
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <svg
                       className="w-4 h-4 text-gray-400"

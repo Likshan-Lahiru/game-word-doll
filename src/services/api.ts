@@ -1,5 +1,5 @@
 // Base API configuration
-//const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api'
+//const API_BASE_URL = 'https://service-wordle.beecele.com.au/wordoll/api/'
 const API_BASE_URL = 'http://localhost:8080/wordoll/api'
 // Common headers
 const getHeaders = (requireAuth = true) => {
@@ -156,7 +156,7 @@ export const fetchFlipPackages = async () => {
                 if (pack.title === 'Pack 03') {
                     return { ...pack, voucher: pack.voucher + 1 }
                 } else if (pack.title === 'Pack 04') {
-                    return { ...pack, voucher: pack.voucher + 2 } // Changed from +3 to +2
+                    return { ...pack, voucher: pack.voucher + 5 } // Changed from +3 to +2
                 }
                 return pack
             })
@@ -186,6 +186,28 @@ export const fetchGoldCoinFlipCount = async (userId: string) => {
         return result
     } catch (error) {
         console.error('Error fetching gold coin flip count:', error)
+        throw error
+    }
+}
+// Check if user has access to Cooky Shop
+export const checkCookyShopAccess = async (userId: string) => {
+    try {
+        const endpoint = `/cookyshop/check/${userId}`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error checking Cooky Shop access:', error)
+        throw error
+    }
+}
+// Fetch Cooky Shop items
+export const fetchCookyShopItems = async () => {
+    try {
+        const endpoint = '/cookyshop/ascending'
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching Cooky Shop items:', error)
         throw error
     }
 }
