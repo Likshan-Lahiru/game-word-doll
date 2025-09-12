@@ -354,7 +354,7 @@ export function GiveawayGame() {
           {/* Main Content */}
           <div className="flex-1 flex flex-col px-3 pt-1">
             <h2 className="text-xl font-medium text-center mb-6">
-              Select a prize to win !
+              Select a prize to win
             </h2>
             {/* Error message */}
             {error && (
