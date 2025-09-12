@@ -61,8 +61,9 @@ export function StatusBar({
                                 <img
                                     src={logoSrc}
                                     alt="Cooky Cream Logo"
-                                    className="h-12 sm:h-16"
+                                    style={{width: "120px", height: "60px", objectFit: "contain"}}
                                 />
+
                             </div>
                         )}
                     </div>

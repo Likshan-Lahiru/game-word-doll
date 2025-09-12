@@ -446,14 +446,7 @@ export function GiveawayGoldWordollGame() {
                     </button>
                 </div>
                 {/* Gold coin indicator */}
-                <div className="absolute top-4 right-4 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
-                    <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
-                        alt="Gold Coins"
-                        className="w-5 h-5 mr-1"
-                    />
-                    <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
-                </div>
+
                 <div className="flex-none text-center pt-16 pb-4">
                     <p className="text-white text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>

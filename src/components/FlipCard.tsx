@@ -62,7 +62,7 @@ export const FlipCard = ({
                                     ${items.image === '/freeFlip.png' && 'lg:w-44 lg:h-40 md:w-36 md:h-36'}
                                     ${items.image === '/fortuneCooky.png' && 'lg:w-36 lg:h-36 md:w-36 md:h-36'}
                                     ${items.image === '/badCooky.png' && 'lg:w-40 lg:h-36 md:w-40 md:h-40'}
-                                    lg:w-36 md:w-28 h-32`}
+                                    lg:w-40 md:w-28 h-36`}
                                     />
                                 ) : (
                                     <div className="flex-1"></div>
