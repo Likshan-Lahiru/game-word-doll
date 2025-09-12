@@ -238,7 +238,7 @@ export function FlipPage() {
         const randomIndex = Math.floor(Math.random() * otherCards.length)
         return otherCards[randomIndex]
     }
-    // Fetch flip options from API
+    // Fetch flip options from API (0.20 / 0.40 / 0.60 / 1 / 2 )
     useEffect(() => {
         const fetchFlipOptions = async () => {
             try {
@@ -438,10 +438,11 @@ export function FlipPage() {
         const newIndex = Math.floor(Math.random() * allFlipCardData.length)
         const newSet = allFlipCardData[newIndex].map((card, index) => ({
             ...card,
-            selected: index === 0,
+            selected: index === 1, //Default middle card select
         }))
         setSelectedFlipCards(newSet)
-        setSelectedCardId(newSet[0].id)
+        // Default middle card select
+        setSelectedCardId(newSet[1].id)
         setHasFlipped(false)
         // Reset flipped state (all front side)
         const resetFlips = newSet.reduce(

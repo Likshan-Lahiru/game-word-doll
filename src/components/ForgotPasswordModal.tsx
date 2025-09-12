@@ -104,6 +104,41 @@ export function ForgotPasswordModal({
       setIsLoading(false)
     }
   }
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    const pasteData = e.clipboardData.getData("text").trim()
+
+    if (/^\d+$/.test(pasteData)) {
+      const digits = pasteData.slice(0, 6).split("") // max 6 digits
+      const newCode = [...verificationCode]
+
+      digits.forEach((digit, i) => {
+        if (i < 6) {
+          newCode[i] = digit
+        }
+      })
+
+      setVerificationCode(newCode)
+
+      // Focus last filled input
+      const nextInput = document.getElementById(`code-${digits.length - 1}`)
+      nextInput?.focus()
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "Backspace" && verificationCode[index] === "") {
+      if (index > 0) {
+        const prevInput = document.getElementById(`code-${index - 1}`) as HTMLInputElement
+        const newCode = [...verificationCode]
+        newCode[index - 1] = ""
+        setVerificationCode(newCode)
+        prevInput?.focus()
+      }
+    }
+  }
+
   if (!isOpen) return null
   return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
@@ -131,7 +166,9 @@ export function ForgotPasswordModal({
                     className="w-10 h-12 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-bold bg-white rounded-md focus:outline-none text-gray-800"
                     value={digit}
                     onChange={(e) => handleCodeChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
                     disabled={isLoading}
+                    onPaste={handlePaste}
                 />
             ))}
           </div>

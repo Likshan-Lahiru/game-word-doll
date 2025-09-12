@@ -33,7 +33,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                         GC {prize.coinAmount.toLocaleString()}
                     </p>
                     <p className="text-sm font-medium font-['DM_Sans']">+</p>
-                    <p className="text-sm font-medium font-['DM_Sans']">{prize.spinAmount} x Spin</p>
+                    <p className="text-sm font-medium font-['DM_Sans']">{prize.spinAmount} x Flip</p>
                 </div>
                 <div className="flex flex-col items-end">
                     <div className="flex items-center mb-3 mr-8 mt-2">
@@ -71,7 +71,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
             <p className="text-center mb-1 text-xl font-medium font-['DM_Sans']">+</p>
             <p className="mb-4 font-['DM_Sans'] text-xl font-semibold">
                 {selectedBalanceType === 'coin' ?
-                    `${prize.spinAmount} x Spin`
+                    `${prize.spinAmount} x Flip`
                     :
                     <div className={"flex"}>
                         <img

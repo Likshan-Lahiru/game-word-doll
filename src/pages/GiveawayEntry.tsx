@@ -256,7 +256,7 @@ export function GiveawayEntry() {
                     {/* Spin Button */}
                     <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
                         <button
-                            className={`${voucherBalance > 0 ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
+                            className={`${(voucherBalance >= 0.40 && selectedBalanceType === 'ticket') || (goldCoinFlipCount >= 0.40 && selectedBalanceType === 'coin') ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
                             disabled={
                                 selectedBalanceType === 'coin' && goldCoinFlipCount <= 0
@@ -275,14 +275,16 @@ export function GiveawayEntry() {
                                                         alt={'voucher'}
                                                         className={'w-6 h-6 mr-2 ml-2'}
                                                     />
-                                                    <p>x {voucherBalance} )</p>
+                                                    <p>x { Number.isInteger(voucherBalance) ? voucherBalance : voucherBalance.toFixed(2)} )</p>
                                                 </>
                                             )}
                                         </p>
                                     </div>
                                 </>
                             ) : (
-                                `SPIN NOW (${selectedBalanceType === 'coin' ? goldCoinFlipCount : spinBalance} x Spin)`
+                                `FLIP NOW (${selectedBalanceType === 'coin' 
+                                    ? Number.isInteger(goldCoinFlipCount) ? goldCoinFlipCount : goldCoinFlipCount.toFixed(2) 
+                                    : Number.isInteger(spinBalance) ? spinBalance : spinBalance.toFixed(2)} x Flip)`
                             )}
                         </button>
                     </div>

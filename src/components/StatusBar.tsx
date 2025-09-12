@@ -85,7 +85,7 @@ export function StatusBar({
                                 />
                             </div>
                             <span className="ml-1 text-lg font-Inter font-bold">
-                {gemBalance.toFixed(2)}
+                {Number.isInteger(gemBalance) ? gemBalance : gemBalance.toFixed(2)}
               </span>
                         </div>
                         <div className="w-48 h-12 bg-[#0A0E1A] rounded-full flex items-center px-1 space-x-2 outline outline-2 outline-[#374151]">
@@ -97,7 +97,7 @@ export function StatusBar({
                                 />
                             </div>
                             <span className="ml-1 text-lg font-Inter font-bold">
-                {voucherBalance.toFixed(2)}
+                {Number.isInteger(voucherBalance) ? voucherBalance : voucherBalance.toFixed(2)}
               </span>
                         </div>
                     </div>
