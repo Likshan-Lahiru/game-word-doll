@@ -156,7 +156,7 @@ export const fetchFlipPackages = async () => {
                 if (pack.title === 'Pack 03') {
                     return { ...pack, voucher: pack.voucher + 1 }
                 } else if (pack.title === 'Pack 04') {
-                    return { ...pack, voucher: pack.voucher + 5 } // Changed from +3 to +2
+                    return { ...pack, voucher: pack.voucher + 2 } // Changed from +3 to +2
                 }
                 return pack
             })
