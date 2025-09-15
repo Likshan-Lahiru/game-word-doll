@@ -135,12 +135,16 @@ export function ConvertGem() {
               <div className="flex items-center gap-x-2">
                 <p className="text-white text-[16px]">Available Gems</p>
                 <p>:</p>
-                <p className="font-medium text-[16px]">{totalGems.toFixed(2)}</p>
+                <p className="font-medium text-[16px]">
+                  {totalGems.toLocaleString()}
+                </p>
               </div>
               <div className="flex items-center gap-x-2">
                 <p className="text-white mr-8 text-[16px]">Total Gems</p>
                 <p className="">:</p>
-                <p className="font-medium text-[16px]">{totalGems.toFixed(2)}</p>
+                <p className="font-medium text-[16px]">
+                  {totalGems.toLocaleString()}
+                </p>
               </div>
             </div>
             <ul className="list-disc pl-5 space-y-4 mb-10">
@@ -166,7 +170,7 @@ export function ConvertGem() {
                     className="bg-transparent w-16 outline-none text-black text-[16px]"
                 />
                 <span className="ml-1 font-['Inter'] text-black text-[16px]">
-                (${redeemAmount})
+                (${redeemAmount.toLocaleString()})
               </span>
               </div>
               <div>
@@ -189,7 +193,8 @@ export function ConvertGem() {
                 <div className="bg-[#374151] rounded-xl p-8 pt-8 pb-15 w-full max-w-lg">
                   <h2 className="text-[18px] font-semibold mb-4">Convert Gems?</h2>
                   <p className="mb-12 text-sm">
-                    Do you want to convert {redeemAmount} gems to a gift card?
+                    Do you want to convert {redeemAmount.toLocaleString()} gems to a
+                    gift card?
                   </p>
                   <div className="flex justify-center space-x-2">
                     <button
@@ -231,7 +236,11 @@ export function ConvertGem() {
                         className="w-28 h-9 rounded-xl text-black p-2"
                     />
                   </div>
-
+                  {wrongAnswer && (
+                      <p className="text-[#FE5C5C] mb-5 text-center">
+                        Wrong answer, try again.
+                      </p>
+                  )}
                   <div className="flex justify-center space-x-4">
                     <button
                         onClick={() => setShowQuestionGemModal(false)}
@@ -246,13 +255,7 @@ export function ConvertGem() {
                     >
                       {isLoading ? 'Processing...' : 'Submit'}
                     </button>
-
                   </div>
-                  {wrongAnswer && (
-                      <p className="text-[#FE5C5C]  text-xs mt-5 text-center">
-                        Wrong answer, try again.
-                      </p>
-                  )}
                 </div>
               </div>
           )}
@@ -346,12 +349,12 @@ export function ConvertGem() {
             <div className="flex items-center gap-x-2">
               <p className="text-white">Available Gems</p>
               <p>:</p>
-              <p className="font-medium">{availableGems.toFixed(2)}</p>
+              <p className="font-medium">{availableGems.toLocaleString()}</p>
             </div>
             <div className="flex items-center gap-x-2">
               <p className="text-white mr-8">Total Gems</p>
               <p className="">:</p>
-              <p className="font-medium">{totalGems.toFixed(2)}</p>
+              <p className="font-medium">{totalGems.toLocaleString()}</p>
             </div>
           </div>
           <ul className="list-disc pl-5 space-y-4 mb-10">
@@ -375,7 +378,7 @@ export function ConvertGem() {
                   className="bg-transparent w-16 outline-none text-black text-md"
               />
               <span className="ml-1 font-['Inter'] text-black text-md">
-              (${redeemAmount})
+              (${redeemAmount.toLocaleString()})
             </span>
             </div>
             <p className="text-white font-['Inter']">gems</p>
@@ -396,7 +399,8 @@ export function ConvertGem() {
               <div className="bg-[#374151] rounded-xl p-16 pt-[68px] pb-20 w-full max-w-lg">
                 <h2 className="text-2xl font-semibold mb-4">Convert Gems?</h2>
                 <p className="mb-12">
-                  Do you want to convert {redeemAmount} gems to a gift card?
+                  Do you want to convert {redeemAmount.toLocaleString()} gems to a
+                  gift card?
                 </p>
                 <div className="flex justify-end space-x-4">
                   <button
@@ -430,7 +434,7 @@ export function ConvertGem() {
                     assistance from any device or person.
                   </p>
                 </div>
-                <div className={'flex mb-3 gap-x-3 items-center'}>
+                <div className={'flex mb-5 gap-x-3 items-center'}>
                   <p className={'font-bold'}>{currentQuestion}</p>
                   <input
                       value={inputValue}
@@ -439,7 +443,7 @@ export function ConvertGem() {
                   />
                 </div>
                 {wrongAnswer && (
-                    <p className="text-[#FE5C5C] pl-36 mb-3 text-center">
+                    <p className="text-[#FE5C5C] mb-5 text-center">
                       Wrong answer, try again.
                     </p>
                 )}
