@@ -17,7 +17,7 @@ export function WinPackageModal({
     if (!isOpen) return null
     const handleCollect = () => {
         onClose()
-        navigate('/giveaway-game')
+        navigate('/giveaway-entry')
     }
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937]">

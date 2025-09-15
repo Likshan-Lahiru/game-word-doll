@@ -209,7 +209,9 @@ export function GiveawayEntry() {
                     <h2
                         className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-2 px-4`}
                     >
-                        Play any game to enter the Cooky Flip
+                        {selectedBalanceType === 'ticket'
+                            ? 'Play any game to win vouchers'
+                            : 'Play any game to enter the Cooky Flip'}
                     </h2>
                     <div className={'flex justify-center'}>
                         {/* Left Side - Grand Win After Entries Select */}
@@ -256,7 +258,7 @@ export function GiveawayEntry() {
                     {/* Spin Button */}
                     <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
                         <button
-                            className={`${(voucherBalance >= 0.40 && selectedBalanceType === 'ticket') || (goldCoinFlipCount >= 0.40 && selectedBalanceType === 'coin') ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
+                            className={`${(voucherBalance >= 0.4 && selectedBalanceType === 'ticket') || (goldCoinFlipCount >= 0.4 && selectedBalanceType === 'coin') ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
                             disabled={
                                 selectedBalanceType === 'coin' && goldCoinFlipCount <= 0
@@ -275,16 +277,20 @@ export function GiveawayEntry() {
                                                         alt={'voucher'}
                                                         className={'w-6 h-6 mr-2 ml-2'}
                                                     />
-                                                    <p>x { Number.isInteger(voucherBalance) ? voucherBalance : voucherBalance.toFixed(2)} )</p>
+                                                    <p>
+                                                        x{' '}
+                                                        {Number.isInteger(voucherBalance)
+                                                            ? voucherBalance
+                                                            : voucherBalance.toFixed(2)}{' '}
+                                                        )
+                                                    </p>
                                                 </>
                                             )}
                                         </p>
                                     </div>
                                 </>
                             ) : (
-                                `FLIP NOW (${selectedBalanceType === 'coin' 
-                                    ? Number.isInteger(goldCoinFlipCount) ? goldCoinFlipCount : goldCoinFlipCount.toFixed(2) 
-                                    : Number.isInteger(spinBalance) ? spinBalance : spinBalance.toFixed(2)} x Flip)`
+                                `FLIP NOW (${selectedBalanceType === 'coin' ? (Number.isInteger(goldCoinFlipCount) ? goldCoinFlipCount : goldCoinFlipCount.toFixed(2)) : Number.isInteger(spinBalance) ? spinBalance : spinBalance.toFixed(2)} x Flip)`
                             )}
                         </button>
                     </div>
