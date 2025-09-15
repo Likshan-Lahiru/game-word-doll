@@ -291,7 +291,7 @@ export function FlipPage() {
         const vouchers = parseFloat(voucherBalance.toFixed(2))
         if (hasFlipped || currentRowIndex >= allFlipCardData.length) return
         if (vouchers < spinVoucherCount) {
-            toast.info('Please recharge your voucher balance!')
+            toast.info('not enough voucher balance!')
             return
         }
         if (!selectedCardId) {
