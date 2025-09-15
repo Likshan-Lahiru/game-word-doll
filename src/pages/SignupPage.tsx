@@ -3,16 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../context/GlobalContext'
 import { signup, storeAuthToken } from '../services/auth.service'
 import { IMAGES } from '../constance/imagesLink'
+import { VerifyModal } from '../components/VerifyModal'
 export function SignupPage() {
   const navigate = useNavigate()
   const { login, coinBalance, customLogo } = useGlobalContext()
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [country, setCountry] = useState('Australia') // Set default country
+  const [country, setCountry] = useState('Select Country') // Set default country
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showVerifyModal, setShowVerifyModal] = useState(false)
+  const [userId, setUserId] = useState('')
   // Use custom logo if available, otherwise use default
   const logoSrc = customLogo || IMAGES.logo
   const handleSignup = async (e: React.FormEvent) => {
@@ -39,10 +42,10 @@ export function SignupPage() {
       if (response.token) {
         storeAuthToken(response.token)
         localStorage.setItem('userId', response.userId)
-        // Update global auth state
-        login()
-        // Redirect to home page after successful signup
-        navigate('/')
+        // Set userId for verification modal
+        setUserId(response.userId)
+        // Show verification modal instead of navigating directly
+        setShowVerifyModal(true)
       } else {
         setError('Signup failed. Please try again.')
       }
@@ -219,6 +222,13 @@ export function SignupPage() {
             </form>
           </div>
         </div>
+        {/* Verification Modal */}
+        <VerifyModal
+            isOpen={showVerifyModal}
+            onClose={() => setShowVerifyModal(false)}
+            userId={userId}
+            email={email}
+        />
       </div>
   )
 }
