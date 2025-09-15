@@ -110,14 +110,9 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
             </div>
             <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : ''}`}>
               <label className="block text-sm mb-1">Email Address</label>
-              <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-white"
-                  disabled={isLoading}
-              />
-
+              <div className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-white/50 opacity-36">
+                {email}
+              </div>
             </div>
           </div>
           {/* Country on its own line with smaller width */}
