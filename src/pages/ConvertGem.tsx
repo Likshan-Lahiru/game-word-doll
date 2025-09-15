@@ -16,6 +16,7 @@ export function ConvertGem() {
   const [currentQuestion, setCurrentQuestion] = useState('')
   const [correctAnswer, setCorrectAnswer] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [wrongAnswer, setWrongAnswer] = useState(false)
   // Available questions and answers
   const questions = [
     {
@@ -50,12 +51,9 @@ export function ConvertGem() {
   }, [])
   // Handle input change with validation
   const handleRedeemAmountChange = (value) => {
+    // Allow any number to be entered, without enforcing minimum
     const newValue = Number(value)
-    if (newValue >= 100) {
-      setRedeemAmount(newValue)
-    } else {
-      setRedeemAmount(100) // Minimum 100 gems required
-    }
+    setRedeemAmount(newValue)
   }
   const handleRedeemNow = () => {
     // Check if user has enough gems
@@ -72,6 +70,7 @@ export function ConvertGem() {
     setCurrentQuestion(questions[randomIndex].question)
     setCorrectAnswer(questions[randomIndex].answer)
     setInputValue('') // Reset the input value
+    setWrongAnswer(false) // Reset wrong answer state
     setShowQuestionGemModal(true)
   }
   const handleQuestionGemModal = async () => {
@@ -109,7 +108,7 @@ export function ConvertGem() {
         setIsLoading(false)
       }
     } else {
-      alert('Incorrect answer. Please try again.')
+      setWrongAnswer(true)
       setInputValue('')
     }
   }
@@ -136,9 +135,7 @@ export function ConvertGem() {
               <div className="flex items-center gap-x-2">
                 <p className="text-white text-[16px]">Available Gems</p>
                 <p>:</p>
-                <p className="font-medium text-[16px]">
-                  {totalGems.toFixed(2)}
-                </p>
+                <p className="font-medium text-[16px]">{totalGems.toFixed(2)}</p>
               </div>
               <div className="flex items-center gap-x-2">
                 <p className="text-white mr-8 text-[16px]">Total Gems</p>
@@ -164,7 +161,7 @@ export function ConvertGem() {
                 <input
                     type="number"
                     value={redeemAmount}
-                    min={100}
+                    min={0}
                     onChange={(e) => handleRedeemAmountChange(e.target.value)}
                     className="bg-transparent w-16 outline-none text-black text-[16px]"
                 />
@@ -179,14 +176,13 @@ export function ConvertGem() {
             <div className="flex justify-center mb-8 mt-5 font-['Inter']">
               <button
                   onClick={handleRedeemNow}
-                  className="bg-[#2D7FF0] text-[12px] w-36 text-white py-1 rounded-3xl font-medium"
-                  disabled={redeemAmount > availableGems}
+                  className={`bg-[#2D7FF0] text-[12px] w-36 text-white py-1 rounded-3xl font-medium ${redeemAmount < 100 || redeemAmount > availableGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={redeemAmount < 100 || redeemAmount > availableGems}
               >
                 Convert Now
               </button>
             </div>
           </div>
-
           {/* Convert Gem Modal */}
           {showTransferModal && (
               <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-6">
@@ -212,7 +208,6 @@ export function ConvertGem() {
                 </div>
               </div>
           )}
-
           {/* Convert Gem Question Modal */}
           {showQuestionGemModal && (
               <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
@@ -236,6 +231,7 @@ export function ConvertGem() {
                         className="w-28 h-9 rounded-xl text-black p-2"
                     />
                   </div>
+
                   <div className="flex justify-center space-x-4">
                     <button
                         onClick={() => setShowQuestionGemModal(false)}
@@ -250,11 +246,16 @@ export function ConvertGem() {
                     >
                       {isLoading ? 'Processing...' : 'Submit'}
                     </button>
+
                   </div>
+                  {wrongAnswer && (
+                      <p className="text-[#FE5C5C]  text-xs mt-5 text-center">
+                        Wrong answer, try again.
+                      </p>
+                  )}
                 </div>
               </div>
           )}
-
           {/* Transaction Completed Modal For Australian Users */}
           {showCompletedModalAusUsers && (
               <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
@@ -292,7 +293,6 @@ export function ConvertGem() {
                 </div>
               </div>
           )}
-
           {/* Transaction Completed Modal Global user */}
           {showCompletedModal && (
               <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
@@ -370,7 +370,7 @@ export function ConvertGem() {
               <input
                   type="number"
                   value={redeemAmount}
-                  min={100}
+                  min={0}
                   onChange={(e) => handleRedeemAmountChange(e.target.value)}
                   className="bg-transparent w-16 outline-none text-black text-md"
               />
@@ -383,14 +383,13 @@ export function ConvertGem() {
           <div className="flex-1 flex justify-end mb-16 font-['Inter']">
             <button
                 onClick={handleRedeemNow}
-                className={`md:mt-5 ${redeemAmount > availableGems ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#2D7FF0] hover:bg-blue-600'} border-green-500 w-52 text-white py-2 px-10 rounded-full font-medium`}
-                disabled={redeemAmount > availableGems}
+                className={`md:mt-5 bg-[#2D7FF0] hover:bg-blue-600 border-green-500 w-52 text-white py-2 px-10 rounded-full font-medium ${redeemAmount < 100 || redeemAmount > availableGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={redeemAmount < 100 || redeemAmount > availableGems}
             >
               Convert Now
             </button>
           </div>
         </div>
-
         {/* Convert Gem Modal */}
         {showTransferModal && (
             <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
@@ -416,7 +415,6 @@ export function ConvertGem() {
               </div>
             </div>
         )}
-
         {/* Convert Gem Question Modal */}
         {showQuestionGemModal && (
             <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
@@ -432,7 +430,7 @@ export function ConvertGem() {
                     assistance from any device or person.
                   </p>
                 </div>
-                <div className={'flex mb-5 gap-x-3 items-center'}>
+                <div className={'flex mb-3 gap-x-3 items-center'}>
                   <p className={'font-bold'}>{currentQuestion}</p>
                   <input
                       value={inputValue}
@@ -440,6 +438,11 @@ export function ConvertGem() {
                       className="w-28 h-9 rounded text-black p-2"
                   />
                 </div>
+                {wrongAnswer && (
+                    <p className="text-[#FE5C5C] pl-36 mb-3 text-center">
+                      Wrong answer, try again.
+                    </p>
+                )}
                 <div className="flex justify-end space-x-4">
                   <button
                       onClick={() => setShowQuestionGemModal(false)}
@@ -458,7 +461,6 @@ export function ConvertGem() {
               </div>
             </div>
         )}
-
         {/* Transaction Completed Modal For Australian Users */}
         {showCompletedModalAusUsers && (
             <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
@@ -496,7 +498,6 @@ export function ConvertGem() {
               </div>
             </div>
         )}
-
         {/* Transaction Completed Modal Global user */}
         {showCompletedModal && (
             <div className="fixed inset-0 bg-[#1F2937E5]/60 flex items-center justify-center z-50 p-4">
