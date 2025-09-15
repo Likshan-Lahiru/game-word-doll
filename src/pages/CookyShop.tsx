@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { apiRequest } from '../services/api'
 import { useGlobalContext } from '../context/GlobalContext'
-const CookyShop = ({ logo, isMobile }) => {
+const CookyShop = ({ logo, isMobile, refreshItems }) => {
     const [showButton, setShowButton] = useState(false)
     const { setCustomLogo } = useGlobalContext()
     const handleShowButton = () => {
@@ -19,6 +19,10 @@ const CookyShop = ({ logo, isMobile }) => {
                 if (response && response.imageLink) {
                     // Update the global context with the new logo
                     setCustomLogo(response.imageLink)
+                    // Immediately refresh the Cooky Shop items to update UI
+                    if (refreshItems) {
+                        refreshItems()
+                    }
                     // Show success alert
                     alert('Logo updated successfully!')
                 }
