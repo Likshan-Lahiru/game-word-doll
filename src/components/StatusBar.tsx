@@ -37,7 +37,7 @@ export function StatusBar({
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <span className="ml-1 font-bold">{gemBalance.toFixed(2)}</span>
+                            <span className="ml-1 font-bold">{voucherBalance.toFixed(2)}</span>
                         </div>
                         <div className="w-28 h-10 bg-[#111827] rounded-full flex items-center px-4  ">
                             <div className="w-8 h-4 flex items-center justify-center">
@@ -48,7 +48,8 @@ export function StatusBar({
                                 />
                             </div>
                             <span className="ml-1 font-bold">
-                {voucherBalance.toFixed(2)}
+
+                                {gemBalance.toFixed(2)}
               </span>
                         </div>
                     </div>

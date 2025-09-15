@@ -436,7 +436,7 @@ export function GiveawayGoldWordollGame() {
                 <div className="absolute top-4 left-4 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/gold-giveaway-game')}
                     >
                         <img
                             src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"

@@ -76,7 +76,10 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
     }
   }
   const handleLogout = () => {
-    // Handle logout logic here
+    // Remove auth token and userId from localStorage
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('userId')
+    // Navigate to login page
     navigate('/login')
   }
   return (
@@ -207,7 +210,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               onClick={handleLogout}
               className="flex items-center text-[#FF3838] hover:text-red-400"
           >
-            <LogOutIcon className="w-5 h-5 mr-2"/>
+            <LogOutIcon className="w-5 h-5 mr-2" />
             Log out
           </button>
           <button
