@@ -78,14 +78,14 @@ const ConvertToEntries = ({ isMobile }) => {
                             <p className="text-[13px] text-white mr-[68px]">Entries</p>
                             <p>:</p>
                             <p className="font-medium text-[13px]">
-                                {ticketBalance.toFixed(2)}
+                                {ticketBalance.toLocaleString()}
                             </p>
                         </div>
                         <div className="flex items-center gap-x-2">
                             <p className="text-white text-[13px]">Convertible Gems</p>
                             <p className="">:</p>
                             <p className="font-medium text-[13px]">
-                                {Math.floor(gemBalance)}
+                                {Math.floor(gemBalance).toLocaleString()}
                             </p>
                         </div>
                     </div>
@@ -101,7 +101,7 @@ const ConvertToEntries = ({ isMobile }) => {
                                 className="bg-transparent w-10 text-[13px] outline-none text-black text-md"
                             />
                             <span className="ml-1 font-['Inter'] text-[13px] text-black text-md">
-                ({entriesAmount})
+                ({entriesAmount.toLocaleString()})
               </span>
                         </div>
                         <div className={'flex flex-col'}>
@@ -142,7 +142,8 @@ const ConvertToEntries = ({ isMobile }) => {
                             ) : (
                                 <>
                                     <p className="mb-12 text-sm">
-                                        Do you want to convert {entriesAmount} gems to entries?
+                                        Do you want to convert {entriesAmount.toLocaleString()} gems
+                                        to entries?
                                     </p>
                                     {apiError && (
                                         <p className="mb-4 text-sm text-red-400">{apiError}</p>
@@ -183,12 +184,14 @@ const ConvertToEntries = ({ isMobile }) => {
                     <div className="flex items-center gap-x-2">
                         <p className="text-white mr-[83px]">Entries</p>
                         <p>:</p>
-                        <p className="font-medium">{ticketBalance.toFixed(2)}</p>
+                        <p className="font-medium">{ticketBalance.toLocaleString()}</p>
                     </div>
                     <div className="flex items-center gap-x-2">
                         <p className="text-white">Convertible Gems</p>
                         <p className="">:</p>
-                        <p className="font-medium">{Math.floor(gemBalance)}</p>
+                        <p className="font-medium">
+                            {Math.floor(gemBalance).toLocaleString()}
+                        </p>
                     </div>
                 </div>
                 <div className="font-['Inter'] flex max-[958px]:flex-col max-[958px]:space-y-2 max-[958px]:items-start items-center mb-0.5 space-x-4">
@@ -203,7 +206,7 @@ const ConvertToEntries = ({ isMobile }) => {
                             className="bg-transparent w-16 outline-none text-black text-md"
                         />
                         <span className="ml-1 font-['Inter'] text-black text-md">
-              ({entriesAmount})
+              ({entriesAmount.toLocaleString()})
             </span>
                     </div>
                     <p className="text-white">gems to entries (1 Gem = 1 Entry)</p>
@@ -239,7 +242,8 @@ const ConvertToEntries = ({ isMobile }) => {
                         ) : (
                             <>
                                 <p className="mb-12 text-sm">
-                                    Do you want to convert {entriesAmount} gems to entries?
+                                    Do you want to convert {entriesAmount.toLocaleString()} gems
+                                    to entries?
                                 </p>
                                 {apiError && (
                                     <p className="mb-4 text-sm text-red-400">{apiError}</p>
