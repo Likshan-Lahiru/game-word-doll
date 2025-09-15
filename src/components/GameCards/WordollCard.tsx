@@ -1,7 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../../context/GlobalContext'
-
 type WordollCardProps = {
     isMobile?: boolean
 }
@@ -9,11 +8,9 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
     const navigate = useNavigate()
     const { isAuthenticated, selectedBalanceType } = useGlobalContext()
     const { limitPlay, setLimitPlay } = useGlobalContext()
-
     const handlePlayClick = () => {
-
         if (isAuthenticated) {
-            if (selectedBalanceType === 'ticket' ) {
+            if (selectedBalanceType === 'ticket') {
                 // Navigate to gem game mode if ticket is selected
                 navigate('/gem-game-mode', {
                     state: {
@@ -29,7 +26,10 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 })
             }
         } else {
-            if (isAuthenticated && selectedBalanceType === 'ticket' || !isAuthenticated && selectedBalanceType === 'coin') {
+            if (
+                (isAuthenticated && selectedBalanceType === 'ticket') ||
+                (!isAuthenticated && selectedBalanceType === 'coin')
+            ) {
                 navigate('/bet-selector', {
                     state: {
                         gameType: 'wordoll',
@@ -40,7 +40,6 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
             }
         }
     }
-
     if (isMobile) {
         return (
             <div
@@ -55,12 +54,12 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                         className="w-full h-full object-cover"
                     />
                 </div>
-                {/* x3 indicator in top right corner */}
-                { !isAuthenticated &&
+                {/* Display remaining plays indicator in top right corner */}
+                {!isAuthenticated && (
                     <div className="absolute top-2 right-4 text-white text-3xl z-10">
-                        x 3
+                        x {limitPlay}
                     </div>
-                }
+                )}
                 {/* Title at the bottom */}
                 <div className="mt-auto pb-6 px-4 text-center relative z-10">
                     <h3 className="text-xl font-bold text-white">Wordoll</h3>
@@ -69,7 +68,9 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
         )
     }
     return (
-        <div className={`${isAuthenticated ? 'h-[60vh] max-h-[560px]' : 'h-[50.5vh] max-h-[420px]'} rounded-2xl overflow-hidden flex flex-col relative`}>
+        <div
+            className={`${isAuthenticated ? 'h-[60vh] max-h-[560px]' : 'h-[50.5vh] max-h-[420px]'} rounded-2xl overflow-hidden flex flex-col relative`}
+        >
             {/* Full image background */}
             <div className="absolute inset-0">
                 <img
@@ -78,12 +79,12 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                     className="w-full h-full object-cover"
                 />
             </div>
-            {/* x3 indicator in top right corner */}
-            { !isAuthenticated &&
+            {/* Display remaining plays indicator in top right corner */}
+            {!isAuthenticated && (
                 <div className="absolute top-2 right-7 text-white text-xl font-semibold z-10">
-                    x 3
+                    x {limitPlay}
                 </div>
-            }
+            )}
             {/* Title */}
             <h3 className="text-2xl font-medium text-center text-white relative z-10 mt-6 pt-2 font-['DM_Sans']">
                 Wordoll
