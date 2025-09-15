@@ -5,7 +5,7 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { IMAGES } from '../constance/imagesLink.ts'
 import { GoldFlipCard } from '../components/GameCards/GoldFlipCard'
 import { apiRequest } from '../services/api'
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify'
 // Updated interface for flip options from API
 interface FlipOption {
     id: string
@@ -433,6 +433,7 @@ export function GoldFlipPage() {
     }
     // Handle coming next cards
     const handleNextRow = async () => {
+        setIsFreeCard(false) // reset free button
         // Flip all cards back to front
         const flippedBack = selectedFlipCards.reduce(
             (acc, card) => {
@@ -452,10 +453,10 @@ export function GoldFlipPage() {
         const newIndex = Math.floor(Math.random() * allFlipCardData.length)
         const newSet = allFlipCardData[newIndex].map((card, index) => ({
             ...card,
-            selected: index === 0,
+            selected: index === 1, // Select the middle card (index 1) instead of first card
         }))
         setSelectedFlipCards(newSet)
-        setSelectedCardId(newSet[0].id)
+        setSelectedCardId(newSet[1].id) // Set the middle card ID as selected
         setHasFlipped(false)
         // Reset flipped state (all front side)
         const resetFlips = newSet.reduce(
@@ -504,13 +505,13 @@ export function GoldFlipPage() {
                 </div>
                 {/* Gold indicator */}
                 {/*   <div className="absolute top-12 right-3 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
-                       <img
-                           src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
-                           alt="Gold"
-                           className="w-4 h-4 mr-1"
-                       />
-                       <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
-                   </div>*/}
+                   <img
+                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                       alt="Gold"
+                       className="w-4 h-4 mr-1"
+                   />
+                   <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
+                 </div>*/}
                 {/* Status Bar */}
                 <div className="">
                     <StatusBar isMobile={isMobile} hideOnlineCount={true} />
@@ -671,13 +672,13 @@ export function GoldFlipPage() {
                 </div>
                 {/* Gold indicator */}
                 {/*    <div className="absolute top-4 right-4 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
-                    alt="Gold"
-                    className="w-5 h-5 mr-1"
-                />
-                <span className="text-[#FFD700] font-medium">Gold Game</span>
-             </div>*/}
+                 <img
+                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                 alt="Gold"
+                 className="w-5 h-5 mr-1"
+                 />
+                 <span className="text-[#FFD700] font-medium">Gold Game</span>
+                 </div>*/}
                 {/* Status Bar */}
                 <div className="">
                     <StatusBar isMobile={isMobile} hideOnlineCount={true} />
