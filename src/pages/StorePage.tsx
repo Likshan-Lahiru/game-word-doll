@@ -470,7 +470,12 @@ export function StorePage() {
                   {/* responsive: 1 col on xs, 2 on sm, 3 on md+ */}
                   <div className="grid grid-cols-2 gap-5">
                     {cookyShopItems.map((logo) => (
-                        <CookyShop key={logo.id} logo={logo} isMobile={isMobile} />
+                        <CookyShop
+                            key={logo.id}
+                            logo={logo}
+                            isMobile={isMobile}
+                            refreshItems={fetchCookyShopData}
+                        />
                     ))}
                   </div>
                   {/* Full overlay - only show if user doesn't have access */}
@@ -510,7 +515,7 @@ export function StorePage() {
           {(activeTabDesktop === 'membership' ||
               activeTabDesktop === 'cookyShop') && (
               <div className={'flex justify-center'}>
-                <div className={'w-[577px] ml-[31px]'}>
+                <div className={'w-[576px] ml-[18px]'}>
                   <BalanceSelector
                       onSelect={(type) => console.log(`Selected: ${type}`)}
                   />
@@ -739,7 +744,12 @@ export function StorePage() {
                   {/* responsive: 1 col on xs, 2 on sm, 3 on md+ */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {cookyShopItems.map((logo) => (
-                        <CookyShop key={logo.id} logo={logo} isMobile={false} />
+                        <CookyShop
+                            key={logo.id}
+                            logo={logo}
+                            isMobile={false}
+                            refreshItems={fetchCookyShopData}
+                        />
                     ))}
                   </div>
                   {/* Full overlay - only show if user doesn't have access */}
