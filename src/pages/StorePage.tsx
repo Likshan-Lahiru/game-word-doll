@@ -515,7 +515,7 @@ export function StorePage() {
           {(activeTabDesktop === 'membership' ||
               activeTabDesktop === 'cookyShop') && (
               <div className={'flex justify-center'}>
-                <div className={'w-[576px] ml-[18px]'}>
+                <div className={'w-[577px] ml-[31px]'}>
                   <BalanceSelector
                       onSelect={(type) => console.log(`Selected: ${type}`)}
                   />
