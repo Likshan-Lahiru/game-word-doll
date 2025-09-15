@@ -3,7 +3,7 @@ import { CheckCircleIcon } from 'lucide-react'
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest } from '../services/api'
 export function ConvertGem() {
-  const { gemBalance } = useGlobalContext()
+  const { gemBalance, updateUserBalance } = useGlobalContext()
   const [redeemAmount, setRedeemAmount] = useState(100)
   const [showTransferModal, setShowTransferModal] = useState(false)
   const [showQuestionGemModal, setShowQuestionGemModal] = useState(false)
@@ -92,6 +92,8 @@ export function ConvertGem() {
           amount: redeemAmount,
         })
         if (response && response.success) {
+          // Update user balance after successful gift card generation
+          await updateUserBalance()
           // Check if user is from Australia
           if (response.userAustralia) {
             setShowCompletedModalAusUsers(true)
