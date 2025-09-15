@@ -45,7 +45,7 @@ export const FlipCard = ({
                             {/* Header */}
                             <div className={'flex justify-center'}>
                                 <p
-                                    className={`${isMobile ? '' : ''} lg:text-[24px] md:text-[28px] text-[20px] font-inter font-bold mt-10 mb-0`}
+                                    className={`${isMobile ? '' : ''} lg:text-[24px] md:text-[28px] text-[18px] font-inter font-bold mt-10 mb-0`}
                                 >
                                     {items.name}
                                 </p>

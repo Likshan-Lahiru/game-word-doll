@@ -1,5 +1,5 @@
 import {useGlobalContext} from "../context/GlobalContext.tsx";
-
+import React from 'react'
 export type PrizeData = {
     id: number
     coinAmount: number
@@ -14,7 +14,7 @@ type PrizeCardProps = {
     onEnter: () => void
 }
 
-import React from 'react'
+
 
 export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
 

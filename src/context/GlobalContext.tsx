@@ -133,6 +133,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     }
     const logout = () => {
         removeAuthToken()
+        localStorage.removeItem('userId')
         setIsAuthenticated(false)
     }
     return (
