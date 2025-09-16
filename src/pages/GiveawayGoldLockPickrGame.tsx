@@ -12,7 +12,7 @@ import { WinPackageModal } from '../components/GameModals/WinPackageModal'
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest, checkLastWinTime } from '../services/api'
 import { CooldownModal } from '../components/GameModals/CooldownModal'
-import {WinPackageGoldCoinModal} from "../components/GameModals/WinPackageGoldFlipModal.tsx";
+import { WinPackageGoldCoinModal } from '../components/GameModals/WinPackageGoldFlipModal.tsx'
 export function GiveawayGoldLockPickrGame() {
     const navigate = useNavigate()
     const globalContext = useGlobalContext()
@@ -269,6 +269,12 @@ export function GiveawayGoldLockPickrGame() {
                 statuses[index - 1] = 'wrong-position'
             })
         }
+        // Show feedback message when number is incorrect
+        setFeedback('Invalid Number')
+        // Clear feedback after 2 seconds
+        setTimeout(() => {
+            setFeedback('')
+        }, 2000)
         // Update the last attempt statuses for rendering
         setLastAttemptStatuses(statuses)
         // Update locked positions and clear incorrect positions in current attempt
@@ -665,7 +671,10 @@ export function GiveawayGoldLockPickrGame() {
             {/* Win Package Modal - Show this when user wins */}
             <WinPackageGoldCoinModal
                 isOpen={showWinPackageModal}
-                onClose={() => setShowWinPackageModal(false)}
+                onClose={() => {
+                    setShowWinPackageModal(false)
+                    navigate('/giveaway-entry')
+                }}
                 prize={{
                     coinAmount: selectedPrize?.coinAmount || 300000,
                     spinAmount: selectedPrize?.spinAmount || 5,
