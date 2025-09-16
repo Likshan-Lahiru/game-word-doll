@@ -45,6 +45,12 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
     }
     fetchUserData()
   }, [])
+  // Handle username change to prevent spaces
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Remove all spaces from the input value
+    const noSpacesValue = e.target.value.replace(/\s+/g, '')
+    setUsername(noSpacesValue)
+  }
   const handleSave = async () => {
     try {
       setIsSaving(true)
@@ -103,7 +109,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               <input
                   type="text"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleUsernameChange}
                   className="w-full px-4 py-2 bg-[#1F2937] rounded-md text-white"
                   disabled={isLoading}
               />
