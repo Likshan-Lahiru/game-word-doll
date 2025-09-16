@@ -306,7 +306,7 @@ export function StorePage() {
                   setActiveTab('convertToEntries')
                 }}
             >
-              <span className="font-bold">Convert To Gems</span>
+              <span className="font-bold">Convert To Entries</span>
             </button>
           </div>
           {activeTab === 'membership' ? (
