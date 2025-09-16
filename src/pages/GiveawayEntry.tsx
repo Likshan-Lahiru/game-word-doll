@@ -35,6 +35,12 @@ export function GiveawayEntry() {
     }, [selectedBalanceType, isAuthenticated, updateGoldCoinFlipCount])
     const handleGameSelect = (gameType: string) => {
         setSelectedGame(gameType)
+        // Check if user is authenticated
+        if (!isAuthenticated) {
+            // Redirect to login page if not authenticated
+            navigate('/login')
+            return
+        }
         // Check if using gold coin balance type
         if (selectedBalanceType === 'coin') {
             // Navigate to gold-giveaway-game for gold coin balance type

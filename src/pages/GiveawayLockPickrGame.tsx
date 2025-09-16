@@ -267,6 +267,12 @@ export function GiveawayLockPickrGame() {
                 statuses[index - 1] = 'wrong-position'
             })
         }
+        // Show feedback message when number is incorrect
+        setFeedback('Invalid Number')
+        // Clear feedback after 2 seconds
+        setTimeout(() => {
+            setFeedback('')
+        }, 2000)
         // Update the last attempt statuses for rendering
         setLastAttemptStatuses(statuses)
         // Update locked positions and clear incorrect positions in current attempt
@@ -661,7 +667,10 @@ export function GiveawayLockPickrGame() {
             {/* Win Package Modal - Show this when user wins */}
             <WinPackageModal
                 isOpen={showWinPackageModal}
-                onClose={() => setShowWinPackageModal(false)}
+                onClose={() => {
+                    setShowWinPackageModal(false)
+                    navigate('/giveaway-entry')
+                }}
                 prize={{
                     coinAmount: selectedPrize?.coinAmount || 300000,
                     spinAmount: selectedPrize?.spinAmount || 5,

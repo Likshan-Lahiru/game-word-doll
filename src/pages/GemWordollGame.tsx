@@ -35,14 +35,10 @@ function getLetterStatuses(
     })
     return statuses
 }
-
 export function GemWordollGame() {
     const navigate = useNavigate()
-
     const location = useLocation()
-
     const { addGems } = useGlobalContext()
-
     // Get ticket amount, gem pool, and word length from location state
     const {
         ticketAmount = 1,
@@ -55,84 +51,57 @@ export function GemWordollGame() {
         wordLength: number
         groupSessionId: string | null
     }) || {}
-
     const [targetWord, setTargetWord] = useState('')
-
     const [, setSelectedLetters] = useState<string[]>([])
-
     const [lastAttempt, setLastAttempt] = useState<string[]>([])
-
     const [currentAttempt, setCurrentAttempt] = useState<string[]>([])
-
     const [lockedPositions, setLockedPositions] = useState<boolean[]>([])
-
     const [timer, setTimer] = useState(300)
-
     const [feedback, setFeedback] = useState<string>('')
-
     const [isMobile, setIsMobile] = useState(false)
-
     const [showCountdown, setShowCountdown] = useState(true)
-
     const [gameStarted, setGameStarted] = useState(false)
-
     const [attempts, setAttempts] = useState(12)
-
     const inputRef = useRef<HTMLInputElement>(null)
-
     const gameContainerRef = useRef<HTMLDivElement>(null)
-
     // Game status modals
     const [showUserWinModal, setShowUserWinModal] = useState(false)
-
     const [showTimeEndedModal, setShowTimeEndedModal] = useState(false)
-
     const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
-
     const [showRoomHasWinnerModal, setShowRoomHasWinnerModal] = useState(false)
-
     const [roomWinnerName, setRoomWinnerName] = useState('')
-
     const [legendaryAmount, setLegendaryAmount] = useState('0.00')
-
     const [gameCompleted, setGameCompleted] = useState(false)
-
     // Last attempt statuses from API
     const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
         ('correct' | 'wrong-position' | 'incorrect')[]
     >([])
-
     // Define game outcome handlers first
     const handleUserWin = (winAmount: string) => {
         setGameCompleted(true)
         setLegendaryAmount(winAmount)
         setShowUserWinModal(true)
     }
-
     const handleRoomHasWinner = (winnerName: string, winAmount: string) => {
         setGameCompleted(true)
         setRoomWinnerName(winnerName)
         setLegendaryAmount(winAmount)
         setShowRoomHasWinnerModal(true)
     }
-
     const handleTimeEnded = () => {
         setGameCompleted(true)
         setShowTimeEndedModal(true)
     }
-
     const handleNoAttemptsLeft = () => {
         setGameCompleted(true)
         setShowNoAttemptsModal(true)
     }
-
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768)
         checkMobile()
         window.addEventListener('resize', checkMobile)
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
-
     // Initialize game with the dynamic word length
     useEffect(() => {
         // Generate a random word (this is just for demo - in real app would come from API)
@@ -165,13 +134,11 @@ export function GemWordollGame() {
         setCurrentAttempt(Array(wordLength).fill(''))
         setLockedPositions(Array(wordLength).fill(false))
     }, [wordLength])
-
     useEffect(() => {
         if (gameStarted && !showCountdown && isMobile && inputRef.current) {
             setTimeout(() => inputRef.current?.focus(), 300)
         }
     }, [gameStarted, showCountdown, isMobile])
-
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (!gameStarted || gameCompleted) return
@@ -209,7 +176,6 @@ export function GemWordollGame() {
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [currentAttempt, gameStarted, lockedPositions, gameCompleted, wordLength])
-
     useEffect(() => {
         if (!gameStarted || gameCompleted) return
         if (timer <= 0) {
@@ -219,7 +185,6 @@ export function GemWordollGame() {
         const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000)
         return () => clearInterval(countdown)
     }, [timer, gameStarted, gameCompleted])
-
     const checkGuess = useCallback(async () => {
         if (gameCompleted) return
         const guess = currentAttempt.join('')
@@ -253,6 +218,44 @@ export function GemWordollGame() {
                     if (response.win === true) {
                         // User won!
                         handleUserWin(response.legendaryWinCount || gemPool.toFixed(2))
+                        return
+                    }
+                    // When win is false, show feedback first
+                    if (response.win === false) {
+                        // Show feedback message when word is incorrect
+                        setFeedback('Not in word list')
+                        // Process the rest of the response after a slight delay
+                        setTimeout(() => {
+                            // Check if room has a winner
+                            if (
+                                response.message &&
+                                response.message.includes('Room has a Winner')
+                            ) {
+                                // Extract winner name from message
+                                const winnerName = response.message.replace(
+                                    'Room has a Winner! ',
+                                    '',
+                                )
+                                handleRoomHasWinner(
+                                    winnerName,
+                                    response.legendaryWinCount || gemPool.toFixed(2),
+                                )
+                                return
+                            }
+                            // User didn't win - update UI based on API feedback
+                            updateUIFromApiResponse(response)
+                            // Decrease attempts
+                            setAttempts((prev) => prev - 1)
+                            // Check if out of attempts
+                            if (attempts <= 1) {
+                                handleNoAttemptsLeft()
+                                return
+                            }
+                            // Clear feedback after processing everything (3 seconds total)
+                            setTimeout(() => {
+                                setFeedback('')
+                            }, 3000)
+                        }, 100) // Small delay to ensure feedback is displayed first
                         return
                     }
                     // Check if room has a winner
@@ -296,7 +299,6 @@ export function GemWordollGame() {
                 handleNoAttemptsLeft()
             }
         }
-        setFeedback('')
     }, [
         currentAttempt,
         wordLength,
@@ -305,7 +307,6 @@ export function GemWordollGame() {
         gameCompleted,
         gemPool,
     ])
-
     // Helper function to update UI based on API response
     const updateUIFromApiResponse = (response: any) => {
         // Create a status array for the last attempt
@@ -349,13 +350,11 @@ export function GemWordollGame() {
         setLockedPositions(newLocks)
         setCurrentAttempt(newAttempt)
     }
-
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const remaining = seconds % 60
         return `${minutes.toString().padStart(2, '0')}:${remaining.toString().padStart(2, '0')}`
     }
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '')
         const newAttempt = [...currentAttempt]
@@ -368,7 +367,6 @@ export function GemWordollGame() {
         }
         setCurrentAttempt(newAttempt)
     }
-
     const handleCountdownComplete = () => {
         setShowCountdown(false)
         setGameStarted(true)
@@ -376,7 +374,6 @@ export function GemWordollGame() {
             inputRef.current.focus()
         }
     }
-
     const renderLetterTile = (
         letter: string,
         index: number,
@@ -402,7 +399,6 @@ export function GemWordollGame() {
             </div>
         )
     }
-
     const handleLetterClick = (index: number) => {
         if (!lockedPositions[index] && !gameCompleted) {
             const newAttempt = [...currentAttempt]
@@ -410,7 +406,6 @@ export function GemWordollGame() {
             setCurrentAttempt(newAttempt)
         }
     }
-
     const handleMobileKeyPress = (key: string) => {
         if (gameCompleted) return
         if (key === 'ENTER') {
@@ -443,13 +438,11 @@ export function GemWordollGame() {
             }
         }
     }
-
     const mobileKeyboard = [
         ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
         ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
         ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
     ]
-
     return (
         <div
             className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
@@ -474,9 +467,10 @@ export function GemWordollGame() {
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
 
+            {/* Feedback message */}
             {feedback && (
-                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                    {feedback}
+                <div className="bg-[#374151] text-center py-3 px-6 rounded-lg mb-6 mx-auto max-w-md shadow-lg ">
+                    <p className="text-white text-lg font-semibold">{feedback}</p>
                 </div>
             )}
 
