@@ -9,8 +9,7 @@ import { AuthenticatedLoseModal } from '../components/GameModals/AuthenticatedLo
 import { AuthenticatedNoAttemptsModal } from '../components/GameModals/AuthenticatedNoAttemptsModal'
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest, checkLastWinTime } from '../services/api'
-import {CooldownModal} from "../components/GameModals/CooldownModal.tsx";
-
+import { CooldownModal } from '../components/GameModals/CooldownModal.tsx'
 export function LockPickrGame() {
   const navigate = useNavigate()
   const globalContext = useGlobalContext()
@@ -176,6 +175,12 @@ export function LockPickrGame() {
               } else {
                 // User didn't win - update UI based on API feedback
                 updateUIFromApiResponse(response, guessArray)
+                // Show feedback message when the guess is incorrect
+                setFeedback('Invalid Number')
+                // Clear feedback after 2 seconds
+                setTimeout(() => {
+                  setFeedback('')
+                }, 2000)
                 // Decrease attempts
                 setAttemptsLeft((prev) => prev - 1)
                 // Check if out of attempts
@@ -223,6 +228,12 @@ export function LockPickrGame() {
               } else {
                 // User didn't win - update UI based on API feedback
                 updateUIFromApiResponse(response, guessArray)
+                // Show feedback message when the guess is incorrect
+                setFeedback('Invalid Number')
+                // Clear feedback after 2 seconds
+                setTimeout(() => {
+                  setFeedback('')
+                }, 2000)
                 // Decrease attempts
                 setAttemptsLeft((prev) => prev - 1)
                 // Check if out of attempts

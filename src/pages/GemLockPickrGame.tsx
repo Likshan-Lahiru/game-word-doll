@@ -8,13 +8,9 @@ import { UserWinGemModal } from '../components/GameModals/UserWinGemModal'
 import { RoomHasWinnerModal } from '../components/GameModals/RoomHasWinnerModal'
 import { apiRequest } from '../services/api'
 export function GemLockPickrGame() {
-
     const navigate = useNavigate()
-
     const location = useLocation()
-
     const { addGems } = useGlobalContext()
-
     // Get ticket amount, gem pool, and number length from location state
     const {
         ticketAmount = 1,
@@ -27,79 +23,53 @@ export function GemLockPickrGame() {
         numberLength: number
         groupSessionId: string | null
     }) || {}
-
     const [targetCode, setTargetCode] = useState<number[]>([])
-
     const [currentAttempt, setCurrentAttempt] = useState<(number | undefined)[]>(
         [],
     )
-
     const [lastAttempt, setLastAttempt] = useState<number[]>([])
-
     const [timer, setTimer] = useState(300) // 5 minutes in seconds
-
     const [feedback, setFeedback] = useState<string>('')
-
     const [isInputFocused, setIsInputFocused] = useState(false)
-
     const gameContainerRef = useRef<HTMLDivElement>(null)
-
     const inputRef = useRef<HTMLInputElement>(null)
-
     const [isMobile, setIsMobile] = useState(false)
-
     const [showCountdown, setShowCountdown] = useState(true)
-
     const [gameStarted, setGameStarted] = useState(false)
-
     const [attemptsLeft, setAttemptsLeft] = useState(6)
-
     const [gameCompleted, setGameCompleted] = useState(false)
-
     const [lockedPositions, setLockedPositions] = useState<boolean[]>([])
-
     // Last attempt statuses from API
     const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
         ('correct' | 'wrong-position' | 'incorrect')[]
     >([])
-
     // Game status modals
     const [showUserWinModal, setShowUserWinModal] = useState(false)
-
     const [showTimeEndedModal, setShowTimeEndedModal] = useState(false)
-
     const [showNoAttemptsModal, setShowNoAttemptsModal] = useState(false)
-
     const [showRoomHasWinnerModal, setShowRoomHasWinnerModal] = useState(false)
-
     const [roomWinnerName, setRoomWinnerName] = useState('')
-
     const [legendaryAmount, setLegendaryAmount] = useState('0.00')
-
     // Define game outcome handlers first
     const handleUserWin = (winAmount: string) => {
         setGameCompleted(true)
         setLegendaryAmount(winAmount)
         setShowUserWinModal(true)
     }
-
     const handleRoomHasWinner = (winnerName: string, winAmount: string) => {
         setGameCompleted(true)
         setRoomWinnerName(winnerName)
         setLegendaryAmount(winAmount)
         setShowRoomHasWinnerModal(true)
     }
-
     const handleTimeEnded = () => {
         setGameCompleted(true)
         setShowTimeEndedModal(true)
     }
-
     const handleNoAttemptsLeft = () => {
         setGameCompleted(true)
         setShowNoAttemptsModal(true)
     }
-
     // Check if device is mobile
     useEffect(() => {
         const checkMobile = () => {
@@ -109,7 +79,6 @@ export function GemLockPickrGame() {
         window.addEventListener('resize', checkMobile)
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
-
     // Initialize the game with dynamic number length
     useEffect(() => {
         // Generate a random code with the specified length
@@ -129,7 +98,6 @@ export function GemLockPickrGame() {
             setIsInputFocused(true)
         }
     }, [numberLength])
-
     // Focus input when game starts
     useEffect(() => {
         if (gameStarted && !showCountdown && inputRef.current) {
@@ -138,7 +106,6 @@ export function GemLockPickrGame() {
             }, 300)
         }
     }, [gameStarted, showCountdown])
-
     // Timer effect
     useEffect(() => {
         if (!gameStarted || gameCompleted) return
@@ -149,7 +116,6 @@ export function GemLockPickrGame() {
         const countdown = setInterval(() => setTimer((prev) => prev - 1), 1000)
         return () => clearInterval(countdown)
     }, [timer, gameStarted, gameCompleted])
-
     // Check if the guess is correct
     const checkGuess = useCallback(async () => {
         if (gameCompleted) return
@@ -189,6 +155,13 @@ export function GemLockPickrGame() {
                         // User won!
                         handleUserWin(response.legendaryWinCount || gemPool.toFixed(2))
                         return
+                    } else if (response.win === false) {
+                        // Show feedback message when number is incorrect
+                        setFeedback('Invalid Number')
+                        // Clear feedback after 2 seconds
+                        setTimeout(() => {
+                            setFeedback('')
+                        }, 2000)
                     }
                     // Check if room has a winner
                     if (
@@ -231,13 +204,11 @@ export function GemLockPickrGame() {
                 handleNoAttemptsLeft()
             }
         }
-        setFeedback('')
         // Focus the input for next attempt
         if (inputRef.current) {
             inputRef.current.focus()
         }
     }, [currentAttempt, attemptsLeft, groupSessionId, gameCompleted, gemPool])
-
     // Helper function to update UI based on API response
     const updateUIFromApiResponse = (response: any) => {
         // Create a status array for the last attempt
@@ -282,14 +253,12 @@ export function GemLockPickrGame() {
         setLockedPositions(newLocks)
         setCurrentAttempt(newAttempt)
     }
-
     // Format time as MM:SS
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const remainingSeconds = seconds % 60
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
     }
-
     // Handle input change for mobile keyboard
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Skip processing if the input is coming from the keyboard event listener
@@ -310,7 +279,6 @@ export function GemLockPickrGame() {
             }
         }
     }
-
     // Handle countdown completion
     const handleCountdownComplete = () => {
         setShowCountdown(false)
@@ -319,7 +287,6 @@ export function GemLockPickrGame() {
             inputRef.current.focus()
         }
     }
-
     // Get number status (correct, wrong position, incorrect)
     const getNumberStatus = (num: number, index: number) => {
         // If we have a status from the API response, use it
@@ -348,7 +315,6 @@ export function GemLockPickrGame() {
         }
         return 'incorrect' // Incorrect number
     }
-
     // Handle mobile number pad key press
     const handleMobileKeyPress = (key: string) => {
         if (gameCompleted) return
@@ -385,7 +351,6 @@ export function GemLockPickrGame() {
             }
         }
     }
-
     // Handle desktop number pad key press
     const handleDesktopKeyPress = (key: string) => {
         if (gameCompleted) return
@@ -422,7 +387,6 @@ export function GemLockPickrGame() {
             }
         }
     }
-
     return (
         <div
             className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
@@ -451,11 +415,10 @@ export function GemLockPickrGame() {
 
             {/* Feedback message */}
             {feedback && (
-                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4">
-                    {feedback}
+                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+                    <p className="text-white text-lg">{feedback}</p>
                 </div>
             )}
-
             {/* Hidden input for keyboard */}
             <input
                 ref={inputRef}

@@ -13,7 +13,7 @@ import { WinPackageModal } from '../components/GameModals/WinPackageModal'
 import { useGlobalContext } from '../context/GlobalContext'
 import { apiRequest, checkLastWinTime } from '../services/api'
 import { CooldownModal } from '../components/GameModals/CooldownModal'
-import {WinPackageGoldCoinModal} from "../components/GameModals/WinPackageGoldFlipModal.tsx";
+import { WinPackageGoldCoinModal } from '../components/GameModals/WinPackageGoldFlipModal.tsx'
 export function GiveawayGoldWordollGame() {
     const navigate = useNavigate()
     const { betAmount, winAmount, isAuthenticated, addCoins } = useGlobalContext()
@@ -320,6 +320,12 @@ export function GiveawayGoldWordollGame() {
                 }
             })
         }
+        // Show feedback message when word is incorrect
+        setFeedback('Not in word list')
+        // Clear feedback after 2 seconds
+        setTimeout(() => {
+            setFeedback('')
+        }, 2000)
         // Update the last attempt statuses for rendering
         setLastAttemptStatuses(statuses)
         // Update locked positions and clear incorrect positions in current attempt
@@ -451,6 +457,12 @@ export function GiveawayGoldWordollGame() {
                     <p className="text-white text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
+                {/* Feedback message */}
+                {feedback && (
+                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+                        <p className="text-white text-lg">{feedback}</p>
+                    </div>
+                )}
                 <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
                     <input
                         ref={inputRef}
