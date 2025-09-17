@@ -93,7 +93,7 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
   }
   return (
       <div className="space-y-8 px-10">
-        <h2 className="text-xl font-bold mb-6 mt-14">Account</h2>
+        <h2 className="text-xl font-bold mb-2 mt-0">Account</h2>
         {saveError && (
             <div className="bg-red-500 text-white p-2 rounded-md mb-4">
               {saveError}
@@ -104,10 +104,10 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
               Profile updated successfully!
             </div>
         )}
-        <div className={`${isMobile ? 'space-y-4' : 'space-y-6'}`}>
+        <div className={`${isMobile ? 'space-y-4' : 'space-y-4'}`}>
           {/* User Name and Email Address on the same line */}
           <div className="flex flex-wrap gap-4">
-            <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : 'mb-4'}`}>
+            <div className={`flex-1 min-w-[200px] ${isMobile ? 'mb-4' : 'mb-2'}`}>
               <label className="block text-sm mb-1">User Name</label>
               <input
                   type="text"
@@ -203,14 +203,14 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
           <div>
             <button
                 onClick={onChangePassword}
-                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : 'mb-28'}`}
+                className={`text-white hover:text-blue-400 font-medium ${isMobile ? 'mb-5' : 'mb-5'}`}
             >
               Change Password
             </button>
           </div>
         </div>
         {/* Logout and Save buttons */}
-        <div className="flex justify-between items-center mt-8">
+        <div className="flex justify-between items-center mt-5">
           <button
               onClick={handleLogout}
               className="flex items-center text-[#FF3838] hover:text-red-400"

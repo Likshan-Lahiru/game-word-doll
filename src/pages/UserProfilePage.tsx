@@ -117,10 +117,10 @@ export function UserProfilePage() {
     }
   }
   return (
-      <div className={`flex flex-col w-full min-h-screen bg-[#1F2937] text-white ${isMobile ? 'mb-20 pt-3' : 'mb-16 pt-10'}`}>
+      <div className={`flex flex-col w-full min-h-screen bg-[#1F2937] text-white ${isMobile ? 'mb-20 pt-3' : 'mb-0 pt-5'}`}>
         <div className="flex-1 flex flex-col items-center justify-start p-4">
           <div
-              className={`w-full max-w-3xl ${isMobile ? 'bg-transparent h-[680px]' : 'bg-[#374151] h-[720px]'} rounded-2xl overflow-hidden`}
+              className={`w-full max-w-3xl ${isMobile ? 'bg-transparent h-[680px]' : 'bg-[#374151] h-[495px]'} rounded-2xl overflow-hidden`}
           >
             <ProfileTabs
                 activeTab={activeTab}
@@ -128,7 +128,7 @@ export function UserProfilePage() {
                 isMobile={isMobile}
             />
             <div
-                className={`${isMobile ? 'bg-[#374151] mt-4 rounded-xl px-3' : 'px-6'} sm:px-10 py-8`}
+                className={`${isMobile ? 'bg-[#374151] mt-4 rounded-xl px-3' : 'px-6'} sm:px-10 py-2`}
             >
               {renderTabContent()}
             </div>
