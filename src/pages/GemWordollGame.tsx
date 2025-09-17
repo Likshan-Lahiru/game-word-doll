@@ -462,7 +462,7 @@ export function GemWordollGame() {
                 </button>
             </div>
 
-            <div className="text-center mb-28 mt-20">
+            <div className="text-center mb-5 mt-4">
                 <p className="text-white text-xs">Timer</p>
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
@@ -489,7 +489,7 @@ export function GemWordollGame() {
             )}
 
             {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-4">
                 <div
                     className="grid gap-2 text-2xl font-[Inter]"
                     style={{
@@ -509,7 +509,7 @@ export function GemWordollGame() {
             </div>
 
             <div
-                className="flex justify-center mb-8"
+                className="flex justify-center mb-4"
                 onClick={() => !gameCompleted && inputRef.current?.focus()}
             >
                 <div
@@ -572,7 +572,7 @@ export function GemWordollGame() {
 
             {!isMobile && (
                 <>
-                    <div className="mt-4 mb-4">
+                    <div className="mt-2 mb-2">
                         <VirtualKeyboard
                             onKeyPress={(key) => {
                                 if (gameCompleted) return

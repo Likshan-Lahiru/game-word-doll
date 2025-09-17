@@ -495,7 +495,7 @@ export function GiveawayLockPickrGame() {
                     </button>
                 </div>
                 {/* Timer */}
-                <div className="flex-none text-center pt-16 pb-4">
+                <div className="flex-none text-center pt-8 pb-2">
                     <p className="text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
@@ -555,7 +555,7 @@ export function GiveawayLockPickrGame() {
                     </div>
                     {/* Current attempt */}
                     <div
-                        className="flex justify-center mb-6"
+                        className="flex justify-center mb-4"
                         onClick={() => inputRef.current?.focus()}
                     >
                         <div
@@ -580,7 +580,7 @@ export function GiveawayLockPickrGame() {
                     </div>
                 </div>
                 {/* Number pad - Responsive for all screen sizes */}
-                <div className="flex-none mb-36 pb-6">
+                <div className="flex-none mb-2 pb-4">
                     <div className="w-full max-w-md mx-auto px-2">
                         {/* Row 1: 1-2-3 */}
                         <div className="flex justify-center gap-2 mb-2">

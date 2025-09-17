@@ -177,7 +177,7 @@ export function VirtualKeyboard({
   // Render QWERTY keyboard with original styling
   if (keyboardType === 'qwerty') {
     return (
-        <div className={`w-full max-w-3xl mx-auto p-2 ${className}`}>
+        <div className={`w-full max-w-3xl mx-auto pb-2 ${className}`}>
           {layout.map((row, rowIndex) => (
               <div key={rowIndex} className="flex justify-center gap-1 mb-1">
                 {row.map((key, keyIndex) => (

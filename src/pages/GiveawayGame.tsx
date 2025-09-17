@@ -409,9 +409,9 @@ export function GiveawayGame() {
           />
         </div>
         {/* Main Content */}
-        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-12">
+        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-2">
           <div className={'w-full max-w-5xl pl-7'}>
-            <h2 className="text-xl font-['DM_Sans'] font-medium text-left mb-8">
+            <h2 className="text-xl font-['DM_Sans'] font-medium text-left mb-2">
               {selectedBalanceType === 'coin'
                   ? 'Select a prize to win'
                   : 'Select a prize to win'}

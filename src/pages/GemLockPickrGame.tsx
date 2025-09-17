@@ -408,14 +408,14 @@ export function GemLockPickrGame() {
             </div>
 
             {/* Timer */}
-            <div className="text-center mb-24 mt-20">
+            <div className="text-center mb-2 mt-8">
                 <p className="text-xs">Timer</p>
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
 
             {/* Feedback message */}
             {feedback && (
-                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+                <div className="bg-[#374151] text-center py-1 px-4 rounded-lg mb-2 mx-auto max-w-md">
                     <p className="text-white text-lg">{feedback}</p>
                 </div>
             )}
@@ -436,7 +436,7 @@ export function GemLockPickrGame() {
             />
 
             {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4">
                 <div
                     className="grid gap-2"
                     style={{
@@ -471,7 +471,7 @@ export function GemLockPickrGame() {
 
             {/* Current attempt - Clickable to enable keyboard input */}
             <div
-                className="flex justify-center mb-6"
+                className="flex justify-center mb-4"
                 onClick={() => !gameCompleted && inputRef.current?.focus()}
             >
                 <div

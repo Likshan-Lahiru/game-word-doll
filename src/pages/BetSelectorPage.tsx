@@ -302,14 +302,14 @@ export function BetSelectorPage() {
                 </button>
             </div>
             {/* Status Bar */}
-            <div className="">
+            <div className="ml-[15px]">
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
-            <div className="flex-1 flex flex-col items-center justify-center p-4 mb-96">
+            <div className="flex-1 flex flex-col items-center justify-center p-2 mb-0">
                 <div className="w-full max-w-md">
                     {/* Bet Options */}
-                    <div className="flex justify-center space-x-4 mb-6 relative ">
+                    <div className="flex justify-center space-x-4 mb-4 relative ">
                         {isLoading ? (
                             <div className="text-center py-4">Loading...</div>
                         ) : error ? (
@@ -341,12 +341,12 @@ export function BetSelectorPage() {
                         )}
                     </div>
                     {/* Game Title */}
-                    <div className="bg-[#374151] rounded-xl p-6 mb-10 flex flex-col items-center justify-center text-center">
-                        <h2 className="text-white text-2xl font-bold text-center mb-16 font-[Inter]">
+                    <div className="bg-[#374151] rounded-xl p-6 mb-5 flex flex-col items-center justify-center text-center">
+                        <h2 className="text-white text-2xl font-bold text-center mb-8 font-[Inter]">
                             {gameType === 'wordoll' ? 'Wordoll' : 'Lock Pickr'}
                         </h2>
                         {/* Win Amount */}
-                        <div className="bg-[#1F2937] rounded-xl pb-5 px-10 mb-2">
+                        <div className="bg-[#1F2937] rounded-xl pb-2 px-10 mb-2">
                             <p className="text-white text-2xl font-semibold mt-2 mb-4 text-center font-[Inter]">
                                 Win
                             </p>
