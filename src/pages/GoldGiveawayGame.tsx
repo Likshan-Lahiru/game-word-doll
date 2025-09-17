@@ -406,7 +406,6 @@ export function GoldGiveawayGame() {
                 <StatusBar
                     isMobile={isMobile}
                     hideOnlineCount={true}
-                    switchableBalanceSelector={true}
                 />
             </div>
             {/* Main Content */}
