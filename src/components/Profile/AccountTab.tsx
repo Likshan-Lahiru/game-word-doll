@@ -86,7 +86,10 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
     localStorage.removeItem('authToken')
     localStorage.removeItem('userId')
     // Navigate to login page
-    navigate('/login')
+    localStorage.removeItem('customLogo')
+    setTimeout(() => {
+      window.location.href = '/'
+    }, 500)
   }
   return (
       <div className="space-y-8 px-10">
