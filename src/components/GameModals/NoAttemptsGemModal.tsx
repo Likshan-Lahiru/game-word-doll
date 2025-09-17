@@ -19,7 +19,7 @@ export function NoAttemptsGemModal({
                 <h2 className="text-2xl font-bold mb-28 mt-10 text-[#FE5C5C] font-[Inter]">
                     No attempts !
                 </h2>
-                <p className="text-lg text-white font-medium mb-48 font-[Inter]">You used all attepmts</p>
+                <p className="text-lg text-white font-medium mb-48 font-[Inter]">You used all attempts</p>
                 <button
                     className="bg-[#3B82F6] hover:bg-blue-600 text-white font-bold mb-2 py-3 px-8 rounded-2xl text-lg font-[Inter]"
                     onClick={handleBackToLobby}
