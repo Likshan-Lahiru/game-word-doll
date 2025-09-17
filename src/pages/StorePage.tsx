@@ -612,7 +612,7 @@ export function StorePage() {
                                   </div>
                               )}
                               <div
-                                  className={`relative rounded-xl overflow-hidden flex flex-col h-[320px] bg-white ${pkg.bestValue ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''}`}
+                                  className={`relative rounded-xl overflow-hidden flex flex-col h-[370px] bg-white ${pkg.bestValue ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''}`}
                               >
                                 {/* Card Title */}
                                 <div
