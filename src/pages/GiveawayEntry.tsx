@@ -213,7 +213,7 @@ export function GiveawayEntry() {
                 <div className="flex flex-col pt-0">
                     {/* Title */}
                     <h2
-                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-xl font-medium text-center my-10 sm:my-3 md:mb-2 px-4`}
+                        className={`${isMobile ? 'pb-3' : 'pb-0'} text-base font-dmSans font-['DM_Sans'] sm:text-lg md:text-lg font-medium text-center my-0 sm:my-0 md:mb-0 px-4`}
                     >
                         {selectedBalanceType === 'ticket'
                             ? 'Play any game to win vouchers'
@@ -262,9 +262,9 @@ export function GiveawayEntry() {
                         </>
                     )}
                     {/* Spin Button */}
-                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-12">
+                    <div className="w-full px-4 mt-10 sm:mt-5 md:mt-8 lg:mt-2 xl:mt-2 mb-16">
                         <button
-                            className={`${(voucherBalance >= 0.4 && selectedBalanceType === 'ticket') || (goldCoinFlipCount >= 0.4 && selectedBalanceType === 'coin') ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-3 px-16 rounded-full mx-auto block`}
+                            className={`${(voucherBalance >= 0.4 && selectedBalanceType === 'ticket') || (goldCoinFlipCount >= 0.4 && selectedBalanceType === 'coin') ? 'bg-[#FFB302]' : 'bg-[#2D7FF0]'} hover:bg-opacity-90 text-white py-2 px-16 rounded-full mx-auto block`}
                             onClick={handleSpin}
                             disabled={
                                 selectedBalanceType === 'coin' && goldCoinFlipCount <= 0
@@ -272,7 +272,7 @@ export function GiveawayEntry() {
                         >
                             {selectedBalanceType === 'ticket' && isAuthenticated ? (
                                 <>
-                                    <div className={'h-[25px] flex items-center'}>
+                                    <div className={'h-[18px] flex items-center'}>
                                         <p className={'flex items-center'}>
                                             FLIP NOW
                                             {voucherBalance !== 0 && (

@@ -24,7 +24,7 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
                 switchableBalanceSelector={true}
             />
             {!isMobile && !isAuthenticated && <WinningStatus />}
-            <div className={`flex-1 flex items-center ${isAuthenticated ? 'pt-4' : 'pt-2'}`}>
+            <div className={`flex-1 flex items-center ${isAuthenticated ? 'pt-1' : 'pt-0'}`}>
                 <GameCardGrid />
             </div>
             {!isMobile && !isAuthenticated && <LoginButton />}

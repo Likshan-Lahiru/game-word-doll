@@ -453,13 +453,13 @@ export function GiveawayGoldWordollGame() {
                 </div>
                 {/* Gold coin indicator */}
 
-                <div className="flex-none text-center pt-16 pb-4">
+                <div className="flex-none text-center pt-8 pb-2">
                     <p className="text-white text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
                 {/* Feedback message */}
                 {feedback && (
-                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
                         <p className="text-white text-lg">{feedback}</p>
                     </div>
                 )}
@@ -476,7 +476,7 @@ export function GiveawayGoldWordollGame() {
                         spellCheck="false"
                     />
                     {/* Last attempt display */}
-                    <div className="flex justify-center mt-4 mb-4">
+                    <div className="flex justify-center mt-2 mb-4">
                         <div
                             className="grid grid-cols-1 gap-2 text-2xl font-[Inter]"
                             style={{
@@ -507,7 +507,7 @@ export function GiveawayGoldWordollGame() {
                     </div>
                     {/* Current attempt */}
                     <div
-                        className="flex justify-center mb-4"
+                        className="flex justify-center mb-2"
                         onClick={() => inputRef.current?.focus()}
                     >
                         <div
@@ -531,7 +531,7 @@ export function GiveawayGoldWordollGame() {
                     </div>
                 </div>
                 {/* Keyboard section - Responsive for all screen sizes */}
-                <div className="flex-none pb-6 mb-36">
+                <div className="flex-none pb-6 mb-0">
                     <div className="w-full max-w-md mx-auto">
                         {mobileKeyboard.map((row, rowIndex) => (
                             <div

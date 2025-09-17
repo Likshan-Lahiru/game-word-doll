@@ -805,14 +805,14 @@ export function LockPickrGame() {
             </button>
           </div>
           {/* Timer */}
-          <div className="flex-none text-center pt-16 pb-4">
+          <div className="flex-none text-center pt-8 pb-4">
             <p className="text-white text-xs">Timer</p>
             <p className="text-2xl font-bold">{formatTime(timer)}</p>
           </div>
           {/* Feedback message */}
           {feedback && (
-              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
-                <p className="text-white text-lg">{feedback}</p>
+              <div className="bg-[#374151] text-center py-1 px-4 rounded-lg mb-2 mx-auto max-w-md">
+                <p className="text-white text-md">{feedback}</p>
               </div>
           )}
           <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
@@ -831,7 +831,7 @@ export function LockPickrGame() {
                 readOnly
             />
             {/* Last attempt display */}
-            <div className="flex justify-center mb-7">
+            <div className="flex justify-center mb-4">
               <div
                   className="grid grid-cols-1 gap-2"
                   style={{
@@ -865,7 +865,7 @@ export function LockPickrGame() {
             </div>
             {/* Current attempt */}
             <div
-                className="flex justify-center mb-10"
+                className="flex justify-center mb-2"
                 onClick={() => inputRef.current?.focus()}
             >
               <div
@@ -889,19 +889,19 @@ export function LockPickrGame() {
               </div>
             </div>
             {/* Attempts count */}
-            <div className="text-center mb-5">
+            <div className="text-center mb-2">
               <p className="text-xl font-medium">{attemptsLeft} x attempt</p>
             </div>
           </div>
           {/* Desktop number pad */}
-          <div className="flex-none pb-4">
+          <div className="flex-none pb-0">
             <div className="w-full max-w-md mx-auto">
               {/* Row 1: 1-2-3 */}
               <div className="flex justify-center gap-2 mb-2">
                 {[1, 2, 3].map((num) => (
                     <button
                         key={num}
-                        className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                        className="w-[115px] h-[55px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                         onClick={() => handleDesktopKeyPress(num.toString())}
                     >
                       {num}
@@ -913,7 +913,7 @@ export function LockPickrGame() {
                 {[4, 5, 6].map((num) => (
                     <button
                         key={num}
-                        className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                        className="w-[115px] h-[50px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                         onClick={() => handleDesktopKeyPress(num.toString())}
                     >
                       {num}
@@ -925,7 +925,7 @@ export function LockPickrGame() {
                 {[7, 8, 9].map((num) => (
                     <button
                         key={num}
-                        className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                        className="w-[115px] h-[50px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                         onClick={() => handleDesktopKeyPress(num.toString())}
                     >
                       {num}
@@ -935,19 +935,19 @@ export function LockPickrGame() {
               {/* Row 4: ENTER-0-Backspace */}
               <div className="flex justify-center gap-2">
                 <button
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
+                    className="w-[115px] h-[50px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-lg font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress('ENTER')}
                 >
                   ENTER
                 </button>
                 <button
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
+                    className="w-[115px] h-[50px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white text-3xl font-bold shadow-md"
                     onClick={() => handleDesktopKeyPress('0')}
                 >
                   0
                 </button>
                 <button
-                    className="w-[140px] h-[65px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
+                    className="w-[115px] h-[50px] bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md"
                     onClick={() => handleDesktopKeyPress('Backspace')}
                 >
                   <img
@@ -957,8 +957,8 @@ export function LockPickrGame() {
                   />
                 </button>
               </div>
-              <div className="bg-[#374151] rounded-2xl text-center mt-4 mb-4 mx-auto w-[320px] h-[76px] space-y-0">
-                <div className="flex items-center justify-center pt-2 h-10">
+              <div className="bg-[#374151] rounded-2xl text-center mt-2 mb-2 mx-auto w-[320px] h-[60px] space-y-0">
+                <div className="flex items-center justify-center pt-2 h-8">
                   <img
                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                       alt="Coins"
