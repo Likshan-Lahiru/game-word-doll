@@ -69,10 +69,8 @@ export function VerifyModal({
             )
             if (response.verified) {
                 setSuccessMessage(response.message || 'Verification successful!')
-                // Full reload with URL
                 setTimeout(() => {
-                    window.location.href = '/' // or replace with your desired URL
-                    // window.location.replace('/') // alternative: replaces history instead of adding new entry
+                    window.location.href = '/'
                 }, 1500)
             }
             else {

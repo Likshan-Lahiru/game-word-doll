@@ -12,6 +12,7 @@ export interface AuthResponse {
     message: string | null
     role: string | null
     userId: string
+    customLogoName?: string | null
 }
 export const signup = async (
     userData: SignupRequest,
