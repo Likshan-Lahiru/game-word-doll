@@ -85,6 +85,9 @@ export function AccountTab({ onChangePassword }: AccountTabProps) {
     // Remove auth token and userId from localStorage
     localStorage.removeItem('authToken')
     localStorage.removeItem('userId')
+    sessionStorage.removeItem('inviterId')
+    sessionStorage.clear()
+
     // Navigate to login page
     localStorage.removeItem('customLogo')
     setTimeout(() => {

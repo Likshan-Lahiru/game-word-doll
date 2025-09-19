@@ -6,6 +6,7 @@ export interface SignupRequest {
     goldCoins?: number
     userName?: string
     country?: string
+    inviterId?: string
 }
 export interface AuthResponse {
     token: string
@@ -13,14 +14,26 @@ export interface AuthResponse {
     role: string | null
     userId: string
     customLogoName?: string | null
+    userAlreadyHaveAccount?: boolean
 }
 export const signup = async (
     userData: SignupRequest,
 ): Promise<AuthResponse> => {
-    console.log("Signup request payload:", userData)
-    return apiRequest('/auth', 'POST', userData)
+    console.log('Signup request payload:', userData)
+    // Check if inviterId exists in session storage
+    const inviterId = sessionStorage.getItem('inviterId')
+    if (inviterId) {
+        // Use the referral signup endpoint with inviterId
+        const referralData = {
+            ...userData,
+            inviterId,
+        }
+        return apiRequest('/auth/signUpWithReferral', 'POST', referralData)
+    } else {
+        // Use the regular signup endpoint
+        return apiRequest('/auth', 'POST', userData)
+    }
 }
-
 export const login = async (
     email: string,
     password: string,
