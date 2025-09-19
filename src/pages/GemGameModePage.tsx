@@ -671,12 +671,12 @@ export function GemGameModePage() {
                     disabled={hasJoined}
                 />
                 {/* Main Game Card */}
-                <div className="w-full max-w-md bg-[#374151] rounded-2xl overflow-hidden mb-3">
-                    <div className="p-6 text-center">
-                        <h2 className="text-xl font-bold mb-6">
+                <div className="w-full max-w-md bg-[#374151] rounded-2xl overflow-hidden mb-2">
+                    <div className="p-4 text-center">
+                        <h2 className="text-xl font-bold mb-3">
                             {gameType === 'wordoll' ? 'Wordoll' : 'Lock Pickr'}
                         </h2>
-                        <div className="grid grid-cols-2 gap-2 mb-8">
+                        <div className="grid grid-cols-2 gap-2 mb-2">
                             <div className="bg-[#1F2937] p-2 rounded-2xl">
                                 <p className=" mb-1 font-[Inter]">Players Joined</p>
                                 <p className="text-xl font-bold font-[Inter]">
@@ -705,7 +705,7 @@ export function GemGameModePage() {
                         </div>
                         {hasJoined ? (
                             <button
-                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
+                                className="bg-[#FE5C5C] hover:bg-red-500 text-white font-semibold px-16 py-1 rounded-xl text-lg font-[Inter]"
                                 onClick={handleLeaveGame}
                                 disabled={isLeaving}
                             >
@@ -713,7 +713,7 @@ export function GemGameModePage() {
                             </button>
                         ) : (
                             <button
-                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-2 rounded-2xl text-lg font-[Inter]"
+                                className="bg-[#3B82F6] hover:bg-blue-600 text-white font-semibold px-16 py-1 rounded-xl text-lg font-[Inter]"
                                 onClick={handleJoinGame}
                                 disabled={isJoining}
                             >
@@ -723,8 +723,8 @@ export function GemGameModePage() {
                     </div>
                 </div>
                 {/* Legendary Card */}
-                <div className="w-full max-w-md bg-[#374151] rounded-xl p-6 text-center mb-3">
-                    <h3 className="text-xl font-semibold mb-4 font-[Inter]">
+                <div className="w-full max-w-md bg-[#374151] rounded-xl p-2 text-center mb-2">
+                    <h3 className="text-lg font-semibold mb-0 font-[Inter]">
                         THE LEGENDARY
                     </h3>
                     <div className="flex items-center justify-center">
@@ -733,18 +733,18 @@ export function GemGameModePage() {
                             alt="Diamond"
                             className="w-5 h-5 mr-2"
                         />
-                        <p className="text-xl font-semibold font-[Inter]">
+                        <p className="text-lg font-semibold font-[Inter]">
                             {gemPool.toFixed(2)}
                         </p>
                     </div>
                 </div>
                 {/* Invite Card */}
-                <div className="w-full max-w-md bg-[#374151] rounded-xl p-2 text-center mb-20">
-                    <h3 className="text-lg font-semibold mt-2 mb-2 font-[Inter]">
+                <div className="w-full max-w-md bg-[#374151] rounded-xl p-1 text-center mb-0">
+                    <h3 className="text-[14px] font-semibold mt-2 mb-1 font-[Inter]">
                         Invite players to increase Gem Pool
                     </h3>
                     <div className="flex items-center lr justify-between">
-                        <p className="text-lg ml-36 text-[#006CB9] font-[Inter]">
+                        <p className="text-[14px] ml-36 text-[#006CB9] font-[Inter]">
                             www.xyz.com
                         </p>
                         <button className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-24 rounded-full text-xs font-[Inter]">

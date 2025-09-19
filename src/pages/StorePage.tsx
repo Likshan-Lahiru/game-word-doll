@@ -509,25 +509,25 @@ export function StorePage() {
   }
   // Desktop view
   return (
-      <div className="flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 mt-5">
+      <div className="flex flex-col w-[98.8vw] bg-[#1F2937] text-white mb-10 mt-3">
         {/* Top balance bar */}
-        <div className="p-4">
-          {(activeTabDesktop === 'membership' ||
-              activeTabDesktop === 'cookyShop') && (
-              <div className={'flex justify-center'}>
-                <div className={'w-[577px] ml-[31px]'}>
-                  <BalanceSelector
-                      onSelect={(type) => console.log(`Selected: ${type}`)}
-                  />
-                </div>
+        {(activeTabDesktop === 'membership' ||
+            activeTabDesktop === 'cookyShop') && (
+          <div className="p-4">
+            <div className={'flex justify-center'}>
+              <div className={'w-[577px] ml-[31px]'}>
+                <BalanceSelector
+                    onSelect={(type) => console.log(`Selected: ${type}`)}
+                />
               </div>
-          )}
-        </div>
+            </div>
+          </div>
+        )}
         {/* Main content */}
-        <div className="flex flex-1 pt-5 pl-16 pr-5 pb-8">
+        <div className="flex flex-1 pt-3 pl-16 pr-2 pb-8">
           {/* Left sidebar */}
           <div
-              className={`${activeTabDesktop === 'convertGem' || activeTabDesktop === 'convertToEntries' ? 'mt-14' : 'w-72'} ${activeTabDesktop === 'convertGem' && 'w-[467px]'} ${activeTabDesktop === 'convertToEntries' && 'w-[292px]'} bg-[#374151] rounded-xl p-6 mr-4`}
+              className={`${activeTabDesktop === 'convertGem' || activeTabDesktop === 'convertToEntries' ? 'mt-[80px]' : 'w-[296px]'} ${activeTabDesktop === 'convertGem' && 'w-[460px]'} ${activeTabDesktop === 'convertToEntries' && 'w-[296px]'} bg-[#374151] rounded-xl p-6 mr-4`}
           >
             <h1 className="text-2xl font-bold mb-3">Store</h1>
 
@@ -594,7 +594,7 @@ export function StorePage() {
                         {error}
                       </div> /* Package cards - updated to be responsive with min/max width */
                   ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-4 mb-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-4 mb-0">
                         {displayPackages.map((pkg) => (
                             <div
                                 key={pkg.id}
@@ -612,12 +612,12 @@ export function StorePage() {
                                   </div>
                               )}
                               <div
-                                  className={`relative rounded-xl overflow-hidden flex flex-col h-[440px] bg-white ${pkg.bestValue ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''}`}
+                                  className={`relative rounded-xl overflow-hidden flex flex-col h-[370px] bg-white ${pkg.bestValue ? 'gradient-overlay pt-0 border-b-2 border-l-2 border-r-2 border-[#8CDF4F]' : ''}`}
                               >
                                 {/* Card Title */}
                                 <div
                                     className={
-                                      "flex justify-center text-xl pt-5 font-['DM Sans'] font-semibold"
+                                      "flex justify-center text-xl pt-2 font-['DM Sans'] font-semibold"
                                     }
                                 >
                                   <h2
@@ -636,13 +636,13 @@ export function StorePage() {
                                 </div>
                                 {/* Coin image */}
                                 <div
-                                    className={`flex justify-center items-center ${pkg.title === 'Diamond' || pkg.title === 'Gold' ? 'pt-0 pb-2' : 'pt-2 pb-4'}`}
+                                    className={`flex justify-center items-center ${pkg.title === 'Diamond' || pkg.title === 'Gold' ? 'pt-0 pb-0' : pkg.title === 'Starter' ? "pb-3 pt-3" : 'pt-2 pb-2'}`}
                                 >
                                   <img
                                       src={pkg.imageLink}
                                       alt="Coins"
                                       className={`object-contain
-                                            ${pkg.title === 'Starter' && 'w-[16vw] h-[11.5vh]'}
+                                            ${pkg.title === 'Starter' && 'w-[12vw] h-[10.5vh]'}
                                             ${pkg.title === 'Silver' && 'w-[17vw] h-[11.5vh]'}
                                             ${pkg.title === 'Gold' && 'w-[23vw] h-[14vh]'}
                                             ${pkg.title === 'Diamond' && 'w-[23vw] h-[14vh]'}
@@ -652,7 +652,7 @@ export function StorePage() {
                                 {/* Package content - with consistent alignment */}
                                 <div className="flex-1 flex flex-col text-center px-4">
                                   {/* GC amount */}
-                                  <p className="font-semibold text-xl text-black mb-2 font-['DM Sans']">
+                                  <p className="font-semibold text-lg text-black mb-0 font-['DM Sans']">
                                     GC {pkg.goldCoins.toLocaleString()}
                                   </p>
                                   {/* Bonus items */}
@@ -665,9 +665,9 @@ export function StorePage() {
                                               <img
                                                   src="https://uploadthingy.s3.us-west-1.amazonaws.com/mmaJ4fycdupGhSyQnVgCcX/Entries.png"
                                                   alt="Ticket"
-                                                  className="w-8 h-8 mr-1 bg-[#0CC242] rounded-full p-[2px]"
+                                                  className="w-7 h-7 mr-1 bg-[#0CC242] rounded-full p-[2px]"
                                               />
-                                              <span className="text-black text-xl font-semibold font-['DM Sans']">
+                                              <span className="text-black text-lg font-semibold font-['DM Sans']">
                                       × {pkg.entries} free
                                     </span>
                                             </div>
@@ -678,18 +678,18 @@ export function StorePage() {
                                     }
                                   </div>
                                   {/* Buy button - always at the same position */}
-                                  <div className="mt-auto mb-8 px-4">
+                                  <div className="mt-3 mb-1 px-4">
                                     {/* Price */}
-                                    <p className="font-semibold text-xl text-black my-2 font-['DM Sans']">
+                                    <p className="font-semibold text-lg text-black my-1 font-['DM Sans']">
                                       ${pkg.priceUsd}
                                     </p>
-                                    <p className={'text-black mb-4 text-xs font-bold'}>
+                                    <p className={'text-black mb-1 text-xs font-bold'}>
                                       (Single payment only)
                                     </p>
                                     <button
                                         onClick={() => handleBuy(pkg)}
                                         disabled={processingPayment}
-                                        className={`w-full ${processingPayment ? 'bg-gray-400' : 'bg-[#56CA5A] hover:bg-[#4BB850]'} text-white py-2 rounded-full font-bold`}
+                                        className={`w-full ${processingPayment ? 'bg-gray-400' : 'bg-[#56CA5A] hover:bg-[#4BB850]'} text-white py-1 rounded-full font-bold`}
                                     >
                                       {processingPayment ? 'SELECT' : 'SELECT'}
                                     </button>
@@ -701,9 +701,9 @@ export function StorePage() {
                       </div>
                   )}
                   {/* Footer text */}
-                  <div className="text-center mt-2 pt-2">
+                  <div className="text-center mt-0 pt-1">
                     <p className="text-white">Price in USD.</p>
-                    <p className="text-white text-sm mt-2">
+                    <p className="text-white text-sm mt-1">
                       Your credit card will be securely billed one time without any
                       recurring charges or obligations.
                     </p>
@@ -711,7 +711,7 @@ export function StorePage() {
                     {/* Package Inclusions Button */}
                     <div
                         className={
-                          'h-12 p-2 w-full bg-[#1F2937] rounded-xl mt-5 flex justify-center items-center'
+                          'h-12 p-2 w-full bg-[#1F2937] rounded-xl mt-2 flex justify-center items-center'
                         }
                         onClick={() =>
                             setCollapsePkgInclusions(!collapsePkgInclusions)
@@ -783,14 +783,14 @@ export function StorePage() {
           {/* Diamonds And Tickets */}
           {(activeTabDesktop === 'convertGem' ||
               activeTabDesktop === 'convertToEntries') && (
-              <div className="flex-col justify-end ml-4">
+              <div className="flex-col justify-end mt-2 ml-4">
                 {/* Diamonds */}
-                <div className="w-48 h-12 outline outline-2 outline-[#374151] bg-[#0A0E1A] rounded-full flex items-center px-4 mb-3">
-                  <div className="w-8 h-4 flex items-center justify-center">
+                <div className="w-48 h-12 space-x-0 outline outline-2 outline-[#374151] bg-[#0A0E1A] rounded-full flex items-center px-2 mb-2">
+                  <div className="w-6 h-7 mr-8 flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
-                        alt="diamonds"
-                        className="w-5 h-5 object-contain"
+                        alt="Heart"
+                        className="w-14 h-28 ml-4 object-contain"
                     />
                   </div>
                   <span className="ml-1 text-lg font-Inter font-bold">
@@ -800,15 +800,15 @@ export function StorePage() {
               </span>
                 </div>
                 {/* Tickets */}
-                <div className="w-48 h-12 outline outline-2 outline-[#374151] bg-[#0A0E1A] rounded-full flex items-center px-4">
-                  <div className="w-10 h-18 flex items-center justify-center">
+                <div className="w-48 h-12 space-x-2 outline outline-2 outline-[#374151] bg-[#0A0E1A] rounded-full flex items-center px-2">
+                  <div className="w-12 h-10 flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/uwPYNNRiavmZZ285SkzD5Z/diaomnd.png"
                         alt="Diamond"
-                        className="w-full h-full object-contain"
+                        className="w-[98px] h-[98px] object-contain"
                     />
                   </div>
-                  <span className="ml-1  text-lg font-Inter font-bold">
+                  <span className="ml-1 text-lg font-Inter font-bold">
                 {Number.isInteger(voucherBalance)
                     ? voucherBalance
                     : voucherBalance.toFixed(2)}

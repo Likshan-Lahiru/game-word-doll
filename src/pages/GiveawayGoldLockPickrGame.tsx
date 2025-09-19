@@ -499,13 +499,13 @@ export function GiveawayGoldLockPickrGame() {
                 {/* Gold coin indicator */}
 
                 {/* Timer */}
-                <div className="flex-none text-center pt-16 pb-4">
+                <div className="flex-none text-center pt-8 pb-2">
                     <p className="text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
                 {/* Feedback message */}
                 {feedback && (
-                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
                         <p className="text-white text-lg">{feedback}</p>
                     </div>
                 )}
@@ -559,7 +559,7 @@ export function GiveawayGoldLockPickrGame() {
                     </div>
                     {/* Current attempt */}
                     <div
-                        className="flex justify-center mb-6"
+                        className="flex justify-center mb-3"
                         onClick={() => inputRef.current?.focus()}
                     >
                         <div
@@ -584,7 +584,7 @@ export function GiveawayGoldLockPickrGame() {
                     </div>
                 </div>
                 {/* Number pad - Responsive for all screen sizes */}
-                <div className="flex-none mb-36 pb-6">
+                <div className="flex-none mb-0 pb-6">
                     <div className="w-full max-w-md mx-auto px-2">
                         {/* Row 1: 1-2-3 */}
                         <div className="flex justify-center gap-2 mb-2">

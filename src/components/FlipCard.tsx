@@ -53,16 +53,24 @@ export const FlipCard = ({
                             {/* Body */}
                             <div className={'flex items-center justify-center'}>
                                 {items.image && items.image !== '' ? (
+                                    /*      <img
+                                              src={items.image}
+                                              alt="card image"
+                                              className={`
+                                          ${items.image === '/flip-pic/outofstock.png' && 'lg:h-36 md:h-36 lg:w-32'}
+                                          ${items.image === '/flip-pic/Ants-in-the-Jar.png' && 'lg:h-44 md:h-44 lg:w-32'}
+                                          ${items.image === '/flip-pic/free.png' && 'lg:w-44 lg:h-40 md:w-36 md:h-36'}
+                                          ${items.image === '/fortuneCooky.png' && 'lg:w-36 lg:h-36 md:w-36 md:h-36'}
+                                          ${items.image === '/flip-pic/Bad-Cooky.png' && 'lg:w-40 lg:h-36 md:w-40 md:h-40'}
+                                          lg:w-40 md:w-28 h-36`}
+                                          />*/
                                     <img
                                         src={items.image}
-                                        alt="card image"
+                                        alt="item"
                                         className={`
-                                    ${items.image === '/outofstock.png' && 'lg:h-36 md:h-36 lg:w-32'} 
-                                    ${items.image === '/ant.png' && 'lg:h-44 md:h-44 lg:w-32'} 
-                                    ${items.image === '/freeFlip.png' && 'lg:w-44 lg:h-40 md:w-36 md:h-36'}
-                                    ${items.image === '/fortuneCooky.png' && 'lg:w-36 lg:h-36 md:w-36 md:h-36'}
-                                    ${items.image === '/badCooky.png' && 'lg:w-40 lg:h-36 md:w-40 md:h-40'}
-                                    lg:w-40 md:w-28 h-36`}
+                                        lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36 object-contain
+                                         ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
+                                         ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-4' : ''}`}
                                     />
                                 ) : (
                                     <div className="flex-1"></div>

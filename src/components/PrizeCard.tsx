@@ -58,18 +58,18 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
 
     // Desktop
     return (
-        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[470px]">
+        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[350px]">
 
             <img
                 src={prize.image}
                 alt={`${prize.coinAmount} Coins`}
-                className="w-28 h-28 mb-3"
+                className="w-20 h-20 mb-1"
             />
             <p className="text-xl mt-10 mb-1 font-semibold font-['DM_Sans']">
                 GC {prize.coinAmount.toLocaleString()}
             </p>
             <p className="text-center mb-1 text-xl font-medium font-['DM_Sans']">+</p>
-            <p className="mb-4 font-['DM_Sans'] text-xl font-semibold">
+            <p className="mb-2 font-['DM_Sans'] text-xl font-semibold">
                 {selectedBalanceType === 'coin' ?
                     `${prize.spinAmount} x Flip`
                     :
@@ -83,7 +83,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                     </div>
                 }
             </p>
-            <div className="flex items-center mb-3 mt-10">
+            <div className="flex items-center mb-3 mt-1">
                 <img
                     src={`${selectedBalanceType === 'coin' ? 'https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png' : 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png'}`}
                     alt="Coins"
@@ -92,7 +92,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                 <span className="text-[#170F49] font-semibold font-['DM_Sans'] text-xl">{prize.cost.toLocaleString()}</span>
             </div>
             <button
-                className="bg-[#56CA5A] text-xl font-semibold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-44 h-12 rounded-full  mt-2"
+                className="bg-[#56CA5A] text-xl font-semibold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-44 h-10 rounded-full mt-0"
                 onClick={onEnter}
             >
                 Let's Go!

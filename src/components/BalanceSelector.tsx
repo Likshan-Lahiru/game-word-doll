@@ -78,7 +78,7 @@ export function BalanceSelector({
                                 className={`${isMobile && 'text-[11px] pl-[35px]'} min-w-[110px] w-full font-inter text-left pl-2 ${switchable ? 'cursor-pointer' : ''} ${selectedBalanceType === 'ticket' ? 'text-[#22C55E]' : 'text-white'}`}
                                 onClick={() => handleSelect('ticket')}
                             >
-                                {ticketBalance}
+                                {ticketBalance.toFixed(2)}
                                 {/*500,000,000,000,0*/}
                             </p>
                         </div>
@@ -96,7 +96,7 @@ export function BalanceSelector({
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
                                 alt="coin"
-                                className={`h-full border-[#FDF222] bg-[#FDF222] rounded-full ${isMobile ? 'border-4' : 'border-8'}`}
+                                className={`h-full border-[#FDF222] bg-[#FDF222] rounded-full ${isMobile ? 'border-4' : 'border-4'}`}
                                 onClick={() => handleSelect('coin')}
                             />
                         </div>
@@ -108,7 +108,7 @@ export function BalanceSelector({
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
                                 alt="ticket"
-                                className={`h-full border-green-500 bg-[#22C55E] rounded-full ${isMobile ? 'border-4' : 'border-8'}`}
+                                className={`h-full border-green-500 bg-[#22C55E] rounded-full ${isMobile ? 'border-4' : 'border-4'}`}
                                 onClick={() => handleSelect('ticket')}
                             />
                         </div>

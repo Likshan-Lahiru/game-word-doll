@@ -176,11 +176,11 @@ const ConvertToEntries = ({ isMobile }) => {
     return (
         <>
             {/* Right content area - Updated to match the image exactly */}
-            <div className="mt-14 flex-1 bg-[#374151] rounded-xl p-5 pr-24 pl-10">
-                <h2 className="text-2xl font-medium mb-6 font-['Inter']">
+            <div className="mt-[80px] flex-1 bg-[#374151] rounded-xl p-5 pr-24 pl-10">
+                <h2 className="text-2xl font-medium mb-4 font-['Inter']">
                     Convert Gems
                 </h2>
-                <div className="space-y-4 mb-10 font-['Inter'] ">
+                <div className="space-y-4 mb-7 font-['Inter'] ">
                     <div className="flex items-center gap-x-2">
                         <p className="text-white mr-[83px]">Entries</p>
                         <p>:</p>
@@ -211,7 +211,7 @@ const ConvertToEntries = ({ isMobile }) => {
                     </div>
                     <p className="text-white">gems to entries (1 Gem = 1 Entry)</p>
                 </div>
-                <div className="font-['Inter'] flex-1 flex justify-end mb-16">
+                <div className="font-['Inter'] flex-1 flex justify-end mb-2">
                     <button
                         onClick={handleConvertNow}
                         className={`md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium ${Math.floor(gemBalance) - entriesAmount < 5 || entriesAmount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -222,7 +222,7 @@ const ConvertToEntries = ({ isMobile }) => {
                         Convert Now
                     </button>
                 </div>
-                <ul className="list-disc pl-5 space-y-4 mt-36 mb-5">
+                <ul className="list-disc pl-5 space-y-4 mt-14 mb-5">
                     <li className="text-white font-thin">
                         Note : Once you convert gems into entries, they cannot be converted
                         back.
