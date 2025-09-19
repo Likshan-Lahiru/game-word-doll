@@ -100,6 +100,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
+            type: ''
         },
         {
             id: 2,
@@ -107,6 +108,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
+            type: ''
         },
         {
             id: 3,
@@ -114,6 +116,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
+            type: ''
         },
     ],
     [
@@ -732,7 +735,7 @@ export function FlipPage() {
                         </button>
                     ) : (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors h-[60px]"
+                            className="w-full py-4 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors h-[60px]"
                             onClick={handleNextRow}
                         >
                             Next

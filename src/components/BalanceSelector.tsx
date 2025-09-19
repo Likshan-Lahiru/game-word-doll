@@ -96,7 +96,7 @@ export function BalanceSelector({
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
                                 alt="coin"
-                                className={`h-full border-[#FDF222] bg-[#FDF222] rounded-full ${isMobile ? 'border-4' : 'border-8'}`}
+                                className={`h-full border-[#FDF222] bg-[#FDF222] rounded-full ${isMobile ? 'border-4' : 'border-4'}`}
                                 onClick={() => handleSelect('coin')}
                             />
                         </div>
@@ -108,7 +108,7 @@ export function BalanceSelector({
                             <img
                                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png"
                                 alt="ticket"
-                                className={`h-full border-green-500 bg-[#22C55E] rounded-full ${isMobile ? 'border-4' : 'border-8'}`}
+                                className={`h-full border-green-500 bg-[#22C55E] rounded-full ${isMobile ? 'border-4' : 'border-4'}`}
                                 onClick={() => handleSelect('ticket')}
                             />
                         </div>

@@ -471,13 +471,13 @@ export function WordollGame() {
               />
             </button>
           </div>
-          <div className="flex-none text-center pt-16 pb-4">
+          <div className="flex-none text-center pt-8 pb-2">
             <p className="text-white text-xs">Timer</p>
             <p className="text-2xl font-bold">{formatTime(timer)}</p>
           </div>
           {/* Feedback message */}
           {feedback && (
-              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
+              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
                 <p className="text-white text-lg">{feedback}</p>
               </div>
           )}
@@ -496,7 +496,7 @@ export function WordollGame() {
                 />
             )}
             {/* Last attempt display */}
-            <div className="flex justify-center mt-10 mb-6">
+            <div className="flex justify-center mt-1 mb-4">
               <div
                   className="grid grid-cols-1 gap-2 text-2xl font-[Inter]"
                   style={{
@@ -527,7 +527,7 @@ export function WordollGame() {
             </div>
             {/* Current attempt */}
             <div
-                className="flex justify-center mb-6"
+                className="flex justify-center mb-2"
                 onClick={() => inputRef.current?.focus()}
             >
               <div
@@ -556,7 +556,7 @@ export function WordollGame() {
             </div>
           </div>
           {/* Keyboard section */}
-          <div className="flex-none mb-16 pb-4">
+          <div className="flex-none mb-0 pb-0">
             {isMobile ? (
                 <>
                   <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-4 mx-auto w-[340px] h-[65px]">
@@ -638,8 +638,8 @@ export function WordollGame() {
                       keyboardType="qwerty"
                       className="md:block"
                   />
-                  <div className="bg-[#374151] rounded-2xl text-center   mb-10 mx-auto w-[320px] h-[76px] space-y-0">
-                    <div className="flex items-center justify-center pt-2 h-10">
+                  <div className="bg-[#374151] rounded-2xl text-center mb-3 mx-auto w-[320px] h-[60px] space-y-0">
+                    <div className="flex items-center justify-center pt-2 h-8">
                       <img
                           src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                           alt="Coins"

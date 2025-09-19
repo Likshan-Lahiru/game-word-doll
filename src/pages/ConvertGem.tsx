@@ -343,11 +343,11 @@ export function ConvertGem() {
   return (
       <>
         {/* Right content area - Updated to match the image exactly */}
-        <div className="flex-1 bg-[#374151] rounded-xl p-5 pr-24 pl-10">
-          <h2 className="text-2xl font-medium mb-6 font-['Inter']">
+        <div className="flex-1 mt-[24px] bg-[#374151] rounded-xl p-5 pr-24 pl-10">
+          <h2 className="text-2xl font-medium mb-4 font-['Inter']">
             Convert Gems to Giftcard
           </h2>
-          <div className="space-y-4 mb-10 font-['Inter']">
+          <div className="space-y-4 mb-6 font-['Inter']">
             <div className="flex items-center gap-x-2">
               <p className="text-white">Available Gems</p>
               <p>:</p>
@@ -385,7 +385,7 @@ export function ConvertGem() {
             </div>
             <p className="text-white font-['Inter']">gems</p>
           </div>
-          <div className="flex-1 flex justify-end mb-16 font-['Inter']">
+          <div className="flex-1 flex justify-end mb-4 font-['Inter']">
             <button
                 onClick={handleRedeemNow}
                 className={`md:mt-5 bg-[#2D7FF0] hover:bg-blue-600 border-green-500 w-52 text-white py-2 px-10 rounded-full font-medium ${redeemAmount < 100 || redeemAmount > availableGems ? 'opacity-50 cursor-not-allowed' : ''}`}

@@ -12,7 +12,7 @@ export function GameCardGrid() {
     const { isAuthenticated } = useGlobalContext()
     if (isMobile) {
         return (
-            <div className="flex-1 px-4 pb-10 game-card-grid">
+            <div className="flex-1 px-4 pb-0 game-card-grid">
                 {/* Online status for mobile view - positioned above the cards */}
                 {!isAuthenticated && (
                     <div className="flex items-center space-x-3 mb-4">
@@ -33,7 +33,7 @@ export function GameCardGrid() {
     }
     return (
         <div
-            className={`flex-1 flex justify-center items-center ${isAuthenticated ? 'pb-24' : 'pt-0'} game-card-grid`}
+            className={`flex-1 flex justify-center items-center ${isAuthenticated ? 'pb-16' : 'pt-0'} game-card-grid`}
         >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl min-w-[40vw] w-full">
                 <WordollCard />
