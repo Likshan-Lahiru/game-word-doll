@@ -137,7 +137,7 @@ export const createStripeCheckout = async (
 // Fetch online user count
 export const fetchOnlineUserCount = async () => {
     try {
-        const endpoint = '/users/random-number'
+        const endpoint = '/random/online-count'
         const result = await apiRequest(endpoint, 'GET', undefined, false)
         return result
     } catch (error) {
