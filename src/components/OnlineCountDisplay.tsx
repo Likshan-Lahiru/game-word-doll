@@ -9,17 +9,15 @@ export function OnlineCountDisplay() {
             try {
                 setIsLoading(true)
                 const response = await fetchOnlineUserCount()
-                if (response && typeof response === 'number') {
-                    setOnlineCount(response)
-                } else if (response && typeof response.count === 'number') {
-                    setOnlineCount(response.count)
+                if (response && typeof response.onlineCount === 'number') {
+                    setOnlineCount(response.onlineCount)
                 } else {
                     // Fallback to a default value if API response format is unexpected
                     console.warn(
                         'Unexpected API response format for online count:',
                         response,
                     )
-                    setOnlineCount(Math.floor(Math.random() * 5000) + 1000) // Fallback random number
+                    setOnlineCount(Math.floor(Math.random() * 5000) + 1000)
                 }
             } catch (error) {
                 console.error('Failed to fetch online count:', error)

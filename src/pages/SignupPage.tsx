@@ -18,10 +18,22 @@ export function SignupPage() {
   const [userId, setUserId] = useState('')
   // Use custom logo if available, otherwise use default
   const logoSrc = customLogo || IMAGES.logo
+  // Handle username change to prevent spaces
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Remove all spaces from the input value
+    const noSpacesValue = e.target.value.replace(/\s+/g, '')
+    setUsername(noSpacesValue)
+  }
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
+    // Validate username and password
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long')
+      setIsLoading(false)
+      return
+    }
     // Validate country selection
     if (!country) {
       setError('Please select a country')
@@ -88,7 +100,7 @@ export function SignupPage() {
                   placeholder="User Name"
                   className="placeholder:font-semibold w-full px-4 py-3 bg-[#374151] rounded-xl text-white focus:outline-none"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleUsernameChange}
                   required
               />
               <input
