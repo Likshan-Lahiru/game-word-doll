@@ -69,11 +69,12 @@ export function VerifyModal({
             )
             if (response.verified) {
                 setSuccessMessage(response.message || 'Verification successful!')
+                // Full reload with URL
                 setTimeout(() => {
-                    window.location.href = '/'
+                    window.location.href = '/' // or replace with your desired URL
+                    // window.location.replace('/') // alternative: replaces history instead of adding new entry
                 }, 1500)
-            }
-            else {
+            } else {
                 setError(response.message || 'Invalid verification code')
             }
         } catch (error: any) {
@@ -87,12 +88,12 @@ export function VerifyModal({
         setIsLoading(true)
         setError('')
         try {
-            // Call API to resend verification code
+            // Call API to resend verification code with email
             await apiRequest(
                 '/auth/resend-verification',
                 'POST',
                 {
-                    userId,
+                    email,
                 },
                 false,
             )

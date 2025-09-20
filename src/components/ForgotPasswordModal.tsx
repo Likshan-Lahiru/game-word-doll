@@ -23,6 +23,8 @@ export function ForgotPasswordModal({
   const [isMobile, setIsMobile] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false)
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -32,6 +34,15 @@ export function ForgotPasswordModal({
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+  // Hide success message after timeout
+  useEffect(() => {
+    if (showSuccessAlert) {
+      const timer = setTimeout(() => {
+        setShowSuccessAlert(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showSuccessAlert])
   const handleCodeChange = (index: number, value: string) => {
     if (value.length <= 1) {
       const newCode = [...verificationCode]
@@ -86,9 +97,9 @@ export function ForgotPasswordModal({
     setIsLoading(true)
     setError('')
     try {
-      // Call the forgot password API again to resend code
+      // Call the reset-again API to resend code
       await apiRequest(
-          '/auth/reset/forgot-password',
+          '/auth/reset/reset-again',
           'POST',
           {
             email,
@@ -97,6 +108,9 @@ export function ForgotPasswordModal({
       )
       // Clear the verification code inputs
       setVerificationCode(['', '', '', '', '', ''])
+      // Show success message
+      setSuccessMessage('Verification code sent successfully')
+      setShowSuccessAlert(true)
     } catch (error) {
       console.error('Error resending verification code:', error)
       setError('Failed to resend code. Please try again.')
@@ -104,45 +118,43 @@ export function ForgotPasswordModal({
       setIsLoading(false)
     }
   }
-
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault()
-    const pasteData = e.clipboardData.getData("text").trim()
-
+    const pasteData = e.clipboardData.getData('text').trim()
     if (/^\d+$/.test(pasteData)) {
-      const digits = pasteData.slice(0, 6).split("") // max 6 digits
+      const digits = pasteData.slice(0, 6).split('') // max 6 digits
       const newCode = [...verificationCode]
-
       digits.forEach((digit, i) => {
         if (i < 6) {
           newCode[i] = digit
         }
       })
-
       setVerificationCode(newCode)
-
       // Focus last filled input
       const nextInput = document.getElementById(`code-${digits.length - 1}`)
       nextInput?.focus()
     }
   }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    if (e.key === "Backspace" && verificationCode[index] === "") {
+  const handleKeyDown = (
+      e: React.KeyboardEvent<HTMLInputElement>,
+      index: number,
+  ) => {
+    if (e.key === 'Backspace' && verificationCode[index] === '') {
       if (index > 0) {
-        const prevInput = document.getElementById(`code-${index - 1}`) as HTMLInputElement
+        const prevInput = document.getElementById(
+            `code-${index - 1}`,
+        ) as HTMLInputElement
         const newCode = [...verificationCode]
-        newCode[index - 1] = ""
+        newCode[index - 1] = ''
         setVerificationCode(newCode)
         prevInput?.focus()
       }
     }
   }
-
   if (!isOpen) return null
   return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937E5]/90">
-        <div className="bg-[#374151] font-['Inter'] rounded-lg p-10 shadow-xl w-full max-w-lg mx-4">
+        <div className="bg-[#374151] font-['Inter'] rounded-lg p-10 shadow-xl w-full max-w-lg mx-4 relative">
           <h2 className="text-white text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">
             Password Reset
           </h2>
@@ -189,6 +201,24 @@ export function ForgotPasswordModal({
               Resend code
             </button>
           </div>
+          {/* Success Alert Popup */}
+          {showSuccessAlert && (
+              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50 transition-opacity duration-300 flex items-center">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                >
+                  <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                  />
+                </svg>
+                {successMessage}
+              </div>
+          )}
         </div>
       </div>
   )
