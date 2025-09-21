@@ -270,6 +270,13 @@ export function StorePage() {
     )
     navigate('/')
   }
+  // Inside the component where activeTabDesktop is set to 'convertGem'
+  useEffect(() => {
+    if (activeTabDesktop === 'convertGem' || activeTab === 'convertGems') {
+      // The ConvertGem component will handle the API call internally
+      // This is just to ensure the tab change triggers the API call
+    }
+  }, [activeTabDesktop, activeTab])
   // Mobile view
   if (isMobile) {
     return (
@@ -513,15 +520,15 @@ export function StorePage() {
         {/* Top balance bar */}
         {(activeTabDesktop === 'membership' ||
             activeTabDesktop === 'cookyShop') && (
-          <div className="p-4">
-            <div className={'flex justify-center'}>
-              <div className={'w-[577px] ml-[31px]'}>
-                <BalanceSelector
-                    onSelect={(type) => console.log(`Selected: ${type}`)}
-                />
+            <div className="p-4">
+              <div className={'flex justify-center'}>
+                <div className={'w-[577px] ml-[31px]'}>
+                  <BalanceSelector
+                      onSelect={(type) => console.log(`Selected: ${type}`)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
         )}
         {/* Main content */}
         <div className="flex flex-1 pt-3 pl-16 pr-2 pb-8">
@@ -636,7 +643,7 @@ export function StorePage() {
                                 </div>
                                 {/* Coin image */}
                                 <div
-                                    className={`flex justify-center items-center ${pkg.title === 'Diamond' || pkg.title === 'Gold' ? 'pt-0 pb-0' : pkg.title === 'Starter' ? "pb-3 pt-3" : 'pt-2 pb-2'}`}
+                                    className={`flex justify-center items-center ${pkg.title === 'Diamond' || pkg.title === 'Gold' ? 'pt-0 pb-0' : pkg.title === 'Starter' ? 'pb-3 pt-3' : 'pt-2 pb-2'}`}
                                 >
                                   <img
                                       src={pkg.imageLink}

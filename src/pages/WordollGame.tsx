@@ -203,7 +203,6 @@ export function WordollGame() {
     if (guess.length < wordLength || currentAttempt.includes('')) {
       return
     }
-    setLastAttempt([...currentAttempt])
     if (isAuthenticated) {
       // For authenticated users, use the solo/last-win-check endpoint
       try {
@@ -215,11 +214,32 @@ export function WordollGame() {
         }
         await apiRequest('/solo/last-win-check', 'POST', checkWinData)
             .then((response) => {
-              // Process the API response
+              // Check for "Word not in word list!" message
+              if (response.message === 'Word not in word list!') {
+                // Show feedback message when word is not in the list
+                setFeedback('Not in word list')
+                // Clear feedback after 2 seconds
+                setTimeout(() => {
+                  setFeedback('')
+                }, 2000)
+                // Clear only non-locked positions in the current attempt
+                const newAttempt = [...currentAttempt]
+                for (let i = 0; i < newAttempt.length; i++) {
+                  if (!lockedPositions[i]) {
+                    newAttempt[i] = ''
+                  }
+                }
+                setCurrentAttempt(newAttempt)
+                // Do not update last attempt or decrease attempts count
+                return
+              }
+              // Process the API response for valid words
               if (response.win) {
                 // User won - DON'T add coins here, let the modal handle it
                 setShowWinModal(true)
               } else {
+                // Set the last attempt only for valid words
+                setLastAttempt([...currentAttempt])
                 // User didn't win - update UI based on API feedback
                 updateUIFromApiResponse(response, currentAttempt)
                 // Decrease attempts
@@ -257,19 +277,34 @@ export function WordollGame() {
         }
         await apiRequest('/guess/win-check', 'POST', checkWinData, false)
             .then((response) => {
-              // Process the API response
-              if (response.win) {
-                // User won - DON'T add coins here, let the modal handle it
-                setShowWinModal(true)
-              } else {
-                // User didn't win - update UI based on API feedback
-                updateUIFromApiResponse(response, currentAttempt)
-                // Show feedback message when word is incorrect
+              // Check for "Word not in word list!" message for guest users too
+              if (response.message === 'Word not in word list!') {
+                // Show feedback message when word is not in the list
                 setFeedback('Not in word list')
                 // Clear feedback after 2 seconds
                 setTimeout(() => {
                   setFeedback('')
                 }, 2000)
+                // Clear only non-locked positions in the current attempt
+                const newAttempt = [...currentAttempt]
+                for (let i = 0; i < newAttempt.length; i++) {
+                  if (!lockedPositions[i]) {
+                    newAttempt[i] = ''
+                  }
+                }
+                setCurrentAttempt(newAttempt)
+                // Do not update last attempt or decrease attempts count
+                return
+              }
+              // Process the API response
+              if (response.win) {
+                // User won - DON'T add coins here, let the modal handle it
+                setShowWinModal(true)
+              } else {
+                // Set the last attempt only for valid words
+                setLastAttempt([...currentAttempt])
+                // User didn't win - update UI based on API feedback
+                updateUIFromApiResponse(response, currentAttempt)
                 // Decrease attempts
                 setAttempts((prev) => prev - 1)
                 // Check if out of attempts
@@ -310,6 +345,7 @@ export function WordollGame() {
     attempts,
     addCoins,
     winAmount,
+    lockedPositions,
   ])
   // Helper function to update UI based on API response
   const updateUIFromApiResponse = (response: any, attempt: string[]) => {
@@ -340,21 +376,16 @@ export function WordollGame() {
         }
       })
     }
-    // Show feedback message when word is incorrect
-    setFeedback('Not in word list')
-    // Clear feedback after 2 seconds
-    setTimeout(() => {
-      setFeedback('')
-    }, 2000)
     // Update the last attempt statuses for rendering
     setLastAttemptStatuses(statuses)
     // Update locked positions and clear incorrect positions in current attempt
     const newLocks = [...lockedPositions]
-    const newAttempt = Array(attempt.length).fill('')
+    const newAttempt = [...currentAttempt]
     statuses.forEach((status, index) => {
       if (status === 'correct') {
         newLocks[index] = true
-        newAttempt[index] = attempt[index]
+      } else {
+        newAttempt[index] = ''
       }
     })
     setLockedPositions(newLocks)
@@ -481,7 +512,7 @@ export function WordollGame() {
                 <p className="text-white text-lg">{feedback}</p>
               </div>
           )}
-          <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
+          <div className="flex-1 flex flex-col justify-center items-center overflow-hidden mt-28 px-4">
             {isMobile && (
                 <input
                     ref={inputRef}
@@ -549,7 +580,7 @@ export function WordollGame() {
                 ))}
               </div>
             </div>
-            <div className="text-center mb-0">
+            <div className="text-center mt-20">
               <p className="text-xl font-medium font-[Inter]">
                 {attempts} x attempt
               </p>
