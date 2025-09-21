@@ -66,6 +66,17 @@ export const fetchUserBalance = async (userId: string) => {
         throw error
     }
 }
+// Fetch user available gems
+export const fetchUserAvailableGems = async (userId: string) => {
+    try {
+        const endpoint = `/users/${userId}/available-gems`
+        const result = await apiRequest(endpoint, 'GET')
+        return result
+    } catch (error) {
+        console.error('Error fetching user available gems:', error)
+        throw error
+    }
+}
 // Fetch user basic information
 export const fetchUserBasicInfo = async (userId: string) => {
     try {
