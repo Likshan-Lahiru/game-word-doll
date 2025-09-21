@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { CheckCircleIcon } from 'lucide-react'
 import { useGlobalContext } from '../context/GlobalContext'
-import { apiRequest } from '../services/api'
+import { apiRequest, fetchUserAvailableGems } from '../services/api'
 export function ConvertGem() {
   const { gemBalance, updateUserBalance } = useGlobalContext()
   const [redeemAmount, setRedeemAmount] = useState(100)
@@ -17,6 +17,7 @@ export function ConvertGem() {
   const [correctAnswer, setCorrectAnswer] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [wrongAnswer, setWrongAnswer] = useState(false)
+  const [availableGems, setAvailableGems] = useState(0)
   // Available questions and answers
   const questions = [
     {
@@ -40,6 +41,23 @@ export function ConvertGem() {
       answer: '20',
     },
   ]
+  // Fetch available gems when component mounts
+  useEffect(() => {
+    const fetchAvailableGems = async () => {
+      try {
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+          const response = await fetchUserAvailableGems(userId)
+          if (response && response.availableGems !== undefined) {
+            setAvailableGems(response.availableGems)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching available gems:', error)
+      }
+    }
+    fetchAvailableGems()
+  }, [])
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -57,7 +75,7 @@ export function ConvertGem() {
   }
   const handleRedeemNow = () => {
     // Check if user has enough gems
-    if (gemBalance < redeemAmount) {
+    if (availableGems < redeemAmount) {
       alert("You don't have enough gems for this conversion.")
       return
     }
@@ -94,6 +112,11 @@ export function ConvertGem() {
         if (response && response.success) {
           // Update user balance after successful gift card generation
           await updateUserBalance()
+          // Refresh available gems
+          const gemsResponse = await fetchUserAvailableGems(userId)
+          if (gemsResponse && gemsResponse.availableGems !== undefined) {
+            setAvailableGems(gemsResponse.availableGems)
+          }
           // Check if user is from Australia
           if (response.userAustralia) {
             setShowCompletedModalAusUsers(true)
@@ -121,9 +144,8 @@ export function ConvertGem() {
   const handleAddBankAccount = () => {
     alert('Bank account setup would open here')
   }
-  // Calculate available and total gems
-  const availableGems = gemBalance || 0
-  const totalGems = gemBalance * 1.1 // Just for display purposes, assuming total is 10% more than available
+  // Calculate total gems
+  const totalGems = gemBalance
   // Mobile view
   if (isMobile) {
     return (
@@ -138,7 +160,7 @@ export function ConvertGem() {
                 <p className="text-white text-[16px]">Available Gems</p>
                 <p>:</p>
                 <p className="font-medium text-[16px]">
-                  {totalGems.toLocaleString()}
+                  {availableGems.toLocaleString()}
                 </p>
               </div>
               <div className="flex items-center gap-x-2">
@@ -343,11 +365,11 @@ export function ConvertGem() {
   return (
       <>
         {/* Right content area - Updated to match the image exactly */}
-        <div className="flex-1 mt-[24px] bg-[#374151] rounded-xl p-5 pr-24 pl-10">
-          <h2 className="text-2xl font-medium mb-4 font-['Inter']">
+        <div className="flex-1 bg-[#374151] rounded-xl p-5 pr-24 pl-10">
+          <h2 className="text-2xl font-medium mb-6 font-['Inter']">
             Convert Gems to Giftcard
           </h2>
-          <div className="space-y-4 mb-6 font-['Inter']">
+          <div className="space-y-4 mb-10 font-['Inter']">
             <div className="flex items-center gap-x-2">
               <p className="text-white">Available Gems</p>
               <p>:</p>
@@ -385,7 +407,7 @@ export function ConvertGem() {
             </div>
             <p className="text-white font-['Inter']">gems</p>
           </div>
-          <div className="flex-1 flex justify-end mb-4 font-['Inter']">
+          <div className="flex-1 flex justify-end mb-16 font-['Inter']">
             <button
                 onClick={handleRedeemNow}
                 className={`md:mt-5 bg-[#2D7FF0] hover:bg-blue-600 border-green-500 w-52 text-white py-2 px-10 rounded-full font-medium ${redeemAmount < 100 || redeemAmount > availableGems ? 'opacity-50 cursor-not-allowed' : ''}`}
