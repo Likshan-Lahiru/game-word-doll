@@ -192,8 +192,7 @@ export function GemWordollGame() {
             setFeedback('Please enter all letters')
             return
         }
-        // Store current attempt as the last attempt
-        setLastAttempt([...currentAttempt])
+        // Removed setLastAttempt from here - we'll only set it after confirming the word is valid
         // Make API request to check if user has won
         if (groupSessionId) {
             try {
@@ -212,6 +211,27 @@ export function GemWordollGame() {
                     'POST',
                     checkWinData,
                 )
+                // Check for "Word not in word list!" message
+                if (response.message === 'Word not in word list!') {
+                    // Show feedback message when word is not in the list
+                    setFeedback('Not in word list')
+                    // Clear feedback after 2 seconds
+                    setTimeout(() => {
+                        setFeedback('')
+                    }, 2000)
+                    // Clear only non-locked positions in the current attempt
+                    const newAttempt = [...currentAttempt]
+                    for (let i = 0; i < newAttempt.length; i++) {
+                        if (!lockedPositions[i]) {
+                            newAttempt[i] = ''
+                        }
+                    }
+                    setCurrentAttempt(newAttempt)
+                    // Do not update last attempt or decrease attempts count
+                    return
+                }
+                // Word is valid, now we can update the last attempt
+                setLastAttempt([...currentAttempt])
                 // Process API response
                 if (response) {
                     // Check if user is the winner
@@ -222,8 +242,6 @@ export function GemWordollGame() {
                     }
                     // When win is false, show feedback first
                     if (response.win === false) {
-                        // Show feedback message when word is incorrect
-                        setFeedback('Not in word list')
                         // Process the rest of the response after a slight delay
                         setTimeout(() => {
                             // Check if room has a winner
@@ -294,6 +312,8 @@ export function GemWordollGame() {
             }
         } else {
             // No groupSessionId - fallback to default behavior
+            // Set last attempt in the fallback case too
+            setLastAttempt([...currentAttempt])
             setAttempts((prev) => prev - 1)
             if (attempts <= 1) {
                 handleNoAttemptsLeft()
@@ -306,6 +326,7 @@ export function GemWordollGame() {
         groupSessionId,
         gameCompleted,
         gemPool,
+        lockedPositions,
     ])
     // Helper function to update UI based on API response
     const updateUIFromApiResponse = (response: any) => {
