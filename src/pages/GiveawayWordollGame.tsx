@@ -254,7 +254,6 @@ export function GiveawayWordollGame() {
         if (guess.length < wordLength || currentAttempt.includes('')) {
             return
         }
-        setLastAttempt([...currentAttempt])
         // Get userId from localStorage
         const userId = localStorage.getItem('userId')
         if (!userId) {
@@ -274,6 +273,27 @@ export function GiveawayWordollGame() {
                 checkWinData,
             )
             console.log('Giveaway win check response:', response)
+            // Check if word is not in word list
+            if (response.message === 'Word not in word list!') {
+                // Show feedback message when word is not in the list
+                setFeedback('Not in word list')
+                // Clear feedback after 2 seconds
+                setTimeout(() => {
+                    setFeedback('')
+                }, 2000)
+                // Don't update last attempt or decrease attempts count
+                const newAttempt = [...currentAttempt]
+                for (let i = 0; i < newAttempt.length; i++) {
+                    if (!lockedPositions[i]) {
+                        newAttempt[i] = ''
+                    }
+                }
+                setCurrentAttempt(newAttempt)
+                // Do not update last attempt or decrease attempts count
+                return
+            }
+            // Set the last attempt for valid words
+            setLastAttempt([...currentAttempt])
             if (response.win) {
                 // User won - call the handleWin function and show win modal
                 await handleWin()
@@ -344,6 +364,11 @@ export function GiveawayWordollGame() {
         return `${minutes.toString().padStart(2, '0')}:${remaining.toString().padStart(2, '0')}`
     }
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Skip processing if the input is coming from the keyboard event listener
+        // This prevents duplicate entries when typing on a physical keyboard
+        if (e.nativeEvent.inputType === 'insertText') {
+            return // Skip processing to prevent duplication
+        }
         const value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '')
         const newAttempt = [...currentAttempt]
         let inputIndex = 0
