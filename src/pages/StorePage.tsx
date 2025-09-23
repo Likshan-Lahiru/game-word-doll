@@ -52,7 +52,7 @@ const pkgInclusions = [
     name: 'Diamond',
     instruction1: '1 month access to the cooky shop.',
     instruction2: 'VIP access to Cooky club. (coming soon).',
-    instruction3: '15,000,000 gold coins.',
+    instruction3: '30,000,000 gold coins.',
     instruction4: '80 free entries.',
   },
 ]

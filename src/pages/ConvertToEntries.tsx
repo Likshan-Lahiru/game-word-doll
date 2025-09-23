@@ -94,11 +94,12 @@ const ConvertToEntries = ({ isMobile }) => {
                         <div className="bg-white rounded-xl px-3 py-2 flex items-center">
                             <input
                                 type="number"
-                                value={entriesAmount}
+                                value={entriesAmount === 0 ? '' : entriesAmount}
                                 onChange={(e) =>
                                     setEntriesAmount(Math.floor(Number(e.target.value)))
                                 }
-                                className="bg-transparent w-10 text-[13px] outline-none text-black text-md"
+                                className="bg-transparent w-10 text-[13px] outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                placeholder="0"
                             />
                             <span className="ml-1 font-['Inter'] text-[13px] text-black text-md">
                 ({entriesAmount.toLocaleString()})
@@ -199,11 +200,12 @@ const ConvertToEntries = ({ isMobile }) => {
                     <div className="bg-white rounded-md px-4 py-2 flex items-center">
                         <input
                             type="number"
-                            value={entriesAmount}
+                            value={entriesAmount === 0 ? '' : entriesAmount}
                             onChange={(e) =>
                                 setEntriesAmount(Math.floor(Number(e.target.value)))
                             }
-                            className="bg-transparent w-16 outline-none text-black text-md"
+                            className="bg-transparent w-16 outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            placeholder="0"
                         />
                         <span className="ml-1 font-['Inter'] text-black text-md">
               ({entriesAmount.toLocaleString()})

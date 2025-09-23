@@ -33,7 +33,20 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                         GC {prize.coinAmount.toLocaleString()}
                     </p>
                     <p className="text-sm font-medium font-['DM_Sans']">+</p>
-                    <p className="text-sm font-medium font-['DM_Sans']">{prize.spinAmount} x Flip</p>
+                    <p className="mb-2 font-['DM_Sans'] text-xl font-semibold">
+                        {selectedBalanceType === 'coin' ?
+                            `${prize.spinAmount} x Flip`
+                            :
+                            <div className={"flex"}>
+                                <img
+                                    src={"https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"}
+                                    alt={"voucher"}
+                                    className={"w-7 h-7 mr-2"}
+                                />
+                                {`x ${prize.spinAmount} free`}
+                            </div>
+                        }
+                    </p>
                 </div>
                 <div className="flex flex-col items-end">
                     <div className="flex items-center mb-3 mr-8 mt-2">
@@ -77,7 +90,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                         <img
                             src={"https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"}
                             alt={"voucher"}
-                            className={"w-7 h-6 mr-2"}
+                            className={"w-7 h-7 mr-2"}
                         />
                         {`x ${prize.spinAmount} free`}
                     </div>
