@@ -21,6 +21,7 @@ export const GoldFlipCard = ({
             ? amount.toLocaleString()
             : parseFloat(amount.toFixed(2)).toLocaleString()
     }
+
     return (
         <>
             <div
