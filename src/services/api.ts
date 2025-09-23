@@ -162,7 +162,6 @@ export const fetchFlipPackages = async () => {
         const endpoint = '/flip-packages/sorted'
         const result = await apiRequest(endpoint, 'GET')
         // Apply specific modifications to Pack 03 and Pack 04
-
         return result
     } catch (error) {
         console.error('Error fetching flip packages:', error)
