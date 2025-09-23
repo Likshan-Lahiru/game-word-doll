@@ -162,16 +162,7 @@ export const fetchFlipPackages = async () => {
         const endpoint = '/flip-packages/sorted'
         const result = await apiRequest(endpoint, 'GET')
         // Apply specific modifications to Pack 03 and Pack 04
-        if (Array.isArray(result)) {
-            return result.map((pack) => {
-                if (pack.title === 'Pack 03') {
-                    return { ...pack, voucher: pack.voucher + 1 }
-                } else if (pack.title === 'Pack 04') {
-                    return { ...pack, voucher: pack.voucher + 5 } // Changed from +3 to +2
-                }
-                return pack
-            })
-        }
+
         return result
     } catch (error) {
         console.error('Error fetching flip packages:', error)
