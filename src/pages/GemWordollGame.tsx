@@ -72,6 +72,8 @@ export function GemWordollGame() {
     const [roomWinnerName, setRoomWinnerName] = useState('')
     const [legendaryAmount, setLegendaryAmount] = useState('0.00')
     const [gameCompleted, setGameCompleted] = useState(false)
+    const [timeEndedReward, setTimeEndedReward] = useState(0)
+
     // Last attempt statuses from API
     const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
         ('correct' | 'wrong-position' | 'incorrect')[]
@@ -88,10 +90,36 @@ export function GemWordollGame() {
         setLegendaryAmount(winAmount)
         setShowRoomHasWinnerModal(true)
     }
-    const handleTimeEnded = () => {
+    const handleTimeEnded = async () => {
         setGameCompleted(true)
+        if (groupSessionId) {
+            try {
+                const userId = localStorage.getItem('userId')
+                if (!userId) {
+                    console.error('User ID not found')
+                    setShowTimeEndedModal(true)
+                    setTimeEndedReward(0)
+                    return
+                }
+                const response = await apiRequest(
+                    `/user-group-session/check?userId=${userId}&groupSessionId=${groupSessionId}`,
+                    'GET',
+                )
+                if (response && typeof response.reward === 'number') {
+                    setTimeEndedReward(response.reward) // Always use reward from API
+                } else {
+                    setTimeEndedReward(0)
+                }
+            } catch (error) {
+                console.error('Error checking time ended status:', error)
+                setTimeEndedReward(0)
+            }
+        } else {
+            setTimeEndedReward(0)
+        }
         setShowTimeEndedModal(true)
     }
+
     const handleNoAttemptsLeft = () => {
         setGameCompleted(true)
         setShowNoAttemptsModal(true)
@@ -510,7 +538,7 @@ export function GemWordollGame() {
             )}
 
             {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mt-10 mb-4">
                 <div
                     className="grid gap-2 text-2xl font-[Inter]"
                     style={{
@@ -553,7 +581,7 @@ export function GemWordollGame() {
                 </div>
             </div>
 
-            <div className="text-center my-1">
+            <div className="text-center mb-10 my-1">
                 <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
             </div>
 
@@ -655,8 +683,9 @@ export function GemWordollGame() {
                     setShowTimeEndedModal(false)
                     navigate('/gem-game-mode')
                 }}
-                ticketAmount={ticketAmount}
+                ticketAmount={timeEndedReward}
             />
+
 
             <NoAttemptsGemModal
                 isOpen={showNoAttemptsModal}

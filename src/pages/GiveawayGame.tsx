@@ -5,7 +5,64 @@ import { StatusBar } from '../components/StatusBar'
 import { useGlobalContext } from '../context/GlobalContext'
 import { PrizeCard, PrizeData } from '../components/PrizeCard'
 import { fetchFlipPackages, apiRequest } from '../services/api'
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify'
+// Add this new component for mobile cards
+function MobilePrizeCard({
+                           prize,
+                           onEnter,
+                         }: {
+  prize: PrizeData
+  onEnter: () => void
+}) {
+  const { selectedBalanceType } = useGlobalContext()
+  return (
+      <div className="bg-white rounded-xl overflow-hidden flex flex-col w-full max-w-[170px] text-black">
+        <div className="p-3 flex flex-col items-center">
+          <img
+              src={prize.image}
+              alt={`${prize.coinAmount} Coins`}
+              className="w-16 h-16 object-contain mb-2"
+          />
+          <p className="text-center font-medium text-sm">
+            GC {prize.coinAmount.toLocaleString()}
+          </p>
+          <p className="text-center text-xs mb-1">+</p>
+          <p className="text-center text-sm mb-2">
+            {selectedBalanceType === 'coin' ? (
+                `${prize.spinAmount} x Flip`
+            ) : (
+                <div className={'flex'}>
+                  <img
+                      src={
+                        'https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png'
+                      }
+                      alt={'voucher'}
+                      className={'w-5 h-5 mr-1'}
+                  />
+                  {`x ${prize.spinAmount} free`}
+                </div>
+            )}
+          </p>
+          <div className="flex items-center justify-center mb-2">
+            <img
+                src={`${selectedBalanceType === 'coin' ? 'https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png' : 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png'}`}
+                alt="Coins"
+                className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-6 h-6 mr-1 rounded-full p-[2px]`}
+            />
+            <span className="text-[#170F49] font-semibold text-base">
+            {prize.cost.toLocaleString()}
+          </span>
+          </div>
+          <button
+              className="bg-[#56CA5A] hover:bg-green-600 text-white py-1.5 px-4 rounded-full w-full text-sm font-medium"
+              onClick={onEnter}
+          >
+            Let's Go!
+          </button>
+        </div>
+      </div>
+  )
+}
 export function GiveawayGame() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -362,20 +419,20 @@ export function GiveawayGame() {
                   {error}
                 </div>
             )}
-            {/* Prize Cards */}
-            <div className="space-y-1 mb-8">
+            {/* Prize Cards - Changed to grid layout */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
               {isLoading || isJoining ? (
-                  <div className="text-center py-4">
+                  <div className="text-center py-4 col-span-2">
                     {isLoading ? 'Loading prizes...' : 'Joining game...'}
                   </div>
               ) : (
                   prizes.map((prize) => (
-                      <PrizeCard
-                          key={prize.id}
-                          prize={prize}
-                          isMobile={true}
-                          onEnter={() => handleEnterGame(prize)}
-                      />
+                      <div key={prize.id} className="flex justify-center">
+                        <MobilePrizeCard
+                            prize={prize}
+                            onEnter={() => handleEnterGame(prize)}
+                        />
+                      </div>
                   ))
               )}
             </div>
@@ -403,10 +460,7 @@ export function GiveawayGame() {
         </div>
         {/* Status Bar */}
         <div className="">
-          <StatusBar
-              isMobile={isMobile}
-              hideOnlineCount={true}
-          />
+          <StatusBar isMobile={isMobile} hideOnlineCount={true} />
         </div>
         {/* Main Content */}
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-2">

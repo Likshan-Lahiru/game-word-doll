@@ -69,6 +69,11 @@ export function ConvertGem() {
   }, [])
   // Handle input change with validation
   const handleRedeemAmountChange = (value) => {
+    // If the value is empty or just whitespace, reset to 0
+    if (value === '' || value === null || value === undefined) {
+      setRedeemAmount(0)
+      return
+    }
     // Allow any number to be entered, without enforcing minimum
     const newValue = Number(value)
     setRedeemAmount(newValue)
@@ -188,10 +193,11 @@ export function ConvertGem() {
               <div className="bg-white rounded-md px-4 py-2 flex items-center">
                 <input
                     type="number"
-                    value={redeemAmount}
+                    value={redeemAmount === 0 ? '' : redeemAmount}
                     min={0}
                     onChange={(e) => handleRedeemAmountChange(e.target.value)}
-                    className="bg-transparent w-16 outline-none text-black text-[16px]"
+                    className="bg-transparent w-16 outline-none text-black text-[16px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    placeholder="0"
                 />
                 <span className="ml-1 font-['Inter'] text-black text-[16px]">
                 (${redeemAmount.toLocaleString()})
@@ -396,10 +402,11 @@ export function ConvertGem() {
             <div className="bg-white rounded-md px-4 py-2 flex items-center">
               <input
                   type="number"
-                  value={redeemAmount}
+                  value={redeemAmount === 0 ? '' : redeemAmount}
                   min={0}
                   onChange={(e) => handleRedeemAmountChange(e.target.value)}
-                  className="bg-transparent w-16 outline-none text-black text-md"
+                  className="bg-transparent w-16 outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  placeholder="0"
               />
               <span className="ml-1 font-['Inter'] text-black text-md">
               (${redeemAmount.toLocaleString()})

@@ -16,9 +16,12 @@ export const GoldFlipCard = ({
         if (amount === undefined || amount === null) return '0'
         // If amount is already a string, return it
         if (typeof amount === 'string') return amount
-        // Otherwise format the number - without decimal places if it's a whole number
-        return Number.isInteger(amount) ? amount.toString() : amount.toFixed(2)
+        // Otherwise format the number - without decimal places if it's a whole number, and add commas
+        return Number.isInteger(amount)
+            ? amount.toLocaleString()
+            : parseFloat(amount.toFixed(2)).toLocaleString()
     }
+
     return (
         <>
             <div
@@ -56,9 +59,7 @@ export const GoldFlipCard = ({
                                         src={items.image}
                                         alt="item"
                                         className={`
-                                                ${items.image === 'flip-pic/gold-coin.png'
-                                            ? 'lg:w-32 lg:h-32 d:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24'
-                                            : 'lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36'}
+                                                ${items.image === 'flip-pic/gold-coin.png' ? 'lg:w-32 lg:h-32 d:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24' : 'lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36'}
                                             object-contain
                                             ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
                                             ${items.image === 'flip-pic/free.png' ? 'pb-10' : ''}
@@ -66,7 +67,6 @@ export const GoldFlipCard = ({
                                              ${items.image === 'flip-pic/gold-coin.png' ? '' : ''}
                                     `}
                                     />
-
                                 ) : (
                                     <div className="flex-1"></div>
                                 )}
