@@ -542,7 +542,7 @@ export function FlipPage() {
                     {selectedBalanceType === 'ticket' && (
                         <>
                             {isFreeCard ? (
-                                <button className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
+                                <button className="w-full py-4 rounded-2xl bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
                                     Free
                                 </button>
                             ) : (
@@ -669,7 +669,7 @@ export function FlipPage() {
                     {selectedBalanceType === 'ticket' && (
                         <>
                             {isFreeCard ? (
-                                <button className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[60px]">
+                                <button className="w-full py-4 rounded-2xl bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[60px]">
                                     Free
                                 </button>
                             ) : (

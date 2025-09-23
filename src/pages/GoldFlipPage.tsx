@@ -577,7 +577,7 @@ export function GoldFlipPage() {
                         <>
                             {isFreeCard ? (
                                 <>
-                                    <button className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
+                                    <button className="w-full py-4 rounded-2xl bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
                                         Free
                                     </button>
                                 </>
@@ -725,7 +725,7 @@ export function GoldFlipPage() {
                             {isFreeCard ? (
                                 <>
                                     <button
-                                        className="w-full py-4 rounded-[22px] bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full py-4 rounded-2xl bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         disabled={isFreeCard}
                                     >
                                         Free
@@ -789,7 +789,7 @@ export function GoldFlipPage() {
                         </button>
                     ) : (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors h-[60px]"
+                            className="w-full py-4 rounded-2xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors h-[60px]"
                             onClick={handleNextRow}
                         >
                             Next
