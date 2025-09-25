@@ -306,7 +306,7 @@ export function BetSelectorPage() {
                 <StatusBar isMobile={isMobile} hideOnlineCount={true} />
             </div>
             {/* Main Content */}
-            <div className="flex-1 flex flex-col items-center justify-center p-2 mb-0">
+            <div className="flex-1 flex flex-col items-center justify-center p-2 mb-48">
                 <div className="w-full max-w-md">
                     {/* Bet Options */}
                     <div className="flex justify-center space-x-4 mb-4 relative ">
