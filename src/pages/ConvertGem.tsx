@@ -74,9 +74,14 @@ export function ConvertGem() {
       setRedeemAmount(0)
       return
     }
-    // Allow any number to be entered, without enforcing minimum
-    const newValue = Number(value)
-    setRedeemAmount(newValue)
+    // Parse the input as a number
+    let newValue = Number(value)
+    // Check if it's a valid number
+    if (!isNaN(newValue)) {
+      // Format to have at most 2 decimal places
+      newValue = parseFloat(newValue.toFixed(2))
+      setRedeemAmount(newValue)
+    }
   }
   const handleRedeemNow = () => {
     // Check if user has enough gems

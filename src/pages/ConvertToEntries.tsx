@@ -9,19 +9,36 @@ const ConvertToEntries = ({ isMobile }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [apiError, setApiError] = useState(null)
     const [successMessage, setSuccessMessage] = useState(null)
+    // Calculate convertible gems (total gems - 5)
+    const convertibleGems = Math.max(0, gemBalance - 5)
     // Update entriesAmount when gemBalance changes
     useEffect(() => {
-        // Set a default value that's less than or equal to gemBalance
-        if (Math.floor(gemBalance) > 5) {
-            // Leave 5 gems in account as per the note
-            setEntriesAmount(Math.min(50, Math.floor(gemBalance) - 5))
+        // Set a default value that's less than or equal to convertible gems
+        if (convertibleGems > 0) {
+            setEntriesAmount(Math.min(50, convertibleGems))
         } else {
             setEntriesAmount(0)
         }
-    }, [gemBalance])
+    }, [gemBalance, convertibleGems])
+    // Add a new function to handle input change with validation
+    const handleEntriesAmountChange = (value) => {
+        // If the value is empty or just whitespace, reset to 0
+        if (value === '' || value === null || value === undefined) {
+            setEntriesAmount(0)
+            return
+        }
+        // Parse the input as a number
+        let newValue = Number(value)
+        // Check if it's a valid number
+        if (!isNaN(newValue)) {
+            // Format to have at most 2 decimal places
+            newValue = parseFloat(newValue.toFixed(2))
+            setEntriesAmount(newValue)
+        }
+    }
     const handleConvertNow = () => {
         // Validate that we have enough gems (minimum 5 must remain)
-        if (Math.floor(gemBalance) - entriesAmount < 5) {
+        if (entriesAmount > convertibleGems) {
             alert('A minimum balance of 5 gems must remain in your account.')
             return
         }
@@ -85,7 +102,7 @@ const ConvertToEntries = ({ isMobile }) => {
                             <p className="text-white text-[13px]">Convertible Gems</p>
                             <p className="">:</p>
                             <p className="font-medium text-[13px]">
-                                {Math.floor(gemBalance).toLocaleString()}
+                                {convertibleGems.toFixed(2)}
                             </p>
                         </div>
                     </div>
@@ -95,9 +112,7 @@ const ConvertToEntries = ({ isMobile }) => {
                             <input
                                 type="number"
                                 value={entriesAmount === 0 ? '' : entriesAmount}
-                                onChange={(e) =>
-                                    setEntriesAmount(Math.floor(Number(e.target.value)))
-                                }
+                                onChange={(e) => handleEntriesAmountChange(e.target.value)}
                                 className="bg-transparent w-10 text-[13px] outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                 placeholder="0"
                             />
@@ -113,10 +128,8 @@ const ConvertToEntries = ({ isMobile }) => {
                     <div className="flex-1 flex justify-end font-['Inter']">
                         <button
                             onClick={handleConvertNow}
-                            className={`bg-[#2D7FF0] text-sm border-green-500 text-white py-1 px-5 mt-5 rounded-full font-medium ${Math.floor(gemBalance) - entriesAmount < 5 || entriesAmount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            disabled={
-                                Math.floor(gemBalance) - entriesAmount < 5 || entriesAmount <= 0
-                            }
+                            className={`bg-[#2D7FF0] text-sm border-green-500 text-white py-1 px-5 mt-5 rounded-full font-medium ${entriesAmount <= 0 || entriesAmount > convertibleGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={entriesAmount <= 0 || entriesAmount > convertibleGems}
                         >
                             Convert Now
                         </button>
@@ -190,9 +203,7 @@ const ConvertToEntries = ({ isMobile }) => {
                     <div className="flex items-center gap-x-2">
                         <p className="text-white">Convertible Gems</p>
                         <p className="">:</p>
-                        <p className="font-medium">
-                            {Math.floor(gemBalance).toLocaleString()}
-                        </p>
+                        <p className="font-medium">{convertibleGems.toFixed(2)}</p>
                     </div>
                 </div>
                 <div className="font-['Inter'] flex max-[958px]:flex-col max-[958px]:space-y-2 max-[958px]:items-start items-center mb-0.5 space-x-4">
@@ -201,9 +212,7 @@ const ConvertToEntries = ({ isMobile }) => {
                         <input
                             type="number"
                             value={entriesAmount === 0 ? '' : entriesAmount}
-                            onChange={(e) =>
-                                setEntriesAmount(Math.floor(Number(e.target.value)))
-                            }
+                            onChange={(e) => handleEntriesAmountChange(e.target.value)}
                             className="bg-transparent w-16 outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             placeholder="0"
                         />
@@ -216,10 +225,8 @@ const ConvertToEntries = ({ isMobile }) => {
                 <div className="font-['Inter'] flex-1 flex justify-end mb-2">
                     <button
                         onClick={handleConvertNow}
-                        className={`md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium ${Math.floor(gemBalance) - entriesAmount < 5 || entriesAmount <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        disabled={
-                            Math.floor(gemBalance) - entriesAmount < 5 || entriesAmount <= 0
-                        }
+                        className={`md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium ${entriesAmount <= 0 || entriesAmount > convertibleGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={entriesAmount <= 0 || entriesAmount > convertibleGems}
                     >
                         Convert Now
                     </button>

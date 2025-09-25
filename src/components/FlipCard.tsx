@@ -51,26 +51,21 @@ export const FlipCard = ({
                                 </p>
                             </div>
                             {/* Body */}
+
                             <div className={'flex items-center justify-center'}>
                                 {items.image && items.image !== '' ? (
-                                    /*      <img
-                                              src={items.image}
-                                              alt="card image"
-                                              className={`
-                                          ${items.image === '/flip-pic/outofstock.png' && 'lg:h-36 md:h-36 lg:w-32'}
-                                          ${items.image === '/flip-pic/Ants-in-the-Jar.png' && 'lg:h-44 md:h-44 lg:w-32'}
-                                          ${items.image === '/flip-pic/free.png' && 'lg:w-44 lg:h-40 md:w-36 md:h-36'}
-                                          ${items.image === '/fortuneCooky.png' && 'lg:w-36 lg:h-36 md:w-36 md:h-36'}
-                                          ${items.image === '/flip-pic/Bad-Cooky.png' && 'lg:w-40 lg:h-36 md:w-40 md:h-40'}
-                                          lg:w-40 md:w-28 h-36`}
-                                          />*/
                                     <img
                                         src={items.image}
                                         alt="item"
                                         className={`
-                                        lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36 object-contain
-                                         ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
-                                         ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-4' : ''}`}
+                                                ${items.image === 'flip-pic/gold-coin.png' ? 'lg:w-32 lg:h-32 d:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24' : 'lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36'}
+                                            object-contain
+                                            ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
+                                            ${items.image === 'flip-pic/free.png' ? 'pb-10' : ''}
+                                            ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-6' : ''}
+                                            ${items.image === '/flip-pic/Fortune-Cooky .png' ? 'lg:w-28 lg:h-28 md:w-28 md:h-28 sm:w-24 sm:h-24 w-24 h-24' : ''}
+                                             ${items.image === 'flip-pic/gold-coin.png' ? '' : ''}
+                                    `}
                                     />
                                 ) : (
                                     <div className="flex-1"></div>
