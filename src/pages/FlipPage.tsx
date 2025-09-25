@@ -44,6 +44,64 @@ const allFlipCardData: FlipCardData[][] = [
     [
         {
             id: 1,
+            name: 'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            winCount: Math.floor(Math.random() * (4 - 15 + 1)) + 15,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 2,
+            name: 'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            winCount: Math.floor(Math.random() * (4 - 15 + 1)) + 15,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 3,
+            name: 'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            winCount: Math.floor(Math.random() * (4 - 15 + 1)) + 15,
+            type: 'winImg',
+            selected: false,
+        },
+    ],
+    [
+        {
+            id: 1,
+            name: 'GRAND WIN',
+            image: IMAGES.grandWinLogo,
+            desc: '',
+            winCount: 1000,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 2,
+            name: 'GRAND WIN',
+            image: IMAGES.grandWinLogo,
+            desc: '',
+            winCount: 1000,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 3,
+            name: 'GRAND WIN',
+            image: IMAGES.grandWinLogo,
+            desc: '',
+            winCount: 1000,
+            type: 'winImg',
+            selected: false,
+        },
+    ],
+    [
+        {
+            id: 1,
             name: 'Bad Cooky',
             image: IMAGES.badCooky,
             desc: 'Oops! \n' + 'You got a bad cooky',
@@ -100,7 +158,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
-            type: ''
+            type: '',
         },
         {
             id: 2,
@@ -108,7 +166,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
-            type: ''
+            type: '',
         },
         {
             id: 3,
@@ -116,7 +174,7 @@ const allFlipCardData: FlipCardData[][] = [
             image: IMAGES.outOfStock,
             desc: "Today's stock ran out",
             selected: false,
-            type: ''
+            type: '',
         },
     ],
     [
@@ -222,7 +280,20 @@ export function FlipPage() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
     const pickRandomSetWithFirstSelected = () => {
-        const randomIndex = Math.floor(Math.random() * allFlipCardData.length)
+        // Create a weighted random selection that reduces GRAND WIN probability
+        // GRAND WIN is at index 1, so we'll give it a lower weight
+        const weights = allFlipCardData.map((_, index) => (index === 1 ? 0.1 : 1))
+        const totalWeight = weights.reduce((sum, weight) => sum + weight, 0)
+        let random = Math.random() * totalWeight
+        let randomIndex = 0
+        // Select an index based on weights
+        for (let i = 0; i < weights.length; i++) {
+            random -= weights[i]
+            if (random <= 0) {
+                randomIndex = i
+                break
+            }
+        }
         const selectedSet = allFlipCardData[randomIndex].map((card, index) => ({
             ...card,
             selected: index === 1, // Select the middle card (index 1) instead of first card

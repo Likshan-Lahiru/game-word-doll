@@ -44,6 +44,64 @@ const allFlipCardData: FlipCardData[][] = [
     [
         {
             id: 1,
+            name: 'GRAND WIN',
+            image: IMAGES.grandWinLogo,
+            desc: '',
+            winCount: 1000000,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 2,
+            name: 'GRAND WIN',
+            image: IMAGES.grandWinLogo,
+            desc: '',
+            winCount: 1000000,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 3,
+            name: 'GRAND WIN',
+            image: IMAGES.grandWinLogo,
+            desc: '',
+            winCount: 1000000,
+            type: 'winImg',
+            selected: false,
+        },
+    ],
+    [
+        {
+            id: 1,
+            name: 'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            winCount: Math.floor(Math.random() * (500000 - 100000 + 1)) + 100000,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 2,
+            name: 'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            winCount: Math.floor(Math.random() * (500000 - 100000 + 1)) + 100000,
+            type: 'winImg',
+            selected: false,
+        },
+        {
+            id: 3,
+            name: 'Fortune Cooky',
+            image: IMAGES.fortuneCooky,
+            desc: '',
+            winCount: Math.floor(Math.random() * (500000 - 100000 + 1)) + 100000,
+            type: 'winImg',
+            selected: false,
+        },
+    ],
+    [
+        {
+            id: 1,
             name: 'Bad Cooky',
             image: IMAGES.badCooky,
             desc: 'Oops! \n' + 'You got a bad cooky',
@@ -225,7 +283,20 @@ export function GoldFlipPage() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
     const pickRandomSetWithFirstSelected = () => {
-        const randomIndex = Math.floor(Math.random() * allFlipCardData.length)
+        // Create a weighted random selection that reduces GRAND WIN probability
+        // GRAND WIN is at index 0, so we'll give it a lower weight
+        const weights = allFlipCardData.map((_, index) => (index === 0 ? 0.7 : 1))
+        const totalWeight = weights.reduce((sum, weight) => sum + weight, 0)
+        let random = Math.random() * totalWeight
+        let randomIndex = 0
+        // Select an index based on weights
+        for (let i = 0; i < weights.length; i++) {
+            random -= weights[i]
+            if (random <= 0) {
+                randomIndex = i
+                break
+            }
+        }
         const selectedSet = allFlipCardData[randomIndex].map((card, index) => ({
             ...card,
             selected: index === 1, // Select the middle card (index 1) instead of first card
@@ -505,12 +576,12 @@ export function GoldFlipPage() {
                 </div>
                 {/* Gold indicator */}
                 {/*   <div className="absolute top-12 right-3 z-10 flex items-center bg-[#FFD700]/20 px-3 py-1 rounded-full">
-                   <img
-                       src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
-                       alt="Gold"
-                       className="w-4 h-4 mr-1"
-                   />
-                   <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
+                 <img
+                 src="https://uploadthingy.s3.us-west-1.amazonaws.com/2XiBYwBWgNJxytH6Z2jPWP/point.png"
+                 alt="Gold"
+                 className="w-4 h-4 mr-1"
+                 />
+                 <span className="text-[#FFD700] font-medium text-sm">Gold Game</span>
                  </div>*/}
                 {/* Status Bar */}
                 <div className="">

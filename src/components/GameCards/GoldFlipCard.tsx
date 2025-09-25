@@ -21,7 +21,6 @@ export const GoldFlipCard = ({
             ? amount.toLocaleString()
             : parseFloat(amount.toFixed(2)).toLocaleString()
     }
-
     return (
         <>
             <div
@@ -63,7 +62,8 @@ export const GoldFlipCard = ({
                                             object-contain
                                             ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
                                             ${items.image === 'flip-pic/free.png' ? 'pb-10' : ''}
-                                            ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-4' : ''}
+                                            ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-6' : ''}
+                                            ${items.image === '/flip-pic/Fortune-Cooky .png' ? 'lg:w-28 lg:h-28 md:w-28 md:h-28 sm:w-24 sm:h-24 w-24 h-24' : ''}
                                              ${items.image === 'flip-pic/gold-coin.png' ? '' : ''}
                                     `}
                                     />

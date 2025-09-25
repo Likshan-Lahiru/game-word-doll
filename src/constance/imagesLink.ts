@@ -17,6 +17,7 @@ export const IMAGES = {
     antsInTheJar: '/flip-pic/Ants-in-the-Jar.png',
     checkMark: "/checkMark.png",
     originalLogo: "/original-logo.png",
+    grandWinLogo: "/flip-pic/GRAND-WIN.png",
     logo2: "/logo-2.png",
     logo3: "/logo-3.png",
     logo4: "/logo-4.png",
