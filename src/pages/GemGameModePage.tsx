@@ -640,17 +640,19 @@ export function GemGameModePage() {
                             </p>
                         </div>
                     </div>
-                    {/* Invite Card */}
+                    {/* Invite Card - Mobile */}
                     <div className="w-full max-w-md bg-[#374151] rounded-xl p-2 text-center mb-20">
                         <h3 className="text-base font-semibold mt-2 mb-2 font-[Inter]">
                             Invite players to increase Gem Pool
                         </h3>
-                        <div className="flex items-center justify-between">
-                            <p className="text-lg ml-20 text-[#006CB9] font-[Inter]">
-                                {linkCopied ? 'Link copied!' : displayLink}
-                            </p>
+                        <div className="flex items-center justify-center">
+                            <div className="bg-white rounded-full flex-1 mx-4 flex items-center px-4 py-2">
+                                <p className="text-lg text-[#2D7FF0] font-[Inter] truncate">
+                                    {linkCopied ? 'Link copied!' : displayLink}
+                                </p>
+                            </div>
                             <button
-                                className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-20 rounded-full text-xs font-[Inter]"
+                                className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 rounded-full text-xs font-[Inter] text-white"
                                 onClick={handleCopyLink}
                             >
                                 {linkCopied ? 'Copied' : 'Copy'}
@@ -809,17 +811,19 @@ export function GemGameModePage() {
                         </p>
                     </div>
                 </div>
-                {/* Invite Card */}
+                {/* Invite Card - Desktop */}
                 <div className="w-full max-w-md bg-[#374151] rounded-xl p-1 text-center mb-0">
-                    <h3 className="text-[14px] font-semibold mt-2 mb-1 font-[Inter]">
+                    <h3 className="text-[18px] font-semibold mt-2 mb-4 font-[Inter]">
                         Invite players to increase Gem Pool
                     </h3>
-                    <div className="flex items-center lr justify-between">
-                        <p className="text-[14px] ml-36 text-[#006CB9] font-[Inter]">
-                            {linkCopied ? 'Link copied!' : displayLink}
-                        </p>
+                    <div className="flex items-center justify-center px-20 pb-2">
+                        <div className="bg-white rounded-full flex-1 mx-2 flex items-center px-4 py-1">
+                            <p className="text-[10px] pl-7 text-[#2D7FF0] font-[Inter] truncate">
+                                {linkCopied ? 'Link copied!' : displayLink}
+                            </p>
+                        </div>
                         <button
-                            className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 mr-24 rounded-full text-xs font-[Inter]"
+                            className="bg-[#2D7FF0] hover:bg-blue-600 px-3 py-1 rounded-full text-xs font-[Inter] text-white ml-2"
                             onClick={handleCopyLink}
                         >
                             {linkCopied ? 'Copied' : 'Copy'}
