@@ -63,7 +63,10 @@ export const GoldFlipCard = ({
                                             ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
                                             ${items.image === 'flip-pic/free.png' ? 'pb-10' : ''}
                                             ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-6' : ''}
-                                            ${items.image === '/flip-pic/Fortune-Cooky .png' ? 'lg:w-14 lg:h-14 md:w-28 md:h-28 sm:w-24 sm:h-24 w-24 h-24' : ''}
+                                            ${items.image === 'flip-pic/Fortune-Cooky.png'
+                                            ? 'lg:w-14 lg:h-14 md:w-28 md:h-28 sm:w-24 sm:h-24 w-24 h-24'
+                                            : ''}
+
                                              ${items.image === 'flip-pic/gold-coin.png' ? '' : ''}
                                     `}
                                     />
