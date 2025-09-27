@@ -535,18 +535,21 @@ export function LockPickrGame() {
       }
     }
   }
-// Put this near the top of your component file (outside JSX)
+
+
+// ---- sizing tokens (place once near top of file) ----
   const S = {
     smallTile: 'size-[clamp(2.3rem,8.5vw,2.75rem)] text-[clamp(1rem,3.6vw,1.125rem)]',
     bigTile:   'size-[clamp(3.25rem,12vw,4rem)] text-[clamp(1.5rem,5vw,1.875rem)]',
     gridGap:   'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
-    panelW:    'w-[min(92vw,340px)] h-[clamp(4rem,10vw,4.1rem)]',
+    panelW:    'w-[min(92vw,340px)] h-[clamp(3.5rem,10vw,4.1rem)]',
     keyH:      'h-[clamp(3rem,10vw,3.5rem)]',
     keyText:   'text-[clamp(1.4rem,5vw,1.875rem)]',
     enterText: 'text-[clamp(0.9rem,3.2vw,1.1rem)]',
     backIcon:  'h-[clamp(1.25rem,4.2vw,2rem)] w-[clamp(1.25rem,4.2vw,2rem)]',
   };
 
+// ---- mobile branch (drop-in) ----
   if (isMobile) {
     return (
         <div
@@ -608,14 +611,12 @@ export function LockPickrGame() {
 
                 {/* Last attempt display */}
                 <div className="flex justify-center mt-[clamp(0.5rem,6vh,3rem)] mb-2">
-
                   <div
                       className={`grid grid-cols-1 ${S.gridGap}`}
-                      style={{gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`}}
+                      style={{ gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))` }}
                   >
                     {(lastAttempt.length > 0 ? lastAttempt : Array(codeLength).fill('')).map((num, index) => {
-                      const status =
-                          lastAttempt.length > 0 ? getNumberStatus(num as number, index) : null;
+                      const status = lastAttempt.length > 0 ? getNumberStatus(num as number, index) : null;
                       let bgColor = 'bg-[#374151]';
                       if (status === 'correct') bgColor = 'bg-[#22C55E]';
                       else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]';
@@ -636,9 +637,9 @@ export function LockPickrGame() {
                 <div className="flex justify-center mb-6" onClick={() => inputRef.current?.focus()}>
                   <div
                       className={`grid grid-cols-1 ${S.gridGap}`}
-                      style={{gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`}}
+                      style={{ gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))` }}
                   >
-                    {Array.from({length: codeLength}).map((_, index) => (
+                    {Array.from({ length: codeLength }).map((_, index) => (
                         <div
                             key={index}
                             className={`${S.bigTile} flex items-center justify-center ${
@@ -653,7 +654,6 @@ export function LockPickrGame() {
 
                 {/* Attempts count (unchanged) */}
                 <div className="text-center mt-[clamp(0.5rem,5vh,3rem)]">
-
                   <p className="text-xl font-medium font-[Inter]">
                     {attemptsLeft} x attempt
                   </p>
@@ -663,7 +663,7 @@ export function LockPickrGame() {
               {/* Mobile number pad */}
               <div className="flex-none pb-4">
                 {/* Win panel */}
-                <div className={`bg-gray-700 rounded-2xl px-6 py-1 text-center  mb-4 mx-auto ${S.panelW}`}>
+                <div className={`bg-gray-700 rounded-2xl px-6 py-1 text-center mb-4 mx-auto ${S.panelW}`}>
                   <div className="flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
@@ -671,10 +671,10 @@ export function LockPickrGame() {
                         className="w-6 h-6 mr-2"
                     />
                     <span className="text-lg font-bold text-white">
-                      {winAmount.toLocaleString()}
-                      </span>
-                     </div>
-                    <p className="text-white text-lg font-bold">win</p>
+                  {winAmount.toLocaleString()}
+                </span>
+                  </div>
+                  <p className="text-white text-lg font-bold">win</p>
                 </div>
 
                 {/* Key rows (same layout, responsive height/font) */}
@@ -798,6 +798,7 @@ export function LockPickrGame() {
         </div>
     );
   }
+
 
   // Desktop view
   return (
