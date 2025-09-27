@@ -584,7 +584,7 @@ export function GiveawayGoldLockPickrGame() {
                     </div>
                 </div>
                 {/* Number pad - Responsive for all screen sizes */}
-                <div className="flex-none mb-24 pb-6">
+                <div className="flex-none mb-20 pb-6">
                     <div className="w-full max-w-md mx-auto px-2">
                         {/* Row 1: 1-2-3 */}
                         <div className="flex justify-center gap-2 mb-2">
