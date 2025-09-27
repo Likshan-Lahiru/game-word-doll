@@ -559,7 +559,7 @@ export function GiveawayGoldLockPickrGame() {
                     </div>
                     {/* Current attempt */}
                     <div
-                        className="flex justify-center mb-0"
+                        className="flex justify-center mb-3"
                         onClick={() => inputRef.current?.focus()}
                     >
                         <div
