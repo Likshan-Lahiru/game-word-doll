@@ -579,9 +579,9 @@ export function LockPickrGame() {
                 {window.innerWidth}x{window.innerHeight}
               </div>
 
-              {/* Timer (same spacing) */}
-              <div className="flex-none text-center pt-16 pb-4">
-                <p className="text-xs">Timer</p>
+              {/* Header / Timer */}
+              <div className="flex-none text-center pt-8 pb-2 shrink-0">
+                <p className="text-white text-xs">Timer</p>
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
               </div>
 
@@ -615,7 +615,7 @@ export function LockPickrGame() {
                 />
 
                 {/* Last attempt display */}
-                <div className="flex justify-center mt-[clamp(0.5rem,6vh,3rem)] mb-2">
+                <div className="flex justify-center mt-[clamp(0.5rem,10vh,3rem)] mb-2">
                   <div
                       className={`grid grid-cols-1 ${S.gridGap}`}
                       style={{ gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))` }}
