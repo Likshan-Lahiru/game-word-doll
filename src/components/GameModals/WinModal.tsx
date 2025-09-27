@@ -15,7 +15,7 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
     const fireworksRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
         if (isOpen && fireworksRef.current) {
-            // Create fireworks effect
+            // Create fireworks effect with gold-themed colors
             const launchFireworks = () => {
                 const duration = 5000
                 const animationEnd = Date.now() + duration
@@ -25,13 +25,32 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
                     ticks: 60,
                     zIndex: 0,
                 }
+                // Gold-themed colors
+                const goldColors = [
+                    '#FFD700',
+                    '#FFC107',
+                    '#FFAB00',
+                    '#FF8F00',
+                    '#F57F17',
+                    '#FFB300', // Light amber
+                ]
+                // Initial burst of gold confetti
+                confetti({
+                    particleCount: 150,
+                    spread: 160,
+                    origin: {
+                        x: 0.5,
+                        y: 0.3,
+                    },
+                    colors: goldColors,
+                })
                 const interval = setInterval(() => {
                     const timeLeft = animationEnd - Date.now()
                     if (timeLeft <= 0) {
                         return clearInterval(interval)
                     }
                     const particleCount = 50 * (timeLeft / duration)
-                    // Launch colorful fireworks from random positions
+                    // Gold-themed fireworks from different positions
                     confetti({
                         ...defaults,
                         particleCount,
@@ -39,17 +58,31 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
                             x: Math.random(),
                             y: Math.random() * 0.5,
                         },
-                        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'],
+                        colors: goldColors,
                     })
-                    confetti({
-                        ...defaults,
-                        particleCount,
-                        origin: {
-                            x: Math.random(),
-                            y: Math.random() * 0.5,
-                        },
-                        colors: ['#ff9900', '#9900ff', '#00ffff', '#ff6600', '#00ff99'],
-                    })
+                    // Add occasional confetti bursts
+                    if (Math.random() < 0.3) {
+                        confetti({
+                            particleCount: 40,
+                            angle: Math.random() * 60 + 60,
+                            spread: 80,
+                            origin: {
+                                x: 0,
+                                y: 0.8,
+                            },
+                            colors: goldColors,
+                        })
+                        confetti({
+                            particleCount: 40,
+                            angle: Math.random() * 60 + 240,
+                            spread: 80,
+                            origin: {
+                                x: 1,
+                                y: 0.8,
+                            },
+                            colors: goldColors,
+                        })
+                    }
                 }, 250)
             }
             launchFireworks()
@@ -74,15 +107,7 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
                 className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']"
                 ref={fireworksRef}
             >
-                {/* Colorful background elements */}
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1/3 h-full bg-red-500/20"></div>
-                    <div className="absolute top-0 left-1/3 w-1/3 h-full bg-green-500/20"></div>
-                    <div className="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/20"></div>
-                    <div className="absolute top-0 w-full h-1/3 bg-red-500/10 rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-0 w-full h-1/3 bg-yellow-500/10 rounded-full blur-3xl"></div>
-                </div>
-                <div className="flex flex-col items-center relative z-10">
+                <div className="flex flex-col items-center">
                     <div className="bg-[#3F4C5F] rounded-2xl p-6 text-center text-white w-[320px]">
                         <h2 className="ml-8 text-2xl font-bold mb-6">You Win</h2>
                         <div className="flex items-center justify-center text-4xl font-bold mb-6">
@@ -139,15 +164,7 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
             className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']"
             ref={fireworksRef}
         >
-            {/* Colorful background elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-0 left-0 w-1/3 h-full bg-red-500/20"></div>
-                <div className="absolute top-0 left-1/3 w-1/3 h-full bg-green-500/20"></div>
-                <div className="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/20"></div>
-                <div className="absolute top-0 w-full h-1/3 bg-red-500/10 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 w-full h-1/3 bg-yellow-500/10 rounded-full blur-3xl"></div>
-            </div>
-            <div className="w-full max-w-md mx-auto relative z-10">
+            <div className="w-full max-w-md mx-auto">
                 <div className="bg-[#3F4C5F] rounded-xl p-8 text-center text-white">
                     <h2 className="text-1xl font-bold mb-6 font-['Inter']">You Win</h2>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6 ">
