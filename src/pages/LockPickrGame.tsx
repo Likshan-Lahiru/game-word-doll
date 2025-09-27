@@ -673,7 +673,7 @@ export function LockPickrGame() {
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                         alt="Coins"
-                        className="w-6 h-6 mr-2"
+                        className="w-4 h-4 mr-2"
                     />
                     <span className="text-lg font-bold text-white">
                   {winAmount.toLocaleString()}

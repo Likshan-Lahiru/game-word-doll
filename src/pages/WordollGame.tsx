@@ -488,7 +488,7 @@ export function WordollGame() {
         'size-[clamp(2.75rem,10vw,4rem)] text-[clamp(1.25rem,4.2vw,1.75rem)]',
     tileBoxLg: 'size-[clamp(3.5rem,12vw,4.5rem)] text-[clamp(1.5rem,5vw,2rem)]',
     gridGap: 'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
-    key: 'h-[clamp(2.75rem,8.8vw,3.6rem)] w-[clamp(2.5rem,8vw,3.2rem)] text-[clamp(0.9rem,3.2vw,1.1rem)]',
+    key: 'h-[clamp(3.3rem,8.8vw,3.6rem)] w-[clamp(2.5rem,8vw,3.2rem)] text-[clamp(0.9rem,3.2vw,1.1rem)]',
     wideKey: 'w-[clamp(3.9rem,13vw,5rem)]',
     panelW: 'w-[min(92vw,360px)]',
     coinImg: 'w-5 h-5',
@@ -497,15 +497,16 @@ export function WordollGame() {
   if (isMobile) {
     return (
         <div
-            className="fixed inset-0 bg-[#1F2937] text-white overscroll-none touch-pan-y select-none"
+            className="fixed inset-0 bg-[#1F2937] text-white overscroll-none touch-pan-y select-none overflow-hidden"
             ref={gameContainerRef}
         >
           {/* Stable viewport with safe area */}
           <div className="flex flex-col h-dvh min-h-dvh pb-[env(safe-area-inset-bottom)]">
             {/* Mobile viewport size indicator */}
-            <div className="absolute top-16 right-4 z-50 bg-gray-800/80 text-xs px-2 py-1 rounded-md">
+            <div className="absolute top-16 right-4 z-50 bg-gray-800/80 text-xs px-2 py-1 rounded-md pointer-events-none">
               {window.innerWidth}x{window.innerHeight}
             </div>
+
             <div className="relative flex flex-col h-full min-h-0">
               {/* Back button */}
               <div className="absolute top-4 left-4 z-10">
@@ -527,12 +528,16 @@ export function WordollGame() {
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
               </div>
 
-              {/* Feedback message */}
-              {feedback && (
-                  <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
-                    <p className="text-white text-lg">{feedback}</p>
-                  </div>
-              )}
+              {/* Feedback message (auto height, centered, no clipping) */}
+              <div className="h-2">
+                {feedback && (
+                    <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
+                      {feedback}
+
+                    </div>
+                )}
+
+              </div>
 
               {/* Game area */}
               <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-1 min-h-0">
@@ -551,12 +556,10 @@ export function WordollGame() {
                 />
 
                 {/* Last attempt display */}
-                <div className="flex justify-center mt-14 mb-4">
+                <div className="flex justify-center mt-[clamp(0.5rem,6vh,2.5rem)] mb-4">
                   <div
                       className={`grid grid-cols-1 ${S.gridGap} font-[Inter]`}
-                      style={{
-                        gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
-                      }}
+                      style={{gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`}}
                   >
                     {lastAttempt
                         ? lastAttempt.map((letter, index) =>
@@ -580,22 +583,21 @@ export function WordollGame() {
                 </div>
 
                 {/* Current attempt */}
-                <div
-                    className="flex justify-center mb-2"
-                    onClick={() => inputRef.current?.focus()}
-                >
+                <div className="flex justify-center mb-2" onClick={() => inputRef.current?.focus()}>
                   <div
                       className={`grid grid-cols-1 ${S.gridGap}`}
-                      style={{
-                        gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
-                      }}
+                      style={{gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`}}
                   >
-                    {Array.from({
-                      length: wordLength,
-                    }).map((_, index) => (
+                    {Array.from({length: wordLength}).map((_, index) => (
                         <div
                             key={index}
-                            className={`${S.tileBoxLg} flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold shadow-md font-[Inter] text-center ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                            className={`${S.tileBoxLg} flex items-center justify-center ${
+                                currentAttempt[index]
+                                    ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700')
+                                    : 'bg-[#374151]'
+                            } rounded-md text-white font-bold shadow-md font-[Inter] text-center ${
+                                !lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'
+                            }`}
                             onClick={() => handleLetterClick(index)}
                         >
                           {currentAttempt[index]}
@@ -605,7 +607,7 @@ export function WordollGame() {
                 </div>
 
                 {/* Attempts label */}
-                <div className="text-center mt-20">
+                <div className="text-center mt-[clamp(0.5rem,6vh,2.5rem)]">
                   <p className="text-xl font-medium font-[Inter]">
                     {attempts} x attempt
                   </p>
@@ -615,22 +617,18 @@ export function WordollGame() {
               {/* Mobile keyboard & win panel */}
               <div className="flex-none mb-0 pb-0 shrink-0">
                 {/* Win panel */}
-                <div
-                    className={`bg-gray-700 rounded-2xl px-6 py-2 text-center mb-4 mx-auto ${S.panelW} h-[65px]`}
-                >
+                <div className={`bg-gray-700 rounded-2xl px-6 py-1 text-center mb-5 mx-auto ${S.panelW}`}>
                   <div className="flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
                         alt="Coins"
-                        className={`${S.coinImg} mr-1`}
+                        className="w-4 h-4 mr-2"
                     />
-                    <span className="font-bold text-[clamp(1rem,3.8vw,1.25rem)]">
-                    {winAmount.toLocaleString()}
-                  </span>
+                    <span className="text-lg font-bold text-white">
+                  {winAmount.toLocaleString()}
+                </span>
                   </div>
-                  <p className="text-white font-bold text-[clamp(1rem,3.8vw,1.125rem)]">
-                    win
-                  </p>
+                  <p className="text-white text-lg font-bold">win</p>
                 </div>
 
                 {/* Keyboard */}
@@ -638,7 +636,9 @@ export function WordollGame() {
                   {mobileKeyboard.map((row, rowIndex) => (
                       <div
                           key={rowIndex}
-                          className={`flex justify-center mb-[clamp(0.2rem,0.8vw,0.35rem)] ${rowIndex === 1 ? 'px-4' : ''}`}
+                          className={`flex justify-center mb-[clamp(0.2rem,0.8vw,0.35rem)] ${
+                              rowIndex === 1 ? 'px-4' : ''
+                          }`}
                       >
                         {row.map((key, keyIndex) => (
                             <button
@@ -653,9 +653,7 @@ export function WordollGame() {
                                       className="h-[clamp(1.25rem,4.2vw,2rem)] w-[clamp(1.25rem,4.2vw,2rem)]"
                                   />
                               ) : key === 'ENTER' ? (
-                                  <span className="text-[clamp(0.6rem,2.6vw,0.8rem)]">
-                            ENTER
-                          </span>
+                                  <span className="text-[clamp(0.6rem,2.6vw,0.8rem)]">ENTER</span>
                               ) : (
                                   key
                               )}
@@ -720,8 +718,9 @@ export function WordollGame() {
             )}
           </div>
         </div>
-    )
+    );
   }
+
   return (
       <div
           className="flex flex-col w-full h-screen max-h-screen bg-[#1F2937] text-white overflow-hidden"
