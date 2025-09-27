@@ -542,7 +542,7 @@ export function LockPickrGame() {
     smallTile: 'size-[clamp(2.3rem,8.5vw,2.75rem)] text-[clamp(1rem,3.6vw,1.125rem)]',
     bigTile:   'size-[clamp(3.25rem,12vw,4rem)] text-[clamp(1.5rem,5vw,1.875rem)]',
     gridGap:   'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
-    panelW:    'w-[min(92vw,340px)] h-[clamp(3.5rem,10vw,4.1rem)]',
+    panelW:    'w-[min(92vw,340px)] h-[clamp(3.8rem,10vw,4.1rem)]',
     keyH:      'h-[clamp(3rem,10vw,3.5rem)]',
     keyText:   'text-[clamp(1.4rem,5vw,1.875rem)]',
     enterText: 'text-[clamp(0.9rem,3.2vw,1.1rem)]',
@@ -668,7 +668,7 @@ export function LockPickrGame() {
               {/* Mobile number pad */}
               <div className="flex-none pb-4">
                 {/* Win panel */}
-                <div className={`bg-gray-700 rounded-2xl px-6 py-1 text-center mb-4 mx-auto ${S.panelW}`}>
+                <div className={`bg-gray-700 rounded-2xl px-6 py-1 text-center mb-5 mx-auto ${S.panelW}`}>
                   <div className="flex items-center justify-center">
                     <img
                         src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
