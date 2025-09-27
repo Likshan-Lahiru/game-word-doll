@@ -106,7 +106,7 @@ const logos = [
 export function StorePage() {
   const navigate = useNavigate()
   const { addCoins } = useGlobalContext()
-  const [activeTab, setActiveTab] = useState('coins')
+  const [activeTab, setActiveTab] = useState('membership')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
   const { ticketBalance, setTicketBalance, gemBalance, voucherBalance } =
