@@ -537,7 +537,7 @@ export function LockPickrGame() {
   }
 
 
-// ---- sizing tokens (place once near top of file) ----
+// ---- sizing tokens
   const S = {
     smallTile: 'size-[clamp(2.3rem,8.5vw,2.75rem)] text-[clamp(1rem,3.6vw,1.125rem)]',
     bigTile:   'size-[clamp(3.25rem,12vw,4rem)] text-[clamp(1.5rem,5vw,1.875rem)]',
@@ -586,11 +586,16 @@ export function LockPickrGame() {
               </div>
 
               {/* Feedback (unchanged) */}
-              {feedback && (
-                  <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-4">
-                    {feedback}
-                  </div>
-              )}
+              <div className="h-2">
+                {feedback && (
+                    <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
+                      {feedback}
+
+                    </div>
+                )}
+
+              </div>
+
 
               {/* Game area */}
               <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
@@ -653,7 +658,7 @@ export function LockPickrGame() {
                 </div>
 
                 {/* Attempts count (unchanged) */}
-                <div className="text-center mt-[clamp(0.5rem,5vh,3rem)]">
+                <div className="text-center mt-[clamp(0.5rem,2vh,1rem)]">
                   <p className="text-xl font-medium font-[Inter]">
                     {attemptsLeft} x attempt
                   </p>
