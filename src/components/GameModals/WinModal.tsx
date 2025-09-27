@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../../context/GlobalContext'
+import confetti from 'canvas-confetti'
 type WinModalProps = {
     isOpen: boolean
     onClose: () => void
@@ -11,6 +12,49 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
     const navigate = useNavigate()
     const { addCoins } = useGlobalContext()
     const isMobile = window.innerWidth <= 768
+    const fireworksRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (isOpen && fireworksRef.current) {
+            // Create fireworks effect
+            const launchFireworks = () => {
+                const duration = 5000
+                const animationEnd = Date.now() + duration
+                const defaults = {
+                    startVelocity: 30,
+                    spread: 360,
+                    ticks: 60,
+                    zIndex: 0,
+                }
+                const interval = setInterval(() => {
+                    const timeLeft = animationEnd - Date.now()
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval)
+                    }
+                    const particleCount = 50 * (timeLeft / duration)
+                    // Launch colorful fireworks from random positions
+                    confetti({
+                        ...defaults,
+                        particleCount,
+                        origin: {
+                            x: Math.random(),
+                            y: Math.random() * 0.5,
+                        },
+                        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'],
+                    })
+                    confetti({
+                        ...defaults,
+                        particleCount,
+                        origin: {
+                            x: Math.random(),
+                            y: Math.random() * 0.5,
+                        },
+                        colors: ['#ff9900', '#9900ff', '#00ffff', '#ff6600', '#00ff99'],
+                    })
+                }, 250)
+            }
+            launchFireworks()
+        }
+    }, [isOpen])
     if (!isOpen) return null
     const handleSignUp = () => {
         // Add the reward before navigating to signup
@@ -26,8 +70,19 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
     // Mobile view based on the provided image
     if (isMobile) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']">
-                <div className="flex flex-col items-center">
+            <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']"
+                ref={fireworksRef}
+            >
+                {/* Colorful background elements */}
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1/3 h-full bg-red-500/20"></div>
+                    <div className="absolute top-0 left-1/3 w-1/3 h-full bg-green-500/20"></div>
+                    <div className="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/20"></div>
+                    <div className="absolute top-0 w-full h-1/3 bg-red-500/10 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 w-full h-1/3 bg-yellow-500/10 rounded-full blur-3xl"></div>
+                </div>
+                <div className="flex flex-col items-center relative z-10">
                     <div className="bg-[#3F4C5F] rounded-2xl p-6 text-center text-white w-[320px]">
                         <h2 className="ml-8 text-2xl font-bold mb-6">You Win</h2>
                         <div className="flex items-center justify-center text-4xl font-bold mb-6">
@@ -80,8 +135,19 @@ export function WinModal({ isOpen, onClose, reward, gameType }: WinModalProps) {
     }
     // Desktop view - unchanged
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']">
-            <div className="w-full max-w-md mx-auto">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']"
+            ref={fireworksRef}
+        >
+            {/* Colorful background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute top-0 left-0 w-1/3 h-full bg-red-500/20"></div>
+                <div className="absolute top-0 left-1/3 w-1/3 h-full bg-green-500/20"></div>
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/20"></div>
+                <div className="absolute top-0 w-full h-1/3 bg-red-500/10 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 w-full h-1/3 bg-yellow-500/10 rounded-full blur-3xl"></div>
+            </div>
+            <div className="w-full max-w-md mx-auto relative z-10">
                 <div className="bg-[#3F4C5F] rounded-xl p-8 text-center text-white">
                     <h2 className="text-1xl font-bold mb-6 font-['Inter']">You Win</h2>
                     <div className="flex items-center justify-center text-3xl font-bold mb-6 ">
