@@ -532,7 +532,7 @@ export function GiveawayGoldWordollGame() {
                     </div>
                     {/* Current attempt */}
                     <div
-                        className="flex justify-center mb-0"
+                        className="flex justify-center mb-2"
                         onClick={() => inputRef.current?.focus()}
                     >
                         <div
@@ -556,7 +556,7 @@ export function GiveawayGoldWordollGame() {
                     </div>
                 </div>
                 {/* Keyboard section - Responsive for all screen sizes */}
-                <div className="flex-none pb-6 mb-56">
+                <div className="flex-none pb-6 mb-24">
                     <div className="w-full max-w-md mx-auto">
                         {mobileKeyboard.map((row, rowIndex) => (
                             <div
