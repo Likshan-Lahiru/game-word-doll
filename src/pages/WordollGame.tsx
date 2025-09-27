@@ -493,7 +493,7 @@ export function WordollGame() {
     panelW: 'w-[min(92vw,360px)]',
     coinImg: 'w-5 h-5',
   }
-  // --- Replace your entire mobile branch with this ---
+
   if (isMobile) {
     return (
         <div
@@ -551,7 +551,7 @@ export function WordollGame() {
                 />
 
                 {/* Last attempt display */}
-                <div className="flex justify-center mt-1 mb-4">
+                <div className="flex justify-center mt-14 mb-4">
                   <div
                       className={`grid grid-cols-1 ${S.gridGap} font-[Inter]`}
                       style={{
@@ -605,7 +605,7 @@ export function WordollGame() {
                 </div>
 
                 {/* Attempts label */}
-                <div className="text-center mb-0">
+                <div className="text-center mt-20">
                   <p className="text-xl font-medium font-[Inter]">
                     {attempts} x attempt
                   </p>
@@ -634,7 +634,7 @@ export function WordollGame() {
                 </div>
 
                 {/* Keyboard */}
-                <div className="w-full max-w-md mx-auto">
+                <div className="w-full max-w-md mx-auto px-3">
                   {mobileKeyboard.map((row, rowIndex) => (
                       <div
                           key={rowIndex}
@@ -643,7 +643,7 @@ export function WordollGame() {
                         {row.map((key, keyIndex) => (
                             <button
                                 key={`${rowIndex}-${keyIndex}`}
-                                className={`${key === 'ENTER' || key === 'Backspace' ? S.wideKey : ''} ${S.key} m-[clamp(0.15rem,0.8vw,0.3rem)] rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold flex items-center justify-center shadow-md transition-colors`}
+                                className={`${key === 'ENTER' || key === 'Backspace' ? S.wideKey : ''} ${S.key} m-[clamp(0.10rem,0.10vw,0.3rem)] rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold flex items-center justify-center shadow-md transition-colors`}
                                 onClick={() => handleMobileKeyPress(key)}
                             >
                               {key === 'Backspace' ? (
