@@ -222,6 +222,14 @@ export function WordollGame() {
                 setTimeout(() => {
                   setFeedback('')
                 }, 2000)
+                // Clear only non-locked positions in the current attempt
+                const newAttempt = [...currentAttempt]
+                for (let i = 0; i < newAttempt.length; i++) {
+                  if (!lockedPositions[i]) {
+                    newAttempt[i] = ''
+                  }
+                }
+                setCurrentAttempt(newAttempt)
                 // Do not update last attempt or decrease attempts count
                 return
               }
@@ -277,6 +285,14 @@ export function WordollGame() {
                 setTimeout(() => {
                   setFeedback('')
                 }, 2000)
+                // Clear only non-locked positions in the current attempt
+                const newAttempt = [...currentAttempt]
+                for (let i = 0; i < newAttempt.length; i++) {
+                  if (!lockedPositions[i]) {
+                    newAttempt[i] = ''
+                  }
+                }
+                setCurrentAttempt(newAttempt)
                 // Do not update last attempt or decrease attempts count
                 return
               }
@@ -289,12 +305,6 @@ export function WordollGame() {
                 setLastAttempt([...currentAttempt])
                 // User didn't win - update UI based on API feedback
                 updateUIFromApiResponse(response, currentAttempt)
-                // Show feedback message when word is incorrect
-                setFeedback('Not in word list')
-                // Clear feedback after 2 seconds
-                setTimeout(() => {
-                  setFeedback('')
-                }, 2000)
                 // Decrease attempts
                 setAttempts((prev) => prev - 1)
                 // Check if out of attempts
@@ -335,6 +345,7 @@ export function WordollGame() {
     attempts,
     addCoins,
     winAmount,
+    lockedPositions,
   ])
   // Helper function to update UI based on API response
   const updateUIFromApiResponse = (response: any, attempt: string[]) => {
@@ -365,21 +376,16 @@ export function WordollGame() {
         }
       })
     }
-    // Show feedback message when word is incorrect
-    setFeedback('Not in word list')
-    // Clear feedback after 2 seconds
-    setTimeout(() => {
-      setFeedback('')
-    }, 2000)
     // Update the last attempt statuses for rendering
     setLastAttemptStatuses(statuses)
     // Update locked positions and clear incorrect positions in current attempt
     const newLocks = [...lockedPositions]
-    const newAttempt = Array(attempt.length).fill('')
+    const newAttempt = [...currentAttempt]
     statuses.forEach((status, index) => {
       if (status === 'correct') {
         newLocks[index] = true
-        newAttempt[index] = attempt[index]
+      } else {
+        newAttempt[index] = ''
       }
     })
     setLockedPositions(newLocks)
@@ -477,10 +483,6 @@ export function WordollGame() {
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
     ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
   ]
-
-
-
-// --- Add this helper object near the top of your component file (outside JSX) ---
   const S = {
     tileBox: 'size-[clamp(2.75rem,10vw,4rem)] text-[clamp(1.25rem,4.2vw,1.75rem)]',
     tileBoxLg: 'size-[clamp(3.5rem,12vw,4.5rem)] text-[clamp(1.5rem,5vw,2rem)]',
@@ -705,8 +707,6 @@ export function WordollGame() {
         </div>
     );
   }
-
-  // Desktop view
   return (
       <div
           className="flex flex-col w-full h-screen max-h-screen bg-[#1F2937] text-white overflow-hidden"
@@ -736,7 +736,20 @@ export function WordollGame() {
                 <p className="text-white text-lg">{feedback}</p>
               </div>
           )}
-          <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
+          <div className="flex-1 flex flex-col justify-center items-center overflow-hidden mt-28 px-4">
+            {isMobile && (
+                <input
+                    ref={inputRef}
+                    type="text"
+                    value={currentAttempt.join('')}
+                    onChange={handleInputChange}
+                    className="opacity-0 h-0 w-0 absolute"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                />
+            )}
             {/* Last attempt display */}
             <div className="flex justify-center mt-1 mb-4">
               <div
@@ -791,7 +804,7 @@ export function WordollGame() {
                 ))}
               </div>
             </div>
-            <div className="text-center mb-0">
+            <div className="text-center mt-20">
               <p className="text-xl font-medium font-[Inter]">
                 {attempts} x attempt
               </p>
@@ -799,56 +812,104 @@ export function WordollGame() {
           </div>
           {/* Keyboard section */}
           <div className="flex-none mb-0 pb-0">
-            <VirtualKeyboard
-                onKeyPress={(key) => {
-                  if (key === 'Enter') {
-                    checkGuess()
-                  } else if (key === 'Backspace') {
-                    let lastFilled = -1
-                    for (let i = wordLength - 1; i >= 0; i--) {
-                      if (!lockedPositions[i] && currentAttempt[i]) {
-                        lastFilled = i
-                        break
-                      }
-                    }
-                    if (lastFilled !== -1) {
-                      const newAttempt = [...currentAttempt]
-                      newAttempt[lastFilled] = ''
-                      setCurrentAttempt(newAttempt)
-                    }
-                  } else if (/^[A-Z]$/.test(key)) {
-                    let nextPos = -1
-                    for (let i = 0; i < wordLength; i++) {
-                      if (!lockedPositions[i] && !currentAttempt[i]) {
-                        nextPos = i
-                        break
-                      }
-                    }
-                    if (nextPos !== -1) {
-                      const newAttempt = [...currentAttempt]
-                      newAttempt[nextPos] = key
-                      setCurrentAttempt(newAttempt)
-                    }
-                  }
-                }}
-                keyboardType="qwerty"
-                className="md:block"
-            />
-            <div className="bg-[#374151] rounded-2xl text-center mb-3 mx-auto w-[320px] h-[60px] space-y-0">
-              <div className="flex items-center justify-center pt-2 h-8">
-                <img
-                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
-                    alt="Coins"
-                    className="w-5 h-5 mr-2"
-                />
-                <span className="text-xl font-['Inter'] font-semibold text-white">
-                {winAmount.toLocaleString()}
-              </span>
-              </div>
-              <p className="text-xl pl-6 text-white font-inter font-semibold">
-                win
-              </p>
-            </div>
+            {isMobile ? (
+                <>
+                  <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-4 mx-auto w-[340px] h-[65px]">
+                    <div className="flex items-center justify-center">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                          alt="Coins"
+                          className="5 h-5 mr-1"
+                      />
+                      <span className="text-lg font-bold text-white">
+                    {winAmount.toLocaleString()}
+                  </span>
+                    </div>
+                    <p className="text-white text-lg font-bold">win</p>
+                  </div>
+                  <div className="w-full max-w-md mx-auto">
+                    {mobileKeyboard.map((row, rowIndex) => (
+                        <div
+                            key={rowIndex}
+                            className={`flex justify-center mb-0.5 ${rowIndex === 1 ? 'px-4' : ''}`}
+                        >
+                          {row.map((key, keyIndex) => (
+                              <button
+                                  key={`${rowIndex}-${keyIndex}`}
+                                  className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[65px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
+                                  onClick={() => handleMobileKeyPress(key)}
+                              >
+                                {key === 'Backspace' ? (
+                                    <img
+                                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                        alt="Backspace"
+                                        className="h-8 w-8"
+                                    />
+                                ) : key === 'ENTER' ? (
+                                    <span className="text-xs">ENTER</span>
+                                ) : (
+                                    key
+                                )}
+                              </button>
+                          ))}
+                        </div>
+                    ))}
+                  </div>
+                </>
+            ) : (
+                <>
+                  <VirtualKeyboard
+                      onKeyPress={(key) => {
+                        if (key === 'Enter') {
+                          checkGuess()
+                        } else if (key === 'Backspace') {
+                          let lastFilled = -1
+                          for (let i = wordLength - 1; i >= 0; i--) {
+                            if (!lockedPositions[i] && currentAttempt[i]) {
+                              lastFilled = i
+                              break
+                            }
+                          }
+                          if (lastFilled !== -1) {
+                            const newAttempt = [...currentAttempt]
+                            newAttempt[lastFilled] = ''
+                            setCurrentAttempt(newAttempt)
+                          }
+                        } else if (/^[A-Z]$/.test(key)) {
+                          let nextPos = -1
+                          for (let i = 0; i < wordLength; i++) {
+                            if (!lockedPositions[i] && !currentAttempt[i]) {
+                              nextPos = i
+                              break
+                            }
+                          }
+                          if (nextPos !== -1) {
+                            const newAttempt = [...currentAttempt]
+                            newAttempt[nextPos] = key
+                            setCurrentAttempt(newAttempt)
+                          }
+                        }
+                      }}
+                      keyboardType="qwerty"
+                      className="md:block"
+                  />
+                  <div className="bg-[#374151] rounded-2xl text-center mb-3 mx-auto w-[320px] h-[60px] space-y-0">
+                    <div className="flex items-center justify-center pt-2 h-8">
+                      <img
+                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                          alt="Coins"
+                          className="w-5 h-5 mr-2"
+                      />
+                      <span className="text-xl font-['Inter'] font-semibold text-white">
+                    {winAmount.toLocaleString()}
+                  </span>
+                    </div>
+                    <p className="text-xl pl-6 text-white font-inter font-semibold">
+                      win
+                    </p>
+                  </div>
+                </>
+            )}
           </div>
         </div>
         <CountdownModal
