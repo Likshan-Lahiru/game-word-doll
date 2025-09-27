@@ -33,3 +33,4 @@ export const IMAGES = {
 }
 //https://i.ibb.co/k2LgHH1m/grandwin.png
 //https://i.ibb.co/Mx0x2WmQ/pngwing-com.png
+//https://i.ibb.co/TM8w8W6c/coin-pile.jpg
