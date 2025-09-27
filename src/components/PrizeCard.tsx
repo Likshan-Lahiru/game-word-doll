@@ -71,13 +71,20 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
 
     // Desktop
     return (
-        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[350px]">
+        <div className="bg-white rounded-xl p-4 text-black flex flex-col items-center w-[230px] h-[390px]">
 
             <img
                 src={prize.image}
                 alt={`${prize.coinAmount} Coins`}
-                className="w-20 h-20 mb-1"
+                className={`
+                     ${prize.image === "/coin-pile.png"
+                    ? "w-28 h-28 mt-0 mb-0"  
+                    : "w-20 h-20 mt-2 mb-6"  
+                }
+                `}
             />
+
+
             <p className="text-xl mt-10 mb-1 font-semibold font-['DM_Sans']">
                 GC {prize.coinAmount.toLocaleString()}
             </p>
@@ -102,7 +109,8 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                     alt="Coins"
                     className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-8 h-8 mr-2 rounded-full p-[2px]`}
                 />
-                <span className="text-[#170F49] font-semibold font-['DM_Sans'] text-xl">{prize.cost.toLocaleString()}</span>
+                <span
+                    className="text-[#170F49] font-semibold font-['DM_Sans'] text-xl">{prize.cost.toLocaleString()}</span>
             </div>
             <button
                 className="bg-[#56CA5A] text-xl font-semibold font-['DM_Sans'] hover:bg-green-600 text-white py-2 w-44 h-10 rounded-full mt-0"
