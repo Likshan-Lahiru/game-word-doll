@@ -556,7 +556,7 @@ export function GiveawayGoldWordollGame() {
                     </div>
                 </div>
                 {/* Keyboard section - Responsive for all screen sizes */}
-                <div className="flex-none pb-6 mb-24">
+                <div className="flex-none pb-6 mb-10">
                     <div className="w-full max-w-md mx-auto">
                         {mobileKeyboard.map((row, rowIndex) => (
                             <div
