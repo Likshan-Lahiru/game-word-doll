@@ -625,19 +625,20 @@ export function GemLockPickrGame() {
                     </div>
 
                     {/* Timer */}
-                    <div className="text-center mb-24 mt-8">
+                    <div className="text-center mb-12 mt-8">
                         <p className="text-xs">Timer</p>
                         <p className="text-2xl font-bold">{formatTime(timer)}</p>
                     </div>
 
                     {/* Feedback message */}
-                    <div className="h-2">
+                    <div className="h-2 mb-10">
                         {feedback && (
-                            <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 w-36 mx-auto">
+                            <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-10 w-36 mx-auto">
                                 {feedback}
 
                             </div>
                         )}
+
 
                     </div>
 
