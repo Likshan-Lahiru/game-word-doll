@@ -42,6 +42,15 @@ export function GiveawayGoldWordollGame() {
         ('correct' | 'wrong-position' | 'incorrect')[]
     >([])
     const [selectedPrize, setSelectedPrize] = useState<any>(null)
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+    // Add mobile detection
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
     // Get letter status (correct, wrong position, incorrect)
     const getLetterStatus = (letter: string, index: number) => {
         // First, check if we have status information from the API response
@@ -457,6 +466,209 @@ export function GiveawayGoldWordollGame() {
         ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
         ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
     ]
+
+    const S = {
+        tileBox:
+            'size-[clamp(2.75rem,10vw,4rem)] text-[clamp(1.25rem,4.2vw,1.75rem)]',
+        tileBoxLg: 'size-[clamp(3.5rem,12vw,4.5rem)] text-[clamp(1.5rem,5vw,2rem)]',
+        gridGap: 'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
+        key: 'h-[clamp(3.3rem,8.8vw,3.6rem)] w-[clamp(2.5rem,8vw,3.2rem)] text-[clamp(0.9rem,3.2vw,1.1rem)]',
+        wideKey: 'w-[clamp(3.9rem,13vw,5rem)]',
+        panelW: 'w-[min(92vw,360px)]',
+        coinImg: 'w-5 h-5',
+    }
+
+    if (isMobile) {
+        return (
+            <div
+                className="fixed inset-0 flex flex-col bg-[#1F2937] text-white overscroll-none touch-pan-y select-none"
+                ref={gameContainerRef}
+            >
+                {/* Stable viewport + iOS safe area */}
+                <div className="flex flex-col h-dvh min-h-dvh pb-[env(safe-area-inset-bottom)]">
+                    <div className="relative flex flex-col h-full">
+                        {/* Back button */}
+                        <div className="absolute top-4 left-4 z-10">
+                            <button
+                                className="w-12 h-12 rounded-full flex items-center justify-center"
+                                onClick={() => navigate('/gold-giveaway-game')}
+                            >
+                                <img
+                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                                    alt="Back"
+                                    className="w-8 h-8"
+                                />
+                            </button>
+                        </div>
+
+                        {/* Timer */}
+                        <div className="flex-none text-center pt-8 pb-2">
+                            <p className="text-white text-xs">Timer</p>
+                            <p className="text-2xl font-bold">{formatTime(timer)}</p>
+                        </div>
+
+                        {/* Feedback */}
+                        <div className="h-2">
+                            {feedback && (
+                                <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
+                                    {feedback}
+
+                                </div>
+                            )}
+
+                        </div>
+
+                        {/* Game area */}
+                        <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
+                            {/* Hidden input: keep inert (no OS keyboard) */}
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                inputMode="none"
+                                value={currentAttempt.join('')}
+                                onChange={handleInputChange}
+                                className="absolute opacity-0 pointer-events-none h-0 w-0"
+                                autoComplete="off"
+                                autoCorrect="off"
+                                autoCapitalize="off"
+                                readOnly
+                                spellCheck={false}
+                            />
+
+                            {/* Last attempt */}
+                            <div className="flex justify-center mt-[clamp(0.5rem,5vh,1.25rem)] mb-2">
+                                <div
+                                    className={`grid grid-cols-1 ${S.gridGap} text-2xl font-[Inter]`}
+                                    style={{gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`}}
+                                >
+                                    {lastAttempt
+                                        ? lastAttempt.map((letter, index) =>
+                                            renderLetterTile(
+                                                letter,
+                                                index,
+                                                lastAttemptStatuses.length > 0
+                                                    ? lastAttemptStatuses[index]
+                                                    : getLetterStatus(letter, index),
+                                            ),
+                                        )
+                                        : Array.from({length: wordLength}).map((_, i) => (
+                                            <div
+                                                key={i}
+                                                className="w-10 h-10 flex items-center justify-center bg-[#374151] rounded-md text-white font-bold text-lg shadow-md"
+                                            />
+                                        ))}
+                                </div>
+                            </div>
+
+                            {/* Current attempt */}
+                            <div className="flex justify-center mb-2" onClick={() => inputRef.current?.focus()}>
+                                <div
+                                    className={`grid grid-cols-1 ${S.gridGap}`}
+                                    style={{gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`}}
+                                >
+                                    {Array.from({length: wordLength}).map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`${S.tileBoxLg} flex items-center justify-center ${
+                                                currentAttempt[index]
+                                                    ? lockedPositions[index]
+                                                        ? 'bg-[#22C55E]'
+                                                        : 'bg-gray-700'
+                                                    : 'bg-[#374151]'
+                                            } rounded-md text-white font-bold shadow-md font-[Inter] ${
+                                                !lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'
+                                            }`}
+                                            onClick={() => handleLetterClick(index)}
+                                        >
+                                            {currentAttempt[index]}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Mobile keyboard */}
+                        <div className="flex-none pb-2 mb-4">
+                            <div className="w-full max-w-md mx-auto">
+                                {mobileKeyboard.map((row, rowIndex) => (
+                                    <div
+                                        key={rowIndex}
+                                        className={`flex justify-center mb-[clamp(0.2rem,0.8vw,0.35rem)] ${
+                                            rowIndex === 1 ? 'px-4' : ''
+                                        }`}
+                                    >
+                                        {row.map((key, keyIndex) => (
+                                            <button
+                                                key={`${rowIndex}-${keyIndex}`}
+                                                className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[60px]' : 'w-[32px]'} ${S.key} m-[clamp(0.10rem,0.10vw,0.3rem)] rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold ${
+                                                    key === 'ENTER' ? 'text-xs' : 'text-md'
+                                                } flex items-center justify-center shadow-md transition-colors`}
+                                                onClick={() => handleKeyPress(key)}
+                                            >
+                                                {key === 'Backspace' ? (
+                                                    <img
+                                                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                                        alt="Backspace"
+                                                        className="h-[clamp(1.25rem,4.2vw,2rem)] w-[clamp(1.25rem,4.2vw,2rem)]"
+                                                    />
+                                                ) : key === 'ENTER' ? (
+                                                    <span className="text-[clamp(0.6rem,2.6vw,0.8rem)]">ENTER</span>
+                                                ) : (
+                                                    key
+                                                )}
+                                            </button>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Modals (unchanged) */}
+                    <CountdownModal
+                        isOpen={showCountdown}
+                        onCountdownComplete={handleCountdownComplete}
+                    />
+                    <CooldownModal
+                        isOpen={showCooldownModal}
+                        onClose={() => setShowCooldownModal(false)}
+                        remainingTime={cooldownTimeRemaining}
+                        gameType="Gold Wordoll"
+                    />
+                    <ClaimEntryModal
+                        isOpen={showClaimEntryModal}
+                        onClose={() => setShowClaimEntryModal(false)}
+                        entryCost={selectedPrize?.cost || 5}
+                    />
+                    <WinPackageGoldCoinModal
+                        isOpen={showWinPackageModal}
+                        onClose={() => {
+                            setShowWinPackageModal(false)
+                            navigate('/gold-giveaway-game')
+                        }}
+                        prize={{
+                            coinAmount: selectedPrize?.coinAmount || 300000,
+                            spinAmount: selectedPrize?.spinAmount || 5,
+                        }}
+                    />
+                    {!isAuthenticated ? (
+                        <>
+                            <WinModal isOpen={showWinModal} onClose={() => setShowWinModal(false)} reward={winAmount} gameType="wordoll" />
+                            <LoseModal isOpen={showLoseModal} onClose={() => setShowLoseModal(false)} penalty={betAmount} gameType="wordoll" />
+                            <NoAttemptsModal isOpen={showNoAttemptsModal} onClose={() => setShowNoAttemptsModal(false)} penalty={betAmount} />
+                        </>
+                    ) : (
+                        <>
+                            <AuthenticatedWinModal isOpen={showWinModal} onClose={() => setShowWinModal(false)} reward={winAmount} />
+                            <AuthenticatedLoseModal isOpen={showLoseModal} onClose={() => setShowLoseModal(false)} penalty={betAmount} />
+                            <AuthenticatedNoAttemptsModal isOpen={showNoAttemptsModal} onClose={() => setShowNoAttemptsModal(false)} penalty={betAmount} />
+                        </>
+                    )}
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div
             className="flex flex-col w-full h-screen max-h-screen bg-[#1F2937] text-white overflow-hidden"
@@ -477,17 +689,20 @@ export function GiveawayGoldWordollGame() {
                     </button>
                 </div>
                 {/* Gold coin indicator */}
-
                 <div className="flex-none text-center pt-8 pb-2">
                     <p className="text-white text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
                 {/* Feedback message */}
-                {feedback && (
-                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
-                        <p className="text-white text-lg">{feedback}</p>
-                    </div>
-                )}
+                <div className="h-2">
+                    {feedback && (
+                        <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 w-36 mx-auto">
+                            {feedback}
+
+                        </div>
+                    )}
+
+                </div>
                 <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
                     <input
                         ref={inputRef}

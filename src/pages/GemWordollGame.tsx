@@ -532,7 +532,7 @@ export function GemWordollGame() {
                             <p className="text-2xl font-bold">{formatTime(timer)}</p>
                         </div>
 
-                        {/* Feedback (auto height, centered) */}
+
                         {/* Feedback message (auto height, centered, no clipping) */}
                         <div className="h-2">
                             {feedback && (

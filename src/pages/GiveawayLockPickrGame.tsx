@@ -769,11 +769,15 @@ export function GiveawayLockPickrGame() {
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
                 {/* Feedback message */}
-                {feedback && (
-                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-4 mx-auto max-w-md">
-                        <p className="text-white text-lg">{feedback}</p>
-                    </div>
-                )}
+                <div className="h-2">
+                    {feedback && (
+                        <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 w-36 mx-auto">
+                            {feedback}
+
+                        </div>
+                    )}
+
+                </div>
                 <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
                     {/* Hidden input for keyboard */}
                     <input
