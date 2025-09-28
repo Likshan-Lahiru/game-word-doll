@@ -73,19 +73,45 @@ export function GiveawayEntry() {
             }
         }
     }
+    // Replace your current GrandWin with this:
     const GrandWin = () => {
+        if (isMobile) {
+            // ---- Mobile view ----
+            return (
+                <div className="w-full px-4 mt-3 font-['DM Sans']">
+                    <div className="mx-auto w-full max-w-md rounded-2xl  to-[#FFB302] ">
+                        <div className="rounded-2xl bg-[#1F2937] py-4 px-5 text-center">
+                            <p className="text-xs font-semibold tracking-wide text-white/90">
+                                GRAND WIN
+                            </p>
+                            <div className="mt-2 flex items-center justify-center gap-2">
+                                <span className="text-lg font-semibold">Win</span>
+                                <img
+                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/agrcZVSRX593jbti3xzVTM/heart.png"
+                                    alt="Heart"
+                                    className="w-5 h-5 object-contain"
+                                />
+                                <span className="text-lg font-semibold">1,000 Daily</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        // ---- Desktop view (unchanged) ----
         return (
             <>
                 <div
                     className={`flex-col flex items-center justify-center gap-y-5
                     ${isMobile && 'mt-10'}
-                `}
+                    `}
                 >
-                    <p className={'font-semibold text-[20px] font-[DM Sans]'}>
+                    <p className={'font-semibold text-[20px] font-[\'DM Sans\']'}>
                         GRAND WIN
                     </p>
                     <div className={'flex items-center'}>
-                        <p className={'font-semibold pr-2 text-[20px] font-[DM Sans]'}>
+                        <p className={'font-semibold pr-2 text-[20px] font-[\'DM Sans\']'}>
                             Win
                         </p>
                         <img
@@ -93,7 +119,7 @@ export function GiveawayEntry() {
                             alt="Heart"
                             className="w-6 h-6 pt-[2px] object-contain"
                         />
-                        <p className={'font-semibold pl-2 text-[20px] font-[DM Sans]'}>
+                        <p className={'font-semibold pl-2 text-[20px] font-[\'DM Sans\']'}>
                             1,000 Daily
                         </p>
                     </div>
@@ -101,11 +127,12 @@ export function GiveawayEntry() {
             </>
         )
     }
+
     const CustomWordollCard = () => {
         if (isMobile) {
             return (
                 <div
-                    className="rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer font-['DM Sans']"
+                    className="rounded-xl overflow-hidden flex flex-col h-[230px] relative cursor-pointer font-['DM Sans']"
                     onClick={() => handleGameSelect('wordoll')}
                 >
                     <div className="absolute inset-0">
@@ -149,7 +176,7 @@ export function GiveawayEntry() {
         if (isMobile) {
             return (
                 <div
-                    className="rounded-xl overflow-hidden flex flex-col h-[250px] relative cursor-pointer font-['DM Sans']"
+                    className="rounded-xl overflow-hidden flex flex-col h-[230px] relative cursor-pointer font-['DM Sans']"
                     onClick={() => handleGameSelect('lockpickr')}
                 >
                     <div className="absolute inset-0">
@@ -209,38 +236,38 @@ export function GiveawayEntry() {
                 </div>
 
                 {/* Status Bar (pinned) */}
-                <div className="sticky top-0 z-10 bg-[#1F2937] mb-[clamp(1rem,14vw,6rem)]">
-                    <StatusBar isMobile hideOnlineCount={true}/>
+                <div className="sticky top-0 z-10 bg-[#1F2937]">
+                    <StatusBar isMobile hideOnlineCount={true} />
                 </div>
 
-
                 {/* Scrollable content */}
-                <div className="flex-1 overflow-y-auto overscroll-contain">
+                <div className="flex-1 overflow-y-auto mt-10 overscroll-contain">
                     {/* Title */}
-                    <h2 className="pb-3 text-base sm:text-lg md:text-lg font-medium text-center my-0 md:mb-5 px-4">
+                    <h2 className="pb-3 text-base sm:text-lg md:text-lg font-medium text-center mb-5 my-0 md:mb-5 px-4">
                         {selectedBalanceType === 'ticket'
                             ? 'Play any game to win vouchers'
                             : 'Play any game to enter the Cooky Flip'}
                     </h2>
 
                     {/* Cards + optional GrandWin (mobile) */}
-                    <div className="flex flex-col mt-5 items-center">
-                        {/* Mobile - Grand Win After Entries Select */}
-                        {selectedBalanceType === 'ticket' && isAuthenticated && <GrandWin/>}
+                    <div className="flex flex-col items-center">
+
 
                         {/* Game Cards */}
                         <div className="w-full px-4">
                             <div className="flex justify-center gap-3 w-full max-w-2xl mx-auto">
                                 {/* WordollCard */}
                                 <div className="w-[60%]">
-                                    <CustomWordollCard/>
+                                    <CustomWordollCard />
                                 </div>
                                 {/* LockPickerCard */}
                                 <div className="w-[60%]">
-                                    <CustomLockPickrCard/>
+                                    <CustomLockPickrCard />
                                 </div>
                             </div>
                         </div>
+                        {/* Mobile - Grand Win After Entries Select */}
+                        {selectedBalanceType === 'ticket' && isAuthenticated && <GrandWin />}
                     </div>
 
                     {/* Spin Button */}
@@ -293,11 +320,11 @@ export function GiveawayEntry() {
 
                 {/* Bottom Navigation (pinned) */}
                 <div className="sticky bottom-0 z-10 bg-[#1F2937] pb-[env(safe-area-inset-bottom)]">
-                    <BottomNavigation/>
+                    <BottomNavigation />
                 </div>
 
                 {/* Modals */}
-                <InfoModal isOpen={openInfoModal} onClose={() => setOpenInfoModal(false)}/>
+                <InfoModal isOpen={openInfoModal} onClose={() => setOpenInfoModal(false)} />
             </div>
         )
     }
@@ -305,7 +332,7 @@ export function GiveawayEntry() {
 // --- DESKTOP VIEW (unchanged) ---
     return (
         <div className="relative font-['DM Sans']">
-        {/* Back button */}
+            {/* Back button */}
             <div className="absolute top-12 left-2 z-10 lg:top-4 md:top-4 md:left-4 sm:top-4">
                 <button
                     className="w-12 h-12 rounded-full flex items-center justify-center"
