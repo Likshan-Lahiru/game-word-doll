@@ -73,6 +73,7 @@ export function GemWordollGame() {
     const [legendaryAmount, setLegendaryAmount] = useState('0.00')
     const [gameCompleted, setGameCompleted] = useState(false)
     const [timeEndedReward, setTimeEndedReward] = useState(0)
+
     // Last attempt statuses from API
     const [lastAttemptStatuses, setLastAttemptStatuses] = useState<
         ('correct' | 'wrong-position' | 'incorrect')[]
@@ -118,6 +119,7 @@ export function GemWordollGame() {
         }
         setShowTimeEndedModal(true)
     }
+
     const handleNoAttemptsLeft = () => {
         setGameCompleted(true)
         setShowNoAttemptsModal(true)
@@ -490,211 +492,6 @@ export function GemWordollGame() {
         ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
         ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
     ]
-    const S = {
-        tileBox:   'size-[clamp(2.75rem,10vw,4rem)] text-[clamp(1.25rem,4.2vw,1.75rem)]',
-        tileBoxLg: 'size-[clamp(3.5rem,12vw,4.5rem)] text-[clamp(1.5rem,5vw,2rem)]',
-        gridGap:   'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
-        key:       'h-[clamp(3.3rem,8.8vw,3.6rem)] w-[clamp(2.5rem,8vw,3.2rem)] text-[clamp(0.9rem,3.2vw,1.1rem)]',
-        wideKey:   'w-[clamp(3.9rem,13vw,5rem)]',
-        panelW:    'w-[min(92vw,360px)]',
-        coinImg:   'w-5 h-5',
-    };
-
-// --- RENDER ---
-    if (isMobile) {
-        return (
-            <div
-                className="fixed inset-0 bg-[#1F2937] text-white overscroll-none touch-pan-y select-none overflow-hidden"
-                ref={gameContainerRef}
-            >
-                {/* Stable viewport + safe area */}
-                <div className="flex flex-col h-dvh min-h-dvh pb-[env(safe-area-inset-bottom)]">
-
-                    {/* Top: back + timer */}
-                    <div className="relative flex flex-col h-full min-h-0">
-                        {/* Back button */}
-                        <div className="absolute top-4 left-4 z-10">
-                            <button
-                                className="w-12 h-12 rounded-full flex items-center justify-center"
-                                onClick={() => navigate('/')}
-                            >
-                                <img
-                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                                    alt="Back"
-                                    className="w-8 h-8"
-                                />
-                            </button>
-                        </div>
-
-                        {/* Timer */}
-                        <div className="flex-none text-center pt-8 pb-2 shrink-0">
-                            <p className="text-white text-xs">Timer</p>
-                            <p className="text-2xl font-bold">{formatTime(timer)}</p>
-                        </div>
-
-                        {/* Feedback (auto height, centered) */}
-                        {feedback ? (
-                            <div className="px-4">
-                                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-3 mx-auto max-w-[min(90vw,360px)] text-sm">
-                                    {feedback}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="h-[clamp(0rem,1.2vh,0.5rem)]" />
-                        )}
-
-                        {/* Game area */}
-                        <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-2 min-h-0">
-                            {/* Hidden input (inert) */}
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                inputMode="none"
-                                value={currentAttempt.join('')}
-                                onChange={handleInputChange}
-                                className="absolute opacity-0 pointer-events-none h-0 w-0"
-                                autoComplete="off"
-                                autoCorrect="off"
-                                autoCapitalize="off"
-                                spellCheck="false"
-                                readOnly
-                            />
-
-                            {/* Last attempt display (S.tileBox) */}
-                            <div className="flex justify-center mt-[clamp(0.5rem,6vh,2.5rem)] mb-4">
-                                <div
-                                    className={`grid grid-cols-1 ${S.gridGap} font-[Inter]`}
-                                    style={{ gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))` }}
-                                >
-                                    {lastAttempt.length
-                                        ? lastAttempt.map((letter, index) => {
-                                            // prefer API statuses if present
-                                            const api = lastAttemptStatuses.length > 0 ? lastAttemptStatuses[index] : null;
-                                            const computed = (!api && letter !== '')
-                                                ? getLetterStatuses(lastAttempt, targetWord)[index]
-                                                : null;
-
-                                            const status = (api ?? computed) as ('correct'|'wrong-position'|'incorrect'|null);
-                                            let bg = 'bg-gray-700';
-                                            if (status === 'correct') bg = 'bg-[#22C55E]';
-                                            else if (status === 'wrong-position') bg = 'bg-[#C5BD22]';
-
-                                            return (
-                                                <div
-                                                    key={index}
-                                                    className={`${S.tileBox} flex items-center justify-center ${bg} rounded-md text-white font-bold shadow-md`}
-                                                >
-                                                    {letter}
-                                                </div>
-                                            );
-                                        })
-                                        : Array(wordLength).fill('').map((_, i) => (
-                                            <div
-                                                key={i}
-                                                className={`${S.tileBox} flex items-center justify-center bg-[#374151] rounded-md text-white font-bold shadow-md`}
-                                            />
-                                        ))}
-                                </div>
-                            </div>
-
-                            {/* Current attempt (S.tileBoxLg) */}
-                            <div className="flex justify-center mb-2" onClick={() => !gameCompleted && inputRef.current?.focus()}>
-                                <div
-                                    className={`grid grid-cols-1 ${S.gridGap}`}
-                                    style={{ gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))` }}
-                                >
-                                    {Array.from({ length: wordLength }).map((_, index) => (
-                                        <div
-                                            key={index}
-                                            className={`${S.tileBoxLg} flex items-center justify-center ${
-                                                currentAttempt[index]
-                                                    ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700')
-                                                    : 'bg-[#374151]'
-                                            } rounded-md text-white font-bold shadow-md font-[Inter] text-center ${
-                                                !lockedPositions[index] && !gameCompleted ? 'cursor-pointer' : 'cursor-not-allowed'
-                                            }`}
-                                            onClick={() => handleLetterClick(index)}
-                                        >
-                                            {currentAttempt[index]}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Attempts label */}
-                            <div className="text-center mt-[clamp(0.5rem,6vh,2.5rem)]">
-                                <p className="text-xl font-medium font-[Inter]">
-                                    {attempts} x attempt
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Mobile keyboard */}
-                        <div className="flex-none mb-0 pb-[env(safe-area-inset-bottom)] shrink-0">
-                            <div className="w-full max-w-md mx-auto px-3">
-                                {mobileKeyboard.map((row, rowIndex) => (
-                                    <div
-                                        key={rowIndex}
-                                        className={`flex justify-center mb-[clamp(0.2rem,0.8vw,0.35rem)] ${rowIndex === 1 ? 'px-4' : ''}`}
-                                    >
-                                        {row.map((key, keyIndex) => (
-                                            <button
-                                                key={`${rowIndex}-${keyIndex}`}
-                                                className={`${(key === 'ENTER' || key === 'Backspace') ? S.wideKey : ''} ${S.key} m-[clamp(0.10rem,0.10vw,0.3rem)] rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold flex items-center justify-center shadow-md transition-colors ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                onClick={() => handleMobileKeyPress(key)}
-                                                disabled={gameCompleted}
-                                            >
-                                                {key === 'Backspace' ? (
-                                                    <img
-                                                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
-                                                        alt="Backspace"
-                                                        className="h-[clamp(1.25rem,4.2vw,2rem)] w-[clamp(1.25rem,4.2vw,2rem)]"
-                                                    />
-                                                ) : key === 'ENTER' ? (
-                                                    <span className="text-[clamp(0.6rem,2.6vw,0.8rem)]">ENTER</span>
-                                                ) : (
-                                                    key
-                                                )}
-                                            </button>
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Modals (same as your current) */}
-                    <CountdownModal
-                        isOpen={showCountdown}
-                        onCountdownComplete={handleCountdownComplete}
-                    />
-                    <UserWinGemModal
-                        isOpen={showUserWinModal}
-                        onClose={() => { setShowUserWinModal(false); navigate('/gem-game-mode'); }}
-                        gemAmount={parseFloat(legendaryAmount)}
-                    />
-                    <TimeEndedGemModal
-                        isOpen={showTimeEndedModal}
-                        onClose={() => { setShowTimeEndedModal(false); navigate('/gem-game-mode'); }}
-                        ticketAmount={timeEndedReward}
-                    />
-                    <NoAttemptsGemModal
-                        isOpen={showNoAttemptsModal}
-                        onClose={() => { setShowNoAttemptsModal(false); navigate('/gem-game-mode'); }}
-                    />
-                    <RoomHasWinnerModal
-                        isOpen={showRoomHasWinnerModal}
-                        onClose={() => { setShowRoomHasWinnerModal(false); navigate('/gem-game-mode'); }}
-                        winnerName={roomWinnerName}
-                        legendaryAmount={legendaryAmount}
-                        userReward={0.02}
-                    />
-                </div>
-            </div>
-        );
-    }
-
-// --- DESKTOP: unchanged UI (your original) ---
     return (
         <div
             className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
@@ -720,52 +517,62 @@ export function GemWordollGame() {
             </div>
 
             {/* Feedback message */}
-            <div className="h-2">
-                {feedback && (
-                    <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
-                        {feedback}
+            {feedback && (
+                <div className="bg-[#374151] text-center py-3 px-6 rounded-lg mb-6 mx-auto max-w-md shadow-lg ">
+                    <p className="text-white text-lg font-semibold">{feedback}</p>
+                </div>
+            )}
 
-                    </div>
-                )}
+            {isMobile && (
+                <input
+                    ref={inputRef}
+                    type="text"
+                    value={currentAttempt.join('')}
+                    onChange={handleInputChange}
+                    className="opacity-0 h-0 w-0 absolute"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                />
+            )}
 
-            </div>
-
-            {/* Last attempt display */}
+            {/* Last attempt display - Always shown */}
             <div className="flex justify-center mt-10 mb-4">
                 <div
                     className="grid gap-2 text-2xl font-[Inter]"
-                    style={{gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`}}
+                    style={{
+                        gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+                    }}
                 >
                     {lastAttempt.map((letter, index) => {
-                        const hasActualLetter = letter !== '';
+                        // Only check status if there's an actual letter
+                        const hasActualLetter = letter !== ''
                         const status =
                             hasActualLetter && lastAttemptStatuses.length === 0
                                 ? getLetterStatuses(lastAttempt, targetWord)[index]
-                                : null;
-                        return renderLetterTile(letter, index, status);
+                                : null
+                        return renderLetterTile(letter, index, status)
                     })}
                 </div>
             </div>
 
-            {/* Current attempt */}
             <div
                 className="flex justify-center mb-4"
                 onClick={() => !gameCompleted && inputRef.current?.focus()}
             >
                 <div
                     className="grid gap-2"
-                    style={{gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`}}
+                    style={{
+                        gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+                    }}
                 >
-                    {Array.from({length: wordLength}).map((_, index) => (
+                    {Array.from({
+                        length: wordLength,
+                    }).map((_, index) => (
                         <div
                             key={index}
-                            className={`w-16 h-16 flex items-center justify-center ${
-                                currentAttempt[index]
-                                    ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700')
-                                    : 'bg-[#374151]'
-                            } rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${
-                                !lockedPositions[index] && !gameCompleted ? 'cursor-pointer' : 'cursor-not-allowed'
-                            }`}
+                            className={`w-16 h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] && !gameCompleted ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                             onClick={() => handleLetterClick(index)}
                         >
                             {currentAttempt[index]}
@@ -778,84 +585,126 @@ export function GemWordollGame() {
                 <p className="text-xl font-medium font-[Inter]">{attempts} x attempt</p>
             </div>
 
-            <div className="mt-2 mb-2">
-                <VirtualKeyboard
-                    onKeyPress={(key) => {
-                        if (gameCompleted) return;
-                        if (key === 'Enter') {
-                            checkGuess();
-                        } else if (key === 'Backspace') {
-                            let lastFilled = -1;
-                            for (let i = wordLength - 1; i >= 0; i--) {
-                                if (!lockedPositions[i] && currentAttempt[i]) {
-                                    lastFilled = i;
-                                    break;
-                                }
-                            }
-                            if (lastFilled !== -1) {
-                                const newAttempt = [...currentAttempt];
-                                newAttempt[lastFilled] = '';
-                                setCurrentAttempt(newAttempt);
-                            }
-                        } else if (/^[A-Z]$/.test(key)) {
-                            let nextPos = -1;
-                            for (let i = 0; i < wordLength; i++) {
-                                if (!lockedPositions[i] && !currentAttempt[i]) {
-                                    nextPos = i;
-                                    break;
-                                }
-                            }
-                            if (nextPos !== -1) {
-                                const newAttempt = [...currentAttempt];
-                                newAttempt[nextPos] = key;
-                                setCurrentAttempt(newAttempt);
-                            }
-                        }
-                    }}
-                    keyboardType="qwerty"
-                    className="md:block"
-                />
-            </div>
+            {isMobile && (
+                <>
+                    <div className="w-full max-w-md mx-auto">
+                        {mobileKeyboard.map((row, rowIndex) => (
+                            <div
+                                key={rowIndex}
+                                className={`flex justify-center mb-0.5 ${rowIndex === 1 ? 'px-4' : ''}`}
+                            >
+                                {row.map((key, keyIndex) => (
+                                    <button
+                                        key={`${rowIndex}-${keyIndex}`}
+                                        className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[70px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        onClick={() => handleMobileKeyPress(key)}
+                                        disabled={gameCompleted}
+                                    >
+                                        {key === 'Backspace' ? (
+                                            <img
+                                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                                alt="Backspace"
+                                                className="h-8 w-8"
+                                            />
+                                        ) : key === 'ENTER' ? (
+                                            <span className="text-xs">ENTER</span>
+                                        ) : (
+                                            key
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
 
-            {/* Modals */}
+            {!isMobile && (
+                <>
+                    <div className="mt-2 mb-2">
+                        <VirtualKeyboard
+                            onKeyPress={(key) => {
+                                if (gameCompleted) return
+                                if (key === 'Enter') {
+                                    checkGuess()
+                                } else if (key === 'Backspace') {
+                                    let lastFilled = -1
+                                    for (let i = wordLength - 1; i >= 0; i--) {
+                                        if (!lockedPositions[i] && currentAttempt[i]) {
+                                            lastFilled = i
+                                            break
+                                        }
+                                    }
+                                    if (lastFilled !== -1) {
+                                        const newAttempt = [...currentAttempt]
+                                        newAttempt[lastFilled] = ''
+                                        setCurrentAttempt(newAttempt)
+                                    }
+                                } else if (/^[A-Z]$/.test(key)) {
+                                    let nextPos = -1
+                                    for (let i = 0; i < wordLength; i++) {
+                                        if (!lockedPositions[i] && !currentAttempt[i]) {
+                                            nextPos = i
+                                            break
+                                        }
+                                    }
+                                    if (nextPos !== -1) {
+                                        const newAttempt = [...currentAttempt]
+                                        newAttempt[nextPos] = key
+                                        setCurrentAttempt(newAttempt)
+                                    }
+                                }
+                            }}
+                            keyboardType="qwerty"
+                            className="md:block"
+                        />
+                    </div>
+                </>
+            )}
+
             <CountdownModal
                 isOpen={showCountdown}
                 onCountdownComplete={handleCountdownComplete}
             />
+
+            {/* Game status modals */}
             <UserWinGemModal
                 isOpen={showUserWinModal}
                 onClose={() => {
-                    setShowUserWinModal(false);
-                    navigate('/gem-game-mode');
+                    setShowUserWinModal(false)
+                    navigate('/gem-game-mode')
                 }}
                 gemAmount={parseFloat(legendaryAmount)}
             />
+
             <TimeEndedGemModal
                 isOpen={showTimeEndedModal}
                 onClose={() => {
-                    setShowTimeEndedModal(false);
-                    navigate('/gem-game-mode');
+                    setShowTimeEndedModal(false)
+                    navigate('/gem-game-mode')
                 }}
                 ticketAmount={timeEndedReward}
             />
+
+
             <NoAttemptsGemModal
                 isOpen={showNoAttemptsModal}
                 onClose={() => {
-                    setShowNoAttemptsModal(false);
-                    navigate('/gem-game-mode');
+                    setShowNoAttemptsModal(false)
+                    navigate('/gem-game-mode')
                 }}
             />
+
             <RoomHasWinnerModal
                 isOpen={showRoomHasWinnerModal}
                 onClose={() => {
-                    setShowRoomHasWinnerModal(false);
-                    navigate('/gem-game-mode');
+                    setShowRoomHasWinnerModal(false)
+                    navigate('/gem-game-mode')
                 }}
                 winnerName={roomWinnerName}
                 legendaryAmount={legendaryAmount}
                 userReward={0.02}
             />
         </div>
-    );
-
+    )
 }
