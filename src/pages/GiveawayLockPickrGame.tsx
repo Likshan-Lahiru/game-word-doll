@@ -526,15 +526,15 @@ export function GiveawayLockPickrGame() {
                         </div>
 
                         {/* Feedback message */}
-                        {feedback ? (
-                            <div className="px-4">
-                                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-3 mx-auto max-w-[min(90vw,360px)]">
-                                    <p className="text-white text-sm">{feedback}</p>
+                        <div className="h-2 mb-10">
+                            {feedback && (
+                                <div
+                                    className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-10 w-36 mx-auto">
+                                    {feedback}
+
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="h-[clamp(0rem,1.2vh,0.5rem)]" />
-                        )}
+                            )}
+                        </div>
 
                         {/* Game area */}
                         <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4 min-h-0">
@@ -557,7 +557,7 @@ export function GiveawayLockPickrGame() {
                             <div className="flex justify-center mt-[clamp(0.5rem,6vh,2.5rem)] mb-3">
                                 <div
                                     className={`grid grid-cols-1 ${S.gridGap}`}
-                                    style={{ gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))` }}
+                                    style={{gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`}}
                                 >
                                     {(lastAttempt.length > 0 ? lastAttempt : Array(codeLength).fill('')).map((num, index) => {
                                         const status =
@@ -588,9 +588,9 @@ export function GiveawayLockPickrGame() {
                             >
                                 <div
                                     className={`grid grid-cols-1 ${S.gridGap}`}
-                                    style={{ gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))` }}
+                                    style={{gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`}}
                                 >
-                                    {Array.from({ length: codeLength }).map((_, index) => (
+                                    {Array.from({length: codeLength}).map((_, index) => (
                                         <div
                                             key={index}
                                             className={`${S.bigTile} flex items-center justify-center ${
