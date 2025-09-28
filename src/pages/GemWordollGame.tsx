@@ -533,15 +533,16 @@ export function GemWordollGame() {
                         </div>
 
                         {/* Feedback (auto height, centered) */}
-                        {feedback ? (
-                            <div className="px-4">
-                                <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-3 mx-auto max-w-[min(90vw,360px)] text-sm">
+                        {/* Feedback message (auto height, centered, no clipping) */}
+                        <div className="h-2">
+                            {feedback && (
+                                <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
                                     {feedback}
+
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="h-[clamp(0rem,1.2vh,0.5rem)]" />
-                        )}
+                            )}
+
+                        </div>
 
                         {/* Game area */}
                         <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-2 min-h-0">
@@ -719,7 +720,7 @@ export function GemWordollGame() {
                 <p className="text-2xl font-bold">{formatTime(timer)}</p>
             </div>
 
-            {/* Feedback message */}
+            {/* Feedback message (auto height, centered, no clipping) */}
             <div className="h-2">
                 {feedback && (
                     <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
