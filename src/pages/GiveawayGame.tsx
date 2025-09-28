@@ -430,7 +430,7 @@ export function GiveawayGame() {
                       <div key={prize.id} className="flex justify-center">
                         <MobilePrizeCard
                             prize={prize}
-                            onEnter={() => handleEnterGame(prize)}
+                            onEnter={() => handleEnterGameEntries(prize)}
                         />
                       </div>
                   ))
