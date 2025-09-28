@@ -723,7 +723,7 @@ export function GemWordollGame() {
             {/* Feedback message (auto height, centered, no clipping) */}
             <div className="h-2">
                 {feedback && (
-                    <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
+                    <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 w-36 mx-auto">
                         {feedback}
 
                     </div>
