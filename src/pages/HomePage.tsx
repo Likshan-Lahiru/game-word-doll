@@ -28,21 +28,20 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
     // --------- MOBILE VIEW (desktop unchanged) ----------
     if (isMobile) {
         return (
-            <div className="fixed inset-0 flex flex-col bg-[#1F2937] text-white overflow-hidden">
-                {/* Top bar */}
-                <StatusBar
-                    isMobile
-                    hideOnlineCount={true}
-                    switchableBalanceSelector={true}
-                />
+            <div className="fixed inset-0 flex flex-col bg-[#1F2937] text-white">
+                {/* Top bar pinned */}
+                <div className="sticky top-0 z-20 bg-[#1F2937]">
+                    <StatusBar
+                        isMobile
+                        hideOnlineCount={true}
+                        switchableBalanceSelector={true}
+                    />
+                </div>
 
                 {/* Scrollable content area */}
-                <div className="flex-1 overflow-y-auto">
-                    <div className="px-3 pt-2">
-                        <GameCardGrid />
-                    </div>
-
-                    {/* On mobile, we keep the description below the grid for guests */}
+                <div className="flex-1 overflow-y-auto overscroll-contain px-3 pt-2
+                      pb-[calc(env(safe-area-inset-bottom)+72px)]">
+                    <GameCardGrid />
                     {!isAuthenticated && (
                         <div className="mt-3">
                             <GameDescription />
@@ -50,11 +49,14 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
                     )}
                 </div>
 
-                {/* Bottom nav is always visible on mobile */}
-                <BottomNavigation />
+                {/* Bottom nav pinned */}
+                <div className="shrink-0 sticky bottom-0 z-30 bg-[#1F2937] pb-[env(safe-area-inset-bottom)]">
+                    <BottomNavigation />
+                </div>
             </div>
         )
     }
+
 
     // --------- DESKTOP VIEW (unchanged from your code) ----------
     return (
