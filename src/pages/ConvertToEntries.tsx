@@ -4,7 +4,7 @@ import { apiRequest } from '../services/api'
 const ConvertToEntries = ({ isMobile }) => {
     const { gemBalance, ticketBalance, setGemBalance, setTicketBalance } =
         useGlobalContext()
-    const [entriesAmount, setEntriesAmount] = useState(50)
+    const [entriesAmount, setEntriesAmount] = useState(0)
     const [showConvertNowModal, setShowConvertNowModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [apiError, setApiError] = useState(null)
@@ -15,16 +15,16 @@ const ConvertToEntries = ({ isMobile }) => {
     useEffect(() => {
         // Set a default value that's less than or equal to convertible gems
         if (convertibleGems > 0) {
-            setEntriesAmount(Math.min(50, convertibleGems))
+            setEntriesAmount(0)
         } else {
             setEntriesAmount(0)
         }
     }, [gemBalance, convertibleGems])
     // Add a new function to handle input change with validation
     const handleEntriesAmountChange = (value) => {
-        // If the value is empty or just whitespace, reset to 0
+        // Allow empty values
         if (value === '' || value === null || value === undefined) {
-            setEntriesAmount(0)
+            setEntriesAmount('')
             return
         }
         // Parse the input as a number
@@ -37,18 +37,22 @@ const ConvertToEntries = ({ isMobile }) => {
         }
     }
     const handleConvertNow = () => {
+        // Convert empty string to 0 for validation
+        const amountToConvert = entriesAmount === '' ? 0 : entriesAmount
         // Validate that we have enough gems (minimum 5 must remain)
-        if (entriesAmount > convertibleGems) {
+        if (amountToConvert > convertibleGems) {
             alert('A minimum balance of 5 gems must remain in your account.')
             return
         }
-        if (entriesAmount <= 0) {
+        if (amountToConvert <= 0) {
             alert('Please enter a valid amount to convert.')
             return
         }
         setShowConvertNowModal(true)
     }
     const handleConfirmConversion = async () => {
+        // Ensure we have a numeric value for the API call
+        const amountToConvert = entriesAmount === '' ? 0 : entriesAmount
         setIsLoading(true)
         setApiError(null)
         setSuccessMessage(null)
@@ -58,7 +62,7 @@ const ConvertToEntries = ({ isMobile }) => {
                 `/users/${userId}/convert-gems-to-entries`,
                 'POST',
                 {
-                    gemsToConvert: entriesAmount,
+                    gemsToConvert: amountToConvert,
                 },
             )
             if (response && response.message) {
@@ -111,14 +115,22 @@ const ConvertToEntries = ({ isMobile }) => {
                         <div className="bg-white rounded-xl px-3 py-2 flex items-center">
                             <input
                                 type="number"
-                                value={entriesAmount === 0 ? '' : entriesAmount}
+                                value={entriesAmount}
                                 onChange={(e) => handleEntriesAmountChange(e.target.value)}
                                 className="bg-transparent w-10 text-[13px] outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                 placeholder="0"
                             />
                             <span className="ml-1 font-['Inter'] text-[13px] text-black text-md">
-                ({entriesAmount.toLocaleString()})
-              </span>
+  (
+                                {typeof entriesAmount === 'number'
+                                    ? entriesAmount.toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })
+                                    : '0.00'}
+                                )
+</span>
+
                         </div>
                         <div className={'flex flex-col'}>
                             <p className="text-white text-[13px]">gems to entries</p>
@@ -128,8 +140,12 @@ const ConvertToEntries = ({ isMobile }) => {
                     <div className="flex-1 flex justify-end font-['Inter']">
                         <button
                             onClick={handleConvertNow}
-                            className={`bg-[#2D7FF0] text-sm border-green-500 text-white py-1 px-5 mt-5 rounded-full font-medium ${entriesAmount <= 0 || entriesAmount > convertibleGems ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            disabled={entriesAmount <= 0 || entriesAmount > convertibleGems}
+                            className={`bg-[#2D7FF0] text-sm border-green-500 text-white py-1 px-5 mt-5 rounded-full font-medium ${entriesAmount === '' || entriesAmount <= 0 || entriesAmount > convertibleGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={
+                                entriesAmount === '' ||
+                                entriesAmount <= 0 ||
+                                entriesAmount > convertibleGems
+                            }
                         >
                             Convert Now
                         </button>
@@ -156,8 +172,11 @@ const ConvertToEntries = ({ isMobile }) => {
                             ) : (
                                 <>
                                     <p className="mb-12 text-sm">
-                                        Do you want to convert {entriesAmount.toLocaleString()} gems
-                                        to entries?
+                                        Do you want to convert{' '}
+                                        {typeof entriesAmount === 'number'
+                                            ? entriesAmount.toLocaleString()
+                                            : '0'}{' '}
+                                        gems to entries?
                                     </p>
                                     {apiError && (
                                         <p className="mb-4 text-sm text-red-400">{apiError}</p>
@@ -211,22 +230,34 @@ const ConvertToEntries = ({ isMobile }) => {
                     <div className="bg-white rounded-md px-4 py-2 flex items-center">
                         <input
                             type="number"
-                            value={entriesAmount === 0 ? '' : entriesAmount}
+                            value={entriesAmount}
                             onChange={(e) => handleEntriesAmountChange(e.target.value)}
                             className="bg-transparent w-16 outline-none text-black text-md [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             placeholder="0"
                         />
                         <span className="ml-1 font-['Inter'] text-black text-md">
-              ({entriesAmount.toLocaleString()})
-            </span>
+                            (
+                            {typeof entriesAmount === 'number'
+                                ? entriesAmount.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })
+                                : '0.00'}
+                            )
+                            </span>
+
                     </div>
                     <p className="text-white">gems to entries (1 Gem = 1 Entry)</p>
                 </div>
                 <div className="font-['Inter'] flex-1 flex justify-end mb-2">
                     <button
                         onClick={handleConvertNow}
-                        className={`md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium ${entriesAmount <= 0 || entriesAmount > convertibleGems ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        disabled={entriesAmount <= 0 || entriesAmount > convertibleGems}
+                        className={`md:mt-5 bg-[#2D7FF0] border-green-500 hover:bg-blue-600 w-52 text-white py-2 px-10 rounded-full font-medium ${entriesAmount === '' || entriesAmount <= 0 || entriesAmount > convertibleGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={
+                            entriesAmount === '' ||
+                            entriesAmount <= 0 ||
+                            entriesAmount > convertibleGems
+                        }
                     >
                         Convert Now
                     </button>
@@ -251,8 +282,11 @@ const ConvertToEntries = ({ isMobile }) => {
                         ) : (
                             <>
                                 <p className="mb-12 text-sm">
-                                    Do you want to convert {entriesAmount.toLocaleString()} gems
-                                    to entries?
+                                    Do you want to convert{' '}
+                                    {typeof entriesAmount === 'number'
+                                        ? entriesAmount.toLocaleString()
+                                        : '0'}{' '}
+                                    gems to entries?
                                 </p>
                                 {apiError && (
                                     <p className="mb-4 text-sm text-red-400">{apiError}</p>
