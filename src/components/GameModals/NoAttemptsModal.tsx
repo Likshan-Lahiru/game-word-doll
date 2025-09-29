@@ -27,7 +27,7 @@ export function NoAttemptsModal({
     // Mobile view based on the provided image
     if (isMobile) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[1F2937] font-['Inter']">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2937] font-['Inter']">
                 <div className="flex flex-col items-center">
                     <div className="bg-[#3F4C5F] rounded-2xl p-6 text-center text-white w-[320px]">
                         <h2 className="text-2xl font-bold mb-6">No attempts !</h2>
