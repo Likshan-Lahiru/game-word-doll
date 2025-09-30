@@ -6,63 +6,7 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { PrizeCard, PrizeData } from '../components/PrizeCard'
 import { fetchFlipPackages, apiRequest } from '../services/api'
 import { toast, ToastContainer } from 'react-toastify'
-// Add this new component for mobile cards
-function MobilePrizeCard({
-                           prize,
-                           onEnter,
-                         }: {
-  prize: PrizeData
-  onEnter: () => void
-}) {
-  const { selectedBalanceType } = useGlobalContext()
-  return (
-      <div className="bg-white rounded-xl overflow-hidden flex flex-col w-full max-w-[170px] text-black">
-        <div className="p-3 flex flex-col items-center">
-          <img
-              src={prize.image}
-              alt={`${prize.coinAmount} Coins`}
-              className="w-16 h-16 object-contain mb-2"
-          />
-          <p className="text-center font-medium text-sm">
-            GC {prize.coinAmount.toLocaleString()}
-          </p>
-          <p className="text-center text-xs mb-1">+</p>
-          <p className="text-center text-sm mb-2">
-            {selectedBalanceType === 'coin' ? (
-                `${prize.spinAmount} x Flip`
-            ) : (
-                <div className={'flex'}>
-                  <img
-                      src={
-                        'https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png'
-                      }
-                      alt={'voucher'}
-                      className={'w-5 h-5 mr-1'}
-                  />
-                  {`x ${prize.spinAmount} free`}
-                </div>
-            )}
-          </p>
-          <div className="flex items-center justify-center mb-2">
-            <img
-                src={`${selectedBalanceType === 'coin' ? 'https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png' : 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png'}`}
-                alt="Coins"
-                className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-6 h-6 mr-1 rounded-full p-[2px]`}
-            />
-            <span className="text-[#170F49] font-semibold text-base">
-            {prize.cost.toLocaleString()}
-          </span>
-          </div>
-          <button
-              className="bg-[#56CA5A] hover:bg-green-600 text-white py-1.5 px-4 rounded-full w-full text-sm font-medium"
-              onClick={onEnter}
-          >
-            Let's Go!
-          </button>
-        </div>
-      </div>
-  )
-}
+
 export function GiveawayGame() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -388,10 +332,16 @@ export function GiveawayGame() {
       },
     ]
   }
+
+  // Mobile sizing tokens (desktop untouched)
+
+
   if (isMobile) {
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
+        <div className="fixed inset-0 mb-16 flex flex-col bg-[#1F2937] text-white font-['DM_Sans'] overscroll-none select-none">
           <ToastContainer position="top-right" autoClose={3000} />
+
+          {/* Back */}
           <div className="absolute top-12 left-2 z-10">
             <button
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -404,29 +354,34 @@ export function GiveawayGame() {
               />
             </button>
           </div>
+
           {/* Status Bar */}
-          <div className="md:pl-52">
-            <StatusBar isMobile={isMobile} hideOnlineCount={true} />
+          <div>
+            <StatusBar isMobile={isMobile} hideOnlineCount />
           </div>
-          {/* Main Content */}
-          <div className="flex-1 flex flex-col px-3 pt-1">
-            <h2 className="text-xl font-medium text-center mb-6">
+
+          {/* Title + error */}
+          <div className="px-3 pt-1">
+            <h2 className="  text-center mb-2 tracking-tight">
               Select a prize to win
             </h2>
-            {/* Error message */}
             {error && (
-                <div className="bg-red-500 text-white p-2 rounded-md mb-4 text-center">
+                <div className="bg-red-500 text-white p-2 rounded-md mb-2 text-center">
                   {error}
                 </div>
             )}
-            {/* Prize Cards - Changed to grid layout */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
+          </div>
+
+          {/* Scroll-free sheet with a 2x2 grid */}
+          <div className={`px-3 flex-1 min-h-0 ${S.sheetH} overflow-hidden`}>
+            <div className={`grid grid-cols-2 grid-rows-2 ${S.gridGap} h-full place-items-center`}>
               {isLoading || isJoining ? (
                   <div className="text-center py-4 col-span-2">
                     {isLoading ? 'Loading prizes...' : 'Joining game...'}
                   </div>
               ) : (
-                  prizes.map((prize) => (
+                  // Keep exactly 4 cards on mobile to avoid scroll
+                  prizes.slice(0, 4).map((prize) => (
                       <div key={prize.id} className="flex justify-center">
                         <MobilePrizeCard
                             prize={prize}
@@ -437,11 +392,13 @@ export function GiveawayGame() {
               )}
             </div>
           </div>
+
           {/* Bottom Navigation */}
           <BottomNavigation />
         </div>
     )
   }
+
   return (
       <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white font-['DM_Sans']">
         <ToastContainer position="top-right" autoClose={3000} />
@@ -506,6 +463,71 @@ export function GiveawayGame() {
         </div>
         {/* Bottom Navigation */}
         <BottomNavigation />
+      </div>
+  )
+}
+
+const S = {
+  sheetH: 'h-[calc(100dvh-210px)]', // area between StatusBar & BottomNav (tweak 200–230 if needed)
+  gridGap: 'gap-[10px]',
+  cardW:  'w-[min(44vw,150px)]',
+  img:    'w-14 h-14',
+  title:  'text-[13px]',
+  sub:    'text-[12px]',
+  cost:   'text-[15px]',
+  btn:    'text-[13px] py-2',
+}
+function MobilePrizeCard({ prize, onEnter }: { prize: PrizeData; onEnter: () => void }) {
+  const { selectedBalanceType } = useGlobalContext()
+  return (
+      <div className={`bg-white rounded-xl overflow-hidden flex flex-col ${S.cardW} text-black`}>
+        <div className="p-3 flex flex-col items-center">
+          <img
+              src={prize.image}
+              alt={`${prize.coinAmount} Coins`}
+              className={`${S.img} object-contain mb-1.5`}
+          />
+
+          <p className={`text-center font-medium ${S.title}`}>
+            GC {prize.coinAmount.toLocaleString()}
+          </p>
+          <p className={`text-center ${S.sub} mb-0.5`}>+</p>
+
+          <p className={`text-center ${S.title} mb-1.5`}>
+            {selectedBalanceType === 'coin' ? (
+                `${prize.spinAmount} x Flip`
+            ) : (
+                <span className="inline-flex items-center">
+              <img
+                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/n1GyLezxBrdL3JBWAwST8s/Vouchers.png"
+                  alt="voucher"
+                  className="w-5 h-5 mr-1"
+              />
+                  {`x ${prize.spinAmount} free`}
+            </span>
+            )}
+          </p>
+
+          <div className="flex items-center justify-center mb-2">
+            <img
+                src={
+                  selectedBalanceType === 'coin'
+                      ? 'https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png'
+                      : 'https://uploadthingy.s3.us-west-1.amazonaws.com/65WCbcmf6dyyeqvjSAJHyp/fire.png'
+                }
+                alt="Cost"
+                className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-6 h-6 mr-1 rounded-full p-[2px]`}
+            />
+            <span className="text-[#170F49] font-semibold">{prize.cost.toLocaleString()}</span>
+          </div>
+
+          <button
+              className={`bg-[#56CA5A] hover:bg-green-600 text-white rounded-full w-full ${S.btn}`}
+              onClick={onEnter}
+          >
+            Let's Go!
+          </button>
+        </div>
       </div>
   )
 }

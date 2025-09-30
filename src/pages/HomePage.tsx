@@ -30,7 +30,7 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
         return (
             <div className="fixed inset-0 flex flex-col bg-[#1F2937] text-white">
                 {/* Top bar pinned */}
-                <div className="sticky top-0 z-20 bg-[#1F2937]">
+                <div className="sticky mb-2 top-0 z-20 bg-[#1F2937]">
                     <StatusBar
                         isMobile
                         hideOnlineCount={true}
