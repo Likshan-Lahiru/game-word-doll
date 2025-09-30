@@ -546,11 +546,34 @@ export function FlipPage() {
             })),
         )
     }
+
+    // sizing tokens (mobile)
+    const S = {
+        tileBox: 'size-[clamp(2.75rem,10vw,4rem)] text-[clamp(1.25rem,4.2vw,1.75rem)]',
+        tileBoxLg: 'size-[clamp(3.5rem,12vw,4.5rem)] text-[clamp(1.5rem,5vw,2rem)]',
+        gridGap: 'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
+        key: 'h-[clamp(3.3rem,8.8vw,3.6rem)] w-[clamp(2.5rem,8vw,3.2rem)] text-[clamp(0.9rem,3.2vw,1.1rem)]',
+        wideKey: 'w-[clamp(3.9rem,13vw,5rem)]',
+        panelW: 'w-[min(92vw,360px)]',
+        coinImg: 'w-5 h-5',
+
+        // flip-only tokens
+        flipCard: 'w-[clamp(7.5rem,38vw,10.5rem)] h-[clamp(11.5rem,32vh,13rem)]',
+        flipLogo: 'w-[clamp(5rem,21vw,6.25rem)]',
+        rowGap: 'gap-[clamp(0.5rem,2.8vw,0.75rem)]',
+        barH: 'h-[clamp(2.75rem,11.5vw,3.75rem)]',
+        bigBtn: ' text-[clamp(1.125rem,4.8vw,1.375rem)] py-[clamp(0.75rem,3.4vw,2rem)]',
+        smallSquare: 'h-[clamp(2.75rem,11vw,3.2rem)] w-[clamp(2.75rem,11vw,3.2rem)] text-[clamp(1.25rem,6vw,1.6rem)]',
+        prizeImg: 'w-[clamp(5.25rem,22vw,6.75rem)] h-[clamp(5.25rem,22vw,6.75rem)]',
+    }
+
     // Mobile view based on the provided image
     if (isMobile) {
         return (
-            <div className="flex flex-col w-full min-h-screen bg-[#1A202C] text-white">
-                <ToastContainer position="top-right" autoClose={3000} />
+            <div className="flex flex-col w-full h-dvh overflow-hidden overscroll-none bg-[#1A202C] text-white">
+
+                <ToastContainer position="top-right" autoClose={3000}/>
+
                 <div className="absolute top-12 left-3 z-10">
                     <button
                         className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -563,19 +586,18 @@ export function FlipPage() {
                         />
                     </button>
                 </div>
+
                 {/* Status Bar */}
-                <div className="">
-                    <StatusBar isMobile={isMobile} hideOnlineCount={true} />
-                </div>
+                <StatusBar isMobile={isMobile} hideOnlineCount={true}/>
+
                 {/* Flip Cards */}
-                <div className="flex flex-col items-center gap-y-3 mb-10 mt-5">
-                    {/* Row 1: First card */}
+                <div className={`flex flex-col items-center ${S.rowGap} mb-4 mt-5`}>
+                    {/* Row 1 */}
                     <div className="flex justify-center">
                         {selectedFlipCards.slice(0, 1).map((item) => (
                             <div
                                 key={item.id}
-                                className={`transition-all duration-500 transform
-                            ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
+                                className={`transition-all duration-500 transform ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
                             >
                                 <FlipCard
                                     logo={IMAGES.logo}
@@ -588,13 +610,13 @@ export function FlipPage() {
                             </div>
                         ))}
                     </div>
-                    {/* Row 2: Second and third cards */}
-                    <div className="flex justify-center gap-x-3">
+
+                    {/* Row 2 */}
+                    <div className={`flex justify-center ${S.rowGap}`}>
                         {selectedFlipCards.slice(1).map((item) => (
                             <div
                                 key={item.id}
-                                className={`transition-all duration-500 transform
-                            ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
+                                className={`transition-all duration-500 transform ${slideInCards ? 'opacity-0 animate-slide-in-left-to-right' : ''}`}
                             >
                                 <FlipCard
                                     logo={IMAGES.logo}
@@ -608,23 +630,29 @@ export function FlipPage() {
                         ))}
                     </div>
                 </div>
-                {/* Spin buttons */}
-                <div className="px-4 pb-24 space-y-2">
+
+                {/* Controls */}
+                <div className={`px-4 pb-24 space-y-2 mx-auto ${S.panelW}`}>
                     {selectedBalanceType === 'ticket' && (
                         <>
                             {isFreeCard ? (
-                                <button className="w-full py-4 rounded-2xl bg-[#374151] text-white font-bold text-2xl font-inter transition-colors disabled:cursor-not-allowed">
+                                <button
+                                    className={`w-full bg-[#374151] text-white font-bold font-inter disabled:cursor-not-allowed ${S.bigBtn}`}
+                                    disabled
+                                >
                                     Free
                                 </button>
                             ) : (
-                                <div className="flex font-inter items-center justify-between w-full py-3 px-1 rounded-2xl bg-[#374151] text-white h-[60px]">
+                                <div
+                                    className={`flex font-inter items-center justify-between w-full px-1 rounded-2xl bg-[#374151] text-white ${S.barH}`}>
                                     <button
-                                        className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                        className={`${S.smallSquare} font-extrabold leading-none flex items-center justify-center rounded-2xl bg-[#67768F]`}
                                         onClick={handleSpinMinusMark}
                                         disabled={isLoadingOptions || selectedFlipOptionIndex === 0}
                                     >
-                                        -
+                                        −
                                     </button>
+
                                     <div className="flex justify-center items-center pr-3 overflow-hidden">
                                         <img
                                             src={IMAGES.voucher}
@@ -632,24 +660,18 @@ export function FlipPage() {
                                             className="h-full max-h-[90px] w-auto object-contain"
                                         />
                                         {isLoadingOptions ? (
-                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                                ...
-                                            </p>
+                                            <p className="font-bold text-2xl cursor-default text-center w-[60px]">...</p>
                                         ) : (
                                             <p className="font-bold text-2xl cursor-default text-center w-[60px]">
-                                                {Number.isInteger(spinVoucherCount)
-                                                    ? spinVoucherCount
-                                                    : spinVoucherCount.toFixed(2)}
+                                                {Number.isInteger(spinVoucherCount) ? spinVoucherCount : spinVoucherCount.toFixed(2)}
                                             </p>
                                         )}
                                     </div>
+
                                     <button
-                                        className="font-extrabold px-4 text-[30px] leading-none h-[50px] w-[50px] flex items-center justify-center rounded-2xl bg-[#67768F]"
+                                        className={`${S.smallSquare} font-extrabold leading-none flex items-center justify-center rounded-2xl bg-[#67768F]`}
                                         onClick={handleSpinPlusMark}
-                                        disabled={
-                                            isLoadingOptions ||
-                                            selectedFlipOptionIndex === flipOptions.length - 1
-                                        }
+                                        disabled={isLoadingOptions || selectedFlipOptionIndex === flipOptions.length - 1}
                                     >
                                         +
                                     </button>
@@ -657,21 +679,19 @@ export function FlipPage() {
                             )}
                         </>
                     )}
+
                     {selectedBalanceType === 'coin' && (
-                        <>
-                            <button
-                                className="w-full py-3 px-4 rounded-2xl bg-[#374151] text-white font-semibold text-3xl"
-                                onClick={() =>
-                                    console.log('25x Spin button clicked (not implemented)')
-                                }
-                            >
-                                25 x Flip
-                            </button>
-                        </>
+                        <button
+                            className={`w-full bg-[#374151] text-white font-semibold ${S.bigBtn}`}
+                            onClick={() => console.log('25x Spin button clicked (not implemented)')}
+                        >
+                            25 x Flip
+                        </button>
                     )}
+
                     {currentRowIndex === 0 && !hasFlipped ? (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className={`w-full rounded-xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold font-inter transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${S.bigBtn}`}
                             onClick={handleFlipAllCards}
                             disabled={isFlipping}
                         >
@@ -679,19 +699,19 @@ export function FlipPage() {
                         </button>
                     ) : (
                         <button
-                            className="w-full py-4 rounded-[22px] bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold text-2xl font-inter transition-colors"
+                            className={`w-full rounded-xl bg-[#2D7FF0] hover:bg-blue-600 text-white font-bold font-inter transition-colors ${S.bigBtn}`}
                             onClick={handleNextRow}
                         >
                             Next
                         </button>
                     )}
-                    {apiError && (
-                        <div className="mt-2 text-red-500 text-center">{apiError}</div>
-                    )}
+
+                    {apiError && <div className="mt-2 text-red-500 text-center">{apiError}</div>}
                 </div>
             </div>
         )
     }
+
     // Desktop view
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white">
