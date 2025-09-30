@@ -113,7 +113,7 @@ export function BetSelectorPage() {
         // Deduct the bet amount from user's coin balance
         setCoinBalance(coinBalance - option.cost)
         // Decrement limit play for unauthenticated users
-        if (!isAuthenticated && limitPlay > 0) {
+        if (!isAuthenticated && gameType === 'wordoll' && limitPlay > 0) {
             setLimitPlay((prev) => prev - 1)
         }
         try {

@@ -212,10 +212,10 @@ export function ConvertGem() {
                 <p className="text-white text-[16px]">gems</p>
               </div>
             </div>
-            <div className="flex justify-center mb-8 mt-5 font-['Inter']">
+            <div className="flex justify-center ml-5 mb-8 mt-5 font-['Inter']">
               <button
                   onClick={handleRedeemNow}
-                  className={`bg-[#2D7FF0] text-[12px] w-36 text-white py-1 rounded-3xl font-medium ${redeemAmount < 100 || redeemAmount > availableGems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`bg-[#2D7FF0] text-[12px] w-40 text-white py-1 rounded-3xl font-medium ${redeemAmount < 100 || redeemAmount > availableGems ? 'opacity-50 cursor-not-allowed' : ''}`}
                   disabled={redeemAmount < 100 || redeemAmount > availableGems}
               >
                 Convert Now

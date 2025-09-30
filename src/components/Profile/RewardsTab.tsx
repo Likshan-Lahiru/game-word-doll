@@ -131,7 +131,7 @@ export function RewardsTab() {
                 className={`flex-shrink-0 ${isMobile ? 'w-[45px] py-[4px]' : 'px-2 py-[1px]'}`}
             >
               <div
-                  className={`${isMobile ? 'flex justify-end' : ''} pb-9 pr-5`}
+                  className={`${isMobile ? 'flex justify-end' : ''} pb-14   pr-5`}
               ></div>
               {/* 10 / 10 , 10 / 35 , 10 / 100 */}
               {progressData.map((item, index) => (
@@ -157,7 +157,7 @@ export function RewardsTab() {
             {/* 2nd Column */}
             <div className={'flex-grow-[2] px-2'}>
               {/* Invite Friend Count Bars*/}
-              <div className={`${isMobile ? 'mb-8' : 'mb-10'}`}>
+              <div className={`${isMobile ? 'mb-2 mt-16' : 'mb-10'}`}>
                 {progressData.map((item, index) => (
                     <div className={'flex-col pb-2'} key={`progress-${index}`}>
                       <div className={'flex items-center justify-between h-7'}>
@@ -201,7 +201,7 @@ export function RewardsTab() {
                 ))}
               </div>
               {/* Copy Referral */}
-              <div className={`flex gap-3 ${isMobile ? 'mb-8' : 'mb-5 pr-12'}`}>
+              <div className={`flex gap-3 ${isMobile ? 'mb-16 mt-8' : 'mb-5 pr-12'}`}>
                 <div className="flex-1 rounded-full overflow-hidden400">
                   <input
                       type="text"
@@ -227,7 +227,7 @@ export function RewardsTab() {
               </div>
             </div>
             {/* 3rd Column */}
-            <div className={`w-1/3 ${isMobile && 'w-1/4'}`}>
+            <div className={`w-1/3 ${isMobile && 'w-1/4 mt-16'}`}>
               {/* Collect Buttons */}
               {progressData.map((item, index) => (
                   <div className={`flex pb-2`} key={`button-${index}`}>

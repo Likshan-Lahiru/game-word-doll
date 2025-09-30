@@ -45,6 +45,15 @@ export function GiveawayGoldLockPickrGame() {
         ('correct' | 'wrong-position' | 'incorrect')[]
     >([])
     const [selectedPrize, setSelectedPrize] = useState<any>(null)
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+    // Add mobile detection
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768)
+        }
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
     // Initialize the game
     useEffect(() => {
         // Load selected prize from session storage
@@ -476,6 +485,269 @@ export function GiveawayGoldLockPickrGame() {
             }
         }
     }
+    const S = {
+        smallTile: 'size-[clamp(2.3rem,8.5vw,2.75rem)] text-[clamp(1rem,3.6vw,1.125rem)]',
+        bigTile:   'size-[clamp(3.25rem,12vw,4rem)] text-[clamp(1.5rem,5vw,1.875rem)]',
+        gridGap:   'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
+        panelW:    'w-[min(92vw,340px)] h-[clamp(3.8rem,10vw,4.1rem)]',
+        keyH:      'h-[clamp(3rem,10vw,3.5rem)]',
+        keyText:   'text-[clamp(1.4rem,5vw,1.875rem)]',
+        enterText: 'text-[clamp(0.9rem,3.2vw,1.1rem)]',
+        backIcon:  'h-[clamp(1.25rem,4.2vw,2rem)] w-[clamp(1.25rem,4.2vw,2rem)]',
+    };
+
+    if (isMobile) {
+        return (
+            <div
+                className="fixed inset-0 flex flex-col bg-[#1F2937] text-white overscroll-none touch-pan-y select-none overflow-hidden"
+                ref={gameContainerRef}
+                tabIndex={0}
+            >
+                {/* Stable viewport wrapper + iOS safe area */}
+                <div className="flex flex-col h-dvh min-h-dvh pb-[env(safe-area-inset-bottom)]">
+                    <div className="relative flex flex-col h-full">
+                        {/* Back button */}
+                        <div className="absolute top-4 left-4 z-10">
+                            <button
+                                className="w-12 h-12 rounded-full flex items-center justify-center"
+                                onClick={() => navigate('/gold-giveaway-game')}
+                            >
+                                <img
+                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                                    alt="Back"
+                                    className="w-8 h-8"
+                                />
+                            </button>
+                        </div>
+
+                        {/* Header / Timer */}
+                        <div className="flex-none text-center pt-8 pb-2 shrink-0">
+                            <p className="text-white text-xs">Timer</p>
+                            <p className="text-2xl font-bold">{formatTime(timer)}</p>
+                        </div>
+
+                        {/* Feedback message (kept compact) */}
+                        <div className="h-2 mb-10">
+                            {feedback && (
+                                <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-10 w-36 mx-auto">
+                                    {feedback}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Game area */}
+                        <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4 min-h-0">
+                            {/* Hidden input to keep OS keyboard closed */}
+                            <input
+                                ref={inputRef}
+                                type="tel"
+                                inputMode="none"
+                                pattern="[0-9]*"
+                                value={currentAttempt.filter((n) => n !== undefined).join('')}
+                                onChange={handleInputChange}
+                                className="opacity-0 h-0 w-0 absolute pointer-events-none"
+                                autoComplete="off"
+                                autoCorrect="off"
+                                autoCapitalize="off"
+                                readOnly
+                            />
+
+                            {/* Last attempt display */}
+                            <div className="flex justify-center mt-[clamp(0.5rem,6vh,2.5rem)] mb-3">
+                                <div
+                                    className={`grid grid-cols-1 ${S.gridGap}`}
+                                    style={{
+                                        gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
+                                    }}
+                                >
+                                    {(lastAttempt.length > 0 ? lastAttempt : Array(codeLength).fill('')).map(
+                                        (num, index) => {
+                                            const status =
+                                                lastAttempt.length > 0 ? getNumberStatus(num as number, index) : null
+
+                                            let bgColor = 'bg-[#374151]'
+                                            if (status === 'correct') bgColor = 'bg-[#22C55E]'
+                                            else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]'
+
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className={`${S.smallTile} flex items-center justify-center ${bgColor} rounded-md text-white font-bold shadow-md`}
+                                                >
+                                                    {typeof num === 'number' ? num : ''}
+                                                </div>
+                                            )
+                                        },
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Current attempt */}
+                            <div
+                                className="flex justify-center mb-2"
+                                onClick={() => inputRef.current?.focus()}
+                            >
+                                <div
+                                    className={`grid grid-cols-1 ${S.gridGap}`}
+                                    style={{
+                                        gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))`,
+                                    }}
+                                >
+                                    {Array.from({ length: codeLength }).map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`${S.bigTile} flex items-center justify-center ${
+                                                lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'
+                                            } rounded-md text-white font-bold shadow-md`}
+                                        >
+                                            {currentAttempt[index] !== undefined ? currentAttempt[index] : ''}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Mobile number pad */}
+                        <div className="flex-none mb-2 pb-[env(safe-area-inset-bottom)]">
+                            <div className="w-full max-w-md mx-auto px-2">
+                                {/* Row 1: 1-2-3 */}
+                                <div className="flex justify-center gap-2 mb-2">
+                                    {[1, 2, 3].map((num) => (
+                                        <button
+                                            key={num}
+                                            className={`w-[30%] ${S.keyH} bg-[#67768F] hover:bg-[#374151] rounded-md text-white ${S.keyText} font-bold shadow-md`}
+                                            onClick={() => handleKeyPress(num.toString())}
+                                        >
+                                            {num}
+                                        </button>
+                                    ))}
+                                </div>
+                                {/* Row 2: 4-5-6 */}
+                                <div className="flex justify-center gap-2 mb-2">
+                                    {[4, 5, 6].map((num) => (
+                                        <button
+                                            key={num}
+                                            className={`w-[30%] ${S.keyH} bg-[#67768F] hover:bg-[#374151] rounded-md text-white ${S.keyText} font-bold shadow-md`}
+                                            onClick={() => handleKeyPress(num.toString())}
+                                        >
+                                            {num}
+                                        </button>
+                                    ))}
+                                </div>
+                                {/* Row 3: 7-8-9 */}
+                                <div className="flex justify-center gap-2 mb-2">
+                                    {[7, 8, 9].map((num) => (
+                                        <button
+                                            key={num}
+                                            className={`w-[30%] ${S.keyH} bg-[#67768F] hover:bg-[#374151] rounded-md text-white ${S.keyText} font-bold shadow-md`}
+                                            onClick={() => handleKeyPress(num.toString())}
+                                        >
+                                            {num}
+                                        </button>
+                                    ))}
+                                </div>
+                                {/* Row 4: ENTER-0-Backspace */}
+                                <div className="flex justify-center gap-2">
+                                    <button
+                                        className={`w-[30%] ${S.keyH} bg-[#67768F] hover:bg-[#374151] rounded-md text-white ${S.enterText} font-bold shadow-md`}
+                                        onClick={() => handleKeyPress('ENTER')}
+                                    >
+                                        ENTER
+                                    </button>
+                                    <button
+                                        className={`w-[30%] ${S.keyH} bg-[#67768F] hover:bg-[#374151] rounded-md text-white ${S.keyText} font-bold shadow-md`}
+                                        onClick={() => handleKeyPress('0')}
+                                    >
+                                        0
+                                    </button>
+                                    <button
+                                        className={`w-[30%] ${S.keyH} bg-[#67768F] hover:bg-[#374151] rounded-md text-white flex items-center justify-center shadow-md`}
+                                        onClick={() => handleKeyPress('Backspace')}
+                                    >
+                                        <img
+                                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                            alt="Backspace"
+                                            className={S.backIcon}
+                                        />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Modals (gold variant) */}
+                    <CountdownModal
+                        isOpen={showCountdown}
+                        onCountdownComplete={handleCountdownComplete}
+                    />
+                    <CooldownModal
+                        isOpen={showCooldownModal}
+                        onClose={() => setShowCooldownModal(false)}
+                        remainingTime={cooldownTimeRemaining}
+                        gameType="Gold Lock Pickr"
+                    />
+                    <ClaimEntryModal
+                        isOpen={showClaimEntryModal}
+                        onClose={() => setShowClaimEntryModal(false)}
+                        entryCost={selectedPrize?.cost || 5}
+                    />
+                    <WinPackageGoldCoinModal
+                        isOpen={showWinPackageModal}
+                        onClose={() => {
+                            setShowWinPackageModal(false)
+                            navigate('/gold-giveaway-game')
+                        }}
+                        prize={{
+                            coinAmount: selectedPrize?.coinAmount || 300000,
+                            spinAmount: selectedPrize?.spinAmount || 5,
+                        }}
+                    />
+                    {!isAuthenticated ? (
+                        <>
+                            <WinModal
+                                isOpen={showWinModal}
+                                onClose={() => setShowWinModal(false)}
+                                reward={winAmount}
+                                gameType="lockpickr"
+                            />
+                            <LoseModal
+                                isOpen={showLoseModal}
+                                onClose={() => setShowLoseModal(false)}
+                                penalty={betAmount}
+                                gameType="lockpickr"
+                            />
+                            <NoAttemptsModal
+                                isOpen={showNoAttemptsModal}
+                                onClose={() => setShowNoAttemptsModal(false)}
+                                penalty={betAmount}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <AuthenticatedWinModal
+                                isOpen={showWinModal}
+                                onClose={() => setShowWinModal(false)}
+                                reward={winAmount}
+                            />
+                            <AuthenticatedLoseModal
+                                isOpen={showLoseModal}
+                                onClose={() => setShowLoseModal(false)}
+                                penalty={betAmount}
+                            />
+                            <AuthenticatedNoAttemptsModal
+                                isOpen={showNoAttemptsModal}
+                                onClose={() => setShowNoAttemptsModal(false)}
+                                penalty={betAmount}
+                            />
+                        </>
+                    )}
+                </div>
+            </div>
+        )
+    }
+
+
+
     return (
         <div
             className="flex flex-col w-full h-screen max-h-screen bg-[#1F2937] text-white overflow-hidden"
@@ -497,18 +769,21 @@ export function GiveawayGoldLockPickrGame() {
                     </button>
                 </div>
                 {/* Gold coin indicator */}
-
                 {/* Timer */}
                 <div className="flex-none text-center pt-8 pb-2">
                     <p className="text-xs">Timer</p>
                     <p className="text-2xl font-bold">{formatTime(timer)}</p>
                 </div>
                 {/* Feedback message */}
-                {feedback && (
-                    <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
-                        <p className="text-white text-lg">{feedback}</p>
-                    </div>
-                )}
+                <div className="h-2">
+                    {feedback && (
+                        <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 w-36 mx-auto">
+                            {feedback}
+
+                        </div>
+                    )}
+
+                </div>
                 <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-4">
                     {/* Hidden input for keyboard */}
                     <input

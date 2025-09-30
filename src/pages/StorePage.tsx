@@ -106,7 +106,7 @@ const logos = [
 export function StorePage() {
   const navigate = useNavigate()
   const { addCoins } = useGlobalContext()
-  const [activeTab, setActiveTab] = useState('coins')
+  const [activeTab, setActiveTab] = useState('membership')
   const [activeTabDesktop, setActiveTabDesktop] = useState('coins')
   const [isMobile, setIsMobile] = useState(false)
   const { ticketBalance, setTicketBalance, gemBalance, voucherBalance } =
@@ -333,7 +333,7 @@ export function StorePage() {
                       >
                         {displayPackages.map((pkg) => (
                             <div
-                                className={`${pkg.bestValue && 'flex flex-col justify-between'} w-[46vw] h-[34vh] bg-white rounded-2xl font-inter`}
+                                className={`${pkg.bestValue && 'flex flex-col justify-between'} w-[46vw] h-[36vh] bg-white rounded-2xl font-inter`}
                             >
                               {/* Best Value */}
                               {pkg.bestValue && (
@@ -359,7 +359,7 @@ export function StorePage() {
                                 {/* Rank Batch */}
                                 <div
                                     className={`
-                                       ${pkg.title === 'Starter' && 'w-[12vw] h-[6.5vh]'}
+                                       ${pkg.title === 'Starter' && 'w-[13vw] h-[6.5vh]'}
                                        ${pkg.title === 'Silver' && 'w-[13vw] h-[7vh]'}
                                        ${pkg.title === 'Gold' && 'w-[17vw] h-[8vh]'}
                                        ${pkg.title === 'Diamond' && 'w-[18vw] h-[8vh]'}
