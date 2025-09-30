@@ -369,7 +369,7 @@ export function GoldGiveawayGame() {
                 </div>
 
                 {/* Scroll-free sheet with a fixed-size grid (2x2) */}
-                <div className={`px-3 flex-1 min-h-0 ${S.sheetH} overflow-hidden`}>
+                <div className={`px-6 flex-1 min-h-0 ${S.sheetH} overflow-hidden`}>
                     <div className={`grid grid-cols-2 grid-rows-2 ${S.gridGap} h-full place-items-center`}>
                         {isLoading || isJoining ? (
                             <div className="text-center py-4 col-span-2">
@@ -458,7 +458,7 @@ export function GoldGiveawayGame() {
 const S = {
     // sheet = the scroll-free area that holds the grid between StatusBar & BottomNav
     sheetH: 'h-[calc(100dvh-200px)]', // adjust 190–220px if your StatusBar/BottomNav differ
-    gridGap: 'gap-[10px]',
+    gridGap: 'gap-[0px]',
     cardW: 'w-[min(44vw,160px)]',     // narrower than 170px
     img: 'w-14 h-14',                 // 56px
     title: 'text-[13px]',
