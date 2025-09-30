@@ -30,7 +30,7 @@ export function PrivacyTab() {
 import React from 'react'
 export function PrivacyTab() {
     return (
-        <div className="space-y-6 ml-12 w-11/12">
+        <div className="space-y-6 mx-4 w-11/12">
             <h2 className="text-xl font-bold mb-4 mt-4">Privacy</h2>
             <div>
                 <p className="text-sm  mb-14 mt-8">
@@ -47,7 +47,7 @@ export function PrivacyTab() {
             </div>
             <div className="mt-8">
                 <h3 className="text-lg font-semibold mb-2">Terms & Conditions</h3>
-                <p className="text-sm mt-8">
+                <p className="text-sm mt-8 mb-20">
                     Read terms and conditions.
                     <a href="#" className="text-[#006CB9] ml-1 underline">
                         Click here

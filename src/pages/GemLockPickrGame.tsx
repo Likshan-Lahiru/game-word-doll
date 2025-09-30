@@ -407,238 +407,410 @@ export function GemLockPickrGame() {
         lockedPositions,
         numberLength,
     ])
+    const S = {
+        smallTile: 'size-[clamp(2.3rem,8.5vw,2.75rem)] text-[clamp(1rem,3.6vw,1.125rem)]',
+        bigTile:   'size-[clamp(3.25rem,12vw,4rem)] text-[clamp(1.5rem,5vw,1.875rem)]',
+        gridGap:   'gap-[clamp(0.25rem,1.6vw,0.5rem)]',
+        panelW:    'w-[min(92vw,340px)] h-[clamp(3.8rem,10vw,4.1rem)]',
+        keyH:      'h-[clamp(3rem,10vw,3.5rem)]',
+        keyText:   'text-[clamp(1.4rem,5vw,1.875rem)]',
+        enterText: 'text-[clamp(0.9rem,3.2vw,1.1rem)]',
+        backIcon:  'h-[clamp(1.25rem,4.2vw,2rem)] w-[clamp(1.25rem,4.2vw,2rem)]',
+    };
+
+
     return (
         <div
-            className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
             ref={gameContainerRef}
             tabIndex={0}
+            className={
+                isMobile
+                    ? "fixed inset-0 bg-[#1F2937] text-white overscroll-none touch-pan-y select-none overflow-hidden"
+                    : "flex flex-col w-full min-h-screen bg-[#1F2937] text-white p-4"
+            }
         >
-            {/* Back button */}
-            <div className="absolute top-12 left-4 z-10">
-                <button
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    onClick={() => navigate('/')}
-                >
-                    <img
-                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
-                        alt="Back"
-                        className="w-8 h-8"
+            {isMobile ? (
+                // ---------- MOBILE (responsive, no scrolling) ----------
+                <div className="flex flex-col h-dvh min-h-dvh pb-[env(safe-area-inset-bottom)]">
+                    {/* Back button */}
+                    <div className="absolute top-4 left-4 z-10">
+                        <button
+                            className="w-12 h-12 rounded-full flex items-center justify-center"
+                            onClick={() => navigate('/')}
+                        >
+                            <img
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                                alt="Back"
+                                className="w-8 h-8"
+                            />
+                        </button>
+                    </div>
+
+                    {/* Timer */}
+                    <div className="text-center pt-8 pb-2 shrink-0">
+                        <p className="text-xs">Timer</p>
+                        <p className="text-2xl font-bold">{formatTime(timer)}</p>
+                    </div>
+
+                    {/* Feedback */}
+                    <div className="h-2">
+                        {feedback && (
+                            <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-4 mx-28">
+                                {feedback}
+
+                            </div>
+                        )}
+
+                    </div>
+
+
+                    {/* Hidden input for keyboard (inert) */}
+                    <input
+                        ref={inputRef}
+                        type="tel"
+                        inputMode="none"
+                        pattern="[0-9]*"
+                        value={currentAttempt.filter((n) => n !== undefined).join('')}
+                        onChange={handleInputChange}
+                        className="absolute opacity-0 h-0 w-0 pointer-events-none"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        readOnly
+                        disabled={gameCompleted}
                     />
-                </button>
-            </div>
 
-            {/* Timer */}
-            <div className="text-center mb-24 mt-8">
-                <p className="text-xs">Timer</p>
-                <p className="text-2xl font-bold">{formatTime(timer)}</p>
-            </div>
+                    {/* Game area */}
+                    <div className="flex-1 flex flex-col justify-center items-center overflow-hidden px-2 min-h-0">
+                        {/* Last attempt */}
+                        <div className="flex justify-center mt-[clamp(0.5rem,6vh,2.5rem)] mb-3">
+                            <div
+                                className={`grid grid-cols-1 ${S.gridGap}`}
+                                style={{gridTemplateColumns: `repeat(${numberLength}, minmax(0, 1fr))`}}
+                            >
+                                {(lastAttempt.length > 0 ? lastAttempt : Array(numberLength).fill('')).map((num, index) => {
+                                    const status =
+                                        lastAttempt.length > 0 && lastAttemptStatuses.length === 0
+                                            ? getNumberStatus(num as number, index)
+                                            : lastAttemptStatuses[index] || null;
 
-            {/* Feedback message */}
-            {feedback && (
-                <div className="bg-[#374151] text-center mt-3 py-1 px-4 rounded-lg mb-2 mx-auto max-w-md">
-                    <p className="text-white text-lg">{feedback}</p>
+                                    let bgColor = 'bg-[#374151]';
+                                    if (status === 'correct') bgColor = 'bg-[#22C55E]';
+                                    else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]';
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={`${S.smallTile} flex items-center justify-center ${bgColor} rounded-md text-white font-bold shadow-md`}
+                                        >
+                                            {typeof num === 'number' ? num : ''}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Current attempt */}
+                        <div className="flex justify-center mb-2"
+                             onClick={() => !gameCompleted && inputRef.current?.focus()}>
+                            <div
+                                className={`grid grid-cols-1 ${S.gridGap}`}
+                                style={{gridTemplateColumns: `repeat(${numberLength}, minmax(0, 1fr))`}}
+                            >
+                                {Array.from({length: numberLength}).map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className={`${S.bigTile} flex items-center justify-center ${
+                                            lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'
+                                        } rounded-md text-white font-bold shadow-md`}
+                                    >
+                                        {currentAttempt[index] !== undefined ? currentAttempt[index] : ''}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Attempts count */}
+                        <div className="text-center mt-[clamp(0.5rem,6vh,2.5rem)] mb-1">
+                            <p className="text-xl font-medium font-[Inter]">{attemptsLeft} x attempt</p>
+                        </div>
+                    </div>
+
+                    {/* Mobile number pad */}
+                    <div className="w-full max-w-md mx-auto px-3 pb-[env(safe-area-inset-bottom)]">
+                        {/* Row 1: 1-2-3 */}
+                        <div className="flex justify-between mb-2">
+                            {[1, 2, 3].map((num) => (
+                                <button
+                                    key={num}
+                                    className={`w-[32%] ${S.keyH} bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white ${S.keyText} font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleMobileKeyPress(num.toString())}
+                                    disabled={gameCompleted}
+                                >
+                                    {num}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 2: 4-5-6 */}
+                        <div className="flex justify-between mb-2">
+                            {[4, 5, 6].map((num) => (
+                                <button
+                                    key={num}
+                                    className={`w-[32%] ${S.keyH} bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white ${S.keyText} font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleMobileKeyPress(num.toString())}
+                                    disabled={gameCompleted}
+                                >
+                                    {num}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 3: 7-8-9 */}
+                        <div className="flex justify-between mb-2">
+                            {[7, 8, 9].map((num) => (
+                                <button
+                                    key={num}
+                                    className={`w-[32%] ${S.keyH} bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white ${S.keyText} font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleMobileKeyPress(num.toString())}
+                                    disabled={gameCompleted}
+                                >
+                                    {num}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 4: ENTER-0-Backspace */}
+                        <div className="flex justify-between">
+                            <button
+                                className={`w-[32%] ${S.keyH} bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white ${S.enterText} font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => handleMobileKeyPress('ENTER')}
+                                disabled={gameCompleted}
+                            >
+                                ENTER
+                            </button>
+                            <button
+                                className={`w-[32%] ${S.keyH} bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white ${S.keyText} font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => handleMobileKeyPress('0')}
+                                disabled={gameCompleted}
+                            >
+                                0
+                            </button>
+                            <button
+                                className={`w-[32%] ${S.keyH} bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => handleMobileKeyPress('Backspace')}
+                                disabled={gameCompleted}
+                            >
+                                <img
+                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                    alt="Backspace"
+                                    className={S.backIcon}
+                                />
+                            </button>
+                        </div>
+                    </div>
                 </div>
+            ) : (
+                // ---------- DESKTOP (unchanged) ----------
+                <>
+                    {/* Back button */}
+                    <div className="absolute top-4 left-4 z-10">
+                        <button
+                            className="w-12 h-12 rounded-full flex items-center justify-center"
+                            onClick={() => navigate('/')}
+                        >
+                            <img
+                                src="https://uploadthingy.s3.us-west-1.amazonaws.com/5dZY2vpVSVwYT3dUEHNYN5/back-icons.png"
+                                alt="Back"
+                                className="w-8 h-8"
+                            />
+                        </button>
+                    </div>
+
+                    {/* Timer */}
+                    <div className="text-center mb-12 mt-8">
+                        <p className="text-xs">Timer</p>
+                        <p className="text-2xl font-bold">{formatTime(timer)}</p>
+                    </div>
+
+                    {/* Feedback message */}
+                    <div className="h-2 mb-10">
+                        {feedback && (
+                            <div className="bg-[#374151] text-xs text-center py-2 px-4 rounded-lg mb-10 w-36 mx-auto">
+                                {feedback}
+
+                            </div>
+                        )}
+
+
+                    </div>
+
+                    {/* Hidden input for keyboard */}
+                    <input
+                        ref={inputRef}
+                        type="tel"
+                        inputMode="none"
+                        pattern="[0-9]*"
+                        value={currentAttempt.filter((n) => n !== undefined).join('')}
+                        onChange={handleInputChange}
+                        className="opacity-0 h-0 w-0 absolute"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        readOnly
+                        disabled={gameCompleted}
+                    />
+
+                    {/* Last attempt display */}
+                    <div className="flex justify-center mb-4">
+                        <div
+                            className="grid gap-2"
+                            style={{gridTemplateColumns: `repeat(${numberLength}, minmax(0, 1fr))`}}
+                        >
+                            {(lastAttempt.length > 0 ? lastAttempt : Array(numberLength).fill('')).map((num, index) => {
+                                const status =
+                                    lastAttempt.length > 0 && lastAttemptStatuses.length === 0
+                                        ? getNumberStatus(num as number, index)
+                                        : lastAttemptStatuses[index] || null;
+
+                                let bgColor = 'bg-[#374151]';
+                                if (status === 'correct') bgColor = 'bg-[#22C55E]';
+                                else if (status === 'wrong-position') bgColor = 'bg-[#C5BD22]';
+
+                                return (
+                                    <div
+                                        key={index}
+                                        className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
+                                    >
+                                        {typeof num === 'number' ? num : ''}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Current attempt */}
+                    <div className="flex justify-center mb-4"
+                         onClick={() => !gameCompleted && inputRef.current?.focus()}>
+                        <div
+                            className="grid gap-2"
+                            style={{gridTemplateColumns: `repeat(${numberLength}, minmax(0, 1fr))`}}
+                        >
+                            {Array.from({length: numberLength}).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`w-14 h-14 flex items-center justify-center ${
+                                        lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'
+                                    } rounded-md text-white font-bold text-xl`}
+                                >
+                                    {currentAttempt[index] !== undefined ? currentAttempt[index] : ''}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Attempts count */}
+                    <div className="text-center mb-4">
+                        <p className="text-xl font-medium font-[Inter]">{attemptsLeft} x attempt</p>
+                    </div>
+
+                    {/* Desktop numpad (kept from your mobile-styled buttons for consistency) */}
+                    <div className="w-full max-w-md mx-auto">
+                        {/* Row 1: 1-2-3 */}
+                        <div className="flex justify-between mb-2">
+                            {[1, 2, 3].map((num) => (
+                                <button
+                                    key={num}
+                                    className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleMobileKeyPress(num.toString())}
+                                    disabled={gameCompleted}
+                                >
+                                    {num}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 2: 4-5-6 */}
+                        <div className="flex justify-between mb-2">
+                            {[4, 5, 6].map((num) => (
+                                <button
+                                    key={num}
+                                    className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleMobileKeyPress(num.toString())}
+                                    disabled={gameCompleted}
+                                >
+                                    {num}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 3: 7-8-9 */}
+                        <div className="flex justify-between mb-2">
+                            {[7, 8, 9].map((num) => (
+                                <button
+                                    key={num}
+                                    className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleMobileKeyPress(num.toString())}
+                                    disabled={gameCompleted}
+                                >
+                                    {num}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 4: ENTER-0-Backspace */}
+                        <div className="flex justify-between">
+                            <button
+                                className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => handleMobileKeyPress('ENTER')}
+                                disabled={gameCompleted}
+                            >
+                                ENTER
+                            </button>
+                            <button
+                                className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => handleMobileKeyPress('0')}
+                                disabled={gameCompleted}
+                            >
+                                0
+                            </button>
+                            <button
+                                className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => handleMobileKeyPress('Backspace')}
+                                disabled={gameCompleted}
+                            >
+                                <img
+                                    src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                    alt="Backspace"
+                                    className="h-8 w-8"
+                                />
+                            </button>
+                        </div>
+                    </div>
+                </>
             )}
 
-            {/* Hidden input for keyboard */}
-            <input
-                ref={inputRef}
-                type="tel"
-                inputMode="none"
-                pattern="[0-9]*"
-                value={currentAttempt.filter((n) => n !== undefined).join('')}
-                onChange={handleInputChange}
-                className="opacity-0 h-0 w-0 absolute"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                readOnly
-                disabled={gameCompleted}
-            />
-
-            {/* Last attempt display - Always shown */}
-            <div className="flex justify-center mb-4">
-                <div
-                    className="grid gap-2"
-                    style={{
-                        gridTemplateColumns: `repeat(${numberLength}, minmax(0, 1fr))`,
-                    }}
-                >
-                    {(lastAttempt.length > 0
-                            ? lastAttempt
-                            : Array(numberLength).fill('')
-                    ).map((num, index) => {
-                        const status =
-                            lastAttempt.length > 0 && lastAttemptStatuses.length === 0
-                                ? getNumberStatus(num as number, index)
-                                : lastAttemptStatuses[index] || null
-                        let bgColor = 'bg-[#374151]'
-                        if (status === 'correct') {
-                            bgColor = 'bg-[#22C55E]'
-                        } else if (status === 'wrong-position') {
-                            bgColor = 'bg-[#C5BD22]'
-                        }
-                        return (
-                            <div
-                                key={index}
-                                className={`w-10 h-10 flex items-center justify-center ${bgColor} rounded-md text-white font-bold text-xl`}
-                            >
-                                {typeof num === 'number' ? num : ''}
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
-
-            {/* Current attempt - Clickable to enable keyboard input */}
-            <div
-                className="flex justify-center mb-4"
-                onClick={() => !gameCompleted && inputRef.current?.focus()}
-            >
-                <div
-                    className="grid gap-2"
-                    style={{
-                        gridTemplateColumns: `repeat(${numberLength}, minmax(0, 1fr))`,
-                    }}
-                >
-                    {Array.from({
-                        length: numberLength,
-                    }).map((_, index) => (
-                        <div
-                            key={index}
-                            className={`w-14 h-14 flex items-center justify-center ${lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-[#374151]'} rounded-md text-white font-bold text-xl`}
-                        >
-                            {currentAttempt[index] !== undefined ? currentAttempt[index] : ''}
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Attempts count */}
-            <div className="text-center mb-4">
-                <p className="text-xl font-medium font-[Inter]">
-                    {attemptsLeft} x attempt
-                </p>
-            </div>
-
-            {/* Mobile number pad */}
-            <div className="w-full max-w-md mx-auto">
-                {/* Row 1: 1-2-3 */}
-                <div className="flex justify-between mb-2">
-                    {[1, 2, 3].map((num) => (
-                        <button
-                            key={num}
-                            className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            onClick={() => handleMobileKeyPress(num.toString())}
-                            disabled={gameCompleted}
-                        >
-                            {num}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Row 2: 4-5-6 */}
-                <div className="flex justify-between mb-2">
-                    {[4, 5, 6].map((num) => (
-                        <button
-                            key={num}
-                            className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            onClick={() => handleMobileKeyPress(num.toString())}
-                            disabled={gameCompleted}
-                        >
-                            {num}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Row 3: 7-8-9 */}
-                <div className="flex justify-between mb-2">
-                    {[7, 8, 9].map((num) => (
-                        <button
-                            key={num}
-                            className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            onClick={() => handleMobileKeyPress(num.toString())}
-                            disabled={gameCompleted}
-                        >
-                            {num}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Row 4: ENTER-0-Backspace */}
-                <div className="flex justify-between">
-                    <button
-                        className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => handleMobileKeyPress('ENTER')}
-                        disabled={gameCompleted}
-                    >
-                        ENTER
-                    </button>
-                    <button
-                        className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white text-3xl font-bold ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => handleMobileKeyPress('0')}
-                        disabled={gameCompleted}
-                    >
-                        0
-                    </button>
-                    <button
-                        className={`w-[32%] h-14 bg-[#67768F] hover:bg-[#2A3141] rounded-md text-white flex items-center justify-center ${gameCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={() => handleMobileKeyPress('Backspace')}
-                        disabled={gameCompleted}
-                    >
-                        <img
-                            src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
-                            alt="Backspace"
-                            className="h-8 w-8"
-                        />
-                    </button>
-                </div>
-            </div>
-
-            {/* Countdown Modal */}
+            {/* Modals (unchanged) */}
             <CountdownModal
                 isOpen={showCountdown}
                 onCountdownComplete={handleCountdownComplete}
             />
-
-            {/* Game status modals */}
             <UserWinGemModal
                 isOpen={showUserWinModal}
-                onClose={() => {
-                    setShowUserWinModal(false)
-                    navigate('/gem-game-mode')
-                }}
+                onClose={() => { setShowUserWinModal(false); navigate('/gem-game-mode'); }}
                 gemAmount={parseFloat(legendaryAmount)}
             />
-
-            {/* CHANGED: ticketAmount now uses timeEndedReward */}
             <TimeEndedGemModal
                 isOpen={showTimeEndedModal}
-                onClose={() => {
-                    setShowTimeEndedModal(false)
-                    navigate('/gem-game-mode')
-                }}
+                onClose={() => { setShowTimeEndedModal(false); navigate('/gem-game-mode'); }}
                 ticketAmount={timeEndedReward}
             />
-
             <NoAttemptsGemModal
                 isOpen={showNoAttemptsModal}
-                onClose={() => {
-                    setShowNoAttemptsModal(false)
-                    navigate('/gem-game-mode')
-                }}
+                onClose={() => { setShowNoAttemptsModal(false); navigate('/gem-game-mode'); }}
             />
-
             <RoomHasWinnerModal
                 isOpen={showRoomHasWinnerModal}
-                onClose={() => {
-                    setShowRoomHasWinnerModal(false)
-                    navigate('/gem-game-mode')
-                }}
+                onClose={() => { setShowRoomHasWinnerModal(false); navigate('/gem-game-mode'); }}
                 winnerName={roomWinnerName}
                 legendaryAmount={legendaryAmount}
                 userReward={0.02}
             />
         </div>
-    )
+    );
+
 }
