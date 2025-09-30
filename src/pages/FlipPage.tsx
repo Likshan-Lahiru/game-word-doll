@@ -637,7 +637,7 @@ export function FlipPage() {
                         <>
                             {isFreeCard ? (
                                 <button
-                                    className={`w-full bg-[#374151] text-white font-bold font-inter disabled:cursor-not-allowed ${S.bigBtn}`}
+                                    className={`w-full bg-[#374151] rounded-xl text-white font-bold font-inter disabled:cursor-not-allowed ${S.bigBtn}`}
                                     disabled
                                 >
                                     Free
