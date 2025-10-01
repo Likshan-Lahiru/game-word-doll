@@ -459,7 +459,8 @@ const S = {
     // sheet = the scroll-free area that holds the grid between StatusBar & BottomNav
     sheetH: 'h-[calc(100dvh-200px)]', // adjust 190–220px if your StatusBar/BottomNav differ
     gridGap: 'gap-[10px]',
-    cardW: 'w-[min(44vw,160px)]',     // narrower than 170px
+    cardW: 'w-[min(46vw,176px)]',
+
     img: 'w-14 h-14',                 // 56px
     title: 'text-[13px]',
     sub: 'text-[12px]',
@@ -476,8 +477,8 @@ function PrizeCardMobile({ prize, onEnter }: { prize: PrizeData; onEnter: () => 
                 <img src={prize.image} alt={`${prize.coinAmount} Coins`} className={`${S.img} object-contain mb-1.5`} />
 
                 <p className={`text-center font-medium ${S.title}`}>GC {prize.coinAmount.toLocaleString()}</p>
-                <p className={`text-center ${S.sub} mb-0.5`}>+</p>
-                <p className={`text-center ${S.title} mb-1.5`}>{prize.spinAmount} x Flip</p>
+                <p className={`text-center   font-medium${S.sub} mb-0.5`}>+</p>
+                <p className={`text-center  font-medium ${S.title} mb-1.5`}>{prize.spinAmount} x Flip</p>
 
                 <div className="flex items-center justify-center mb-2">
                     <img
@@ -489,7 +490,7 @@ function PrizeCardMobile({ prize, onEnter }: { prize: PrizeData; onEnter: () => 
                         alt="Coins"
                         className={`${selectedBalanceType === 'ticket' && 'bg-[#0CC242]'} w-6 h-6 mr-1 rounded-full p-[2px]`}
                     />
-                    <span className="text-[#170F49] font-medium">{prize.cost.toLocaleString()}</span>
+                    <span className="text-[#170F49] font-semibold">{prize.cost.toLocaleString()}</span>
                 </div>
 
                 <button
