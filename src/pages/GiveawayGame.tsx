@@ -470,7 +470,7 @@ export function GiveawayGame() {
 const S = {
   sheetH: 'h-[calc(100dvh-210px)]', // area between StatusBar & BottomNav (tweak 200–230 if needed)
   gridGap: 'gap-[10px]',
-  cardW:  'w-[min(44vw,150px)]',
+  cardW: 'w-[min(46vw,176px)]',
   img:    'w-14 h-14',
   title:  'text-[13px]',
   sub:    'text-[12px]',
@@ -491,9 +491,9 @@ function MobilePrizeCard({ prize, onEnter }: { prize: PrizeData; onEnter: () => 
           <p className={`text-center font-medium ${S.title}`}>
             GC {prize.coinAmount.toLocaleString()}
           </p>
-          <p className={`text-center ${S.sub} mb-0.5`}>+</p>
+          <p className={`text-center font-medium ${S.sub} mb-0.5`}>+</p>
 
-          <p className={`text-center ${S.title} mb-1.5`}>
+          <p className={`text-center font-medium ${S.title} mb-1.5`}>
             {selectedBalanceType === 'coin' ? (
                 `${prize.spinAmount} x Flip`
             ) : (
