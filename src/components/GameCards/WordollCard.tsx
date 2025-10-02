@@ -56,7 +56,7 @@ export function WordollCard({ isMobile = false }: WordollCardProps) {
                 </div>
                 {/* Display remaining plays indicator in top right corner */}
                 {!isAuthenticated && (
-                    <div className="absolute top-2 right-4 text-white text-3xl z-10">
+                    <div className="absolute top-2 right-4 text-xl text-white z-10">
                         x {limitPlay}
                     </div>
                 )}
