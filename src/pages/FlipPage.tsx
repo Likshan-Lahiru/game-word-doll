@@ -430,10 +430,13 @@ export function FlipPage() {
                             image: apiCard.imageLink,
                             desc: apiCard.desc,
                             type: apiCard.type || 'imgText',
-                            ...(['WIN', 'GRAND', 'FORTUNE'].includes(
-                                apiCard.flipCardType,
-                            ) && {
+                            ...(['WIN', 'GRAND', 'FORTUNE'].includes(apiCard.flipCardType) && {
                                 winCount: apiCard.winCount,
+                            }),
+                            ...(apiCard.type === 'GOLD' && {
+                                winCount: response.goldCoinWinCount, // <-- show gold coin bonus count
+                                type: 'winImg', // ensure "You Win" UI shows
+                                flipCardType: 'GOLD',
                             }),
                         }
                     } else {
@@ -445,6 +448,7 @@ export function FlipPage() {
                         }
                     }
                 })
+
                 setSelectedFlipCards(updatedCards)
             } else {
                 // Fallback for non-authenticated users (use existing random logic)

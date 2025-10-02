@@ -13,9 +13,24 @@ export const FlipCard = ({
 
     const formatWinAmount = (amount) => {
         if (amount === undefined || amount === null) return '0.00'
+
+        const isGold = items?.flipCardType === 'GOLD'
+
+        if (isGold) {
+            // Format with commas, no decimals
+            return Number(amount).toLocaleString('en-US', {
+                maximumFractionDigits: 0,
+            })
+        }
+
+        // Default: keep two decimals
         if (typeof amount === 'string') return amount
         return Number(amount).toFixed(2)
     }
+
+    const isGold = items?.flipCardType === 'GOLD' || items?.type === 'GOLD'
+    const prizeIcon = isGold ? IMAGES.coin : IMAGES.diamond
+
 
     // sizing tokens (mobile)
     const S = {
@@ -71,13 +86,13 @@ export const FlipCard = ({
                                 )}
                             </div>
 
-                            {/* Footer */}
+                            {/* Footer (MOBILE) */}
                             <div className="mb-[clamp(0.75rem,3.6vw,1rem)]">
                                 {items.type === 'winImg' ? (
                                     <>
                                         <p className="text-center font-inter font-bold">You Win</p>
                                         <div className="flex gap-x-2 items-center justify-center">
-                                            <img src={IMAGES.diamond} alt="Diamond" className="w-5 h-5" />
+                                            <img src={prizeIcon} alt={isGold ? 'Coin' : 'Diamond'} className="w-5 h-5" />
                                             <p className="text-[clamp(1rem,4.5vw,1.25rem)] font-inter font-bold">
                                                 {formatWinAmount(items.winCount)}
                                             </p>
@@ -91,6 +106,7 @@ export const FlipCard = ({
                                     ))
                                 )}
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -130,29 +146,28 @@ export const FlipCard = ({
                                     src={items.image}
                                     alt="item"
                                     className={`
-                    ${items.image === 'flip-pic/gold-coin.png'
-                                        ? 'lg:w-32 lg:h-32 d:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24'
+                                               ${items.image === 'flip-pic/gold-coin.png'
+                                        ? 'lg:w-32 lg:h-32 d:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24' 
                                         : 'lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36'}
-                    object-contain
-                    ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
-                    ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-6' : ''}
-                    ${items.image === '/flip-pic/Fortune-Cooky .png'
+                                        object-contain
+                                        ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
+                                        ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-6' : ''}
+                                        ${items.image === '/flip-pic/Fortune-Cooky .png'
                                         ? 'lg:w-28 lg:h-28 md:w-28 md:h-28 sm:w-24 sm:h-24 w-24 h-24'
                                         : ''}
-                  `}
-                                />
+                                        `}
+                                        />
                             ) : (
                                 <div className="flex-1" />
                             )}
                         </div>
-
-                        {/* Footer */}
+                        {/* Footer (DESKTOP) */}
                         <div className="mb-10">
                             {items.type === 'winImg' ? (
                                 <>
                                     <p className="text-center font-inter font-bold">You Win</p>
                                     <div className="flex gap-x-3 items-center justify-center">
-                                        <img src={IMAGES.diamond} alt="Diamond" className="w-5 h-5" />
+                                        <img src={prizeIcon} alt={isGold ? 'Coin' : 'Diamond'} className="w-5 h-5" />
                                         <p className="text-[20px] lg:text-[22px] md:text-[22px] font-inter font-bold">
                                             {formatWinAmount(items.winCount)}
                                         </p>
