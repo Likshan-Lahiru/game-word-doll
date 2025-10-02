@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import { useGlobalContext } from '../context/GlobalContext'
 type VerifyModalProps = {
     isOpen: boolean
     onClose: () => void
@@ -14,6 +15,7 @@ export function VerifyModal({
                                 email,
                             }: VerifyModalProps) {
     const navigate = useNavigate()
+    const { login: loginContext } = useGlobalContext()
     const [verificationCode, setVerificationCode] = useState([
         '',
         '',
@@ -69,10 +71,16 @@ export function VerifyModal({
             )
             if (response.verified) {
                 setSuccessMessage(response.message || 'Verification successful!')
-                // Full reload with URL
+                // Set user as authenticated
+                loginContext()
+                // Check if mobile, navigate to splash screen
                 setTimeout(() => {
-                    window.location.href = '/' // or replace with your desired URL
-                    // window.location.replace('/') // alternative: replaces history instead of adding new entry
+                    if (isMobile) {
+                        navigate('/splash-screen')
+                    } else {
+                        // For desktop, navigate directly to home
+                        window.location.href = '/'
+                    }
                 }, 1500)
             } else {
                 setError(response.message || 'Invalid verification code')

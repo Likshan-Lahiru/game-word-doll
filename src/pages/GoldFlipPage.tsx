@@ -11,6 +11,11 @@ interface FlipOption {
     id: string
     costPerFlip: number
 }
+// --- GRAND WIN frequency control ---
+const GRAND_WIN_SET_INDEX = 0;   // your GRAND WIN set is at index 0
+const GRAND_WIN_RATE = 100;      // 1 in 100 chance
+const allowGrandWin = () => Math.floor(Math.random() * GRAND_WIN_RATE) === 0;
+
 // New interface for flip card data from API
 interface ApiFlipCardData {
     id: string
@@ -283,38 +288,50 @@ export function GoldFlipPage() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
     const pickRandomSetWithFirstSelected = () => {
-        // Create a weighted random selection that reduces GRAND WIN probability
-        // GRAND WIN is at index 0, so we'll give it a lower weight
-        const weights = allFlipCardData.map((_, index) => (index === 0 ? 0.7 : 1))
-        const totalWeight = weights.reduce((sum, weight) => sum + weight, 0)
-        let random = Math.random() * totalWeight
-        let randomIndex = 0
-        // Select an index based on weights
-        for (let i = 0; i < weights.length; i++) {
-            random -= weights[i]
-            if (random <= 0) {
-                randomIndex = i
-                break
-            }
+        // try choosing any set; only allow GRAND WIN if the gate passes
+        let randomIndex = Math.floor(Math.random() * allFlipCardData.length);
+
+        if (randomIndex === GRAND_WIN_SET_INDEX && !allowGrandWin()) {
+            // re-pick from non-GRAND-WIN sets (1..end)
+            randomIndex = 1 + Math.floor(Math.random() * (allFlipCardData.length - 1));
         }
+
         const selectedSet = allFlipCardData[randomIndex].map((card, index) => ({
             ...card,
-            selected: index === 1, // Select the middle card (index 1) instead of first card
-        }))
-        setSelectedFlipCards(selectedSet)
-        setSelectedCardId(selectedSet[1].id) // Set the middle card ID as selected
-    }
+            selected: index === 1, // keep your "middle card selected" rule
+        }));
+
+        setSelectedFlipCards(selectedSet);
+        setSelectedCardId(selectedSet[1].id);
+    };
+
     function getRandomCardFromOtherSets(
         excludeSet: typeof selectedFlipCards,
-    ): any {
-        // Flatten all sets except the current one
-        const otherCards = allFlipCardData
-            .filter((set) => set !== excludeSet)
-            .flat()
-        // Get a random card from other sets
-        const randomIndex = Math.floor(Math.random() * otherCards.length)
-        return otherCards[randomIndex]
+    ): FlipCardData {
+        const canShowGrandWin = allowGrandWin();
+
+        // Build candidate pool while remembering set index to filter GRAND WIN
+        const otherCards: FlipCardData[] = [];
+        allFlipCardData.forEach((set, setIdx) => {
+            if (set !== excludeSet) {
+                // if this is the GRAND WIN set and gate is closed, skip
+                if (setIdx === GRAND_WIN_SET_INDEX && !canShowGrandWin) return;
+                otherCards.push(...set);
+            }
+        });
+
+        // Safety: if we somehow filtered all out, fall back to any non-GRAND set
+        let pool = otherCards;
+        if (pool.length === 0) {
+            pool = allFlipCardData
+                .filter((_, idx) => idx !== GRAND_WIN_SET_INDEX)
+                .flat();
+        }
+
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        return pool[randomIndex];
     }
+
     // Fetch flip options from API
     useEffect(() => {
         const fetchFlipOptions = async () => {
@@ -504,24 +521,21 @@ export function GoldFlipPage() {
     }
     // Handle coming next cards
     const handleNextRow = async () => {
-        setIsFreeCard(false) // reset free button
-        // Flip all cards back to front
-        const flippedBack = selectedFlipCards.reduce(
-            (acc, card) => {
-                acc[card.id] = false // false = front side
-                return acc
-            },
-            {} as {
-                [id: number]: boolean
-            },
-        )
+        // no reset here; let the server decide on the next play
+        const flippedBack = selectedFlipCards.reduce((acc, card) => {
+            acc[card.id] = false
+            return acc
+        }, {} as { [id: number]: boolean })
         setFlippedCards(flippedBack)
         // Wait for flip animation to complete (~500ms)
         await new Promise((resolve) => setTimeout(resolve, 500))
         // Start slide-in animation
         setSlideInCards(true)
         // Load new card set
-        const newIndex = Math.floor(Math.random() * allFlipCardData.length)
+        let newIndex = Math.floor(Math.random() * allFlipCardData.length);
+        if (newIndex === GRAND_WIN_SET_INDEX && !allowGrandWin()) {
+            newIndex = 1 + Math.floor(Math.random() * (allFlipCardData.length - 1));
+        }
         const newSet = allFlipCardData[newIndex].map((card, index) => ({
             ...card,
             selected: index === 1, // Select the middle card (index 1) instead of first card
