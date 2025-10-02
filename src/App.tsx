@@ -24,6 +24,8 @@ import { GemWordollGame } from './pages/GemWordollGame'
 import { GemLockPickrGame } from './pages/GemLockPickrGame'
 import { GoldGiveawayGame } from './pages/GoldGiveawayGame'
 import { GoldFlipPage } from './pages/GoldFlipPage'
+import { SplashScreen } from './components/SplashScreen'
+
 export function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     useEffect(() => {
@@ -68,6 +70,8 @@ export function App() {
                         <Route path="/gold-spin" element={<GoldFlipPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/signup" element={<SignupPage />} />
+                        <Route path="/splash-screen" element={<SplashScreen />} />
+
                         <Route
                             path="/profile"
                             element={

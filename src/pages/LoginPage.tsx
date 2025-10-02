@@ -20,6 +20,7 @@ export function LoginPage() {
   const [error, setError] = useState('')
   // Use custom logo if available, otherwise use default
   const logoSrc = customLogo || IMAGES.logo
+  const isMobile = window.innerWidth <= 768
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -33,8 +34,13 @@ export function LoginPage() {
         localStorage.setItem('userId', response.userId)
         // Update global auth state
         loginContext()
-        // Redirect to home page after successful login
-        navigate('/')
+        // Check if mobile device, if so navigate to splash screen
+        if (isMobile) {
+          navigate('/splash-screen')
+        } else {
+          // For desktop, navigate directly to home
+          navigate('/')
+        }
       } else {
         setError('Login failed. Please check your credentials and try again.')
       }
