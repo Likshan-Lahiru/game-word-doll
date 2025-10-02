@@ -49,6 +49,7 @@ export const FlipCard = ({
         bigBtn: 'rounded-[22px] text-[clamp(1.125rem,4.8vw,1.375rem)] py-[clamp(0.75rem,3.4vw,1rem)]',
         smallSquare: 'h-[clamp(2.75rem,11vw,3.2rem)] w-[clamp(2.75rem,11vw,3.2rem)] text-[clamp(1.25rem,6vw,1.6rem)]',
         prizeImg: 'w-[clamp(5.25rem,22vw,6.75rem)] h-[clamp(5.25rem,22vw,6.75rem)]',
+        prizeImgSm: 'w-[clamp(4rem,18vw,5.5rem)] h-[clamp(4rem,18vw,5.5rem)]',
     }
 
     /* --------- MOBILE VIEW (separate) --------- */
@@ -77,14 +78,19 @@ export const FlipCard = ({
                                 </p>
                             </div>
 
-                            {/* Body */}
+                            {/* Body (MOBILE) */}
                             <div className="flex items-center justify-center">
                                 {items.image ? (
-                                    <img src={items.image} alt="item" className={`${S.prizeImg} object-contain`} />
+                                    <img
+                                        src={items.image}
+                                        alt="item"
+                                        className={`${S.prizeImg} ${items.image === 'flip-pic/gold-coin.png' ? S.prizeImgSm : ''} object-contain`}
+                                    />
                                 ) : (
                                     <div className="flex-1" />
                                 )}
                             </div>
+
 
                             {/* Footer (MOBILE) */}
                             <div className="mb-[clamp(0.75rem,3.6vw,1rem)]">
