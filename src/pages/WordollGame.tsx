@@ -745,193 +745,197 @@ export function WordollGame() {
             <p className="text-2xl font-bold">{formatTime(timer)}</p>
           </div>
           {/* Feedback message */}
-          {feedback && (
-              <div className="bg-[#374151] text-center py-2 px-4 rounded-lg mb-2 mx-auto max-w-md">
-                <p className="text-white text-lg">{feedback}</p>
-              </div>
-          )}
+          <div className="h-2">
+            {feedback && (
+                <div className="bg-[#374151] text-center py-2 px-3 rounded-lg mb-2 mx-auto w-[270px]">
+                  <p className="text-white text-lg">{feedback}</p>
+                </div>
+            )}
+          </div>
+
+
           <div className="flex-1 flex flex-col justify-center items-center overflow-hidden mt-28 px-4">
             {isMobile && (
-                <input
-                    ref={inputRef}
-                    type="text"
-                    value={currentAttempt.join('')}
-                    onChange={handleInputChange}
-                    className="opacity-0 h-0 w-0 absolute"
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"
-                />
-            )}
-            {/* Last attempt display */}
-            <div className="flex justify-center mt-1 mb-4">
-              <div
-                  className="grid grid-cols-1 gap-2 text-2xl font-[Inter]"
-                  style={{
-                    gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
-                  }}
-              >
-                {lastAttempt
-                    ? lastAttempt.map((letter, index) =>
-                        renderLetterTile(
-                            letter,
-                            index,
-                            lastAttemptStatuses.length > 0
-                                ? lastAttemptStatuses[index]
-                                : getNumberStatus(letter, index),
-                        ),
-                    )
-                    : Array(wordLength)
-                        .fill('')
-                        .map((_, index) => (
-                            <div
-                                key={index}
-                                className="w-10 h-10 flex items-center justify-center bg-[#374151] rounded-md text-white font-bold text-lg shadow-md"
-                            >
-                              {/* Empty tile */}
-                            </div>
-                        ))}
-              </div>
-            </div>
-            {/* Current attempt */}
+              <input
+                  ref={inputRef}
+                  type="text"
+                  value={currentAttempt.join('')}
+                  onChange={handleInputChange}
+                  className="opacity-0 h-0 w-0 absolute"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
+              />
+          )}
+          {/* Last attempt display */}
+          <div className="flex justify-center mt-1 mb-4">
             <div
-                className="flex justify-center mb-2"
-                onClick={() => inputRef.current?.focus()}
+                className="grid grid-cols-1 gap-2 text-2xl font-[Inter]"
+                style={{
+                  gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+                }}
             >
-              <div
-                  className="grid grid-cols-1 gap-2"
-                  style={{
-                    gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
-                  }}
-              >
-                {Array.from({
-                  length: wordLength,
-                }).map((_, index) => (
-                    <div
-                        key={index}
-                        className={`w-16 h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                        onClick={() => handleLetterClick(index)}
-                    >
-                      {currentAttempt[index]}
-                    </div>
-                ))}
-              </div>
-            </div>
-            <div className="text-center mt-20">
-              <p className="text-xl font-medium font-[Inter]">
-                {attempts} x attempt
-              </p>
+              {lastAttempt
+                  ? lastAttempt.map((letter, index) =>
+                      renderLetterTile(
+                          letter,
+                          index,
+                          lastAttemptStatuses.length > 0
+                              ? lastAttemptStatuses[index]
+                              : getNumberStatus(letter, index),
+                      ),
+                  )
+                  : Array(wordLength)
+                      .fill('')
+                      .map((_, index) => (
+                          <div
+                              key={index}
+                              className="w-10 h-10 flex items-center justify-center bg-[#374151] rounded-md text-white font-bold text-lg shadow-md"
+                          >
+                            {/* Empty tile */}
+                          </div>
+                      ))}
             </div>
           </div>
-          {/* Keyboard section */}
-          <div className="flex-none mb-0 pb-0">
-            {isMobile ? (
-                <>
-                  <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-4 mx-auto w-[340px] h-[65px]">
-                    <div className="flex items-center justify-center">
-                      <img
-                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
-                          alt="Coins"
-                          className="5 h-5 mr-1"
-                      />
-                      <span className="text-lg font-bold text-white">
-                    {winAmount.toLocaleString()}
-                  </span>
-                    </div>
-                    <p className="text-white text-lg font-bold">win</p>
+          {/* Current attempt */}
+          <div
+              className="flex justify-center mb-2"
+              onClick={() => inputRef.current?.focus()}
+          >
+            <div
+                className="grid grid-cols-1 gap-2"
+                style={{
+                  gridTemplateColumns: `repeat(${wordLength}, minmax(0, 1fr))`,
+                }}
+            >
+              {Array.from({
+                length: wordLength,
+              }).map((_, index) => (
+                  <div
+                      key={index}
+                      className={`w-16 h-16 flex items-center justify-center ${currentAttempt[index] ? (lockedPositions[index] ? 'bg-[#22C55E]' : 'bg-gray-700') : 'bg-[#374151]'} rounded-md text-white font-bold text-3xl shadow-md font-[Inter] ${!lockedPositions[index] ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                      onClick={() => handleLetterClick(index)}
+                  >
+                    {currentAttempt[index]}
                   </div>
-                  <div className="w-full max-w-md mx-auto">
-                    {mobileKeyboard.map((row, rowIndex) => (
-                        <div
-                            key={rowIndex}
-                            className={`flex justify-center mb-0.5 ${rowIndex === 1 ? 'px-4' : ''}`}
-                        >
-                          {row.map((key, keyIndex) => (
-                              <button
-                                  key={`${rowIndex}-${keyIndex}`}
-                                  className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[65px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
-                                  onClick={() => handleMobileKeyPress(key)}
-                              >
-                                {key === 'Backspace' ? (
-                                    <img
-                                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
-                                        alt="Backspace"
-                                        className="h-8 w-8"
-                                    />
-                                ) : key === 'ENTER' ? (
-                                    <span className="text-xs">ENTER</span>
-                                ) : (
-                                    key
-                                )}
-                              </button>
-                          ))}
-                        </div>
-                    ))}
-                  </div>
-                </>
-            ) : (
-                <>
-                  <VirtualKeyboard
-                      onKeyPress={(key) => {
-                        if (key === 'Enter') {
-                          checkGuess()
-                        } else if (key === 'Backspace') {
-                          let lastFilled = -1
-                          for (let i = wordLength - 1; i >= 0; i--) {
-                            if (!lockedPositions[i] && currentAttempt[i]) {
-                              lastFilled = i
-                              break
-                            }
-                          }
-                          if (lastFilled !== -1) {
-                            const newAttempt = [...currentAttempt]
-                            newAttempt[lastFilled] = ''
-                            setCurrentAttempt(newAttempt)
-                          }
-                        } else if (/^[A-Z]$/.test(key)) {
-                          let nextPos = -1
-                          for (let i = 0; i < wordLength; i++) {
-                            if (!lockedPositions[i] && !currentAttempt[i]) {
-                              nextPos = i
-                              break
-                            }
-                          }
-                          if (nextPos !== -1) {
-                            const newAttempt = [...currentAttempt]
-                            newAttempt[nextPos] = key
-                            setCurrentAttempt(newAttempt)
-                          }
-                        }
-                      }}
-                      keyboardType="qwerty"
-                      className="md:block"
-                  />
-                  <div className="bg-[#374151] rounded-2xl text-center mb-3 mx-auto w-[320px] h-[60px] space-y-0">
-                    <div className="flex items-center justify-center pt-2 h-8">
-                      <img
-                          src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
-                          alt="Coins"
-                          className="w-5 h-5 mr-2"
-                      />
-                      <span className="text-xl font-['Inter'] font-semibold text-white">
-                    {winAmount.toLocaleString()}
-                  </span>
-                    </div>
-                    <p className="text-xl pl-6 text-white font-inter font-semibold">
-                      win
-                    </p>
-                  </div>
-                </>
-            )}
+              ))}
+            </div>
+          </div>
+          <div className="text-center mt-20">
+            <p className="text-xl font-medium font-[Inter]">
+              {attempts} x attempt
+            </p>
           </div>
         </div>
-        <CountdownModal
-            isOpen={showCountdown}
-            onCountdownComplete={handleCountdownComplete}
-        />
-        <CooldownModal
-            isOpen={showCooldownModal}
+        {/* Keyboard section */}
+        <div className="flex-none mb-0 pb-0">
+          {isMobile ? (
+              <>
+                <div className="bg-gray-700 rounded-2xl px-6 py-2 text-center mb-4 mx-auto w-[340px] h-[65px]">
+                  <div className="flex items-center justify-center">
+                    <img
+                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                        alt="Coins"
+                        className="5 h-5 mr-1"
+                    />
+                    <span className="text-lg font-bold text-white">
+                    {winAmount.toLocaleString()}
+                  </span>
+                  </div>
+                  <p className="text-white text-lg font-bold">win</p>
+                </div>
+                <div className="w-full max-w-md mx-auto">
+                  {mobileKeyboard.map((row, rowIndex) => (
+                      <div
+                          key={rowIndex}
+                          className={`flex justify-center mb-0.5 ${rowIndex === 1 ? 'px-4' : ''}`}
+                      >
+                        {row.map((key, keyIndex) => (
+                            <button
+                                key={`${rowIndex}-${keyIndex}`}
+                                className={`${key === 'ENTER' || key === 'Backspace' ? 'w-[65px]' : 'w-[45px]'} h-[55px] ${rowIndex === 1 ? 'm-[2px]' : 'm-[2px]'} rounded-md bg-[#67768f] hover:bg-[#5a697f] text-white font-bold text-lg flex items-center justify-center shadow-md transition-colors`}
+                                onClick={() => handleMobileKeyPress(key)}
+                            >
+                              {key === 'Backspace' ? (
+                                  <img
+                                      src="https://uploadthingy.s3.us-west-1.amazonaws.com/cLoKd9Bc19xZnDL1tiCB5A/backspace.png"
+                                      alt="Backspace"
+                                      className="h-8 w-8"
+                                  />
+                              ) : key === 'ENTER' ? (
+                                  <span className="text-xs">ENTER</span>
+                              ) : (
+                                  key
+                              )}
+                            </button>
+                        ))}
+                      </div>
+                  ))}
+                </div>
+              </>
+          ) : (
+              <>
+                <VirtualKeyboard
+                    onKeyPress={(key) => {
+                      if (key === 'Enter') {
+                        checkGuess()
+                      } else if (key === 'Backspace') {
+                        let lastFilled = -1
+                        for (let i = wordLength - 1; i >= 0; i--) {
+                          if (!lockedPositions[i] && currentAttempt[i]) {
+                            lastFilled = i
+                            break
+                          }
+                        }
+                        if (lastFilled !== -1) {
+                          const newAttempt = [...currentAttempt]
+                          newAttempt[lastFilled] = ''
+                          setCurrentAttempt(newAttempt)
+                        }
+                      } else if (/^[A-Z]$/.test(key)) {
+                        let nextPos = -1
+                        for (let i = 0; i < wordLength; i++) {
+                          if (!lockedPositions[i] && !currentAttempt[i]) {
+                            nextPos = i
+                            break
+                          }
+                        }
+                        if (nextPos !== -1) {
+                          const newAttempt = [...currentAttempt]
+                          newAttempt[nextPos] = key
+                          setCurrentAttempt(newAttempt)
+                        }
+                      }
+                    }}
+                    keyboardType="qwerty"
+                    className="md:block"
+                />
+                <div className="bg-[#374151] rounded-2xl text-center mb-3 mx-auto w-[320px] h-[60px] space-y-0">
+                  <div className="flex items-center justify-center pt-2 h-8">
+                    <img
+                        src="https://uploadthingy.s3.us-west-1.amazonaws.com/fmLBFTLqfqxtLWG949C3wH/point.png"
+                        alt="Coins"
+                        className="w-5 h-5 mr-2"
+                    />
+                    <span className="text-xl font-['Inter'] font-semibold text-white">
+                    {winAmount.toLocaleString()}
+                  </span>
+                  </div>
+                  <p className="text-xl pl-6 text-white font-inter font-semibold">
+                    win
+                  </p>
+                </div>
+              </>
+          )}
+        </div>
+      </div>
+  <CountdownModal
+      isOpen={showCountdown}
+      onCountdownComplete={handleCountdownComplete}
+  />
+  <CooldownModal
+      isOpen={showCooldownModal}
             onClose={() => setShowCooldownModal(false)}
             remainingTime={cooldownTimeRemaining}
             gameType="Wordoll"
