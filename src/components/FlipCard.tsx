@@ -73,7 +73,7 @@ export const FlipCard = ({
                         <div className="flex flex-col h-full justify-between">
                             {/* Header */}
                             <div className="flex justify-center">
-                                <p className="text-[clamp(0.95rem,4.2vw,1.125rem)] font-inter font-bold mt-[clamp(0.5rem,2.8vw,0.75rem)] mb-0">
+                                <p className="text-[clamp(0.95rem,4.2vw,0.95rem)] font-inter font-bold mt-[clamp(0.5rem,2.8vw,0.75rem)] mb-0">
                                     {items.name}
                                 </p>
                             </div>
@@ -84,10 +84,17 @@ export const FlipCard = ({
                                     <img
                                         src={items.image}
                                         alt="item"
-                                        className={`${S.prizeImg} ${items.image === 'flip-pic/gold-coin.png' ? S.prizeImgSm : ''} object-contain`}
+                                        className={`object-contain
+    ${
+                                            items.image === 'flip-pic/gold-coin.png' ||
+                                            items.image === '/flip-pic/Fortune-Cooky .png'
+                                                ? 'w-[clamp(2rem,22vw,4rem)] h-[clamp(2rem,22vw,5rem)]'
+                                                : 'w-[clamp(6.5rem,26vw,9.5rem)] h-[clamp(6.5rem,26vw,9.5rem)]'
+                                        }
+  `}
                                     />
                                 ) : (
-                                    <div className="flex-1" />
+                                    <div className="flex-1"/>
                                 )}
                             </div>
 
@@ -96,17 +103,17 @@ export const FlipCard = ({
                             <div className="mb-[clamp(0.75rem,3.6vw,1rem)]">
                                 {items.type === 'winImg' ? (
                                     <>
-                                        <p className="text-center font-inter font-bold">You Win</p>
+                                        <p className="text-center text-xs font-inter font-bold">You Win</p>
                                         <div className="flex gap-x-2 items-center justify-center">
                                             <img src={prizeIcon} alt={isGold ? 'Coin' : 'Diamond'} className="w-5 h-5" />
-                                            <p className="text-[clamp(1rem,4.5vw,1.25rem)] font-inter font-bold">
+                                            <p className="text-[clamp(1rem,4.5vw,1rem)] font-inter font-bold">
                                                 {formatWinAmount(items.winCount)}
                                             </p>
                                         </div>
                                     </>
                                 ) : (
                                     items.desc?.split('\n').map((line, i) => (
-                                        <p key={i} className="text-center font-inter">
+                                        <p key={i} className="text-center text-xs font-inter">
                                             {line}
                                         </p>
                                     ))
@@ -152,10 +159,13 @@ export const FlipCard = ({
                                     src={items.image}
                                     alt="item"
                                     className={`
-                                               ${items.image === 'flip-pic/gold-coin.png'
-                                        ? 'lg:w-32 lg:h-32 d:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24' 
-                                        : 'lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36'}
-                                        object-contain
+        ${
+                                        items.image === 'flip-pic/gold-coin.png' ||
+                                        items.image === '/flip-pic/Fortune-Cooky .png'
+                                            ? 'lg:w-32 lg:h-32 md:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24'
+                                            : 'lg:w-48 lg:h-48 md:w-32 md:h-32 sm:w-28 sm:h-28 w-36 h-36'
+                                    }
+        object-contain
                                         ${items.image === '/flip-pic/free.png' ? 'pb-10' : ''}
                                         ${items.image === '/flip-pic/Out-of-Stock.png' ? 'pb-6' : ''}
                                         ${items.image === '/flip-pic/Fortune-Cooky .png'
