@@ -77,7 +77,7 @@ export function PrizeCard({ prize, isMobile, onEnter }: PrizeCardProps) {
                 src={prize.image}
                 alt={`${prize.coinAmount} Coins`}
                 className={`
-                     ${prize.image === "/coin-pile.png"
+                     ${prize.image === "/coinpile.png"
                     ? "w-28 h-28 mt-0 mb-0"  
                     : "w-20 h-20 mt-2 mb-6"  
                 }
