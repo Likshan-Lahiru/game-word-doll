@@ -321,7 +321,7 @@ export function GiveawayGoldWordollGame() {
         }
     }, [currentAttempt, wordLength, selectedPrize])
     // Helper function to update UI based on API response
-    const updateUIFromApiResponse = (response: any, attempt: string[]) => {
+   /* const updateUIFromApiResponse = (response: any, attempt: string[]) => {
         // Create a status array for the last attempt
         const statuses: ('correct' | 'wrong-position' | 'incorrect')[] = Array(
             attempt.length,
@@ -368,7 +368,62 @@ export function GiveawayGoldWordollGame() {
         })
         setLockedPositions(newLocks)
         setCurrentAttempt(newAttempt)
+    }*/
+    // Helper function to update UI based on API response
+    const updateUIFromApiResponse = (response: any, attempt: string[]) => {
+        // Only show this feedback if the API explicitly says so
+        if (response?.message === 'Word not in word list!') {
+            setFeedback('Not in word list')
+            setTimeout(() => setFeedback(''), 2000)
+
+            // Clear only non-locked positions in the current attempt
+            const clearedAttempt = [...attempt]
+            for (let i = 0; i < clearedAttempt.length; i++) {
+                if (!lockedPositions[i]) clearedAttempt[i] = ''
+            }
+            setCurrentAttempt(clearedAttempt)
+            return
+        }
+
+        // Normal feedback path for valid words: compute statuses
+        const statuses: ('correct' | 'wrong-position' | 'incorrect')[] =
+            Array(attempt.length).fill('incorrect')
+
+        // Mark correct positions (1-based -> 0-based)
+        if (Array.isArray(response?.correctPositions)) {
+            response.correctPositions.forEach((index: number) => {
+                const i = index - 1
+                if (i >= 0 && i < attempt.length) statuses[i] = 'correct'
+            })
+        }
+
+        // Mark correct but wrong positions (1-based -> 0-based)
+        if (Array.isArray(response?.correctButWrongPosition)) {
+            response.correctButWrongPosition.forEach((index: number) => {
+                const i = index - 1
+                if (i >= 0 && i < attempt.length && statuses[i] !== 'correct') {
+                    statuses[i] = 'wrong-position'
+                }
+            })
+        }
+
+        // Update UI
+        setLastAttemptStatuses(statuses)
+
+        // Lock correct letters and clear the rest in the current row
+        const newLocks = [...lockedPositions]
+        const newAttempt = Array(attempt.length).fill('')
+        statuses.forEach((status, i) => {
+            if (status === 'correct') {
+                newLocks[i] = true
+                newAttempt[i] = attempt[i]
+            }
+        })
+
+        setLockedPositions(newLocks)
+        setCurrentAttempt(newAttempt)
     }
+
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const remaining = seconds % 60
