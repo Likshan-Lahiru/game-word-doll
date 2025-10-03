@@ -26,7 +26,7 @@ export function PlayBookCard({ isMobile = false }: PlayBookCardProps) {
             <div className="flex-1 flex flex-col items-center justify-center mt-8">
               {/* Updated to use the new image */}
               <img
-                  src="https://uploadthingy.s3.us-west-1.amazonaws.com/oHTY8NKSDmvznGJ9ayLTLN/play_book_icons.png"
+                  src="/guide-image.png"
                   alt="Play Book"
                   className="w-32 h-32 mb-4"
               />
