@@ -459,7 +459,7 @@ const S = {
     // sheet = the scroll-free area that holds the grid between StatusBar & BottomNav
     sheetH: 'h-[calc(100dvh-200px)]', // adjust 190–220px if your StatusBar/BottomNav differ
     gridGap: 'gap-[10px]',
-    cardW: 'w-[min(46vw,176px)]',
+    cardW: 'w-[min(46vw,1400px)]',
 
     img: 'w-14 h-14',                 // 56px
     title: 'text-[13px]',
