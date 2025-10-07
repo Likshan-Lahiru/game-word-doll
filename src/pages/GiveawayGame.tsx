@@ -470,7 +470,7 @@ export function GiveawayGame() {
 const S = {
   sheetH: 'h-[calc(100dvh-210px)]', // area between StatusBar & BottomNav (tweak 200–230 if needed)
   gridGap: 'gap-[10px]',
-  cardW: 'w-[min(46vw,176px)]',
+  cardW: 'w-[min(46vw,1400px)]',
   img:    'w-14 h-14',
   title:  'text-[13px]',
   sub:    'text-[12px]',

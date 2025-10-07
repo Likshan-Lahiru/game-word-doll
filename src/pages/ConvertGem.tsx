@@ -376,7 +376,7 @@ export function ConvertGem() {
   return (
       <>
         {/* Right content area - Updated to match the image exactly */}
-        <div className="flex-1 bg-[#374151] rounded-xl p-5 pr-24 pl-10">
+        <div className="flex-1 bg-[#374151] rounded-xl p-5 pr-24 mt-6 pl-10">
           <h2 className="text-2xl font-medium mb-6 font-['Inter']">
             Convert Gems to Giftcard
           </h2>
