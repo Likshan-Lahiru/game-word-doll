@@ -166,9 +166,9 @@ export function BetSelectorPage() {
             }
             // Navigate to the appropriate game page after successful join
             if (gameType === 'wordoll') {
-                navigate('/wordoll-game')
+                navigate('/wordoll')
             } else {
-                navigate('/lock-pickr-game')
+                navigate('/lockpickr')
             }
         } catch (err) {
             console.error('Failed to join game:', err)

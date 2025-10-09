@@ -69,7 +69,7 @@ export function GiveawayEntry() {
                 setOpenInfoModal(true)
             } else {
                 setOpenInfoModal(false)
-                navigate('/spin')
+                navigate('/cookyflip')
             }
         }
     }
