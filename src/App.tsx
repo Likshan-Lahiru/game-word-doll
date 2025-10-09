@@ -41,7 +41,7 @@ export function App() {
                 <div className="flex flex-col w-full min-h-screen bg-[#1F2937] text-white ">
                     <Routes>
                         <Route path="/" element={<HomePage isMobile={isMobile} />} />
-                        <Route path="/wordoll-game" element={<WordollGame />} />
+                        <Route path="/wordoll" element={<WordollGame />} />
                         <Route path="/spin-wordoll-game" element={<WordollGame />} />
                         <Route path="/giveaway-game" element={<GiveawayGame />} />
                         <Route path="/giveaway-entry" element={<GiveawayEntry />} />
@@ -61,7 +61,7 @@ export function App() {
                             path="/giveaway-gold-lockpickr-game"
                             element={<GiveawayGoldLockPickrGame />}
                         />
-                        <Route path="/lock-pickr-game" element={<LockPickrGame />} />
+                        <Route path="/lockpickr" element={<LockPickrGame />} />
                         <Route path="/bet-selector" element={<BetSelectorPage />} />
                         <Route path="/gem-game-mode" element={<GemGameModePage />} />
                         <Route path="/gem-wordoll-game" element={<GemWordollGame />} />
@@ -97,7 +97,7 @@ export function App() {
                             }
                         />
                         <Route path="/guide" element={<GuidePage />} />
-                        <Route path="/spin" element={<FlipPage />} />
+                        <Route path="/cookyflip" element={<FlipPage />} />
                     </Routes>
                 </div>
             </BrowserRouter>
