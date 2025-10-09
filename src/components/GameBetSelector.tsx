@@ -34,9 +34,9 @@ export function GameBetSelector({ gameType, onClose }: GameBetSelectorProps) {
             setBetAmount(option.bet)
             setWinAmount(option.win)
             if (gameType === 'wordoll') {
-                navigate('/wordoll-game')
+                navigate('/wordoll')
             } else {
-                navigate('/lock-pickr-game')
+                navigate('/lockpickr')
             }
         }
         if (onClose) {
@@ -44,7 +44,7 @@ export function GameBetSelector({ gameType, onClose }: GameBetSelectorProps) {
         }
     }
     if (!isAuthenticated) {
-        navigate(gameType === 'wordoll' ? '/wordoll-game' : '/lock-pickr-game')
+        navigate(gameType === 'wordoll' ? '/wordoll' : '/lockpickr')
         return null
     }
     return (
