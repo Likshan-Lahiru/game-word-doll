@@ -14,6 +14,7 @@ const getHeaders = (requireAuth = true) => {
     }
     return headers
 }
+
 // Helper function for making API requests
 export const apiRequest = async (
     endpoint: string,
